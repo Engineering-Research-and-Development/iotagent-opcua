@@ -1,0 +1,9 @@
+.git*
+.idea/
+.travis.yml
+.coveralls.yml
+.DS_Store
+lib
+test
+Makefile
+index.js

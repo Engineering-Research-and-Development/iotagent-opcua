@@ -1,0 +1,14 @@
+{
+  "non-interactive": true,
+  "commitMessage": "[[CHORE]] Release %s",
+  "changelogCommand": "npm run -s changelog",
+  "src": {
+    "beforeStageCommand": "npm run -s changelog"
+  },
+  "npm": {
+    "publish": true
+  },
+  "github": {
+    "release": true
+  }
+}
