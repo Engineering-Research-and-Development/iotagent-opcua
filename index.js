@@ -15,6 +15,11 @@ module.exports = require('./lib/fiware-iotagent-lib');
 
 console.log("closing...");
 */
+
+
+
+
+try{
 // node-opcue dependencies
 require("requirish")._(module);
 var constants = require('./lib/constants');
@@ -24,6 +29,7 @@ var _ = require("underscore");
 var util = require("util");
 //var crawler = require('./node_modules/node-opcua/lib/client/node_crawler.js');
 var async = require("async");
+
 var opcua = require("node-opcua");
 var dataType = opcua.DataType;
 var VariantArrayType = opcua.VariantArrayType;
@@ -36,12 +42,6 @@ var iotAgentLib = require('./lib/fiware-iotagent-lib');
 
 
 
-
-
-
-
-// configuration of iotagent-node-lib
-var config = require('./config');
 
 
 
@@ -76,13 +76,18 @@ var argv = require('yargs')
     .string("browse")
     .describe("browse", " browse Objects from opc-ua server. Fulfill browseServerOptions section in config file")
 
+    .string("autoConfig")
+    .describe("autoConfig", " Auto configuration: update config json file")
+
+
+
     .alias('e', 'endpoint')
     .alias('s', 'securityMode')
     .alias('P', 'securityPolicy')
     .alias("u", 'userName')
     .alias("p", 'password')
     .alias("t", 'timeout')
-
+    .alias('a', 'autoConfig')
     .alias("d", "debug")
     .alias("b", "browse")
     .example("simple_client  --endpoint opc.tcp://localhost:49230 -P=Basic256 -s=SIGN")
@@ -96,6 +101,94 @@ if (!endpointUrl) {
     require('yargs').showHelp();
     return;
 }
+var doAuto = argv.autoConfig ? true : false;
+
+
+
+
+
+
+
+
+
+/*console.log('----------------    MAPPING TOOL    ----------------');
+
+
+var exec = require('child_process').execSync;
+
+
+try {
+   
+    var child = exec('/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin/java -jar test.jar -e '+endpointUrl);
+    console.log("Automatic configuration successfully created. Loading new configuration...".cyan);
+
+
+  } catch (ex) {
+    console.log("There is a problem with automatic configuration. Loading old configuration (if exists)...".red);
+  }
+
+
+ 
+clearInterval(loadingBar);
+module.exports = child;
+
+console.log('----------------------------------------------------');*/
+
+
+//var exec = require('child_process').execSync;
+
+if (doAuto){
+    console.log('----------------    MAPPING TOOL    ----------------');
+
+    var loadingBar;
+    loadingBar=setInterval(function(){  process.stdout.write('.'); }, 3000);
+    
+    var exec = require('child_process').exec;
+
+try {
+    var child = exec('java -jar mapping_tool.jar  -e '+endpointUrl+' -f config.properties'
+    , function(err, stdout, stderr) {
+
+        clearInterval(loadingBar);
+       
+        if (err) {
+            console.log("\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
+
+     
+        }else{
+            console.log("\nAutomatic configuration successfully created. Loading new configuration...".cyan);
+
+        }
+       
+       run();
+        });
+    
+  } catch (ex) {
+    clearInterval(loadingBar);
+
+    console.log("\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
+  }
+
+
+ 
+module.exports = child;
+
+}else{
+    run();
+}
+
+function run(){
+
+console.log('----------------------------------------------------');
+
+
+
+
+
+// configuration of iotagent-node-lib
+var config = require('./config');
+
+
 
 var securityMode = opcua.MessageSecurityMode.get(argv.securityMode || "NONE");
 if (!securityMode) {
@@ -227,8 +320,9 @@ function initSubscriptionBroker(context, mapping) {
         var t1 = getTick();
         var span = t1 - t;
         t = t1;
-        console.log("keepalive ", span / 1000, "sec", " pending request on server = ",
-            subscription.publish_engine.nbPendingPublishRequests);
+        var keepAliveString="keepalive "+ span / 1000 + " "+ "sec"+ " pending request on server = "+
+        subscription.publish_engine.nbPendingPublishRequests + "";
+        console.log(keepAliveString.gray);
 
     }).on("terminated", function (err) {
 
@@ -270,6 +364,20 @@ function initSubscriptionBroker(context, mapping) {
         
         if (dataValue.value && dataValue.value != null)
             variableValue = dataValue.value.value || null;
+
+            //Verify Orion forbidden character
+            if (variableValue!==null){
+                if (variableValue.toString().indexOf(';') > -1)
+                {
+                    variableValue=variableValue.toString().replace(/;/g , "comma");
+                
+                }
+                if (variableValue.toString().indexOf('=') > -1)
+                {
+                    variableValue=variableValue.toString().replace(/=/g , "equal");
+                
+                }
+            }
         console.log(monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
         iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
             if (err) {
@@ -283,8 +391,11 @@ function initSubscriptionBroker(context, mapping) {
                       return null;
                     if (device.active==undefined)
                       return null;
+
                     for (var i = 0; i < device.active.length; i++) {
+
                         if (device.active[i].name === name) {
+
                             return device.active[i].type;
                         }
                     }
@@ -337,6 +448,8 @@ function initSubscriptionBroker(context, mapping) {
                 iotAgentLib.update(device.id, device.type, '', attributes, device, function (err) {
                     if (err) {
                         console.log("error updating " + mapping.ocb_id + " on " + device.name + "".red.bold);
+                        console.log("provavo a scrivere " + JSON.stringify(attributes));
+
                         console.log(JSON.stringify(err).red.bold);
                     } else {
                         console.log("successfully updated " + mapping.ocb_id + " on " + device.name);
@@ -575,7 +688,7 @@ async.series([
             var device = {
                 id: context.id,
                 type: context.type,
-                active: context.active, //only active used in this VERSION
+                active: config.types[context.type].active, //only active used in this VERSION
                 lazy: context.lazy,
                 commands: context.commands
             };
@@ -867,26 +980,27 @@ function createQueryFromAttributes(attributes) {
 
 
 function commandContextHandler(id, type, service, subservice, attributes, callback) {
-    //logger.debug(context, 'TESTGABR commandContextHandler');
+   // console.log(context, 'TESTGABR commandContextHandler');
 
-    //callback("NOOOOOOO");
-   
+  
 
 
     contextSubscriptions.forEach(function (contextSubscription) {
+      
         if (contextSubscription.id===id){
+
             contextSubscription.mappings.forEach(function (mapping) {
-
                 attributes.forEach(function (attribute) {
-
                 if (attribute.name===mapping.ocb_id){
                     
                     var input=mapping.inputArguments;
+                    if (input!=null){
+
                     var i=0;
                     input.forEach(function (inputType) {
                         inputType["value"]=attribute.value[i++];
                     });
-
+                     }
                     var methodsToCall = [];
                     methodsToCall.push({
                         objectId: ""+mapping.object_id,
@@ -898,16 +1012,17 @@ function commandContextHandler(id, type, service, subservice, attributes, callba
                         ] */
                         inputArguments: input/*[
                             {
-                                dataType: dataType.UInt32,
+                                dataType: opcua.dataType.UInt32,
                                 type: "nbBarks",
                                 value:  2 },
                             {
-                                dataType: dataType.UInt32,
+                                dataType: opcua.dataType.UInt32,
                                 type: "volume",
                                 value:  2 
                             }
                         ]*///OK
                     });
+                    console.log("method to call ="+JSON.stringify(methodsToCall));
                     the_session.call(methodsToCall,function(err,results){
                        // results.length.should.eql(1);
                        // results[0].statusCode.should.eql(StatusCodes.Good);
@@ -917,7 +1032,6 @@ function commandContextHandler(id, type, service, subservice, attributes, callba
                             type: type,
                             attributes: attributes
                         });
-
 
                        
                         contexts.forEach(function (context) {
@@ -933,9 +1047,10 @@ function commandContextHandler(id, type, service, subservice, attributes, callba
 
                                    if (results[0].statusCode.name===opcua.StatusCodes.Bad.name)
                                         executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", results[0].outputArguments[0].value, callback);
-                                   else
-                                        executeUpdateValues(device, id, type, service, subservice, attributes, "OK", results[0].outputArguments[0].value, callback);
-                
+                                   else{
+                                       if (results[0].outputArguments[0]!==undefined)
+                                             executeUpdateValues(device, id, type, service, subservice, attributes, "OK", results[0].outputArguments[0].value, callback);
+                                   }
                 
                 
                              //   }, 30000);
@@ -1048,6 +1163,14 @@ function executeUpdateValues(device, id, type, service, subservice, attributes, 
         };
     });
 }
+}
 
 
 
+
+}
+catch(ex){
+    console.log(ex)
+    console.log("Generic error: closing application...".red);
+    process.exit(1);
+}
