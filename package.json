@@ -52,7 +52,8 @@
     "treeify": "*",
     "xmldom": "0.1.19",
     "http": "0.0.0",
-    "node-opcua": "0.0.54"
+    "node-opcua": "0.0.54",
+    "prompt": "*"
   },
   "devDependencies": {
     "chai": "3.5.0",
