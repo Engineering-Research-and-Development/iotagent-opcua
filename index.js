@@ -1,24 +1,3 @@
-/*
-module.exports = require('./lib/fiware-iotagent-lib');
-//COME DA GUIDA
-    config = require('./config');
-    console.log("config...");
-    //Riceve un singolo parametro: la config dell'agent
-    module.exports.activate(config, function(error) {
-  console.log("activate...");
-  if (error) {
-      
-    console.log('There was an error activating the IOTA');
-    process.exit(1);
-  }
-});
-
-console.log("closing...");
-*/
-
-
-
-
 try{
 // node-opcue dependencies
 require("requirish")._(module);
@@ -41,6 +20,7 @@ var userIdentity = null; // anonymous
 
 var prompt = require('prompt');
 
+var request = require('request');
 
 
 
@@ -48,7 +28,7 @@ var prompt = require('prompt');
 
 
 var argv = require('yargs')
-    .wrap(132)
+.wrap(132)
     //.usage('Usage: $0 -d --endpoint <endpointUrl> [--securityMode (NONE|SIGNANDENCRYPT|SIGN)] [--securityPolicy (None|Basic256|Basic128Rsa15)] ')
 
     .demand("endpoint")
@@ -99,96 +79,80 @@ var argv = require('yargs')
 
     .argv;
 
-var endpointUrl = argv.endpoint;
-if (!endpointUrl) {
-    require('yargs').showHelp();
-    return;
-}
-var doAuto = argv.autoConfig ? true : false;
+    var endpointUrl = argv.endpoint;
+    if (!endpointUrl) {
+        require('yargs').showHelp();
+        return;
+    }
+    var doAuto = argv.autoConfig ? true : false;
 
 
 
-var doReconnect = argv.autoReconnect ? true : false;
+    var doReconnect = argv.autoReconnect ? true : false;
 
 
 
 
 
 
-/*console.log('----------------    MAPPING TOOL    ----------------');
 
 
-var exec = require('child_process').execSync;
+    if (doAuto){
+        console.log('----------------    MAPPING TOOL    ----------------');
+
+        var loadingBar;
+        loadingBar=setInterval(function(){  process.stdout.write('.'); }, 3000);
+
+        var exec = require('child_process').exec;
+
+        try {
+            var child = exec('java -jar mapping_tool.jar  -e '+endpointUrl+' -f config.properties'
+                , function(err, stdout, stderr) {
+
+                    clearInterval(loadingBar);
+                    if (err) {
+                        console.log("\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
 
 
-try {
-   
-    var child = exec('/Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin/java -jar test.jar -e '+endpointUrl);
-    console.log("Automatic configuration successfully created. Loading new configuration...".cyan);
+                    }else{
+                        console.log("\nAutomatic configuration successfully created. Loading new configuration...".cyan);
 
+                    }
 
-  } catch (ex) {
-    console.log("There is a problem with automatic configuration. Loading old configuration (if exists)...".red);
-  }
+                    run();
+                });
 
+        } catch (ex) {
+            clearInterval(loadingBar);
 
- 
-clearInterval(loadingBar);
-module.exports = child;
-
-console.log('----------------------------------------------------');*/
-
-
-//var exec = require('child_process').execSync;
-
-if (doAuto){
-    console.log('----------------    MAPPING TOOL    ----------------');
-
-    var loadingBar;
-    loadingBar=setInterval(function(){  process.stdout.write('.'); }, 3000);
-    
-    var exec = require('child_process').exec;
-
-try {
-    var child = exec('java -jar mapping_tool.jar  -e '+endpointUrl+' -f config.properties'
-    , function(err, stdout, stderr) {
-
-        clearInterval(loadingBar);
-        if (err) {
             console.log("\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
-           
-     
-        }else{
-            console.log("\nAutomatic configuration successfully created. Loading new configuration...".cyan);
-
         }
-       
-       run();
-        });
-    
-  } catch (ex) {
-    clearInterval(loadingBar);
-
-    console.log("\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
-  }
 
 
- 
-module.exports = child;
 
-}else{
-    run();
+        module.exports = child;
+
+    }else{
+        run();
+    }
+
+
+
+
+//Clean Orion Forbidden Chars
+function cleanForbiddenCharacters(value){
+    regex = /\(|\)|\<|\>|\"|\'|\=|\;/g;
+    subst = `*`;
+    // The substituted value will be contained in the result variable
+    if (value!=null)
+        return value.toString().replace(regex, subst);
+    return value;
 }
 
 
+    function run(){
 
-
-
-
-
-function run(){
-
-console.log('----------------------------------------------------');
+        console.log('----------------------------------------------------');
 
 
 
@@ -243,9 +207,9 @@ var client = null;
 var the_session = null;
 var the_subscriptions = [];
 var contexts = [];
-//GAB
+//Getting contextSubscriptions configuration
 var contextSubscriptions = config.contextSubscriptions;
-//END GAB
+
 var methods = [];
 
 
@@ -267,7 +231,7 @@ function terminateAllSubscriptions() {
 }
 
 function disconnect() {
-    console.log(" closing session");
+    console.log(" Closing session");
     the_session.close(function (err) {
         console.log(" session closed", err);
     });
@@ -309,13 +273,13 @@ function initSubscriptionBroker(context, mapping) {
         console.log(" revised parameters ");
         console.log("  revised maxKeepAliveCount  ",
             subscription.maxKeepAliveCount, " ( requested ",
-            parameters.requestedMaxKeepAliveCount + ")");
+                parameters.requestedMaxKeepAliveCount + ")");
         console.log("  revised lifetimeCount      ",
             subscription.lifetimeCount, " ( requested ",
-            parameters.requestedLifetimeCount + ")");
+                parameters.requestedLifetimeCount + ")");
         console.log("  revised publishingInterval ",
             subscription.publishingInterval, " ( requested ",
-            parameters.requestedPublishingInterval + ")");
+                parameters.requestedPublishingInterval + ")");
         console.log("  suggested timeout hint     ",
             subscription.publish_engine.timeoutHint);
 
@@ -349,10 +313,10 @@ function initSubscriptionBroker(context, mapping) {
     console.log("initializing monitoring: " + mapping.opcua_id);
 
     var monitoredItem = subscription.monitor(
-        {
-            nodeId: mapping.opcua_id,
-            attributeId: opcua.AttributeIds.Value
-        },
+    {
+        nodeId: mapping.opcua_id,
+        attributeId: opcua.AttributeIds.Value
+    },
         // TODO some of this stuff (samplingInterval for sure) should come from config
         // TODO All these attributes are optional remove ?
         {
@@ -362,7 +326,7 @@ function initSubscriptionBroker(context, mapping) {
             discardOldest: true
         },
         opcua.read_service.TimestampsToReturn.Both
-    );
+        );
 
     monitoredItem.on("initialized", function () {
         console.log("started monitoring: " + monitoredItem.itemToMonitor.nodeId.toString());
@@ -375,89 +339,58 @@ function initSubscriptionBroker(context, mapping) {
             variableValue = dataValue.value.value || null;
 
             //Verify Orion forbidden character
-            if (variableValue!==null){
+            /*if (variableValue!==null){
                 if (variableValue.toString().indexOf(';') > -1)
                 {
                     variableValue=variableValue.toString().replace(/;/g , "comma");
-                
+
                 }
                 if (variableValue.toString().indexOf('=') > -1)
                 {
                     variableValue=variableValue.toString().replace(/=/g , "equal");
-                
-                }
-            }
-        console.log(monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
-        iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
-            if (err) {
-                console.log("could not find the OCB context " + context.id + "".red.bold);
-                console.log(JSON.stringify(err).red.bold);
-            } else {
-              
-                function findType(name) {
+
+                }   
+            }*/
+            variableValue=cleanForbiddenCharacters(variableValue);
+
+
+            console.log(monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
+            iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
+                if (err) {
+                    console.log("could not find the OCB context " + context.id + "".red.bold);
+                    console.log(JSON.stringify(err).red.bold);
+                } else {
+
+                    function findType(name) {
                     // TODO we only search the 'active' namespace: does it make sense? probably yes
                     if (device==undefined)
                       return null;
-                    if (device.active==undefined)
+                  if (device.active==undefined)
                       return null;
 
-                    for (var i = 0; i < device.active.length; i++) {
+                  for (var i = 0; i < device.active.length; i++) {
 
-                        if (device.active[i].name === name) {
+                    if (device.active[i].name === name) {
 
-                            return device.active[i].type;
-                        }
+                        return device.active[i].type;
                     }
-                    console.log("ritorno null???");
-                    return null;
                 }
+                console.log("ritorno null???");
+                return null;
+            }
 
-                /* WARNING attributes must be an ARRAY */
-                var attributes = [{
-                    name: mapping.ocb_id,
-                    type: mapping.type || findType(mapping.ocb_id),
-                    value: variableValue,
-                    /*
-                    metadatas: [
-                        {
-                            name: "sourceTimestamp",
-                            type: "typestamp",
-                            value: dataValue.sourceTimestamp
-                        }
-                    ]
-                    */
+            /* WARNING attributes must be an ARRAY */
+            var attributes = [{
+                name: mapping.ocb_id,
+                type: mapping.type || findType(mapping.ocb_id),
+                value: variableValue,
+            }];
 
-                }];
 
-                /*attributes=[];
-                var attributo1={
-                    name: "temperature",
-                    type: "float",
-                    value: 25.5
-                };
-                attributes.push(attributo1);
-                var attributo2={
-                    name: "pressure",
-                    type: "integer",
-                    value: 255
-                };
-                attributes.push(attributo2);
-                */
-                //[{"name":"temperature","type":"float","value":196}]
-                /*WARNING attributes must be an ARRAY*/
-
-                //device.name="Room1";
-                /*GAB
-                if (device.name.indexOf(":") >= 0){
-                    var res = device.name.split(":");
-                     device.name=res[1];
-                }*/
-                //END GAB
-                //GAB ID
+                //Setting ID withoput prefix
                 iotAgentLib.update(device.id, device.type, '', attributes, device, function (err) {
                     if (err) {
                         console.log("error updating " + mapping.ocb_id + " on " + device.name + "".red.bold);
-                        console.log("provavo a scrivere " + JSON.stringify(attributes));
 
                         console.log(JSON.stringify(err).red.bold);
                     } else {
@@ -466,18 +399,18 @@ function initSubscriptionBroker(context, mapping) {
                 });
             }
         });
-    });
+});
 
-    monitoredItem.on("err", function (err_message) {
-        console.log(monitoredItem.itemToMonitor.nodeId.toString(), " ERROR".red, err_message);
-    });
+monitoredItem.on("err", function (err_message) {
+    console.log(monitoredItem.itemToMonitor.nodeId.toString(), " ERROR".red, err_message);
+});
 }
 
 /*
   @author ascatox 
   Method call on OPCUA Server  
- */
-function callMethods(value) {
+  */
+  function callMethods(value) {
     //TODO Metodi multipli
     if (!methods) return;
     try {
@@ -503,8 +436,8 @@ function callMethods(value) {
   @param {Object} device           Object containing all the device information.
   @param {Array} updates           List of all the updated attributes.
 
- */
-function notificationHandler(device, updates, callback) {
+  */
+  function notificationHandler(device, updates, callback) {
     console.log("Data coming from OCB: ".bold.cyan, JSON.stringify(updates));
     callMethods(updates[0].value); //TODO gestire multiple chiamate
 }
@@ -535,6 +468,7 @@ async.series([
             securityPolicy: securityPolicy,
             defaultSecureTokenLifetime: 400000,
             keepSessionAlive: true,
+            requestedSessionTimeout: 100000, // very long 100 seconds
             connectionStrategy: {
                 maxRetry: 10,
                 initialDelay: 2000,
@@ -542,7 +476,7 @@ async.series([
             }
         };
         
-     
+
 
         console.log("Options = ", options.securityMode.toString(), options.securityPolicy.toString());
 
@@ -553,138 +487,45 @@ async.series([
 
         client.on("connection_reestablished", function () {
             console.log(" !!!!!!!!!!!!!!!!!!!!!!!!  CONNECTION RESTABLISHED !!!!!!!!!!!!!!!!!!!");
-        
+
         });
 
 
 
         client.on( "close", function ( err ) {
-        	 
-        	 //terminateAllSubscriptions();
-             //disconnect();
-             if (doReconnect==false){
-        	   prompt.start();
-        	  var property = {
-      		  	name: 'yesno',
-       			message: 'Connection Closed. Do you want trying to reconnect? (y/n)',
-       			validator: /y[es]*|n[o]?/,
-        		warning: 'Must respond yes or no',
-        		default: 'no'
-    			};
-        	  prompt.get(property, function (err, result) { 
-        	  
-        	             
-    		  if(result.yesno === 'no'){
-        		console.log('Closing agents...');
-        		process.exit(0);
-    			} else {
-       			restart();
-    			}
-                });
-            }else{
-                restart();
-            }
-        	 /*
-        	 var client2;
-        	    async.series([
 
-        	  // create a second channel (client2)
-                function (callback) {
-                    client2 = new opcua.OPCUAClient(options);
-                    client2.connect(endpointUrl, callback);
-                },
-                  function (callback) {
+           if (doReconnect==false){
+            prompt.start();
+            var property = {
+               name: 'yesno',
+               message: 'Connection Closed. Do you want trying to reconnect? (y/n)',
+               validator: /y[es]*|n[o]?/,
+               warning: 'Must respond yes or no',
+               default: 'no'
+           };
+           prompt.get(property, function (err, result) { 
 
-                // reactivate session on second channel
-              
-                    client2.reactivateSession(the_session,function (err) {
-                        callback(err);
-                    });
-             }
-        	 ]);
-        	 
-        	 */
-        	 
-        	 /*
-        	 
-        	    terminateAllSubscriptions();
-        	    
-        	    /*
-        	    console.log(" closing session");
-        the_session.close(function (err) {
-            console.log(" session closed", err);
-            callback();
-        });
-        
-        
-        
-         userIdentity = null; // anonymous
-        if (argv.userName && argv.password) {
 
-            userIdentity = {
-                userName: argv.userName,
-                password: argv.password
-            };
-
-        }
-        client.createSession(userIdentity, function (err, session) {
-            if (!err) {
-                the_session = session;
-                console.log(" session created".yellow);
-                console.log(" sessionId : ", session.sessionId.toString());
-            }
-            callback(err);
-        });
-        
-        
-        the_session.on("session_closed",function(statusCode) {
-    console.log("gosh ! session timeout was too short ! let's increase it");
-});
-
-        
-           contexts.forEach(function (context) {
-            console.log('registering OCB context ' + context.id+" of type "+ context.type);
-            var device = {
-                id: context.id,
-                type: context.type,
-                active: config.types[context.type].active, //only active used in this VERSION
-                lazy: context.lazy,
-                commands: context.commands
-            };
-            try {
-                iotAgentLib.register(device, function (err) {
-                    if (err) { // skip context
-                        console.log("could not register OCB context " + context.id + "".red.bold);
-                        console.log(JSON.stringify(err).red.bold);
-                        context.mappings.forEach(function (mapping) {
-                            initSubscriptionBroker(context, mapping);
-                        });
-                    } else { // init subscriptions
-                        console.log("registered successfully OCB context " + context.id);
-                        context.mappings.forEach(function (mapping) {
-                            initSubscriptionBroker(context, mapping);
-                        });
-                    }
-                });
-            } catch (err) {
-                console.log("error registering OCB context".red.bold);
-                console.log(JSON.stringify(err).red.bold);
-                callback();
-                return;
-            }
-        });
-        
-        */
-        } );
-        
-         client.on("backoff", function(nb, delay) {
-        console.log("  connection failed for the", nb,
-          " time ... We will retry in ", delay, " ms");
+            if(result.yesno === 'no'){
+              console.log('Closing agents...');
+              process.exit(0);
+          } else {
+              restart();
+          }
       });
-      
-       opcuaClient.on("start_reconnection", function () {
-                console.log("start_reconnection not working so aborting");
-            });
+       }else{
+        restart();
+    }       	 
+} );
+
+        client.on("backoff", function(nb, delay) {
+            console.log("  connection failed for the", nb,
+              " time ... We will retry in ", delay, " ms");
+        });
+
+        client.on("start_reconnection", function () {
+            console.log("start_reconnection not working so aborting");
+        });
     },
 
     //------------------------------------------
@@ -704,6 +545,8 @@ async.series([
                 the_session = session;
                 console.log(" session created".yellow);
                 console.log(" sessionId : ", session.sessionId.toString());
+                console.log(" the timeout value set by the server is ",  session.timeout ," ms");
+
             }
             callback(err);
         });
@@ -716,20 +559,20 @@ async.series([
         Configuration is present in config file "browseServerOptions" section.
         Creation of contexts to listen and methods to invoke inside the server. 
       
-     */
-    function (callback) {
-        if (doBrowse) {
-            the_session.browse(config.browseServerOptions.mainFolderToBrowse, function (err, browse_result) {
-                if (!err) {
-                    var configObj = config.browseServerOptions.mainObjectStructure;
-                    browse_result.forEach(function (result) {
-                        result.references.forEach(function (reference) {
-                            var name = reference.browseName.toString();
-                            if (name.indexOf(configObj.namePrefix) > -1) {
-                                var contextObj = {
-                                    id: name,
-                                    type: config.defaultType,
-                                    mappings: [],
+        */
+        function (callback) {
+            if (doBrowse) {
+                the_session.browse(config.browseServerOptions.mainFolderToBrowse, function (err, browse_result) {
+                    if (!err) {
+                        var configObj = config.browseServerOptions.mainObjectStructure;
+                        browse_result.forEach(function (result) {
+                            result.references.forEach(function (reference) {
+                                var name = reference.browseName.toString();
+                                if (name.indexOf(configObj.namePrefix) > -1) {
+                                    var contextObj = {
+                                        id: name,
+                                        type: config.defaultType,
+                                        mappings: [],
                                     active: [], //only active USED in this version
                                     lazy: [],
                                     commands: []
@@ -742,41 +585,41 @@ async.series([
                                                 ||
                                                 nameChild.indexOf(configObj.variableType2.nameSuffix) > -1) {
                                                 var type = nameChild.indexOf(configObj.variableType1.nameSuffix) > -1
-                                                    ? configObj.variableType1.type : configObj.variableType2.type;
-                                                var contextMeasureObj = {
-                                                    ocb_id: nameChild,
-                                                    opcua_id: referenceChild.nodeId.toString(),
-                                                    type: type
-                                                };
-                                                var attributeObj = {
-                                                    name: nameChild,
-                                                    type: type
-                                                }
-                                                contextObj.mappings.push(contextMeasureObj);
-                                                contextObj.active.push(attributeObj);
-                                            } else if (nameChild.indexOf(configObj.methodNameSuffix) > -1) {
-                                                var method = {
-                                                    objectId: reference.nodeId,
-                                                    methodId: referenceChild.nodeId.toString(),
-                                                    name: nameChild
-                                                };
-                                                methods.push(method);
+                                            ? configObj.variableType1.type : configObj.variableType2.type;
+                                            var contextMeasureObj = {
+                                                ocb_id: nameChild,
+                                                opcua_id: referenceChild.nodeId.toString(),
+                                                type: type
+                                            };
+                                            var attributeObj = {
+                                                name: nameChild,
+                                                type: type
                                             }
-                                        });
+                                            contextObj.mappings.push(contextMeasureObj);
+                                            contextObj.active.push(attributeObj);
+                                        } else if (nameChild.indexOf(configObj.methodNameSuffix) > -1) {
+                                            var method = {
+                                                objectId: reference.nodeId,
+                                                methodId: referenceChild.nodeId.toString(),
+                                                name: nameChild
+                                            };
+                                            methods.push(method);
+                                        }
                                     });
-                                });
-                                contexts.push(contextObj);
-                            }
-                        });
-                    });
-                }
-                callback(err);
-            });
-        } else {
-            contexts = config.contexts;
-            callback();
-        }
-    },
+});
+});
+contexts.push(contextObj);
+}
+});
+});
+}
+callback(err);
+});
+} else {
+    contexts = config.contexts;
+    callback();
+}
+},
 
     // ----------------------------------------
     // display namespace array
@@ -832,140 +675,70 @@ async.series([
     //------------------------------------------
     // initialize all subscriptions
     function (callback) {
-        //GAB TEST
-        optionsGet = {
-            url: 'http://localhost:4041/iot/services',
-            method: 'GET',
-            json: {},
-            headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        };
-        optionsCreation = {
-            url: 'http://localhost:4041/iot/services',
-            method: 'POST',
-            json: {
-                services: [
-                    {
-                        resource: '/deviceTest1',
-                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                        entity_type: 'SensorMachine',
-                        trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                        cbHost: 'http://unexistentHost:1026',
-                        commands: [
-                            {
-                                name: 'wheel1',
-                                type: 'Wheel'
-                            }
-                        ],
-                        lazy: [
-                            {
-                                name: 'luminescence',
-                                type: 'Lumens'
-                            }
-                        ],
-                        attributes: [
-                            {
-                                name: 'status',
-                                type: 'Boolean'
-                            }
-                        ],
-                        static_attributes: [
-                            {
-                                name: 'bootstrapServer',
-                                type: 'Address',
-                                value: '127.0.0.1'
-                            }
-                        ]
-                    }
-                ]
-            },
-            headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        },
-        optionsCreation2 = {
-            url: 'http://localhost:4041/iot/services',
-            method: 'POST',
-            json: {
-                services: [
-                    {
-                        resource: '/deviceTest2',
-                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8733',
-                        entity_type: 'SensorMachine2',
-                        trust: '8970A9078A803H3BL98PINEQRW8342HBAMT',
-                        cbHost: 'http://unexistentHost:1026',
-                        commands: [
-                            {
-                                name: 'wheel1',
-                                type: 'Wheel'
-                            }
-                        ],
-                        lazy: [
-                            {
-                                name: 'luminescence',
-                                type: 'Lumens'
-                            }
-                        ],
-                        attributes: [
-                            {
-                                name: 'status',
-                                type: 'Boolean'
-                            }
-                        ],
-                        static_attributes: [
-                            {
-                                name: 'bootstrapServer',
-                                type: 'Address',
-                                value: '127.0.0.1'
-                            }
-                        ]
-                    }
-                ]
-            },
-            headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        },
-        request = require('request');
-        request(optionsGet, function(error, response, body) {
-            if (error){
-                console.log("CHECKING GROUP ERROR. Verify OCB connection.");
-                return;
-            }
-            else  {  
-                if (body.entity_type!=null){
-                    console.log("gabriele="+JSON.stringify(body));
-                    console.log("Group not exists...creating group");
-                }
-                else{
-                    console.log("gabriele1="+JSON.stringify(body));
-
-                    console.log("Group not exists...creating group");
-                }
-            }
-
-        });
-       /* request(optionsCreation, function(error, response, body) {
-            
-            console.log("gabriele12")
-        });
-        request(optionsCreation2, function(error, response, body) {
-            
-            console.log("gabriele13")
-        });
-        */
-        //END GAB TEST
 
 
-        contexts.forEach(function (context) {
-            console.log('registering OCB context ' + context.id+" of type "+ context.type);
-            var device = {
-                id: context.id,
-                type: context.type,
+         //Creating group always
+         if (config.deviceRegistry.type=="mongodb"){
+             console.log("CONFIGURATION API");
+             var services=[];
+             for(var key in  config.types) {
+                 console.log("Analyzing..."+key)
+                 var type=config.types[key];
+
+                 var service={
+                   resource: '/'+key,
+                   apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+                   entity_type: key,
+                                    //trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                                    cbHost: config.contextBroker.host+':'+config.contextBroker.port,
+                                    commands: type.commands,
+                                    lazy: type.lazy,
+                                    attributes: type.active,
+                                    static_attributes: []
+                                };
+
+
+
+                                services.push(service);
+                            }
+
+
+
+
+
+
+                            optionsCreation = {
+                                url: 'http://localhost:4041/iot/services',
+                                method: 'POST',
+                                json: {
+                                    services: services
+                                },
+                                headers: {
+                                    'fiware-service': config.service,
+                                    'fiware-servicepath': config.subservice
+                                }
+                            };
+
+                            request(optionsCreation, function(error, response, body) {
+                              if (error){
+                                  console.log("CREATION GROUP ERROR. Verify OCB connection.");
+                                  return;
+                              }
+                              else  {  
+                                console.log("GROUPS SUCCESSFULLY CREATED!");
+                            }
+
+                        });
+
+                        }
+
+
+
+                        contexts.forEach(function (context) {
+                            console.log('registering OCB context ' + context.id+" of type "+ context.type);
+                            var device = {
+                                id: context.id,
+                                type: context.type,
                 active: config.types[context.type].active, //only active used in this VERSION
                 lazy: context.lazy,
                 commands: context.commands
@@ -992,59 +765,59 @@ async.series([
                 return;
             }
         });
-        callback();
-    },
+callback();
+},
     /*
            @author ascatox
            Use "-browse option" 
            I'm trying to implement communication from OCB to IOT Agent
            by subscriptions to default Context
-    */
-    function (callback) {
-        if (doBrowse) {
-            var attributeTriggers = [];
-            config.contextSubscriptions.forEach(function (cText) {
-                cText.mappings.forEach(function (map) {
-                    attributeTriggers.push(map.ocb_id);
+           */
+           function (callback) {
+            if (doBrowse) {
+                var attributeTriggers = [];
+                config.contextSubscriptions.forEach(function (cText) {
+                    cText.mappings.forEach(function (map) {
+                        attributeTriggers.push(map.ocb_id);
+                    });
                 });
-            });
 
-            config.contextSubscriptions.forEach(function (context) {
-                console.log('subscribing OCB context ' + context.id + " for attributes: ");
-                attributeTriggers.forEach(function (attr) {
-                    console.log("attribute name: " + attr + "".cyan.bold);
+                config.contextSubscriptions.forEach(function (context) {
+                    console.log('subscribing OCB context ' + context.id + " for attributes: ");
+                    attributeTriggers.forEach(function (attr) {
+                        console.log("attribute name: " + attr + "".cyan.bold);
+                    });
+                    var device = {
+                        id: context.id,
+                        name: context.id,
+                        type: context.type,
+                        service: config.service,
+                        subservice: config.subservice
+                    };
+                    try {
+                        iotAgentLib.subscribe(device, attributeTriggers,
+                            attributeTriggers, function (err) {
+                                if (err) {
+                                    console.log('There was an error subscribing device [%s] to attributes [%j]'.bold.red,
+                                        device.name, attributeTriggers);
+                                } else {
+                                    console.log('Successfully subscribed device [%s] to attributes[%j]'.bold.yellow,
+                                        device.name, attributeTriggers);
+                                }
+                                callback();
+                            });
+                    } catch (err) {
+                        console.log('There was an error subscribing device [%s] to attributes [%j]',
+                            device.name, attributeTriggers);
+                        console.log(JSON.stringify(err).red.bold);
+                        callback();
+                        return;
+                    }
                 });
-                var device = {
-                    id: context.id,
-                    name: context.id,
-                    type: context.type,
-                    service: config.service,
-                    subservice: config.subservice
-                };
-                try {
-                    iotAgentLib.subscribe(device, attributeTriggers,
-                        attributeTriggers, function (err) {
-                            if (err) {
-                                console.log('There was an error subscribing device [%s] to attributes [%j]'.bold.red,
-                                    device.name, attributeTriggers);
-                            } else {
-                                console.log('Successfully subscribed device [%s] to attributes[%j]'.bold.yellow,
-                                    device.name, attributeTriggers);
-                            }
-                            callback();
-                        });
-                } catch (err) {
-                    console.log('There was an error subscribing device [%s] to attributes [%j]',
-                        device.name, attributeTriggers);
-                    console.log(JSON.stringify(err).red.bold);
-                    callback();
-                    return;
-                }
-            });
-        } else {
-            callback();
-        }
-    },
+} else {
+    callback();
+}
+},
 
     //------------------------------------------
     // set up a timer that shuts down the client after a given time
@@ -1087,7 +860,7 @@ async.series([
         client.disconnect(callback);
     }
 
-], function (err) {
+    ], function (err) {
 
     // this is called whenever a step call callback() passing along an err object
     console.log(" disconnected".cyan);
@@ -1136,70 +909,40 @@ process.on('SIGINT', function () {
 
 
 
-//LAZY GAB
+//Lazy Attributes Handler
 function queryContextHandler(id, type, service, subservice, attributes, callback) {
 
 
     contextSubscriptions.forEach(function (contextSubscription) {
-    if (contextSubscription.id===id){
-        contextSubscription.mappings.forEach(function (mapping) {
-            
-            attributes.forEach(function (attribute) {
-            if (attribute===mapping.ocb_id){
-                the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
-                    if (!err) {
-                        console.log(" letto variabile % = " , dataValue.toString());
+        if (contextSubscription.id===id){
+            contextSubscription.mappings.forEach(function (mapping) {
+
+                attributes.forEach(function (attribute) {
+                    if (attribute===mapping.ocb_id){
+                        the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
+                            if (!err) {
+                                console.log(" read variable % = " , dataValue.toString());
+                            }
+                            callback(err, createResponse(id, type, attributes, ""+dataValue.value.value));
+
+                        });
                     }
-                    callback(err, createResponse(id, type, attributes, ""+dataValue.value.value));
-                  
                 });
-            }
-        });
-        });
-    }
-    });
-
-   
-    
-    
-    
-    
-    
-    
-    /* var options = {
-        url: 'http://127.0.0.1:9999/iot/d',
-        method: 'GET',
-        qs: {
-            q: attributes.join()
-        }
-    };
-
-    request(options, function (error, response, body) {
-        logger.error('TESTGABR queryContextHandler');
-
-        if (error) {
-            logger.error('TESTGABR errore');
-
-            callback(error);
-        } else {
-            logger.error('TESTGABR no errore');
-
-            callback(null, createResponse(id, type, attributes, body));
+            });
         }
     });
-    */
 }
 
 function createResponse(id, type, attributes, body) {
 
     var values = body.split(','),
-        responses = [];
+    responses = [];
 
     for (var i = 0; i < attributes.length; i++) {
         responses.push({
-                name: attributes[i],
-                type: "string",
-                value: values[i]
+            name: attributes[i],
+            type: "string",
+            value: values[i]
         });
     }
 
@@ -1212,34 +955,8 @@ function createResponse(id, type, attributes, body) {
 
 
 function updateContextHandler(id, type, service, subservice, attributes, callback) {
-    
 
 
-      
-    
-
-    
-   
-/*
-    var options = {
-        url: 'http://127.0.0.1:9999/iot/d',
-        method: 'GET',
-        qs: {
-            d: createQueryFromAttributes(attributes)
-        }
-    };
-
-    request(options, function (error, response, body) {
-        if (error) {
-            callback(error);
-        } else {
-            callback(null, {
-                id: id,
-                type: type,
-                attributes: attributes
-            });
-        }
-    });*/
 }
 
 
@@ -1261,61 +978,45 @@ function createQueryFromAttributes(attributes) {
 
 
 function commandContextHandler(id, type, service, subservice, attributes, callback) {
-   // console.log(context, 'TESTGABR commandContextHandler');
-
-  
 
 
-    contextSubscriptions.forEach(function (contextSubscription) {
-      
-        if (contextSubscription.id===id){
 
-            contextSubscription.mappings.forEach(function (mapping) {
-                attributes.forEach(function (attribute) {
+
+ contextSubscriptions.forEach(function (contextSubscription) {
+
+    if (contextSubscription.id===id){
+
+        contextSubscription.mappings.forEach(function (mapping) {
+            attributes.forEach(function (attribute) {
                 if (attribute.name===mapping.ocb_id){
-                    
+
                     var input=mapping.inputArguments;
                     if (input!=null){
 
-                    var i=0;
-                    input.forEach(function (inputType) {
-                        inputType["value"]=attribute.value[i++];
-                    });
-                     }
+                        var i=0;
+                        input.forEach(function (inputType) {
+                            inputType["value"]=attribute.value[i++];
+                        });
+                    }
                     var methodsToCall = [];
                     methodsToCall.push({
                         objectId: ""+mapping.object_id,
                         methodId: ""+mapping.opcua_id,
-                        /*inputArguments: [{
-                            dataType: dataType.UInt32,
-                            arrayType: VariantArrayType.arrayType,
-                            value:  [2,2] }
-                        ] */
-                        inputArguments: input/*[
-                            {
-                                dataType: opcua.dataType.UInt32,
-                                type: "nbBarks",
-                                value:  2 },
-                            {
-                                dataType: opcua.dataType.UInt32,
-                                type: "volume",
-                                value:  2 
-                            }
-                        ]*///OK
+
+                        inputArguments: input
                     });
                     console.log("method to call ="+JSON.stringify(methodsToCall));
                     the_session.call(methodsToCall,function(err,results){
-                       // results.length.should.eql(1);
-                       // results[0].statusCode.should.eql(StatusCodes.Good);
-                       
-                        callback(err, {
-                            id: id,
-                            type: type,
-                            attributes: attributes
-                        });
 
-                       
-                        contexts.forEach(function (context) {
+
+                     callback(err, {
+                        id: id,
+                        type: type,
+                        attributes: attributes
+                    });
+
+
+                     contexts.forEach(function (context) {
                         iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
                             if (err) {
                                 console.log("could not find the OCB context " + context.id + "".red.bold);
@@ -1323,35 +1024,33 @@ function commandContextHandler(id, type, service, subservice, attributes, callba
                                 executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", "generic error", callback);
 
                             } else {
-                               // setTimeout(function() { 
-                                   
-
-                                   if (results[0].statusCode.name===opcua.StatusCodes.Bad.name)
-                                        executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", results[0].outputArguments[0].value, callback);
-                                   else{
-                                       if (results[0].outputArguments[0]!==undefined)
-                                             executeUpdateValues(device, id, type, service, subservice, attributes, "OK", results[0].outputArguments[0].value, callback);
-                                   }
-                
-                
-                             //   }, 30000);
-                
-                
-                            }
-                            });
-                        
-                
-                    });
-                    });
 
 
-                   
-                }
-            });
-            });
-        }
-        });
-    
+                               if (results[0].statusCode.name===opcua.StatusCodes.Bad.name)
+                                executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", results[0].outputArguments[0].value, callback);
+                            else{
+                               if (results[0].outputArguments[0]!==undefined)
+                                 executeUpdateValues(device, id, type, service, subservice, attributes, "OK", results[0].outputArguments[0].value, callback);
+                         }
+
+
+
+
+
+                     }
+                 });
+
+
+});
+});
+
+
+
+}
+});
+});
+}
+});
 
 
 
@@ -1365,15 +1064,16 @@ function commandContextHandler(id, type, service, subservice, attributes, callba
 
 
 
-   
-    
-  
-   
+
+
+
+
+
 }
 //iotAgentLib.setDataUpdateHandler(updateContextHandler);
 iotAgentLib.setDataQueryHandler(queryContextHandler);
 iotAgentLib.setCommandHandler(commandContextHandler)
-//END GAB LAZY
+
 
 
 
@@ -1388,23 +1088,23 @@ iotAgentLib.setCommandHandler(commandContextHandler)
  * @param {String} subservice       Subservice of the device.
  * @param {Array}  attributes       List of attributes to update with their types and values.
  */
-function executeUpdateValues(device, id, type, service, subservice, attributes, status, value, callback) {
+ function executeUpdateValues(device, id, type, service, subservice, attributes, status, value, callback) {
     var sideEffects = [];
     if (device.commands) {
         for (var i = 0; i < device.commands.length; i++) {
             for (var j = 0; j < attributes.length; j++) {
                 if (device.commands[i].name === attributes[j].name) {
                     var newAttributes = [
-                        {
-                            name: device.commands[i].name + '_status',
-                            type: constants.COMMAND_STATUS,
-                            value: status
-                        },
-                        {
-                            name: device.commands[i].name + '_info',
-                            type: constants.COMMAND_RESULT,
-                            value: value
-                        }
+                    {
+                        name: device.commands[i].name + '_status',
+                        type: constants.COMMAND_STATUS,
+                        value: status
+                    },
+                    {
+                        name: device.commands[i].name + '_info',
+                        type: constants.COMMAND_RESULT,
+                        value: value
+                    }
                     ];
 
                     sideEffects.push(
@@ -1414,8 +1114,8 @@ function executeUpdateValues(device, id, type, service, subservice, attributes, 
                             device.apikey,
                             newAttributes,
                             device
-                        )
-                    );
+                            )
+                        );
                 }
             }
         }
@@ -1434,13 +1134,7 @@ function executeUpdateValues(device, id, type, service, subservice, attributes, 
                 case 0: return func.call(this, rest);
                 case 1: return func.call(this, arguments[0], rest);
             }
-            // Currently unused but handle cases outside of the switch statement:
-            // var args = Array(startIndex + 1);
-            // for (index = 0; index < startIndex; index++) {
-            //     args[index] = arguments[index];
-            // }
-            // args[startIndex] = rest;
-            // return func.apply(this, args);
+
         };
     });
 }
@@ -1450,7 +1144,7 @@ function executeUpdateValues(device, id, type, service, subservice, attributes, 
 function restart(){
 
 
-console.log('---------------- TRYING TO RESTART ------------------');
+    console.log('---------------- TRYING TO RESTART ------------------');
 
 
 
@@ -1544,7 +1238,6 @@ function disconnect() {
 
 
 
-
 function initSubscriptionBroker(context, mapping) {
     // TODO this stuff too should come from config
     var parameters = {
@@ -1570,13 +1263,13 @@ function initSubscriptionBroker(context, mapping) {
         console.log(" revised parameters ");
         console.log("  revised maxKeepAliveCount  ",
             subscription.maxKeepAliveCount, " ( requested ",
-            parameters.requestedMaxKeepAliveCount + ")");
+                parameters.requestedMaxKeepAliveCount + ")");
         console.log("  revised lifetimeCount      ",
             subscription.lifetimeCount, " ( requested ",
-            parameters.requestedLifetimeCount + ")");
+                parameters.requestedLifetimeCount + ")");
         console.log("  revised publishingInterval ",
             subscription.publishingInterval, " ( requested ",
-            parameters.requestedPublishingInterval + ")");
+                parameters.requestedPublishingInterval + ")");
         console.log("  suggested timeout hint     ",
             subscription.publish_engine.timeoutHint);
 
@@ -1610,10 +1303,10 @@ function initSubscriptionBroker(context, mapping) {
     console.log("initializing monitoring: " + mapping.opcua_id);
 
     var monitoredItem = subscription.monitor(
-        {
-            nodeId: mapping.opcua_id,
-            attributeId: opcua.AttributeIds.Value
-        },
+    {
+        nodeId: mapping.opcua_id,
+        attributeId: opcua.AttributeIds.Value
+    },
         // TODO some of this stuff (samplingInterval for sure) should come from config
         // TODO All these attributes are optional remove ?
         {
@@ -1623,7 +1316,7 @@ function initSubscriptionBroker(context, mapping) {
             discardOldest: true
         },
         opcua.read_service.TimestampsToReturn.Both
-    );
+        );
 
     monitoredItem.on("initialized", function () {
         console.log("started monitoring: " + monitoredItem.itemToMonitor.nodeId.toString());
@@ -1636,48 +1329,54 @@ function initSubscriptionBroker(context, mapping) {
             variableValue = dataValue.value.value || null;
 
             //Verify Orion forbidden character
-            if (variableValue!==null){
+            /*if (variableValue!==null){
                 if (variableValue.toString().indexOf(';') > -1)
                 {
                     variableValue=variableValue.toString().replace(/;/g , "comma");
-                
+
                 }
                 if (variableValue.toString().indexOf('=') > -1)
                 {
                     variableValue=variableValue.toString().replace(/=/g , "equal");
-                
+
                 }
-            }
-        console.log(monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
-        iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
-            if (err) {
-                console.log("could not find the OCB context " + context.id + "".red.bold);
-                console.log(JSON.stringify(err).red.bold);
-            } else {
-              
-                function findType(name) {
+
+
+               
+            }*/
+            variableValue=cleanForbiddenCharacters(variableValue);
+
+
+            console.log(monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
+            iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
+                if (err) {
+                    console.log("could not find the OCB context " + context.id + "".red.bold);
+                    console.log(JSON.stringify(err).red.bold);
+                } else {
+
+                    function findType(name) {
                     // TODO we only search the 'active' namespace: does it make sense? probably yes
                     if (device==undefined)
                       return null;
-                    if (device.active==undefined)
+                  if (device.active==undefined)
                       return null;
 
-                    for (var i = 0; i < device.active.length; i++) {
+                  for (var i = 0; i < device.active.length; i++) {
 
-                        if (device.active[i].name === name) {
+                    if (device.active[i].name === name) {
 
-                            return device.active[i].type;
-                        }
+                        return device.active[i].type;
                     }
-                    console.log("ritorno null???");
-                    return null;
                 }
+                console.log("ritorno null???");
+                return null;
+            }
 
-                /* WARNING attributes must be an ARRAY */
-                var attributes = [{
-                    name: mapping.ocb_id,
-                    type: mapping.type || findType(mapping.ocb_id),
-                    value: variableValue,
+            /* WARNING attributes must be an ARRAY */
+            var attributes = [{
+                name: mapping.ocb_id,
+                type: mapping.type || findType(mapping.ocb_id),
+                value: variableValue,
                     /*
                     metadatas: [
                         {
@@ -1690,7 +1389,7 @@ function initSubscriptionBroker(context, mapping) {
 
                 }];
 
-               
+
                 //GAB ID
                 iotAgentLib.update(device.id, device.type, '', attributes, device, function (err) {
                     if (err) {
@@ -1704,18 +1403,18 @@ function initSubscriptionBroker(context, mapping) {
                 });
             }
         });
-    });
+});
 
-    monitoredItem.on("err", function (err_message) {
-        console.log(monitoredItem.itemToMonitor.nodeId.toString(), " ERROR".red, err_message);
-    });
+monitoredItem.on("err", function (err_message) {
+    console.log(monitoredItem.itemToMonitor.nodeId.toString(), " ERROR".red, err_message);
+});
 }
 
 /*
   @author ascatox 
   Method call on OPCUA Server  
- */
-function callMethods(value) {
+  */
+  function callMethods(value) {
     //TODO Metodi multipli
     if (!methods) return;
     try {
@@ -1741,31 +1440,15 @@ function callMethods(value) {
   @param {Object} device           Object containing all the device information.
   @param {Array} updates           List of all the updated attributes.
 
- */
-function notificationHandler(device, updates, callback) {
+  */
+  function notificationHandler(device, updates, callback) {
     console.log("Data coming from OCB: ".bold.cyan, JSON.stringify(updates));
     callMethods(updates[0].value); //TODO gestire multiple chiamate
 }
 // each of the following steps is executed in due order
 // each step MUST call callback() when done in order for the step sequence to proceed further
 async.series([
-    //------------------------------------------
-/*
-    // initialize client connection to the OCB
-    function (callback) {
-        iotAgentLib.activate(config, function (err) {
-            if (err) {
-                console.log('There was an error activating the Agent: ' + err.message);
-                process.exit(1);
-            } else {
-                console.log("NotificationHandler attached to ContextBroker");
-                iotAgentLib.setNotificationHandler(notificationHandler);
 
-            }
-            callback();
-        });
-    },
-*/
     //------------------------------------------
     // initialize client connection to the OPCUA Server
     function (callback) {
@@ -1774,14 +1457,15 @@ async.series([
             securityPolicy: securityPolicy,
             defaultSecureTokenLifetime: 400000,
             keepSessionAlive: true,
+            requestedSessionTimeout: 100000, // very long 100 seconds
             connectionStrategy: {
-                maxRetry: 10,
+                maxRetry: 100,
                 initialDelay: 2000,
                 maxDelay: 10*1000
             }
         };
         
-     
+
 
         console.log("Options = ", options.securityMode.toString(), options.securityPolicy.toString());
 
@@ -1792,45 +1476,45 @@ async.series([
 
         client.on("connection_reestablished", function () {
             console.log(" !!!!!!!!!!!!!!!!!!!!!!!!  CONNECTION RESTABLISHED !!!!!!!!!!!!!!!!!!!");
-        
+
         });
 
 
 
         client.on( "close", function ( err ) {
             if (doReconnect==false){
-        	  prompt.start();
-        	  var property = {
-        name: 'yesno',
-        message: 'Connection Closed. Do you want trying to reconnect? (y/n)',
-        validator: /y[es]*|n[o]?/,
-        warning: 'Must respond yes or no',
-        default: 'no'
-    };
-        	  prompt.get(property, function (err, result) { 
-        	  
-        	             
-    if(result.yesno === 'no'){
-        console.log('Closing agents...');
-        process.exit(0);
-    } else {
-       restart();
-    }
-  });
-}else{
-    restart();
-}
-        	
-        } );
+               prompt.start();
+               var property = {
+                name: 'yesno',
+                message: 'Connection Closed. Do you want trying to reconnect? (y/n)',
+                validator: /y[es]*|n[o]?/,
+                warning: 'Must respond yes or no',
+                default: 'no'
+            };
+            prompt.get(property, function (err, result) { 
+
+
+                if(result.yesno === 'no'){
+                    console.log('Closing agents...');
+                    process.exit(0);
+                } else {
+                   restart();
+               }
+           });
+        }else{
+            restart();
+        }
+
+    } );
         
-         client.on("backoff", function(nb, delay) {
-        console.log("  connection failed for the", nb,
-          " time ... We will retry in ", delay, " ms");
-      });
-      
-       opcuaClient.on("start_reconnection", function () {
-                console.log("start_reconnection not working so aborting");
-            });
+        client.on("backoff", function(nb, delay) {
+            console.log("  connection failed for the", nb,
+              " time ... We will retry in ", delay, " ms");
+        });
+
+        client.on("start_reconnection", function () {
+            console.log("start_reconnection not working so aborting");
+        });
     },
 
     //------------------------------------------
@@ -1862,13 +1546,13 @@ async.series([
         Configuration is present in config file "browseServerOptions" section.
         Creation of contexts to listen and methods to invoke inside the server. 
       
-     */
-    function (callback) {
-       
+        */
+        function (callback) {
+
             contexts = config.contexts;
             callback();
-        
-    },
+
+        },
 
     // ----------------------------------------
     // display namespace array
@@ -1891,142 +1575,14 @@ async.series([
     //------------------------------------------
     // crawl the address space, display as a hierarchical tree rooted in ObjectsFolder
     function (callback) {
-        
-            callback();
+
+        callback();
         
     },
 
     //------------------------------------------
     // initialize all subscriptions
     function (callback) {
-        //GAB TEST
-        optionsGet = {
-            url: 'http://localhost:4041/iot/services',
-            method: 'GET',
-            json: {},
-            headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        };
-        optionsCreation = {
-            url: 'http://localhost:4041/iot/services',
-            method: 'POST',
-            json: {
-                services: [
-                    {
-                        resource: '/deviceTest1',
-                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
-                        entity_type: 'SensorMachine',
-                        trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
-                        cbHost: 'http://unexistentHost:1026',
-                        commands: [
-                            {
-                                name: 'wheel1',
-                                type: 'Wheel'
-                            }
-                        ],
-                        lazy: [
-                            {
-                                name: 'luminescence',
-                                type: 'Lumens'
-                            }
-                        ],
-                        attributes: [
-                            {
-                                name: 'status',
-                                type: 'Boolean'
-                            }
-                        ],
-                        static_attributes: [
-                            {
-                                name: 'bootstrapServer',
-                                type: 'Address',
-                                value: '127.0.0.1'
-                            }
-                        ]
-                    }
-                ]
-            },
-            headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        },
-        optionsCreation2 = {
-            url: 'http://localhost:4041/iot/services',
-            method: 'POST',
-            json: {
-                services: [
-                    {
-                        resource: '/deviceTest2',
-                        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8733',
-                        entity_type: 'SensorMachine2',
-                        trust: '8970A9078A803H3BL98PINEQRW8342HBAMT',
-                        cbHost: 'http://unexistentHost:1026',
-                        commands: [
-                            {
-                                name: 'wheel1',
-                                type: 'Wheel'
-                            }
-                        ],
-                        lazy: [
-                            {
-                                name: 'luminescence',
-                                type: 'Lumens'
-                            }
-                        ],
-                        attributes: [
-                            {
-                                name: 'status',
-                                type: 'Boolean'
-                            }
-                        ],
-                        static_attributes: [
-                            {
-                                name: 'bootstrapServer',
-                                type: 'Address',
-                                value: '127.0.0.1'
-                            }
-                        ]
-                    }
-                ]
-            },
-            headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        },
-        request = require('request');
-        request(optionsGet, function(error, response, body) {
-            if (error){
-                console.log("CHECKING GROUP ERROR. Verify OCB connection.");
-                return;
-            }
-            else  {  
-                if (body.entity_type!=null){
-                    console.log("gabriele="+JSON.stringify(body));
-                    console.log("Group not exists...creating group");
-                }
-                else{
-                    console.log("gabriele1="+JSON.stringify(body));
-
-                    console.log("Group not exists...creating group");
-                }
-            }
-
-        });
-       /* request(optionsCreation, function(error, response, body) {
-            
-            console.log("gabriele12")
-        });
-        request(optionsCreation2, function(error, response, body) {
-            
-            console.log("gabriele13")
-        });
-        */
-        //END GAB TEST
-
 
         contexts.forEach(function (context) {
             console.log('registering OCB context ' + context.id+" of type "+ context.type);
@@ -2059,19 +1615,19 @@ async.series([
                 return;
             }
         });
-        callback();
-    },
+callback();
+},
     /*
            @author ascatox
            Use "-browse option" 
            I'm trying to implement communication from OCB to IOT Agent
            by subscriptions to default Context
-    */
-    function (callback) {
-      
+           */
+           function (callback) {
+
             callback();
-       
-    },
+
+        },
 
     //------------------------------------------
     // set up a timer that shuts down the client after a given time
@@ -2114,7 +1670,7 @@ async.series([
         client.disconnect(callback);
     }
 
-], function (err) {
+    ], function (err) {
 
     // this is called whenever a step call callback() passing along an err object
     console.log(" disconnected".cyan);
@@ -2163,70 +1719,41 @@ process.on('SIGINT', function () {
 
 
 
-//LAZY GAB
+//Lazt Attributes handler
 function queryContextHandler(id, type, service, subservice, attributes, callback) {
 
 
     contextSubscriptions.forEach(function (contextSubscription) {
-    if (contextSubscription.id===id){
-        contextSubscription.mappings.forEach(function (mapping) {
-            
-            attributes.forEach(function (attribute) {
-            if (attribute===mapping.ocb_id){
-                the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
-                    if (!err) {
-                        console.log(" letto variabile % = " , dataValue.toString());
+        if (contextSubscription.id===id){
+            contextSubscription.mappings.forEach(function (mapping) {
+
+                attributes.forEach(function (attribute) {
+                    if (attribute===mapping.ocb_id){
+                        the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
+                            if (!err) {
+                                console.log(" read variable % = " , dataValue.toString());
+                            }
+                            callback(err, createResponse(id, type, attributes, ""+dataValue.value.value));
+
+                        });
                     }
-                    callback(err, createResponse(id, type, attributes, ""+dataValue.value.value));
-                  
                 });
-            }
-        });
-        });
-    }
-    });
-
-   
-    
-    
-    
-    
-    
-    
-    /* var options = {
-        url: 'http://127.0.0.1:9999/iot/d',
-        method: 'GET',
-        qs: {
-            q: attributes.join()
-        }
-    };
-
-    request(options, function (error, response, body) {
-        logger.error('TESTGABR queryContextHandler');
-
-        if (error) {
-            logger.error('TESTGABR errore');
-
-            callback(error);
-        } else {
-            logger.error('TESTGABR no errore');
-
-            callback(null, createResponse(id, type, attributes, body));
+            });
         }
     });
-    */
+
 }
 
 function createResponse(id, type, attributes, body) {
 
     var values = body.split(','),
-        responses = [];
+    responses = [];
 
     for (var i = 0; i < attributes.length; i++) {
         responses.push({
-                name: attributes[i],
-                type: "string",
-                value: values[i]
+            name: attributes[i],
+            type: "string",
+            value: values[i]
         });
     }
 
@@ -2239,34 +1766,8 @@ function createResponse(id, type, attributes, body) {
 
 
 function updateContextHandler(id, type, service, subservice, attributes, callback) {
-    
 
 
-      
-    
-
-    
-   
-/*
-    var options = {
-        url: 'http://127.0.0.1:9999/iot/d',
-        method: 'GET',
-        qs: {
-            d: createQueryFromAttributes(attributes)
-        }
-    };
-
-    request(options, function (error, response, body) {
-        if (error) {
-            callback(error);
-        } else {
-            callback(null, {
-                id: id,
-                type: type,
-                attributes: attributes
-            });
-        }
-    });*/
 }
 
 
@@ -2288,61 +1789,41 @@ function createQueryFromAttributes(attributes) {
 
 
 function commandContextHandler(id, type, service, subservice, attributes, callback) {
-   // console.log(context, 'TESTGABR commandContextHandler');
 
-  
+ contextSubscriptions.forEach(function (contextSubscription) {
 
+    if (contextSubscription.id===id){
 
-    contextSubscriptions.forEach(function (contextSubscription) {
-      
-        if (contextSubscription.id===id){
-
-            contextSubscription.mappings.forEach(function (mapping) {
-                attributes.forEach(function (attribute) {
+        contextSubscription.mappings.forEach(function (mapping) {
+            attributes.forEach(function (attribute) {
                 if (attribute.name===mapping.ocb_id){
-                    
+
                     var input=mapping.inputArguments;
                     if (input!=null){
 
-                    var i=0;
-                    input.forEach(function (inputType) {
-                        inputType["value"]=attribute.value[i++];
-                    });
-                     }
+                        var i=0;
+                        input.forEach(function (inputType) {
+                            inputType["value"]=attribute.value[i++];
+                        });
+                    }
                     var methodsToCall = [];
                     methodsToCall.push({
                         objectId: ""+mapping.object_id,
                         methodId: ""+mapping.opcua_id,
-                        /*inputArguments: [{
-                            dataType: dataType.UInt32,
-                            arrayType: VariantArrayType.arrayType,
-                            value:  [2,2] }
-                        ] */
-                        inputArguments: input/*[
-                            {
-                                dataType: opcua.dataType.UInt32,
-                                type: "nbBarks",
-                                value:  2 },
-                            {
-                                dataType: opcua.dataType.UInt32,
-                                type: "volume",
-                                value:  2 
-                            }
-                        ]*///OK
+
+                        inputArguments: input
                     });
                     console.log("method to call ="+JSON.stringify(methodsToCall));
                     the_session.call(methodsToCall,function(err,results){
-                       // results.length.should.eql(1);
-                       // results[0].statusCode.should.eql(StatusCodes.Good);
-                       
-                        callback(err, {
-                            id: id,
-                            type: type,
-                            attributes: attributes
-                        });
 
-                       
-                        contexts.forEach(function (context) {
+                     callback(err, {
+                        id: id,
+                        type: type,
+                        attributes: attributes
+                    });
+
+
+                     contexts.forEach(function (context) {
                         iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
                             if (err) {
                                 console.log("could not find the OCB context " + context.id + "".red.bold);
@@ -2350,35 +1831,31 @@ function commandContextHandler(id, type, service, subservice, attributes, callba
                                 executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", "generic error", callback);
 
                             } else {
-                               // setTimeout(function() { 
-                                   
-
-                                   if (results[0].statusCode.name===opcua.StatusCodes.Bad.name)
-                                        executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", results[0].outputArguments[0].value, callback);
-                                   else{
-                                       if (results[0].outputArguments[0]!==undefined)
-                                             executeUpdateValues(device, id, type, service, subservice, attributes, "OK", results[0].outputArguments[0].value, callback);
-                                   }
-                
-                
-                             //   }, 30000);
-                
-                
-                            }
-                            });
-                        
-                
-                    });
-                    });
 
 
-                   
-                }
-            });
-            });
-        }
-        });
-    
+                               if (results[0].statusCode.name===opcua.StatusCodes.Bad.name)
+                                executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", results[0].outputArguments[0].value, callback);
+                            else{
+                               if (results[0].outputArguments[0]!==undefined)
+                                 executeUpdateValues(device, id, type, service, subservice, attributes, "OK", results[0].outputArguments[0].value, callback);
+                         }
+
+
+
+                     }
+                 });
+
+
+});
+});
+
+
+
+}
+});
+});
+}
+});
 
 
 
@@ -2392,15 +1869,16 @@ function commandContextHandler(id, type, service, subservice, attributes, callba
 
 
 
-   
-    
-  
-   
+
+
+
+
+
 }
 //iotAgentLib.setDataUpdateHandler(updateContextHandler);
 iotAgentLib.setDataQueryHandler(queryContextHandler);
 iotAgentLib.setCommandHandler(commandContextHandler)
-//END GAB LAZY
+
 
 
 
@@ -2415,23 +1893,23 @@ iotAgentLib.setCommandHandler(commandContextHandler)
  * @param {String} subservice       Subservice of the device.
  * @param {Array}  attributes       List of attributes to update with their types and values.
  */
-function executeUpdateValues(device, id, type, service, subservice, attributes, status, value, callback) {
+ function executeUpdateValues(device, id, type, service, subservice, attributes, status, value, callback) {
     var sideEffects = [];
     if (device.commands) {
         for (var i = 0; i < device.commands.length; i++) {
             for (var j = 0; j < attributes.length; j++) {
                 if (device.commands[i].name === attributes[j].name) {
                     var newAttributes = [
-                        {
-                            name: device.commands[i].name + '_status',
-                            type: constants.COMMAND_STATUS,
-                            value: status
-                        },
-                        {
-                            name: device.commands[i].name + '_info',
-                            type: constants.COMMAND_RESULT,
-                            value: value
-                        }
+                    {
+                        name: device.commands[i].name + '_status',
+                        type: constants.COMMAND_STATUS,
+                        value: status
+                    },
+                    {
+                        name: device.commands[i].name + '_info',
+                        type: constants.COMMAND_RESULT,
+                        value: value
+                    }
                     ];
 
                     sideEffects.push(
@@ -2441,8 +1919,8 @@ function executeUpdateValues(device, id, type, service, subservice, attributes, 
                             device.apikey,
                             newAttributes,
                             device
-                        )
-                    );
+                            )
+                        );
                 }
             }
         }
@@ -2461,13 +1939,7 @@ function executeUpdateValues(device, id, type, service, subservice, attributes, 
                 case 0: return func.call(this, rest);
                 case 1: return func.call(this, arguments[0], rest);
             }
-            // Currently unused but handle cases outside of the switch statement:
-            // var args = Array(startIndex + 1);
-            // for (index = 0; index < startIndex; index++) {
-            //     args[index] = arguments[index];
-            // }
-            // args[startIndex] = rest;
-            // return func.apply(this, args);
+
         };
     });
 }
