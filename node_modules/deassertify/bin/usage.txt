@@ -1,0 +1,8 @@
+usage:
+   deassertify file
+
+     Comment out 'assert(...);' statements from the file , printing the transformed 
+     file contents to stdout.
+
+
+
