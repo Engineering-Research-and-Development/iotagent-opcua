@@ -30,9 +30,9 @@ try{
   var argv = require('yargs')
   .wrap(132)
   //.usage('Usage: $0 -d --endpoint <endpointUrl> [--securityMode (NONE|SIGNANDENCRYPT|SIGN)] [--securityPolicy (None|Basic256|Basic128Rsa15)] ')
-  .demand("endpoint")
-  .string("endpoint")
-  .describe("endpoint", "the end point to connect to ")
+  //.demand("endpoint")
+  //.string("endpoint")
+  //.describe("endpoint", "the end point to connect to ")
 
   .string("securityMode")
   .describe("securityMode", "the security mode")
@@ -55,7 +55,7 @@ try{
   .string("browse")
   .describe("browse", " browse Objects from opc-ua server. Fulfill browseServerOptions section in config file")
 
-  .alias('e', 'endpoint')
+  //.alias('e', 'endpoint')
   .alias('s', 'securityMode')
   .alias('P', 'securityPolicy')
   .alias("u", 'userName')
@@ -66,21 +66,30 @@ try{
 
   .argv;
 
-  var endpointUrl = argv.endpoint;
-  if (!endpointUrl) {
-    require('yargs').showHelp();
-    return;
-  }
+
+
+  
+  var PropertiesReader = require('properties-reader');
+	var properties = PropertiesReader('./conf/config.properties');
+  // fully qualified name
+	var endpointUrl = properties.get('endpoint');
+
+if (endpointUrl==null){
+ console.log("/conf/config.properties: endpoint not found...".red);
+  process.exit(1);
+}
+
+  
 
   var doAuto = false;
-
-  var fs = require('fs');
+var fs = require('fs');
   if (fs.existsSync('./conf/config.json')) {
     var config = require('./conf/config.json');
   }
   else{
     doAuto = true;
   }
+  
 
   if (doAuto){
 
