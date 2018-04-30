@@ -2,12 +2,14 @@
   "name": "opcua-iotagent",
   "description": "OPC-UA IoT Agent to interface with NGSI Context Broker",
   "version": "0.0.1",
-  "homepage": "https://github.com/gabrieledeluca/opcua-iotagent.git",
+  "homepage": "https://github.com/is3labengrd/iotagent-opcua",
   "keywords": [
     "fiware",
     "iotagent",
     "ngsi",
-    "context broker"
+    "context broker",
+    "opc-ua",
+    "opc ua"
   ],
   "author": {
     "name": "Gabriele De Luca",
@@ -15,10 +17,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gabrieledeluca/opcua-iotagent.git"
+    "url": "https://github.com/is3labengrd/iotagent-opcua.git"
   },
   "bugs": {
-    "url": "https://github.com/gabrieledeluca/opcua-iotagent/issues"
+    "url": "https://github.com/is3labengrd/iotagent-opcua/issues"
   },
   "bin": {
     "agentConsole": "bin/agentConsole.js",

@@ -1,7 +1,15 @@
 var opcua = require("node-opcua");
 
 try{
-    var config = require('./config.json');
+    var fs = require('fs');
+    if (fs.existsSync('./conf/config.json')) {
+      var config = require('./conf/config.json');
+      console.log("Configuration file found!");
+    }
+    else{
+      console.log("Configuration file not found!");
+    }
+
 }
 catch(ex){
     console.log(ex)
@@ -110,7 +118,7 @@ var config = {
         type: 'memory'
     },
     types: {},
-    
+
     //This two parameters are needed to fill the fiware-service and fiware-servicepath mandatory headers that will be used in the interactions with the Context Broker
     //Service default utilizzato laddove non ci siano info di service nei device data nè associate al tipo
     service: 'howtoService',
