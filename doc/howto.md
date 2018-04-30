@@ -22,15 +22,15 @@ fiware-service-path=/boost
 server-base-root=/
 server-port=4041
 device-registry-type=memory
+provider-url=http://192.168.56.1:4041
+device-registration-duration=P1M
+log-level=INFO
 #MongoDB Agent Config
 mongodb-host=192.168.56.101
 mongodb-port=27017
 mongodb-db=iotagent
 mongodb-retries=5
 mongodb-retry-time=5
-provider-url=http://192.168.56.1:4041
-device-registration-duration=P1M
-log-level=INFO
 ```
 
 ### Run
