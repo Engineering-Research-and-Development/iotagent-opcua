@@ -134,13 +134,7 @@ Using of Auto Configuration create a mapping for all OPC-UA objects (except thos
                      "type":"volume"
                   }
                ]
-            }
-         ]
-      },
-      {  
-         "id":"MyDevice",
-         "type":"MyDevice",
-         "mappings":[  
+            },
             {  
                "ocb_id":"Reset",
                "opcua_id":"ns=1;s=Reset",
