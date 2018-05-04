@@ -244,7 +244,11 @@ var fs = require('fs');
 
 
         variableValue=cfc.cleanForbiddenCharacters(variableValue);
-
+        if (variableValue==null){
+         ;
+          
+        }else{
+        
         console.log(monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
         iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
           if (err) {
@@ -270,6 +274,7 @@ var fs = require('fs');
             });
           }
         });
+      }
       });
 
       monitoredItem.on("err", function (err_message) {
@@ -666,9 +671,32 @@ var fs = require('fs');
           if (contextSubscription.id===id){
             contextSubscription.mappings.forEach(function (mapping) {
 
+
+
+async.forEachSeries(attributes, function(attribute, callback2) {
+ 
+                if (attribute===mapping.ocb_id){
+                	console.log("mapping.ocb_id="+mapping.ocb_id);
+                	console.log("mapping.opcua_id="+mapping.opcua_id);
+                  the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
+                   	console.log("dataValue.value.value="+dataValue.value.value)
+                    if (!err) {
+                      console.log(" read variable % = " , dataValue.toString());
+                    }
+                    callback2(err, cR.createResponse(id, type, attributes, ""+dataValue.value.value));
+                  });
+                }
+              
+   
+}, callback); // forEachSeries is done here, call the callback for async.series
+
+/*
               attributes.forEach(function (attribute) {
                 if (attribute===mapping.ocb_id){
+                	console.log("mapping.ocb_id="+mapping.ocb_id);
+                	console.log("mapping.opcua_id="+mapping.opcua_id);
                   the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
+                   	console.log("dataValue.value.value="+dataValue.value.value)
                     if (!err) {
                       console.log(" read variable % = " , dataValue.toString());
                     }
@@ -676,6 +704,9 @@ var fs = require('fs');
                   });
                 }
               });
+              
+              
+              */
             });
           }
         });
