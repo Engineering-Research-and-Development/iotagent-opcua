@@ -1,3 +1,7 @@
+var constants = require('../../lib/constants');
+var async = require("async");
+var ngsi = require('../../lib/services/ngsi/ngsiService');
+
 module.exports = {
   executeUpdateValues: function (device, id, type, service, subservice, attributes, status, value, callback) {
      var sideEffects = [];

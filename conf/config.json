@@ -1,1 +1,112 @@
-{"logLevel":"INFO","contextBroker":{"host":"192.168.56.101","port":1026},"server":{"port":4041,"baseRoot":"/"},"deviceRegistry":{"type":"memory"},"mongodb":{"host":"192.168.56.101","port":"27017","db":"iotagent","retries":5,"retryTime":5},"types":{"MillingMachineType":{"service":"opcua","subservice":"/boost","active":[{"name":"Settings_operation","type":"String"},{"name":"Settings_tool","type":"Number"},{"name":"Settings_mach_pgm","type":"String"},{"name":"Settings_N_line","type":"Number"},{"name":"Settings_nb_repet","type":"Number"},{"name":"Settings_machine_msg","type":"String"},{"name":"S_obj_S","type":"Number"},{"name":"S_obj_S_act","type":"Float"},{"name":"S_obj_override_S","type":"Number"},{"name":"Spindle_spindle_brg_temp","type":"Float"},{"name":"Spindle_spindle_vib","type":"Float"},{"name":"Spindle_spindle_load","type":"Float"},{"name":"Motor_motor_temp","type":"Float"},{"name":"Flange_flange_temp","type":"Float"},{"name":"Process_process_vib","type":"Float"},{"name":"Process_process_state","type":"Number"},{"name":"Drive_drive_state","type":"Number"},{"name":"Drive_drive_tol","type":"Number"},{"name":"Drive_drive_state_react","type":"Number"},{"name":"Env_env_temp","type":"Float"},{"name":"Feed_feed","type":"Float"},{"name":"Feed_override_feed","type":"Number"},{"name":"Module_Module_1_state","type":"Number"},{"name":"Module_Module_2_state","type":"Number"},{"name":"Module_Module_3_state","type":"Number"},{"name":"Module_Module_4_state","type":"Number"},{"name":"Module_Module_5_state","type":"Number"},{"name":"Module_Module_6_state","type":"Number"},{"name":"Module_Module_7_state","type":"Number"},{"name":"Module_Module_8_state","type":"Number"},{"name":"Axis_X_Axis_X_pos","type":"Number"},{"name":"Axis_X_Axis_X_load","type":"Number"},{"name":"Axis_Y_Axis_Y_pos","type":"Number"},{"name":"Axis_Y_Axis_Y_load","type":"Number"},{"name":"Axis_Z_Axis_Z_pos","type":"Number"},{"name":"Axis_Z_Axis_Z_load","type":"Number"},{"name":"Axis_IV_Axis_IV_pos","type":"Number"},{"name":"Axis_IV_Axis_IV_load","type":"Number"},{"name":"Axis_C_Axis_C_pos","type":"Number"},{"name":"Axis_C_Axis_C_load","type":"Number"}],"lazy":[],"commands":[]}},"browseServerOptions":null,"service":"opcua","subservice":"/boost","providerUrl":"http://192.168.56.1:4041","deviceRegistrationDuration":"P1M","defaultType":null,"contexts":[{"id":"MillingMachine#1","type":"MillingMachineType","service":"opcua","subservice":"/boost","mappings":[{"ocb_id":"Axis_X_Axis_X_pos","opcua_id":"ns=1;i=1168","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_X_Axis_X_load","opcua_id":"ns=1;i=1169","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_Y_Axis_Y_pos","opcua_id":"ns=1;i=1171","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_Y_Axis_Y_load","opcua_id":"ns=1;i=1172","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_Z_Axis_Z_pos","opcua_id":"ns=1;i=1174","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_Z_Axis_Z_load","opcua_id":"ns=1;i=1175","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_IV_Axis_IV_pos","opcua_id":"ns=1;i=1177","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_IV_Axis_IV_load","opcua_id":"ns=1;i=1178","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_C_Axis_C_pos","opcua_id":"ns=1;i=1180","object_id":null,"inputArguments":[]},{"ocb_id":"Axis_C_Axis_C_load","opcua_id":"ns=1;i=1181","object_id":null,"inputArguments":[]},{"ocb_id":"Flange_flange_temp","opcua_id":"ns=1;i=1183","object_id":null,"inputArguments":[]},{"ocb_id":"Motor_motor_temp","opcua_id":"ns=1;i=1185","object_id":null,"inputArguments":[]},{"ocb_id":"S_obj_S","opcua_id":"ns=1;i=1187","object_id":null,"inputArguments":[]},{"ocb_id":"S_obj_S_act","opcua_id":"ns=1;i=1188","object_id":null,"inputArguments":[]},{"ocb_id":"S_obj_override_S","opcua_id":"ns=1;i=1189","object_id":null,"inputArguments":[]},{"ocb_id":"Spindle_spindle_brg_temp","opcua_id":"ns=1;i=1191","object_id":null,"inputArguments":[]},{"ocb_id":"Spindle_spindle_vib","opcua_id":"ns=1;i=1192","object_id":null,"inputArguments":[]},{"ocb_id":"Spindle_spindle_load","opcua_id":"ns=1;i=1193","object_id":null,"inputArguments":[]},{"ocb_id":"Process_process_vib","opcua_id":"ns=1;i=1195","object_id":null,"inputArguments":[]},{"ocb_id":"Process_process_state","opcua_id":"ns=1;i=1196","object_id":null,"inputArguments":[]},{"ocb_id":"Drive_drive_state","opcua_id":"ns=1;i=1198","object_id":null,"inputArguments":[]},{"ocb_id":"Drive_drive_tol","opcua_id":"ns=1;i=1199","object_id":null,"inputArguments":[]},{"ocb_id":"Drive_drive_state_react","opcua_id":"ns=1;i=1200","object_id":null,"inputArguments":[]},{"ocb_id":"Env_env_temp","opcua_id":"ns=1;i=1202","object_id":null,"inputArguments":[]},{"ocb_id":"Feed_feed","opcua_id":"ns=1;i=1204","object_id":null,"inputArguments":[]},{"ocb_id":"Feed_override_feed","opcua_id":"ns=1;i=1205","object_id":null,"inputArguments":[]},{"ocb_id":"Module_Module_1_state","opcua_id":"ns=1;i=1207","object_id":null,"inputArguments":[]},{"ocb_id":"Module_Module_2_state","opcua_id":"ns=1;i=1208","object_id":null,"inputArguments":[]},{"ocb_id":"Module_Module_3_state","opcua_id":"ns=1;i=1209","object_id":null,"inputArguments":[]},{"ocb_id":"Module_Module_4_state","opcua_id":"ns=1;i=1210","object_id":null,"inputArguments":[]},{"ocb_id":"Module_Module_5_state","opcua_id":"ns=1;i=1211","object_id":null,"inputArguments":[]},{"ocb_id":"Module_Module_6_state","opcua_id":"ns=1;i=1212","object_id":null,"inputArguments":[]},{"ocb_id":"Module_Module_7_state","opcua_id":"ns=1;i=1213","object_id":null,"inputArguments":[]},{"ocb_id":"Module_Module_8_state","opcua_id":"ns=1;i=1214","object_id":null,"inputArguments":[]},{"ocb_id":"Settings_operation","opcua_id":"ns=1;i=1216","object_id":null,"inputArguments":[]},{"ocb_id":"Settings_tool","opcua_id":"ns=1;i=1217","object_id":null,"inputArguments":[]},{"ocb_id":"Settings_mach_pgm","opcua_id":"ns=1;i=1218","object_id":null,"inputArguments":[]},{"ocb_id":"Settings_N_line","opcua_id":"ns=1;i=1219","object_id":null,"inputArguments":[]},{"ocb_id":"Settings_nb_repet","opcua_id":"ns=1;i=1220","object_id":null,"inputArguments":[]},{"ocb_id":"Settings_machine_msg","opcua_id":"ns=1;i=1221","object_id":null,"inputArguments":[]}]}],"contextSubscriptions":[]}
+{
+    "logLevel": "INFO",
+    "contextBroker": {
+        "host": "192.168.56.101",
+        "port": 1026
+    },
+    "server": {
+        "port": 4041,
+        "baseRoot": "\/"
+    },
+    "deviceRegistry": {
+        "type": "memory"
+    },
+    "mongodb": {
+        "host": "192.168.56.101",
+        "port": "27017",
+        "db": "iotagent",
+        "retries": 5,
+        "retryTime": 5
+    },
+    "types": {
+        "Car": {
+            "service": "opcua_car",
+            "subservice": "\/demo",
+            "active": [
+                {
+                    "name": "Engine_Temperature",
+                    "type": "Number"
+                },
+                {
+                    "name": "Engine_Oxigen",
+                    "type": "Number"
+                }
+            ],
+            "lazy": [
+            	{
+                    "name": "Speed",
+                    "type": "Number"
+                }
+            ],
+            "commands": [
+                {
+                    "name": "Stop",
+                    "type": "command"
+                },
+                {
+                    "name": "Accelerate",
+                    "type": "command"
+                }
+            ]
+        }
+    },
+    "browseServerOptions": null,
+    "service": "opcua_car",
+    "subservice": "\/demo",
+    "providerUrl": "http:\/\/192.168.56.1:4041",
+    "deviceRegistrationDuration": "P1M",
+    "defaultType": null,
+    "contexts": [
+        {
+            "id": "Car",
+            "type": "Car",
+            "service": "opcua_car",
+            "subservice": "\/demo",
+            "mappings": [
+                {
+                    "ocb_id": "Engine_Temperature",
+                    "opcua_id": "ns=1;s=Temperature",
+                    "object_id": null,
+                    "inputArguments": []
+                },
+                {
+                    "ocb_id": "Engine_Oxigen",
+                    "opcua_id": "ns=1;s=Oxigen",
+                    "object_id": null,
+                    "inputArguments": []
+                }
+            ]
+        }
+    ],
+    "contextSubscriptions": [
+        {
+            "id": "Car",
+            "type": "Car",
+            "mappings": [
+                {
+                    "ocb_id": "Stop",
+                    "opcua_id": "ns=1;s=Stop",
+                    "object_id": "ns=1;i=1000",
+                    "inputArguments": []
+                },
+                {
+                    "ocb_id": "Accelerate",
+                    "opcua_id": "ns=1;s=Accelerate",
+                    "object_id": "ns=1;i=1000",
+                    "inputArguments": [
+                        {
+                            "dataType": 7,
+                            "type": "Intensity"
+                        }
+                    ]
+                },
+                {
+                    "ocb_id": "Speed",
+                    "opcua_id": "ns=1;s=Speed",
+                    "object_id": null,
+                    "inputArguments": []
+                }
+            ]
+        }
+    ]
+}
