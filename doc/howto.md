@@ -109,7 +109,7 @@ Using of Auto Configuration create a mapping for all OPC-UA objects (except thos
     "defaultType": null,
     "contexts": [
         {
-            "id": "Car",
+            "id": "Car_1",
             "type": "Car",
             "service": "opcua_car",
             "subservice": "/demo",
