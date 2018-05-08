@@ -155,9 +155,9 @@ var fs = require('fs');
     function initSubscriptionBroker(context, mapping) {
       // TODO this stuff too should come from config
       var parameters = {
-        requestedPublishingInterval: 100,
+        requestedPublishingInterval: 1000,
         requestedLifetimeCount: 1000,
-        requestedMaxKeepAliveCount: 12,
+        requestedMaxKeepAliveCount: 5,
         maxNotificationsPerPublish: 10,
         publishingEnabled: true,
         priority: 10
@@ -311,7 +311,7 @@ var fs = require('fs');
           securityMode: securityMode,
           securityPolicy: securityPolicy,
           defaultSecureTokenLifetime: 400000,
-          keepSessionAlive: true,
+          //keepSessionAlive: true,
           requestedSessionTimeout: 100000, // very long 100 seconds
           connectionStrategy: {
             maxRetry: 10,
