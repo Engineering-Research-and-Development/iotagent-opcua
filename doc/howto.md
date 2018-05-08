@@ -47,7 +47,7 @@ OPC-datatype-ByteString=Text
 ```
 Using of Auto Configuration create a mapping for all OPC-UA objects (except those with namespace to ignore matching): all OPC-UA variables will be configured as active attributes whereas all OPC-UA methods will be configured as commands. It is possible modify configuration output (config.json file in same path) manually in order to drop some attributes/command or add lazy attributes. 
 
-#### Manual Configuration (editing confi.json file)
+#### Manual Configuration (editing config.json file)
 ```
 {
     "logLevel": "INFO",
