@@ -6,7 +6,7 @@
     },
     "server": {
         "port": 4041,
-        "baseRoot": "\/"
+        "baseRoot": "/"
     },
     "deviceRegistry": {
         "type": "memory"
@@ -21,7 +21,7 @@
     "types": {
         "Car": {
             "service": "opcua_car",
-            "subservice": "\/demo",
+            "subservice": "/demo",
             "active": [
                 {
                     "name": "Engine_Temperature",
@@ -52,8 +52,8 @@
     },
     "browseServerOptions": null,
     "service": "opcua_car",
-    "subservice": "\/demo",
-    "providerUrl": "http:\/\/192.168.56.1:4041",
+    "subservice": "/demo",
+    "providerUrl": "http://192.168.56.1:4041",
     "deviceRegistrationDuration": "P1M",
     "defaultType": null,
     "contexts": [
@@ -61,7 +61,7 @@
             "id": "Car",
             "type": "Car",
             "service": "opcua_car",
-            "subservice": "\/demo",
+            "subservice": "/demo",
             "mappings": [
                 {
                     "ocb_id": "Engine_Temperature",
