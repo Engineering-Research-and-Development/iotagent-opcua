@@ -1,7 +1,7 @@
 # F4I IDAS OPC-UA Agent
 This project is part of FIWARE.
 
-https://www.fiware.org/
+https://www.fiware.org/ <br/>
 https://catalogue.fiware.org/
     
 The F4I IDAS OPC-UA Agent is an Open Source component intended to enable capturing data from OPC-UA devices on the shopfloor and provide them to the upper levels of a FIWARE-based system. Therefore, the main focus of this component is on the communication from field devices implementing an OPC-UA server to FIWARE, allowing the communication to the FIWARE Orion Context Broker.
@@ -23,6 +23,13 @@ https://github.com/is3labengrd/iotagent-opcua/issues
 ## How to Deploy the GEi
 
 ## How to run tests
+
+For test purpose can use a server available here:<br/>
+https://github.com/is3labengrd/opc-ua-car-server/
+
+Firstly edit properties https://github.com/is3labengrd/iotagent-opcua/blob/master/conf/config.properties in order to set Northbound (NGSI) and Southbound (OPC UA) settings.
+
+Here https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/howto.md are available informations about configuration properties.
 
 ## A walkthrough guide on using the main APIsHow to Deploy the GEi
 
