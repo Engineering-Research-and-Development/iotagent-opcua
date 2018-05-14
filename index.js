@@ -18,6 +18,7 @@ try{
   var prompt = require('prompt');
   var request = require('request');
   var cfc = require('./iot_agent_modules/cleanForbiddenCharacters');
+
   var mG = require('./iot_agent_modules/run/mongoGroup');
   var rSfN = require ('./iot_agent_modules/run/removeSuffixFromName');
   var tAs = require ('./iot_agent_modules/run/terminateAllSubscriptions');
@@ -66,23 +67,40 @@ try{
 
   .argv;
 
+var fs = require('fs');
+var logContext = {
+		comp: 'iotAgent-OPCUA',
+        op: 'Index',
+        srv: '',
+        subsrv: ''
+    };
 
 
+
+
+  // custom simple logger
+  var logger = require('logops');
+  logger.format = logger.formatters.pipe;
   
+  
+  
+  
+  // Specify the context fields to omit as an array
   var PropertiesReader = require('properties-reader');
 	var properties = PropertiesReader('./conf/config.properties');
   // fully qualified name
 	var endpointUrl = properties.get('endpoint');
 
 if (endpointUrl==null){
- console.log("/conf/config.properties: endpoint not found...".red);
+  logger.info(logContext,"/conf/config.properties: endpoint not found...".red);
+
   process.exit(1);
 }
 
   
 
   var doAuto = false;
-var fs = require('fs');
+
   if (fs.existsSync('./conf/config.json')) {
     var config = require('./conf/config.json');
   }
@@ -92,8 +110,9 @@ var fs = require('fs');
   
 
   if (doAuto){
+	logContext.op="Index.MappingTool";
+    logger.info(logContext,'----------------    MAPPING TOOL    ----------------');
 
-    console.log('----------------    MAPPING TOOL    ----------------');
     var loadingBar;
     loadingBar=setInterval(function(){  process.stdout.write('.'); }, 3000);
 
@@ -102,15 +121,18 @@ var fs = require('fs');
       var child = exec('java -jar mapping_tool.jar  -e '+endpointUrl+' -f conf/config.properties', function(err, stdout, stderr) {
         clearInterval(loadingBar);
         if (err) {
-          console.log("\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
+          logger.error(logContext,"\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
+
         }else{
-          console.log("\nAutomatic configuration successfully created. Loading new configuration...".cyan);
+          logger.info(logContext,"\nAutomatic configuration successfully created. Loading new configuration...".cyan);
+
         }
         run();
       });
     } catch (ex) {
       clearInterval(loadingBar);
-      console.log("\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
+      logger.info(logContext,"\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
+
     }
     module.exports = child;
   }else{
@@ -119,7 +141,9 @@ var fs = require('fs');
   //Clean Orion Forbidden Chars
 
   function run(){
-    console.log('----------------------------------------------------');
+  logContext.op="Index.Initialize";
+    logger.info(logContext,'----------------------------------------------------');
+
     // configuration of iotagent-node-lib
     var config = require('./conf/config');
 
@@ -136,11 +160,11 @@ var fs = require('fs');
     var timeout = parseInt(argv.timeout) * 1000 || -1; //604800*1000; //default 20000
     var doBrowse = argv.browse ? true : false;
 
-    console.log("endpointUrl         = ".cyan, endpointUrl);
-    console.log("securityMode        = ".cyan, securityMode.toString());
-    console.log("securityPolicy      = ".cyan, securityPolicy.toString());
-    console.log("timeout             = ".cyan, timeout ? timeout : " Infinity ");
-
+    
+    logger.info(logContext,"endpointUrl         = ".cyan, endpointUrl);
+    logger.info(logContext,"securityMode        = ".cyan, securityMode.toString());
+    logger.info(logContext,"securityPolicy      = ".cyan, securityPolicy.toString());
+    logger.info(logContext,"timeout             = ".cyan, timeout ? timeout : " Infinity ");
     // set to false to disable address space crawling: might slow things down if the AS is huge
     var doCrawling = argv.crawl ? true : false;
     var client = null;
@@ -153,6 +177,7 @@ var fs = require('fs');
 
 
     function initSubscriptionBroker(context, mapping) {
+    logContext.op="Index.InitSubscriptions";
       // TODO this stuff too should come from config
       var parameters = {
         requestedPublishingInterval: 1000,
@@ -172,25 +197,25 @@ var fs = require('fs');
 
       subscription.on("started", function () {
 
-        console.log("started subscription: ",
+       logger.info(logContext,"started subscription: ",
         subscription.subscriptionId);
-        console.log(" revised parameters ");
-        console.log("  revised maxKeepAliveCount  ",
+       logger.info(logContext," revised parameters ");
+       logger.info(logContext,"  revised maxKeepAliveCount  ",
         subscription.maxKeepAliveCount, " ( requested ",
         parameters.requestedMaxKeepAliveCount + ")");
-        console.log("  revised lifetimeCount      ",
+       logger.info(logContext,"  revised lifetimeCount      ",
         subscription.lifetimeCount, " ( requested ",
         parameters.requestedLifetimeCount + ")");
-        console.log("  revised publishingInterval ",
+       logger.info(logContext,"  revised publishingInterval ",
         subscription.publishingInterval, " ( requested ",
         parameters.requestedPublishingInterval + ")");
-        console.log("  suggested timeout hint     ",
+       logger.info(logContext,"  suggested timeout hint     ",
         subscription.publish_engine.timeoutHint);
 
       }).on("internal_error", function (err) {
 
-        console.log("received internal error".red.bold);
-        console.log(JSON.stringify(err).red.bold);
+       logger.error(logContext,"received internal error".red.bold);
+       logger.info(JSON.stringify(err).red.bold);
 
       }).on("keepalive", function () {
 
@@ -199,22 +224,22 @@ var fs = require('fs');
         t = t1;
         var keepAliveString="keepalive "+ span / 1000 + " "+ "sec"+ " pending request on server = "+
         subscription.publish_engine.nbPendingPublishRequests + "";
-        console.log(keepAliveString.gray);
+       logger.info(logContext,keepAliveString.gray);
 
       }).on("terminated", function (err) {
 
         if (err) {
-          console.log("could not terminate subscription: " + subscription.subscriptionId + "".red.bold);
-          console.log(JSON.stringify(err).red.bold);
+         logger.error(logContext,"could not terminate subscription: " + subscription.subscriptionId + "".red.bold);
+         logger.info(logContext,JSON.stringify(err).red.bold);
         } else {
-          console.log("successfully terminated subscription: " + subscription.subscriptionId);
+         logger.info(logContext,"successfully terminated subscription: " + subscription.subscriptionId);
         }
 
       });
 
       the_subscriptions.push(subscription);
 
-      console.log("initializing monitoring: " + mapping.opcua_id);
+     logger.info(logContext,"initializing monitoring: " + mapping.opcua_id);
 
       var monitoredItem = subscription.monitor(
         {
@@ -233,10 +258,11 @@ var fs = require('fs');
       );
 
       monitoredItem.on("initialized", function () {
-        console.log("started monitoring: " + monitoredItem.itemToMonitor.nodeId.toString());
+       logger.info(logContext,"started monitoring: " + monitoredItem.itemToMonitor.nodeId.toString());
       });
 
       monitoredItem.on("changed", function (dataValue) {
+      logContext.op="Index.Monitoring";
         var variableValue = null;
 
         if (dataValue.value && dataValue.value != null)
@@ -249,11 +275,11 @@ var fs = require('fs');
           
         }else{
         
-        console.log(monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
+       logger.info(logContext,monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
         iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
           if (err) {
-            console.log("could not find the OCB context " + context.id + "".red.bold);
-            console.log(JSON.stringify(err).red.bold);
+           logger.error(logContext,"could not find the OCB context " + context.id + "".red.bold);
+           logger.info(logContext,JSON.stringify(err).red.bold);
           } else {
             /* WARNING attributes must be an ARRAY */
             var attributes = [{
@@ -265,11 +291,11 @@ var fs = require('fs');
             //Setting ID withoput prefix
             iotAgentLib.update(device.id, device.type, '', attributes, device, function (err) {
               if (err) {
-                console.log("error updating " + mapping.ocb_id + " on " + device.name + "".red.bold);
+               logger.error(logContext,"error updating " + mapping.ocb_id + " on " + device.name + "".red.bold);
 
-                console.log(JSON.stringify(err).red.bold);
+               logger.info(logContext,JSON.stringify(err).red.bold);
               } else {
-                console.log("successfully updated " + mapping.ocb_id + " on " + device.name);
+               logger.info(logContext,"successfully updated " + mapping.ocb_id + " on " + device.name);
               }
             });
           }
@@ -278,12 +304,12 @@ var fs = require('fs');
       });
 
       monitoredItem.on("err", function (err_message) {
-        console.log(monitoredItem.itemToMonitor.nodeId.toString(), " ERROR".red, err_message);
+       logger.error(monitoredItem.itemToMonitor.nodeId.toString(), " ERROR".red, err_message);
       });
     }
 
     function notificationHandler(device, updates, callback) {
-      console.log("Data coming from OCB: ".bold.cyan, JSON.stringify(updates));
+     logger.info(logContext,"Data coming from OCB: ".bold.cyan, JSON.stringify(updates));
       cM.callMethods(updates[0].value,methods,the_session); //TODO gestire multiple chiamate
     }
     // each of the following steps is executed in due order
@@ -294,10 +320,10 @@ var fs = require('fs');
       function (callback) {
         iotAgentLib.activate(config, function (err) {
           if (err) {
-            console.log('There was an error activating the Agent: ' + err.message);
+           logger.error(logContext,'There was an error activating the Agent: ' + err.message);
             rSfN.removeSuffixFromName.exit(1);
           } else {
-            console.log("NotificationHandler attached to ContextBroker");
+           logger.info(logContext,"NotificationHandler attached to ContextBroker");
             iotAgentLib.setNotificationHandler(notificationHandler);
           }
           callback();
@@ -320,32 +346,33 @@ var fs = require('fs');
           }
         };
 
-        console.log("Options = ", options.securityMode.toString(), options.securityPolicy.toString());
+       logger.info(logContext,"Options = ", options.securityMode.toString(), options.securityPolicy.toString());
 
         client = new opcua.OPCUAClient(options);
 
-        console.log(" connecting to ", endpointUrl.cyan.bold);
+        logger.info(logContext," connecting to ", endpointUrl.cyan.bold);
+
         client.connect(endpointUrl, callback);
 
         client.on("connection_reestablished", function () {
-          console.log(" !!!!!!!!!!!!!!!!!!!!!!!!  CONNECTION RESTABLISHED !!!!!!!!!!!!!!!!!!!");
+          logger.info(logContext," !!!!!!!!!!!!!!!!!!!!!!!!  CONNECTION RESTABLISHED !!!!!!!!!!!!!!!!!!!");
 
         });
 
         client.on( "after_reconnection", function (err) {
-          console.log( " ... reconnection process has been completed: ", err );
+          logger.info(logContext, " ... reconnection process has been completed: ", err );
         } );
 
         client.on( "close", function ( err ) {
         } );
 
         client.on("backoff", function(nb, delay) {
-          console.log("  connection failed for the", nb,
+          logger.info(logContext,"  connection failed for the", nb,
           " time ... We will retry in ", delay, " ms");
         });
 
         client.on("start_reconnection", function () {
-          console.log("start_reconnection not working so aborting");
+          logger.info(logContext,"start_reconnection not working so aborting");
         });
       },
 
@@ -364,9 +391,9 @@ var fs = require('fs');
         client.createSession(userIdentity, function (err, session) {
           if (!err) {
             the_session = session;
-            console.log(" session created".yellow);
-            console.log(" sessionId : ", session.sessionId.toString());
-            console.log(" the timeout value set by the server is ",  session.timeout ," ms");
+            logger.info(logContext," session created".yellow);
+            logger.info(logContext," sessionId : ", session.sessionId.toString());
+            logger.info(logContext," the timeout value set by the server is ",  session.timeout ," ms");
           }
           callback(err);
         });
@@ -439,14 +466,14 @@ var fs = require('fs');
         var server_NamespaceArray_Id = opcua.makeNodeId(opcua.VariableIds.Server_NamespaceArray); // ns=0;i=2006
         the_session.readVariableValue(server_NamespaceArray_Id, function (err, dataValue, diagnosticsInfo) {
 
-          console.log(" --- NAMESPACE ARRAY ---");
+          logger.info(logContext," --- NAMESPACE ARRAY ---");
           if (!err) {
             var namespaceArray = dataValue.value.value;
             for (var i = 0; i < namespaceArray.length; i++) {
-              console.log(" Namespace ", i, "  : ", namespaceArray[i]);
+              logger.info(logContext," Namespace ", i, "  : ", namespaceArray[i]);
             }
           }
-          console.log(" -----------------------");
+          logger.info(logContext," -----------------------");
           callback(err);
         });
       },
@@ -465,16 +492,16 @@ var fs = require('fs');
           client.on("receive_response", function () {
             var t2 = Date.now();
             var str = util.format("R= %d W= %d T=%d t= %d", client.bytesRead, client.bytesWritten, client.transactionsPerformed, (t2 - t1));
-            console.log(str.yellow.bold);
+            logger.info(logContext,str.yellow.bold);
           });
 
           t = Date.now();
           var nodeId = "ObjectsFolder";
-          console.log("now crawling object folder ...please wait...");
+          logger.info(logContext,"now crawling object folder ...please wait...");
           nodeCrawler.read(nodeId, function (err, obj) {
             if (!err) {
               treeify.asLines(obj, true, true, function (line) {
-                console.log(line);
+                logger.info(logContext,line);
               });
             }
             callback(err);
@@ -492,17 +519,20 @@ var fs = require('fs');
           mG.mongoGroup(config);
           request(optionsCreation, function(error, response, body) {
             if (error){
-              console.log("CREATION GROUP ERROR. Verify OCB connection.");
+              logger.error(logContext,"CREATION GROUP ERROR. Verify OCB connection.");
               return;
             }
             else  {
-              console.log("GROUPS SUCCESSFULLY CREATED!");
+              logger.info(logContext,"GROUPS SUCCESSFULLY CREATED!");
             }
           });
         }
 
         contexts.forEach(function (context) {
-          console.log('registering OCB context ' + context.id+" of type "+ context.type);
+          logger.info(logContext,'registering OCB context ' + context.id+" of type "+ context.type);
+          logContext.srv=context.service;
+          logContext.subsrv=context.subservice;
+
           var device = {
             id: context.id,
             type: context.type,
@@ -513,21 +543,21 @@ var fs = require('fs');
           try {
             iotAgentLib.register(device, function (err) {
               if (err) { // skip context
-                console.log("could not register OCB context " + context.id + "".red.bold);
-                console.log(JSON.stringify(err).red.bold);
+                logger.error(logContext,"could not register OCB context " + context.id + "".red.bold);
+                logger.info(logContext,JSON.stringify(err).red.bold);
                 context.mappings.forEach(function (mapping) {
                   initSubscriptionBroker(context, mapping);
                 });
               } else { // init subscriptions
-                console.log("registered successfully OCB context " + context.id);
+                logger.info(logContext,"registered successfully OCB context " + context.id);
                 context.mappings.forEach(function (mapping) {
                   initSubscriptionBroker(context, mapping);
                 });
               }
             });
           } catch (err) {
-            console.log("error registering OCB context".red.bold);
-            console.log(JSON.stringify(err).red.bold);
+            logger.error(logContext,"error registering OCB context".red.bold);
+            logger.info(logContext,JSON.stringify(err).red.bold);
             callback();
             return;
           }
@@ -545,9 +575,9 @@ var fs = require('fs');
           });
 
           config.contextSubscriptions.forEach(function (context) {
-            console.log('subscribing OCB context ' + context.id + " for attributes: ");
+            logger.info(logContext,'subscribing OCB context ' + context.id + " for attributes: ");
             attributeTriggers.forEach(function (attr) {
-              console.log("attribute name: " + attr + "".cyan.bold);
+              logger.info(logContext,"attribute name: " + attr + "".cyan.bold);
             });
             var device = {
               id: context.id,
@@ -560,18 +590,18 @@ var fs = require('fs');
               iotAgentLib.subscribe(device, attributeTriggers,
                 attributeTriggers, function (err) {
                   if (err) {
-                    console.log('There was an error subscribing device [%s] to attributes [%j]'.bold.red,
+                    logger.error(logContext,'There was an error subscribing device [%s] to attributes [%j]'.bold.red,
                     device.name, attributeTriggers);
                   } else {
-                    console.log('Successfully subscribed device [%s] to attributes[%j]'.bold.yellow,
+                    logger.info(logContext,'Successfully subscribed device [%s] to attributes[%j]'.bold.yellow,
                     device.name, attributeTriggers);
                   }
                   callback();
                 });
               } catch (err) {
-                console.log('There was an error subscribing device [%s] to attributes [%j]',
+                logger.error(logContext,'There was an error subscribing device [%s] to attributes [%j]',
                 device.name, attributeTriggers);
-                console.log(JSON.stringify(err).red.bold);
+                logger.info(logContext,JSON.stringify(err).red.bold);
                 callback();
                 return;
               }
@@ -584,7 +614,7 @@ var fs = require('fs');
         //------------------------------------------
         // set up a timer that shuts down the client after a given time
         function (callback) {
-          console.log("Starting timer ", timeout);
+          logger.info(logContext,"Starting timer ", timeout);
           var timerId;
           if (timeout > 0) {
             timerId = setTimeout(function () {
@@ -599,7 +629,7 @@ var fs = require('fs');
             }, timeout);
           } else if (timeout == -1) {
             //  Infinite activity
-            console.log("NO Timeout set!!!".bold.cyan);
+            logger.info(logContext,"NO Timeout set!!!".bold.cyan);
 
           } else {
             callback();
@@ -608,35 +638,36 @@ var fs = require('fs');
         //------------------------------------------
         // when the timer goes off, we first close the session...
         function (callback) {
-          console.log(" closing session");
+          logger.info(logContext," closing session");
           the_session.close(function (err) {
-            console.log(" session closed", err);
+            logger.info(logContext," session closed", err);
             callback();
           });
         },
 
         // ...and finally the the connection
         function (callback) {
-          console.log(" Calling disconnect");
+          logger.info(logContext," Calling disconnect");
           client.disconnect(callback);
         }
       ], function (err) {
 
         // this is called whenever a step call callback() passing along an err object
-        console.log(" disconnected".cyan);
+        logger.error(logContext," disconnected".cyan);
 
         if (err) {
-          console.log(" client : process terminated with an error".red.bold);
-          console.log(" error", err);
-          console.log(" stack trace", err.stack);
+          logger.error(logContext," client : process terminated with an error".red.bold);
+          logger.error(logContext," error", err);
+          logger.error(logContext," stack trace", err.stack);
         } else {
-          console.log("success !!   ");
+          logger.info(logContext,"success !!   ");
         }
         // force disconnection
         if (client) {
           client.disconnect(function () {
             var exit = require("exit");
-            console.log("Exiting");
+            logger.info(logContext,"Exiting");
+
             exit();
           });
         }
@@ -644,69 +675,47 @@ var fs = require('fs');
 
       // not much use for this...
       process.on("error", function (err) {
-        console.log(" UNTRAPPED ERROR", err.message);
+        logger.error(logContext," UNTRAPPED ERROR", err.message);
       });
 
       // handle CTRL+C
-      var user_interruption_count = 0;
+      //var user_interruption_count = 0;
+      
       process.on('SIGINT', function () {
-
-        console.log(" user interruption ...");
-
-        user_interruption_count += 1;
-        if (user_interruption_count >= 3) {
-          process.exit(1);
-        }
-
-        console.log(" Received client interruption from user ".red.bold);
-        console.log(" shutting down ...".red.bold);
+		
+        logger.error(logContext," user interruption ...");
+        logger.info(logContext," Received client interruption from user ".red.bold);
+        logger.info(logContext," shutting down ...".red.bold);
         tAs.terminateAllSubscriptions(the_subscriptions);
         disconnect.disconnect(the_session,client);
+        process.exit(1);
       });
+      
 
       //Lazy Attributes handler
       function queryContextHandler(id, type, service, subservice, attributes, callback) {
-
+		logContext.op="Index.QueryContextHandler";
         contextSubscriptions.forEach(function (contextSubscription) {
           if (contextSubscription.id===id){
             contextSubscription.mappings.forEach(function (mapping) {
 
 
 
-async.forEachSeries(attributes, function(attribute, callback2) {
+			async.forEachSeries(attributes, function(attribute, callback2) {
  
                 if (attribute===mapping.ocb_id){
-                	console.log("mapping.ocb_id="+mapping.ocb_id);
-                	console.log("mapping.opcua_id="+mapping.opcua_id);
+                	
                   the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
-                   	console.log("dataValue.value.value="+dataValue.value.value)
+                   	logger.info(logContext,"dataValue.value.value="+dataValue.value.value)
                     if (!err) {
-                      console.log(" read variable % = " , dataValue.toString());
+                      logger.info(logContext," read variable % = " , dataValue.toString());
                     }
                     callback2(err, cR.createResponse(id, type, attributes, ""+dataValue.value.value));
                   });
                 }
               
    
-}, callback); // forEachSeries is done here, call the callback for async.series
-
-/*
-              attributes.forEach(function (attribute) {
-                if (attribute===mapping.ocb_id){
-                	console.log("mapping.ocb_id="+mapping.ocb_id);
-                	console.log("mapping.opcua_id="+mapping.opcua_id);
-                  the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
-                   	console.log("dataValue.value.value="+dataValue.value.value)
-                    if (!err) {
-                      console.log(" read variable % = " , dataValue.toString());
-                    }
-                    callback(err, cR.createResponse(id, type, attributes, ""+dataValue.value.value));
-                  });
-                }
-              });
-              
-              
-              */
+}, callback); 
             });
           }
         });
@@ -717,6 +726,7 @@ async.forEachSeries(attributes, function(attribute, callback2) {
     }*/
 
     function commandContextHandler(id, type, service, subservice, attributes, callback) {
+		logContext.op="Index.CommandContextHandler";
 
       contextSubscriptions.forEach(function (contextSubscription) {
 
@@ -740,7 +750,7 @@ async.forEachSeries(attributes, function(attribute, callback2) {
 
                   inputArguments: input
                 });
-                console.log("method to call ="+JSON.stringify(methodsToCall));
+                logger.info(logContext,"method to call ="+JSON.stringify(methodsToCall));
                 the_session.call(methodsToCall,function(err,results){
 
                   callback(err, {
@@ -752,8 +762,8 @@ async.forEachSeries(attributes, function(attribute, callback2) {
                   contexts.forEach(function (context) {
                     iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
                       if (err) {
-                        console.log("could not find the OCB context " + context.id + "".red.bold);
-                        console.log(JSON.stringify(err).red.bold);
+                        logger.error(logContext,"could not find the OCB context " + context.id + "".red.bold);
+                        logger.info(logContext,JSON.stringify(err).red.bold);
                         eUv.executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", "generic error", callback);
 
                       } else {
@@ -780,7 +790,9 @@ async.forEachSeries(attributes, function(attribute, callback2) {
   }
 }
 catch(ex){
-  console.log(ex)
-  console.log("Generic error: closing application...".red);
+  var logger = require('logops');
+
+  logger.error(ex)
+  logger.error(logContext,"Generic error: closing application...".red);
   process.exit(1);
 }
