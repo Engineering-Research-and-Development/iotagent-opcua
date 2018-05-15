@@ -1,6 +1,6 @@
-var constants = require('../../lib/constants');
+var constants = require('iotagent-node-lib');
 var async = require("async");
-var ngsi = require('../../lib/services/ngsi/ngsiService');
+var ngsi = require('iotagent-node-lib');
 
 module.exports = {
   executeUpdateValues: function (device, id, type, service, subservice, attributes, status, value, callback) {

@@ -1,11 +1,11 @@
 try{
   // node-opcue dependencies
   require("requirish")._(module);
-  var constants = require('./lib/constants');
+  var constants = require('iotagent-node-lib');
   var treeify = require('treeify');
   var _ = require("underscore");
   var util = require("util");
-  var ngsi = require('./lib/services/ngsi/ngsiService');
+  var ngsi = require('iotagent-node-lib');
   //var crawler = require('./node_modules/node-opcua/lib/client/node_crawler.js');
   var async = require("async");
   var opcua = require("node-opcua");
@@ -13,7 +13,7 @@ try{
   var VariantArrayType = opcua.VariantArrayType;
   var NodeCrawler = opcua.NodeCrawler;
   // iotagent-node-lib dependencies
-  var iotAgentLib = require('./lib/fiware-iotagent-lib');
+  var iotAgentLib = require('iotagent-node-lib');
   var userIdentity = null; // anonymous
   var prompt = require('prompt');
   var request = require('request');
@@ -81,10 +81,10 @@ var logContext = {
   // custom simple logger
   var logger = require('logops');
   logger.format = logger.formatters.pipe;
-  
-  
-  
-  
+
+
+
+
   // Specify the context fields to omit as an array
   var PropertiesReader = require('properties-reader');
 	var properties = PropertiesReader('./conf/config.properties');
@@ -97,7 +97,7 @@ if (endpointUrl==null){
   process.exit(1);
 }
 
-  
+
 
   var doAuto = false;
 
@@ -107,7 +107,7 @@ if (endpointUrl==null){
   else{
     doAuto = true;
   }
-  
+
 
   if (doAuto){
 	logContext.op="Index.MappingTool";
@@ -160,7 +160,7 @@ if (endpointUrl==null){
     var timeout = parseInt(argv.timeout) * 1000 || -1; //604800*1000; //default 20000
     var doBrowse = argv.browse ? true : false;
 
-    
+
     logger.info(logContext,"endpointUrl         = ".cyan, endpointUrl);
     logger.info(logContext,"securityMode        = ".cyan, securityMode.toString());
     logger.info(logContext,"securityPolicy      = ".cyan, securityPolicy.toString());
@@ -218,7 +218,7 @@ if (endpointUrl==null){
        logger.info(JSON.stringify(err).red.bold);
 
       }).on("keepalive", function () {
-
+        logContext.op="Index.keepaliveSubscriptionBroker";
         var t1 = getTick();
         var span = t1 - t;
         t = t1;
@@ -272,9 +272,9 @@ if (endpointUrl==null){
         variableValue=cfc.cleanForbiddenCharacters(variableValue);
         if (variableValue==null){
          ;
-          
+
         }else{
-        
+
        logger.info(logContext,monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
         iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
           if (err) {
@@ -535,12 +535,18 @@ if (endpointUrl==null){
 
           var device = {
             id: context.id,
+            name: context.id,
             type: context.type,
             active: config.types[context.type].active, //only active used in this VERSION
             lazy: context.lazy,
-            commands: context.commands
+            commands: context.commands,
+           service: context.service,
+          subservice: context.subservice
+
           };
           try {
+        
+
             iotAgentLib.register(device, function (err) {
               if (err) { // skip context
                 logger.error(logContext,"could not register OCB context " + context.id + "".red.bold);
@@ -680,9 +686,9 @@ if (endpointUrl==null){
 
       // handle CTRL+C
       //var user_interruption_count = 0;
-      
+
       process.on('SIGINT', function () {
-		
+
         logger.error(logContext," user interruption ...");
         logger.info(logContext," Received client interruption from user ".red.bold);
         logger.info(logContext," shutting down ...".red.bold);
@@ -690,11 +696,13 @@ if (endpointUrl==null){
         disconnect.disconnect(the_session,client);
         process.exit(1);
       });
-      
+
 
       //Lazy Attributes handler
       function queryContextHandler(id, type, service, subservice, attributes, callback) {
-		logContext.op="Index.QueryContextHandler";
+      
+        logContext.op="Index.QueryContextHandler";
+       
         contextSubscriptions.forEach(function (contextSubscription) {
           if (contextSubscription.id===id){
             contextSubscription.mappings.forEach(function (mapping) {
@@ -702,20 +710,22 @@ if (endpointUrl==null){
 
 
 			async.forEachSeries(attributes, function(attribute, callback2) {
- 
+
                 if (attribute===mapping.ocb_id){
-                	
+
                   the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
                    	logger.info(logContext,"dataValue.value.value="+dataValue.value.value)
                     if (!err) {
                       logger.info(logContext," read variable % = " , dataValue.toString());
                     }
-                    callback2(err, cR.createResponse(id, type, attributes, ""+dataValue.value.value));
+                  
+
+                   callback(err, cR.createResponse(id, type, attributes, ""+dataValue.value.value));
                   });
                 }
-              
-   
-}, callback); 
+
+
+}, null);
             });
           }
         });
@@ -726,8 +736,10 @@ if (endpointUrl==null){
     }*/
 
     function commandContextHandler(id, type, service, subservice, attributes, callback) {
-		logContext.op="Index.CommandContextHandler";
 
+      logContext.op="Index.CommandContextHandler";
+    
+      
       contextSubscriptions.forEach(function (contextSubscription) {
 
         if (contextSubscription.id===id){
@@ -787,6 +799,11 @@ if (endpointUrl==null){
     //iotAgentLib.setDataUpdateHandler(updateContextHandler);
     iotAgentLib.setDataQueryHandler(queryContextHandler);
     iotAgentLib.setCommandHandler(commandContextHandler);
+
+    var handlerCalled = false;
+
+    
+
   }
 }
 catch(ex){
