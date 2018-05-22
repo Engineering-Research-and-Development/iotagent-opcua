@@ -10,10 +10,12 @@ The intended level of complexity to support these operations should consider a l
 
 ## ![N|Solid](https://img.shields.io/badge/license-AGPL-blue.svg) License
 https://github.com/is3labengrd/iotagent-opcua/blob/master/LICENSE
-## ![N|Solid](https://readthedocs.org/projects/fiware-orion/badge/?version=latest) Documentation
+## ![N|Solid](https://readthedocs.org/projects/opc-ua-connector/badge/?version=latest) Documentation
 https://github.com/is3labengrd/iotagent-opcua/tree/master/doc
 
-## ![N|Solid](https://img.shields.io/docker/pulls/fiware/orion.svg) Docker
+## ![N|Solid]
+[![Docker Pulls](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg)](https://hub.docker.com/r/rdlabengpa/opcuaage/)
+ Docker
 https://hub.docker.com/r/rdlabengpa/opcuaage/
 
 ## ![N|Solid](https://img.shields.io/badge/support-sof-yellowgreen.svg) Support
