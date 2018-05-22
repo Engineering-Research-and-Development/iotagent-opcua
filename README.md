@@ -13,9 +13,7 @@ https://github.com/is3labengrd/iotagent-opcua/blob/master/LICENSE
 ## ![N|Solid](https://readthedocs.org/projects/opc-ua-connector/badge/?version=latest) Documentation
 https://github.com/is3labengrd/iotagent-opcua/tree/master/doc
 
-## ![N|Solid]
-[![Docker Pulls](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg)](https://hub.docker.com/r/rdlabengpa/opcuaage/)
- Docker
+## ![N|Solid](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg)(https://hub.docker.com/r/rdlabengpa/opcuaage/) Docker
 https://hub.docker.com/r/rdlabengpa/opcuaage/
 
 ## ![N|Solid](https://img.shields.io/badge/support-sof-yellowgreen.svg) Support
@@ -37,7 +35,7 @@ Here https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/howto.md are 
 
 ## How to get access to the advanced API and Documentation topics
 
-## ![N|Solid](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg) Installation 
+## Installation 
 ```sh
 $ npm install
 $ node index.js
