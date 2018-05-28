@@ -186,6 +186,14 @@ function run(){
   var the_session = null;
   var the_subscriptions = [];
   var contexts = [];
+
+
+
+  
+
+
+
+
   //Getting contextSubscriptions configuration
   var contextSubscriptions = config.contextSubscriptions;
   var methods = [];
@@ -560,8 +568,8 @@ function run(){
           lazy: context.lazy,
           commands: context.commands,
           service: context.service,
-          subservice: context.subservice
-
+          subservice: context.subservice,
+          polling: context.polling
         };
         try {
 
@@ -713,7 +721,8 @@ function run(){
       logger.info(logContext," Received client interruption from user ".red.bold);
       logger.info(logContext," shutting down ...".red.bold);
       tAs.terminateAllSubscriptions(the_subscriptions);
-      disconnect.disconnect(the_session,client);
+      if(the_session!=null && client !=null)
+        disconnect.disconnect(the_session,client);
       process.exit(1);
     });
 
