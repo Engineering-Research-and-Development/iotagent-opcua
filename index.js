@@ -27,6 +27,7 @@ try{
   var fT = require('./iot_agent_modules/run/findType');
   var cR = require('./iot_agent_modules/run/createResponse');
   var eUv = require('./iot_agent_modules/run/executeUpdateValues');
+  var server = require('./iot_agent_modules/services/server');
 
 
   var argv = require('yargs')
@@ -152,6 +153,9 @@ try{
 }else{
   run();
 }
+
+
+server.start();
 //Clean Orion Forbidden Chars
 
 function run(){
@@ -184,7 +188,7 @@ function run(){
   var doCrawling = argv.crawl ? true : false;
   var client = null;
   var the_session = null;
-  var the_subscriptions = [];
+  global.the_subscriptions = [];
   var contexts = [];
 
 
