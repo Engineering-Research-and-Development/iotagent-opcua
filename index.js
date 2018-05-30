@@ -61,6 +61,7 @@ try{
           logger.info(logContext,"\nAutomatic configuration successfully created. Loading new configuration...".cyan);
         }
         run.run();
+        server.start();
       }
     );
   } catch (ex) {
@@ -70,8 +71,9 @@ try{
   module.exports = child;
 }else{
   run.run();
+  server.start();
 }
-server.start();
+
 }
 catch(ex){
   var logger = require('logops');
