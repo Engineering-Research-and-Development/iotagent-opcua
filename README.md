@@ -45,6 +45,16 @@ $ node index.js
 The F4I OPC UA Agent is based on the reference implementation of the FIWARE Backend Device Management Generic Enabler, IDAS, delivered by Telefonica I+D.
 IDAS provides a collection of Agents - i.e., independent processes that are typically executed in the proximity of IoT devices and that are responsible for bridging a specific IoT protocol to the NGSI standard (e.g. the IDAS distribution includes off-the-shelf Agents for LwM2M and MQTT). To this end, IDAS links the NGSI southbound API of the FIWARE Orion Context Broker to the northbound API of the IoT application stack, by providing a software library (the IoT Agent Lib depicted in the previous figure) for developing custom Agents that may extend the bridging capabilities of IDAS to other protocols. The F4I IDAS OPC-UA Agent makes use of this framework to integrate OPC-UA-based devices in a publish-subscribe system based on the FIWARE Orion Context Broker.
 
+
+## Administration Services
+Administration services are reachable at port specified by api-port property (config.properties).
+
+|     |    Service    |                          Description                          |
+|-----|:-------------:|:-------------------------------------------------------------:|
+| GET | /status       | Returns a status message                                      |
+| GET | /version      | Returns information about version, name and agent description |
+| GET | /commandsList | Returns a list of pending commands (only with polling mode)   |
+
 ## Third party libraries:
 1. http://node-opcua.github.io/
 2. https://github.com/telefonicaid/iotagent-node-lib
