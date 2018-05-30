@@ -19,7 +19,7 @@ node index.js
 ```
 
 ### Sanity Check
-In order to check if the agent is running and up, make curl request (server-port has to match with the parameter inside config.properties file). 
+In order to check if the agent is running and up, make curl request (api-port has to match with the parameter inside config.properties file). 
 ```
-curl -X GET http://localhost:{server-port}/version 
+curl -X GET http://localhost:{api-port}/version 
 ```
