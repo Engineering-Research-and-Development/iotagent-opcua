@@ -5,5 +5,6 @@ module.exports = function(app) {
   app.use('/status', require('./status'));
   app.use('/commandsList', require('./commandsList'));
   app.use('/json', require('./config_json'));
+  app.use('/version', require('./version'));
 
 };
