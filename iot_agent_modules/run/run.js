@@ -55,7 +55,7 @@ module.exports = {
      var password = properties.get('password');
 
      if (fs.existsSync('./conf/config.json')) {
-       global.config = require('./../../conf/config.json');
+       var config = require('./../../conf/config.json');
      }
      else{
        doAuto = true;
