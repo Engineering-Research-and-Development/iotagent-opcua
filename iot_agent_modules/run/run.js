@@ -53,6 +53,8 @@ module.exports = {
     var securityPolicy = properties.get('securityPolicy');
     var userName = properties.get('userName');
     var password = properties.get('password');
+    var polling_commands_timer = properties.get('polling-commands-timer');
+    var polling_up = properties.get('polling');
 
     if (fs.existsSync('./conf/config.json')) {
       var config = require('./../../conf/config.json');
@@ -83,8 +85,8 @@ module.exports = {
    logger.info(logContext,"timeout             = ".cyan, timeout ? timeout : " Infinity ");
    // set to false to disable address space crawling: might slow things down if the AS is huge
    var doCrawling = argv.crawl ? true : false;
-   global.client = null;
-   global.the_session = null;
+   var client = null;
+   var the_session = null;
    global.the_subscriptions = [];
    var contexts = [];
    //Getting contextSubscriptions configuration
@@ -149,7 +151,6 @@ module.exports = {
        } else {
          logger.info(logContext,"successfully terminated subscription: " + subscription.subscriptionId);
        }
-
      });
 
      the_subscriptions.push(subscription);
@@ -656,10 +657,54 @@ module.exports = {
      function updateContextHandler(id, type, service, subservice, attributes, callback) {
    }*/
 
+   var result={};
+   function pollcommands() {
+
+     var commands = require('../../node_modules/iotagent-node-lib/lib/services/commands/commandService');
+     var commandListAllDevices=[];
+     var count=0;
+     // each of the following steps is executed in due order
+     // each step MUST call callback() when done in order for the step sequence to proceed further
+     async.series([
+     //------------------------------------------
+     function (callback) {
+         for (var i = 0, len = config.contexts.length; i < len; i++) {
+             var context=config.contexts[i];
+             commands.list(config.service, config.subservice, context.id ,function(error, commandList) {
+                 count+=commandList.count;
+                 commandListAllDevices.push.apply(commandListAllDevices, commandList.commands);
+                 if (i==len)
+                     callback();
+             });
+         }
+     },
+
+     function (callback) {
+         result.count=count;
+         result.commands=commandListAllDevices;
+
+         if (result.count!=0){
+           var attr = [{"name":commandListAllDevices[0].name,"type":commandListAllDevices[0].type,	"value":commandListAllDevices[0].value}];
+         commandContextHandler(commandListAllDevices[0].deviceId, commandListAllDevices[0].deviceId, config.service, config.subservice, attr,  function (err) {
+           if(err){
+             logger.error(logContext," ERROR ON POLLING COMMAND");
+           }else{
+             commands.remove(config.service, config.subservice, commandListAllDevices[0].deviceId, commandListAllDevices[0].name, function(error) {
+               if(error)
+               logger.error(logContext,"ERROR ON REMOVING COMMAND"+error);
+             });
+           }
+            });
+          }
+        }]);
+   }
+
+   if (polling_up)
+      setInterval(pollcommands, polling_commands_timer);
+
    function commandContextHandler(id, type, service, subservice, attributes, callback) {
 
      logContext.op="Index.CommandContextHandler";
-
 
      contextSubscriptions.forEach(function (contextSubscription) {
 

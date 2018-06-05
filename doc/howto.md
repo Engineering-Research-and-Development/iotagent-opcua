@@ -11,7 +11,7 @@ Then, configure the properties file in order to set parameters about North side 
 #SOUTHBOUND CONFIGURATION (OPC UA)
 #Namespace to ignore
 namespace-ignore=2,7
-#OPC-UA Endpoint
+#OPC UA Endpoint
 endpoint=opc.tcp://localhost:4334/UA/CarServer
 
 #NORTHBOUND CONFIGURATION (ORION CB)

@@ -1,5 +1,3 @@
-## Quick Start Guide
-
 ### Install 
 Firstly, launch npm install process in order to download and install all dependencies.
 ```
@@ -13,7 +11,7 @@ Then, configure the properties file in order to set parameters about North side 
 #SOUTHBOUND CONFIGURATION (OPC UA)
 #Namespace to ignore
 namespace-ignore=2,7
-#OPC-UA Endpoint
+#OPC UA Endpoint
 endpoint=opc.tcp://localhost:4334/UA/CarServer
 
 #NORTHBOUND CONFIGURATION (ORION CB)
@@ -46,11 +44,44 @@ OPC-datatype-UInteger=Integer
 OPC-datatype-String=Text
 OPC-datatype-ByteString=Text
 #END DATATYPE MAPPING OPCUA --> NGSI
-```
-Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands. It is possible modify configuration output (config.json file in same path) manually in order to drop some attributes/command or add lazy attributes. 
 
-#### Manual Configuration (editing confi.json file)
+#Administration Services
+api-port=8080
+#End Administration Services
+
+#POLL CPMMANDS SETTINGS
+polling=false
+polling-commands-timer=3000
+pollingDaemonFrequency=20000
+pollingExpiration=200000
+#END POLL CPMMANDS SETTINGS
+
 ```
+Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands. It is possible modify configuration output (config.json file in same path) manually in order to drop some attributes/command, add lazy attributes and enable the command polling. 
+
+#### Manual Configuration (editing config.json file)
+To define active attributes:
+* set the active object in active section array of type object
+* set the mapping object in mappings array of contexts
+
+To define lazy attributes:
+* set the lazy object in lazy section array of type object
+* set the mapping object in mappings array of contextSubscriptions (set object_id to null and inputArguments to empty array)
+
+To define commands attributes:
+* set the command object in commands section array of type object
+* set the mapping object in mappings array of contextSubscriptions (object_id is the parent object of the method)
+
+To define poll commands:
+* set polling to true to enable or to false to disable poll commands
+* set polling Daemon Frequency and Expiration in ms
+* set polling-commands-timer in ms to execute che poll commands automatically
+
+
+In order to clarify, see the following example:
+
+```
+
 {
     "logLevel": "INFO",
     "contextBroker": {
@@ -107,6 +138,8 @@ Using of Auto Configuration create a mapping for all OPC UA objects (except thos
     "service": "opcua_car",
     "subservice": "/demo",
     "providerUrl": "http://192.168.56.1:4041",
+    "pollingExpiration":"200000",
+    "pollingDaemonFrequency":"20000",
     "deviceRegistrationDuration": "P1M",
     "defaultType": null,
     "contexts": [
@@ -115,6 +148,7 @@ Using of Auto Configuration create a mapping for all OPC UA objects (except thos
             "type": "Car",
             "service": "opcua_car",
             "subservice": "/demo",
+            "polling":"false",
             "mappings": [
                 {
                     "ocb_id": "Engine_Temperature",
@@ -166,7 +200,7 @@ Using of Auto Configuration create a mapping for all OPC UA objects (except thos
 ```
 
 ### Run
-Finally, run the agent.
+Finally, run the agent. 
 ```
 node index.js
 ```

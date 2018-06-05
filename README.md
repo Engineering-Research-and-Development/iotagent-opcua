@@ -55,6 +55,10 @@ Administration services are reachable at port specified by api-port property (co
 | GET | /version      | Returns information about version, name and agent description |
 | GET | /commandsList | Returns a list of pending commands (only with polling mode)   |
 
+
+## Poll commands
+Poll commands can be enabled switching polling property to true (config.properties). Once enabled poll command, you can customize the polling Daemon Frequency and Expiration time still in the (config.properties). The polling-commands-timer is referred to the feature developed, that consist in the execution of the older polling command periodically (if exists) ed delete it in case of success.
+
 ## Third party libraries:
 1. http://node-opcua.github.io/
 2. https://github.com/telefonicaid/iotagent-node-lib
