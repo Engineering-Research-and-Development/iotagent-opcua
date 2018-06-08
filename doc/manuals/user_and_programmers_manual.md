@@ -49,12 +49,12 @@ OPC-datatype-ByteString=Text
 api-port=8080
 #End Administration Services
 
-#POLL CPMMANDS SETTINGS
+#POLL COMMANDS SETTINGS
 polling=false
 polling-commands-timer=3000
 pollingDaemonFrequency=20000
 pollingExpiration=200000
-#END POLL CPMMANDS SETTINGS
+#END POLL COMMANDS SETTINGS
 
 ```
 Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands. It is possible modify configuration output (config.json file in same path) manually in order to drop some attributes/command, add lazy attributes and enable the command polling. 
