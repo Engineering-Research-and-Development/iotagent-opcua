@@ -1,14 +1,16 @@
 module.exports = {
   mongoGroup : function (config) {
+    global.apikey='801230BJKL23Y9090DSFL123HJK09H324HV8732'
     console.log("CONFIGURATION API");
     var services=[];
     for(var key in  config.types) {
       console.log("Analyzing..."+key)
       var type=config.types[key];
 
+
       var service={
         resource: '/'+key,
-        apikey: '801230BJKL23Y9090DSFL123HJK09H324HV8732',
+        apikey: apikey,
         entity_type: key,
         //trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
         cbHost: config.contextBroker.host+':'+config.contextBroker.port,
