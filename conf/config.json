@@ -23,7 +23,7 @@
             "service": "opcua_car",
             "subservice": "/demo",
             "active": [{
-                "name": "SpeedCiao",
+                "name": "Speed",
                 "type": "Number"
             }, {
                 "name": "Engine_Temperature",
