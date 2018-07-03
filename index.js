@@ -64,18 +64,18 @@ try{
       var child = exec(cmdjava, function(err, stdout, stderr) {
         clearInterval(loadingBar);
         if (err) {
-          logger.error(logContext,"\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
-
+          logger.error(logContext,"There is a problem with automatic configuration. Loading old configuration (if exists)...");
         }else{
-          logger.info(logContext,"\nAutomatic configuration successfully created. Loading new configuration...".cyan);
+          logger.info(logContext,"Automatic configuration successfully created. Loading new configuration...");
         }
+       
         run.run();
         server.start();
       }
     );
   } catch (ex) {
     clearInterval(loadingBar);
-    logger.info(logContext,"\nThere is a problem with automatic configuration. Loading old configuration (if exists)...".red);
+    logger.info(logContext,"There is a problem with automatic configuration. Loading old configuration (if exists)...");
   }
   module.exports = child;
 }else{
