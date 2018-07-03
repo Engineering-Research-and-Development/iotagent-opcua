@@ -24,7 +24,6 @@ module.exports = {
     var maxNotificationsPerPublish = properties.get('maxNotificationsPerPublish');
     var publishingEnabled = properties.get('publishingEnabled');
     var priority = properties.get('priority');
-    //var api_ip = properties.get('api-ip');
     var api_port = properties.get('api-port');
     var polling = properties.get('polling');
     var polling_commands_timer = properties.get('polling-commands-timer');
@@ -52,20 +51,25 @@ module.exports = {
     "maxNotificationsPerPublish" : maxNotificationsPerPublish,
     "publishingEnabled" : publishingEnabled,
     "priority" : priority,
-    //"api_ip" : api_ip,
     "api_port" : api_port,
     "polling_commands_timer" : polling_commands_timer,
     "pollingDaemonFrequency" : pollingDaemonFrequency,
-    "pollingExpiration" : pollingExpiration//,
-    //"polling": polling
+    "pollingExpiration" : pollingExpiration
+
 
   }
-
   var null_prop = [];
   for (var key in check) {
-    if(check[key] == "" || check[key] == 0 || check[key] == null)
+    if( check[key] == null || check[key] == "" )
       null_prop.push(key);
   }
+
+  if (polling == true || polling == false){
+  }
+  else{
+    null_prop.push("polling");
+  }
+
   return null_prop;
 
 }
