@@ -17,6 +17,7 @@ exports.write = function(req, res) {
         return yyyy + MM + dd+  hh + mm + ss;
     };
 tAs.terminateAllSubscriptions(the_subscriptions);
+
   var timestamp = new Date();
   fs.rename('./conf/config.json', './conf/'+timestamp.YYYYMMDDHHMMSS()+'config.json', function(err) {
     if ( err ) logger.info("error on renaming config.json file: " + err);
@@ -34,6 +35,7 @@ tAs.terminateAllSubscriptions(the_subscriptions);
       else{
         return res.status(200).json("The file was updated!");
       }
+      
     });
 
   });

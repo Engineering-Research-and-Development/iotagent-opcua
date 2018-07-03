@@ -762,9 +762,9 @@ module.exports = {
           }]);
         }
 
-        if (polling_up)
+        if (polling_up){
         setInterval(pollcommands, polling_commands_timer);
-
+}
         function commandContextHandler(id, type, service, subservice, attributes, callback) {
 
           logContext.op="Index.CommandContextHandler";

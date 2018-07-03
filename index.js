@@ -1,17 +1,26 @@
+global.logContext = {
+  comp: 'iotAgent-OPCUA',
+  op: 'Index',
+  srv: '',
+  subsrv: ''
+};
+
 try{
+
   // node-opcue dependencies
   require("requirish")._(module);
+  var check_prop = require("./iot_agent_modules/check_properties");
+  if(check_prop.checkproperties().length != 0){
+    console.log("WARNING!!!")
+    console.log("CHECK YOUR config.properties FILE,  THE FOLLOWING PARAMETERS ARE NULL:")
+    for (var null_params in check_prop.checkproperties())
+      console.log(check_prop.checkproperties()[null_params]);
+      process.exit(1);
+  }
+
   var server = require('./iot_agent_modules/services/server');
   var run = require('./iot_agent_modules/run/run');
-
   var fs = require('fs');
-  global.logContext = {
-    comp: 'iotAgent-OPCUA',
-    op: 'Index',
-    srv: '',
-    subsrv: ''
-  };
-
   // custom simple logger
   var logger = require('logops');
   logger.format = logger.formatters.pipe;

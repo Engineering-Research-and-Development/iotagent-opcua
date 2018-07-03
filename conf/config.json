@@ -23,7 +23,7 @@
             "service": "opcua_car",
             "subservice": "/demo",
             "active": [{
-                "name": "SpeedCiao",
+                "name": "Speed",
                 "type": "Number"
             }, {
                 "name": "Engine_Temperature",
@@ -51,11 +51,11 @@
     "deviceRegistrationDuration": "P1M",
     "defaultType": null,
     "contexts": [{
-        "id": "Car",
+        "id": "mes1_Car",
         "type": "Car",
         "service": "opcua_car",
         "subservice": "/demo",
-        "polling": "false",
+        "polling": false,
         "mappings": [{
             "ocb_id": "Speed",
             "opcua_id": "ns=1;s=Speed",
@@ -74,7 +74,7 @@
         }]
     }],
     "contextSubscriptions": [{
-        "id": "Car",
+        "id": "mes1_Car",
         "type": "Car",
         "mappings": [{
             "ocb_id": "Stop",

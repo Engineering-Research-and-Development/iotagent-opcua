@@ -1,6 +1,5 @@
 'use strict';
 var config = require('./../../../conf/config.json');
-var mongoose = require('mongoose');
 var commands = require('../../../node_modules/iotagent-node-lib/lib/services/commands/commandService');
 var async = require("async");
 var result={};
