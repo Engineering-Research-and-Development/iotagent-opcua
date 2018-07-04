@@ -23,7 +23,7 @@ module.exports = {
     }
 
     optionsCreation = {
-      url: 'http://localhost:4041/iot/services',
+      url: 'http://localhost:'+config.server.port+'/iot/services',
       method: 'POST',
       json: {
         services: services
