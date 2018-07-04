@@ -504,7 +504,7 @@ module.exports = {
               async.series([
                 function(callback) {
                   var del ={
-                    "url": "http://localhost:4041/iot/devices/"+config.contexts[key].id,
+                    "url": "http://localhost:"+config.server.port+"/iot/devices/"+config.contexts[key].id,
                     "method": "DELETE",
                     "headers": {
                       "fiware-service": config.service,
