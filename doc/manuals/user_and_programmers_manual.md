@@ -4,6 +4,7 @@ Firstly, launch npm install process in order to download and install all depende
 npm install
 ```
 ### Configure
+![edit config.properties](https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/manuals/images/OPC%20UA%20agent%20flow%20chart_1.png)
 
 #### Auto Configuration (using of Mapping Tool)
 Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South side (OPC UA endpoint).
@@ -59,7 +60,11 @@ pollingExpiration=200000
 ```
 Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands. It is possible modify configuration output (config.json file in same path) manually in order to drop some attributes/command, add lazy attributes and enable the command polling. 
 
+![OPC UA Agent flow](https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/manuals/images/OPC%20UA%20agent%20flow%20chart_3.png)
+
 #### Manual Configuration (editing config.json file)
+![Edit or Delete config.json](https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/manuals/images/OPC%20UA%20agent%20flow%20chart_4.png)
+
 To define active attributes:
 * set the active object in active section array of type object
 * set the mapping object in mappings array of contexts
@@ -208,3 +213,4 @@ It's possible to redirect the output log on a file
 ```
 node index.js > out.log
 ```
+
