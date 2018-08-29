@@ -11,7 +11,7 @@ The intended level of complexity to support these operations should consider a l
 ## ![N|Solid](https://img.shields.io/badge/license-AGPL-blue.svg) License
 https://github.com/is3labengrd/iotagent-opcua/blob/master/LICENSE
 ## ![N|Solid](https://readthedocs.org/projects/opc-ua-connector/badge/?version=latest) Documentation
-https://github.com/is3labengrd/iotagent-opcua/tree/master/doc
+https://github.com/is3labengrd/iotagent-opcua/tree/master/doc <br/>
 https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/manuals/user_and_programmers_manual.md
 
 ## ![N|Solid](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg) Docker
