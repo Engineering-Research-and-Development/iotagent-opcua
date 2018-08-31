@@ -183,15 +183,15 @@ module.exports = {
       monitoredItem.on("changed", function (dataValue) {
         logContext.op="Index.Monitoring";
         var variableValue = null;
-
-        if (dataValue.value && dataValue.value != null)
-        variableValue = dataValue.value.value || null;
-
-
+        if (dataValue.value && dataValue.value != null){
+          variableValue = dataValue.value.value || null;
+          if ((dataValue.value.value==0)||(dataValue.value.value==false))
+            variableValue = dataValue.value.value;
+        }
+       
         variableValue=cfc.cleanForbiddenCharacters(variableValue);
         if (variableValue==null){
-          ;
-
+          logger.debug("ON CHANGED DO NOTHING");
         }else{
 
           logger.info(logContext,monitoredItem.itemToMonitor.nodeId.toString(), " value has changed to " + variableValue + "".bold.yellow);
