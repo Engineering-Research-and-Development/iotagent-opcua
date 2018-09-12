@@ -1,94 +1,110 @@
 {
-    "logLevel": "INFO",
-    "contextBroker": {
-        "host": "192.168.56.101",
-        "port": 1026
-    },
-    "server": {
-        "port": 4041,
-        "baseRoot": "/"
-    },
-    "deviceRegistry": {
-        "type": "mongodb"
-    },
-    "mongodb": {
-        "host": "192.168.56.101",
-        "port": "27017",
-        "db": "iotagent",
-        "retries": 5,
-        "retryTime": 5
-    },
-    "types": {
-        "Car": {
-            "service": "opcua_car",
-            "subservice": "/demo",
-            "active": [{
-                "name": "Speed",
-                "type": "Number"
-            }, {
-                "name": "Engine_Temperature",
-                "type": "Number"
-            }, {
-                "name": "Engine_Oxigen",
-                "type": "Number"
-            }],
-            "lazy": [],
-            "commands": [{
-                "name": "Stop",
-                "type": "command"
-            }, {
-                "name": "Accelerate",
-                "type": "command"
-            }]
-        }
-    },
-    "browseServerOptions": null,
-    "service": "opcua_car",
-    "subservice": "/demo",
-    "providerUrl": "http://192.168.56.1:4041",
-    "pollingExpiration": "200000",
-    "pollingDaemonFrequency": "20000",
-    "deviceRegistrationDuration": "P1M",
-    "defaultType": null,
-    "contexts": [{
-        "id": "mes1_Car",
-        "type": "Car",
-        "service": "opcua_car",
-        "subservice": "/demo",
-        "polling": false,
-        "mappings": [{
-            "ocb_id": "Speed",
-            "opcua_id": "ns=1;s=Speed",
-            "object_id": null,
-            "inputArguments": []
-        }, {
-            "ocb_id": "Engine_Temperature",
-            "opcua_id": "ns=1;s=Temperature",
-            "object_id": null,
-            "inputArguments": []
-        }, {
-            "ocb_id": "Engine_Oxigen",
-            "opcua_id": "ns=1;s=Oxigen",
-            "object_id": null,
-            "inputArguments": []
-        }]
-    }],
-    "contextSubscriptions": [{
-        "id": "mes1_Car",
-        "type": "Car",
-        "mappings": [{
-            "ocb_id": "Stop",
-            "opcua_id": "ns=1;s=Stop",
-            "object_id": "ns=1;i=1000",
-            "inputArguments": []
-        }, {
-            "ocb_id": "Accelerate",
-            "opcua_id": "ns=1;s=Accelerate",
-            "object_id": "ns=1;i=1000",
-            "inputArguments": [{
-                "dataType": 7,
-                "type": "Intensity"
-            }]
-        }]
-    }]
+  "logLevel" : "INFO",
+  "contextBroker" : {
+    "host" : "192.168.22.139",
+    "port" : 1026
+  },
+  "server" : {
+    "port" : 4041,
+    "baseRoot" : "/"
+  },
+  "deviceRegistry" : {
+    "type" : "memory"
+  },
+  "mongodb" : {
+    "host" : "192.168.22.139",
+    "port" : "27017",
+    "db" : "iotagent",
+    "retries" : 5,
+    "retryTime" : 5
+  },
+  "types" : {
+    "Car" : {
+      "service" : "opcua_car",
+      "subservice" : "/demo",
+      "active" : [ {
+        "name" : "Fake",
+        "type" : "Text"
+      }, {
+        "name" : "Speed",
+        "type" : "Number"
+      }, {
+        "name" : "Engine_Temperature",
+        "type" : "Number"
+      }, {
+        "name" : "Engine_Oxigen",
+        "type" : "Number"
+      }, {
+        "name" : "Passenger",
+        "type" : "Boolean"
+      } ],
+      "lazy" : [ ],
+      "commands" : [ {
+        "name" : "Stop",
+        "type" : "command"
+      }, {
+        "name" : "Accelerate",
+        "type" : "command"
+      } ]
+    }
+  },
+  "browseServerOptions" : null,
+  "service" : "opcua_car",
+  "subservice" : "/demo",
+  "providerUrl" : "http://192.168.22.160:4041",
+  "pollingExpiration" : "200000",
+  "pollingDaemonFrequency" : "20000",
+  "deviceRegistrationDuration" : "P1M",
+  "defaultType" : null,
+  "contexts" : [ {
+    "id" : "car1_Car",
+    "type" : "Car",
+    "service" : "opcua_car",
+    "subservice" : "/demo",
+    "polling" : false,
+    "mappings" : [ {
+      "ocb_id" : "Fake",
+      "opcua_id" : "ns=1;s=Fake",
+      "object_id" : null,
+      "inputArguments" : [ ]
+    }, {
+      "ocb_id" : "Speed",
+      "opcua_id" : "ns=1;s=Speed",
+      "object_id" : null,
+      "inputArguments" : [ ]
+    }, {
+      "ocb_id" : "Engine_Temperature",
+      "opcua_id" : "ns=1;s=Temperature",
+      "object_id" : null,
+      "inputArguments" : [ ]
+    }, {
+      "ocb_id" : "Engine_Oxigen",
+      "opcua_id" : "ns=1;s=Oxigen",
+      "object_id" : null,
+      "inputArguments" : [ ]
+    }, {
+      "ocb_id" : "Passenger",
+      "opcua_id" : "ns=1;s=Passenger",
+      "object_id" : null,
+      "inputArguments" : [ ]
+    } ]
+  } ],
+  "contextSubscriptions" : [ {
+    "id" : "car1_Car",
+    "type" : "Car",
+    "mappings" : [ {
+      "ocb_id" : "Stop",
+      "opcua_id" : "ns=1;s=Stop",
+      "object_id" : "ns=1;i=1000",
+      "inputArguments" : [ ]
+    }, {
+      "ocb_id" : "Accelerate",
+      "opcua_id" : "ns=1;s=Accelerate",
+      "object_id" : "ns=1;i=1000",
+      "inputArguments" : [ {
+        "dataType" : 7,
+        "type" : "Intensity"
+      } ]
+    } ]
+  } ]
 }

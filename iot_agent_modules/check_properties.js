@@ -30,6 +30,13 @@ module.exports = {
     var pollingDaemonFrequency = properties.get('pollingDaemonFrequency');
     var pollingExpiration = properties.get('pollingExpiration');
 
+    var samplingInterval = properties.get('samplingInterval');
+    var queueSize = properties.get('queueSize');
+    var discardOldest = properties.get('discardOldest');
+
+  
+
+
     var check = { "context_broker_host" : context_broker_host,
     "context_broker_port" : context_broker_port,
     "server_base_root" : server_base_root,
@@ -54,15 +61,21 @@ module.exports = {
     "api_port" : api_port,
     "polling_commands_timer" : polling_commands_timer,
     "pollingDaemonFrequency" : pollingDaemonFrequency,
-    "pollingExpiration" : pollingExpiration
+    "pollingExpiration" : pollingExpiration,
+    "samplingInterval" : samplingInterval,
+    "queueSize" : queueSize,
+    "discardOldest" : discardOldest
 
 
   }
   var null_prop = [];
   for (var key in check) {
+   
     if( check[key] == null || check[key] == "" )
-      null_prop.push(key);
+      if (check[key]!=0)
+        null_prop.push(key);
   }
+
 
   if (polling == true || polling == false){
   }

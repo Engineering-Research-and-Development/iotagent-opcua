@@ -96,6 +96,7 @@ module.exports = {
     var contextSubscriptions = config.contextSubscriptions;
     var methods = [];
 
+
     function initSubscriptionBroker(context, mapping) {
       logContext.op="Index.InitSubscriptions";
       // TODO this stuff too should come from config
@@ -169,9 +170,9 @@ module.exports = {
         // TODO All these attributes are optional remove ?
         {
           //clientHandle: 13, // TODO need to understand the meaning this! we probably cannot reuse the same handle everywhere
-          samplingInterval: 250,
-          queueSize: 10000,
-          discardOldest: true
+          samplingInterval: properties.get('samplingInterval'),
+          queueSize: properties.get('queueSize'),
+          discardOldest: properties.get('discardOldest')
         },
         opcua.read_service.TimestampsToReturn.Both
       );
@@ -182,13 +183,14 @@ module.exports = {
 
       monitoredItem.on("changed", function (dataValue) {
         logContext.op="Index.Monitoring";
+
         var variableValue = null;
         if (dataValue.value && dataValue.value != null){
           variableValue = dataValue.value.value || null;
           if ((dataValue.value.value==0)||(dataValue.value.value==false))
             variableValue = dataValue.value.value;
         }
-       
+
         variableValue=cfc.cleanForbiddenCharacters(variableValue);
         if (variableValue==null){
           logger.debug("ON CHANGED DO NOTHING");
@@ -207,16 +209,21 @@ module.exports = {
                 value: variableValue,
               }];
 
+
+                    
+                    
               //Setting ID withoput prefix
               iotAgentLib.update(device.id, device.type, '', attributes, device, function (err) {
                 if (err) {
-                  logger.error(logContext,"error updating " + mapping.ocb_id + " on " + device.name + "".red.bold);
+                  logger.error(logContext,"error updating " + mapping.ocb_id + " on " + device.name + " value="+variableValue+ "".red.bold);
 
                   logger.info(logContext,JSON.stringify(err).red.bold);
                 } else {
-                  logger.info(logContext,"successfully updated " + mapping.ocb_id + " on " + device.name);
+                  logger.info(logContext,"successfully updated " + mapping.ocb_id + " on " + device.name + " value="+variableValue);
                 }
-              });
+              }
+             
+            );
             }
           });
         }
