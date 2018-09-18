@@ -7,6 +7,7 @@ var result={};
 exports.status = function(req, res) {
     var commandListAllDevices=[];
     var count=0;
+    var found=false;
     // each of the following steps is executed in due order
     // each step MUST call callback() when done in order for the step sequence to proceed further
     async.series([
@@ -17,10 +18,15 @@ exports.status = function(req, res) {
             commands.list(config.service, config.subservice, context.id ,function(error, commandList) {
                 count+=commandList.count;
                 commandListAllDevices.push.apply(commandListAllDevices, commandList.commands);
-                if (i==len)
+                if (i==len){
                     callback();
+                    found=true;
+                }
             });
+
         }
+        if (found==false)
+            callback();
     },
 
     function (callback) {
