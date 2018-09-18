@@ -145,7 +145,7 @@ module.exports = {
         t = t1;
         var keepAliveString="keepalive "+ span / 1000 + " "+ "sec"+ " pending request on server = "+
         subscription.publish_engine.nbPendingPublishRequests + "";
-        logger.info(logContext,keepAliveString.gray);
+        logger.debug(logContext,keepAliveString.gray);
 
       }).on("terminated", function (err) {
 
@@ -210,7 +210,6 @@ module.exports = {
               }];
 
 
-                    
                     
               //Setting ID withoput prefix
               iotAgentLib.update(device.id, device.type, '', attributes, device, function (err) {
@@ -473,7 +472,8 @@ module.exports = {
             commands: context.commands,
             service: context.service,
             subservice: context.subservice,
-            polling: context.polling
+            polling: context.polling,
+            endpoint: endpointUrl
           };
           try {
 
@@ -533,7 +533,6 @@ module.exports = {
                 function(callback) {
 
                   iotAgentLib.register(device, function (err) {
-
                     if (err) { // skip context
                       logger.error(logContext,"could not register OCB context " + context.id + "".red.bold);
                       logger.info(logContext,JSON.stringify(err).red.bold);
