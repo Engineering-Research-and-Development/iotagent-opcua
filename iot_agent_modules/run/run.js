@@ -96,6 +96,18 @@ module.exports = {
     var contextSubscriptions = config.contextSubscriptions;
     var methods = [];
 
+    
+    //Load persisted devices to monitor
+    function loadDevices(){
+      iotAgentLib.listDevices(config.service,config.subservice, function(error, results) {
+        results.devices.forEach(function (device) {
+          activeDeviceSubs(device);
+        });
+        
+    });
+    }
+    
+
 
     function initSubscriptionBroker(context, mapping) {
       logContext.op="Index.InitSubscriptions";
@@ -458,6 +470,9 @@ module.exports = {
           });
         }
 
+        //loading devices
+        loadDevices();
+        
         contexts.forEach(function (context) {
           logger.info(logContext,'registering OCB context ' + context.id+" of type "+ context.type);
           logContext.srv=context.service;
@@ -834,6 +849,50 @@ module.exports = {
         //iotAgentLib.setDataUpdateHandler(updateContextHandler);
         iotAgentLib.setDataQueryHandler(queryContextHandler);
         iotAgentLib.setCommandHandler(commandContextHandler);
+        function provisioningHandler(device, callback) {
+
+          executed = true;
+          //Here only if device added with successfully
+
+          activeDeviceSubs(device);
+
+          callback(null, device);
+         
+
+        
+          
+      }
+
+
+      function activeDeviceSubs(device){
+        var deviceMappings=[];
+        device.active.forEach(function (attribute) {
+          var mapping={};
+          
+          //For OPCUA nodeid chars not in template
+          attribute.object_id=attribute.object_id.replace(/:/g , ";");  
+          attribute.object_id=attribute.object_id.replace(/\*/g , "=")
+
+          mapping.ocb_id=attribute.name;
+          mapping.opcua_id=attribute.object_id;
+          mapping.object_id=null;
+          mapping.inputArguments=[ ];
+          deviceMappings.push(mapping);
+        });
+      
+        
+        deviceMappings.forEach(function (mapping) {
+          var context={};
+          context.id=device.id;
+          context.type=device.type;
+          context.service=device.service;
+          context.subservice=device.subservice;
+          context.polling=false;
+         
+          initSubscriptionBroker(context, mapping);
+        });
+      }
+      iotAgentLib.setProvisioningHandler(provisioningHandler);
 
         var handlerCalled = false;
 
