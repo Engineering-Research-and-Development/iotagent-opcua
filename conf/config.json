@@ -1,7 +1,7 @@
 {
   "logLevel" : "DEBUG",
   "contextBroker" : {
-    "host" : "192.168.22.139",
+    "host" : "192.168.1.8",
     "port" : 1026
   },
   "server" : {
@@ -12,17 +12,23 @@
     "type" : "mongodb"
   },
   "mongodb" : {
-    "host" : "192.168.22.139",
+    "host" : "192.168.1.8",
     "port" : "27017",
     "db" : "iotagent",
     "retries" : 5,
     "retryTime" : 5
   },
-  "types" : {},
+  "types" : {
+    "Device": {
+      "service": "opcua_energy",
+      "subservice": "/demo",
+      "active": []
+  }
+  },
   "browseServerOptions" : null,
   "service" : "opcua_energy",
   "subservice" : "/demo",
-  "providerUrl" : "http://192.168.22.160:4041",
+  "providerUrl" : "http://192.168.1.48:4041",
   "pollingExpiration" : "200000",
   "pollingDaemonFrequency" : "20000",
   "deviceRegistrationDuration" : "P1M",

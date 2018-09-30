@@ -2,6 +2,9 @@ module.exports = {
   run : function(){
 
     require("requirish")._(module);
+    var alarms = require('../../node_modules/iotagent-node-lib/lib/services/common/alarmManagement');
+    var constants = require('../../node_modules/iotagent-node-lib/lib/constants');
+
     var treeify = require('treeify');
     var _ = require("underscore");
     var util = require("util");
@@ -59,6 +62,9 @@ module.exports = {
     var polling_commands_timer = properties.get('polling-commands-timer');
     var polling_up = properties.get('polling');
 
+    var _setInterval = require('setinterval-plus')
+
+
     if (fs.existsSync('./conf/config.json')) {
       var config = require('./../../conf/config.json');
     }
@@ -97,14 +103,39 @@ module.exports = {
     var methods = [];
 
     
+    var devicesSubs=[];
     //Load persisted devices to monitor
     function loadDevices(){
       iotAgentLib.listDevices(config.service,config.subservice, function(error, results) {
         results.devices.forEach(function (device) {
+          devicesSubs[device.id]=[];
+
+
+          iotAgentLib.updateRegister(device, function (err) {
+            var newDevice={};
+            if (config.contextBroker.ngsiVersion == undefined){
+              createInitialEntityNgsi1(device, newDevice, function(error, results) {});
+
+            }else{
+            if (config.contextBroker.ngsiVersion=='v2') {
+              createInitialEntityNgsi2(device, newDevice, function(error, results) {});
+          } else {
+              createInitialEntityNgsi1(device, newDevice, function(error, results) {});
+          }
+        }
+            if (err) { // skip context
+              logger.error(logContext,"could not register OCB context " + device.id + "".red.bold);
+              logger.info(logContext,JSON.stringify(err).red.bold);
+              
+            } else { // init subscriptions
+              logger.info(logContext,"registered successfully OCB context " + device.id);
+             
+            }
+          });
+          
           activeDeviceSubs(device);
-        });
-        
-    });
+        });    
+      });
     }
     
 
@@ -158,7 +189,19 @@ module.exports = {
         var keepAliveString="keepalive "+ span / 1000 + " "+ "sec"+ " pending request on server = "+
         subscription.publish_engine.nbPendingPublishRequests + "";
         logger.debug(logContext,keepAliveString.gray);
+ /*       
+        iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
+         if(error){
+           subscription.terminate();
+         };
+         if (device.active.length==0){
+          subscription.terminate();
 
+         }
+
+   
+         });
+*/
       }).on("terminated", function (err) {
 
         if (err) {
@@ -189,8 +232,15 @@ module.exports = {
         opcua.read_service.TimestampsToReturn.Both
       );
 
+     
+
       monitoredItem.on("initialized", function () {
         logger.info(logContext,"started monitoring: " + monitoredItem.itemToMonitor.nodeId.toString());
+        //Collect all monitoring
+        if (devicesSubs[context.id]==undefined){
+          devicesSubs[context.id]=[];
+        }
+        devicesSubs[context.id].push(subscription);
       });
 
       monitoredItem.on("changed", function (dataValue) {
@@ -223,8 +273,10 @@ module.exports = {
 
 
                     
-              //Setting ID withoput prefix
-              iotAgentLib.update(device.id, device.type, '', attributes, device, function (err) {
+              //Setting ID withoput prefix NAME now
+              //iotAgentLib.update(device.id, device.type, '', attributes, device, function (err) {
+
+              iotAgentLib.update(device.name, device.type, '', attributes, device, function (err) {
                 if (err) {
                   logger.error(logContext,"error updating " + mapping.ocb_id + " on " + device.name + " value="+variableValue+ "".red.bold);
 
@@ -274,7 +326,7 @@ module.exports = {
           securityMode: securityMode,
           securityPolicy: securityPolicy,
           defaultSecureTokenLifetime: 400000,
-          //keepSessionAlive: true,
+          keepSessionAlive: true,
           requestedSessionTimeout: 100000, // very long 100 seconds
           connectionStrategy: {
             maxRetry: 10,
@@ -853,15 +905,77 @@ module.exports = {
 
           executed = true;
           //Here only if device added with successfully
+          
+
+          timerId.pause();
+          setTimeout(function () {
+            timerId.resume();
+          }, 5000);
+
 
           activeDeviceSubs(device);
-
-          callback(null, device);
-         
-
-        
           
+
+          callback(null, device);   
+          
+          
+
+
+         /* 
+var newDevice={};
+if (config.contextBroker.ngsiVersion == undefined){
+  createInitialEntityNgsi1(device, newDevice,  function(error, results) {
+    
+
+    
+
+  });
+
+}else{
+if (config.contextBroker.ngsiVersion=='v2') {
+  createInitialEntityNgsi2(device, newDevice, function(error, results) {
+    
+  });
+} else {
+ 
+  createInitialEntityNgsi1(device, newDevice, function(error, results) {
+    
+  });
+}
+}
+
+*/
+
+          //
       }
+
+
+      // repeat with the interval of 2 seconds
+      let timerId = new _setInterval(() => 
+      {
+        Object.keys(devicesSubs).forEach(function (key){
+
+          iotAgentLib.getDevice(key, config.service, config.subservice, function(error, device) {
+            if(error){
+              devicesSubs[key].forEach(function (subscription){
+                logger.debug("terminating...");
+                subscription.terminate();
+                logger.debug("terminating...done");
+              
+              });
+              delete devicesSubs[key];
+            }
+           
+             
+            });
+            
+
+        });
+      }
+      , 2000);
+
+
+    
 
 
       function activeDeviceSubs(device){
@@ -893,8 +1007,222 @@ module.exports = {
         });
       }
       iotAgentLib.setProvisioningHandler(provisioningHandler);
+      
 
-        var handlerCalled = false;
 
+
+
+
+
+
+
+/**
+ * Creates the response handler for the initial entity creation request NGSIv1.
+ * This handler basically deals with the errors that could have been rised during
+ * the communication with the Context Broker.
+ *
+ * @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
+ * @param {Object} newDevice        Device object that will be stored in the database.
+ * @return {function}               Handler to pass to the request() function.
+ */
+function createInitialEntityHandlerNgsi1(deviceData, newDevice, callback) {
+  return function handleInitialEntityResponse(error, response, body) {
+      if (error) {
+          logger.error(logContext,
+              'ORION-001: Connection error creating inital entity in the Context Broker: %s', error);
+
+          alarms.raise(constants.ORION_ALARM, error);
+
+          callback(error);
+      } else if (response && body && response.statusCode === 200) {
+          var errorField = null;
+
+          if (errorField) {
+              logger.error(logContext, 'Update error connecting to the Context Broker: %j', errorField);
+              callback(JSON.stringify(errorField));
+          } else {
+              alarms.release(constants.ORION_ALARM);
+              logger.debug(logContext, 'Initial entity created successfully.');
+              callback(null, newDevice);
+          }
+      } else {
+          var errorObj;
+
+          logger.error(logContext,
+              'Protocol error connecting to the Context Broker [%d]: %s', response.statusCode, body);
+
+          errorObj = new "error =" +deviceData.id+" type="+deviceData.type+" body="+ body;
+
+          callback(errorObj);
+      }
+  };
+}
+
+/**
+* Creates the response handler for the initial entity creation request using NGSIv2.
+* This handler basically deals with the errors that could have been rised during
+* the communication with the Context Broker.
+*
+* @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
+* @param {Object} newDevice        Device object that will be stored in the database.
+* @return {function}               Handler to pass to the request() function.
+*/
+function createInitialEntityHandlerNgsi2(deviceData, newDevice, callback) {
+  return function handleInitialEntityResponse(error, response, body) {
+      if (error) {
+          logger.error(logContext,
+              'ORION-001: Connection error creating inital entity in the Context Broker: %s', error);
+
+          alarms.raise(constants.ORION_ALARM, error);
+
+          callback(error);
+      } else if (response && response.statusCode === 204) {
+          alarms.release(constants.ORION_ALARM);
+          logger.debug(logContext, 'Initial entity created successfully.');
+          callback(null, newDevice);
+      } else {
+          var errorObj;
+
+          logger.error(logContext,
+              'Protocol error connecting to the Context Broker [%d]: %s', response.statusCode, body);
+
+          errorObj = new errors.EntityGenericError(deviceData.id, deviceData.type, body);
+
+          callback(errorObj);
+      }
+  };
+}
+
+/**
+ * Creates the initial entity representing the device in the Context Broker using NGSIv2.
+ * This is important mainly to allow the rest of the updateContext operations to be performed.
+ *
+ * @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
+ * @param {Object} newDevice        Device object that will be stored in the database.
+ */
+function createInitialEntityNgsi2(deviceData, newDevice, callback) {
+  var options = {
+      url: config.contextBroker.url + '/v2/entities?options=upsert',
+      method: 'POST',
+      json: {
+          id: String(deviceData.name),
+          type: deviceData.type
+      },
+      headers: {
+          'fiware-service': deviceData.service,
+          'fiware-servicepath': deviceData.subservice      }
+  };
+
+  jsonConcat(options.json, formatAttributesNgsi2(deviceData.active, false));
+  jsonConcat(options.json, formatAttributesNgsi2(deviceData.staticAttributes, true));
+  jsonConcat(options.json, formatCommandsNgsi2(deviceData.commands));
+
+  if (config.timestamp && ! utils.isTimestampedNgsi2(options.json)) {
+      options.json[constants.TIMESTAMP_ATTRIBUTE] = {
+          type: constants.TIMESTAMP_TYPE_NGSI2,
+          value: moment()
+      };
+  }
+
+  logger.debug(logContext, 'Creating initial entity in the Context Broker:\n %s', JSON.stringify(options, null, 4));
+
+  request(options, createInitialEntityHandlerNgsi2(deviceData, newDevice, callback));
+}
+
+/**
+* Creates the initial entity representing the device in the Context Broker using NGSIv1.
+* This is important mainly to allow the rest of the updateContext operations to be performed
+* using an UPDATE action instead of an APPEND one.
+*
+* @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
+* @param {Object} newDevice        Device object that will be stored in the database.
+*/
+function createInitialEntityNgsi1(deviceData, newDevice, callback) {
+  var options = {
+          url: config.contextBroker.url + '/v1/updateContext',
+          method: 'POST',
+          json: {
+              contextElements: [
+                  {
+                      type: deviceData.type,
+                      isPattern: 'false',
+                      id: String(deviceData.name),
+                      attributes: []
+                  }
+              ],
+              updateAction: 'APPEND'
+          },
+          headers: {
+              'fiware-service': deviceData.service,
+              'fiware-servicepath': deviceData.subservice          }
+      };
+
+  function formatAttributes(originalVector) {
+      var attributeList = [];
+
+      if (originalVector && originalVector.length) {
+          for (var i = 0; i < originalVector.length; i++) {
+              // (#628) check if attribute has entity_name:
+              // In that case attribute should not be appear in current entity
+              if (!originalVector[i].entity_name) {
+                  attributeList.push({
+                      name: originalVector[i].name,
+                      type: originalVector[i].type,
+                      value: null
+                  });
+              }
+          }
+      }
+
+      return attributeList;
+  }
+
+  function formatCommands(originalVector) {
+      var attributeList = [];
+
+      if (originalVector && originalVector.length) {
+          for (var i = 0; i < originalVector.length; i++) {
+              attributeList.push({
+                  name: originalVector[i].name + constants.COMMAND_STATUS_SUFIX,
+                  type: constants.COMMAND_STATUS,
+                  value: 'UNKNOWN'
+              });
+              attributeList.push({
+                  name: originalVector[i].name + constants.COMMAND_RESULT_SUFIX,
+                  type: constants.COMMAND_RESULT,
+                  value: ' '
+              });
+          }
+      }
+
+      return attributeList;
+  }
+
+  options.json.contextElements[0].attributes = [].concat(
+      formatAttributes(deviceData.active),
+      deviceData.staticAttributes,
+      formatCommands(deviceData.commands));
+
+  if (config.timestamp && ! utils.isTimestamped(options.json)) {
+      options.json.contextElements[0].attributes.push({
+          name: constants.TIMESTAMP_ATTRIBUTE,
+          type: constants.TIMESTAMP_TYPE,
+          value: ' '
+      });
+  }
+
+  logger.debug(logContext, 'Creating initial entity in the Context Broker:\n %s', JSON.stringify(options, null, 4));
+
+  request(options, createInitialEntityHandlerNgsi1(deviceData, newDevice, callback));
+}
+
+
+
+
+
+
+
+
+    
       }
     }
