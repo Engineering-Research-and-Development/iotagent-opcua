@@ -4,7 +4,6 @@ module.exports = {
     console.log("CONFIGURATION API");
     var services=[];
     for(var key in  config.types) {
-      console.log("Analyzing..."+key)
       var type=config.types[key];
 
 

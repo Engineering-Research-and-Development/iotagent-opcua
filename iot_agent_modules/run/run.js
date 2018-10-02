@@ -62,6 +62,8 @@ module.exports = {
     var polling_commands_timer = properties.get('polling-commands-timer');
     var polling_up = properties.get('polling');
 
+    var checkTimer = properties.get('checkTimer');
+
     var _setInterval = require('setinterval-plus')
 
 
@@ -972,7 +974,7 @@ if (config.contextBroker.ngsiVersion=='v2') {
 
         });
       }
-      , 2000);
+      , checkTimer);
 
 
     
