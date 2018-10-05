@@ -106,12 +106,15 @@ module.exports = {
 
     
     var devicesSubs=[];
+    var devices=[];
     //Load persisted devices to monitor
     function loadDevices(){
-      iotAgentLib.listDevices(config.service,config.subservice, function(error, results) {
+      iotAgentLib.listDevices(function(error, results) {
         results.devices.forEach(function (device) {
+          if (device.protocol!="OPCUA")
+            return;
           devicesSubs[device.id]=[];
-
+          devices[device.id]=device;
 
           iotAgentLib.updateRegister(device, function (err) {
             var newDevice={};
@@ -631,6 +634,7 @@ module.exports = {
         },
 
         function (callback) {
+    /*      
           if (doBrowse) {
             var attributeTriggers = [];
             config.contextSubscriptions.forEach(function (cText) {
@@ -674,6 +678,8 @@ module.exports = {
             } else {
               callback();
             }
+
+          */  
           },
 
           //------------------------------------------
@@ -909,6 +915,7 @@ module.exports = {
           //Here only if device added with successfully
           
 
+          //Pause device checking
           timerId.pause();
           setTimeout(function () {
             timerId.resume();
@@ -917,7 +924,6 @@ module.exports = {
 
           activeDeviceSubs(device);
           
-
           callback(null, device);   
           
           
@@ -952,12 +958,11 @@ if (config.contextBroker.ngsiVersion=='v2') {
       }
 
 
-      // repeat with the interval of 2 seconds
+      // repeat with the interval of checkTimer seconds
       let timerId = new _setInterval(() => 
       {
         Object.keys(devicesSubs).forEach(function (key){
-
-          iotAgentLib.getDevice(key, config.service, config.subservice, function(error, device) {
+          iotAgentLib.getDevice(key, devices[key][0].service, devices[key][0].subservice, function(error, device) {
             if(error){
               devicesSubs[key].forEach(function (subscription){
                 logger.debug("terminating...");
@@ -966,6 +971,7 @@ if (config.contextBroker.ngsiVersion=='v2') {
               
               });
               delete devicesSubs[key];
+              delete devices[key];
             }
            
              
@@ -1007,6 +1013,8 @@ if (config.contextBroker.ngsiVersion=='v2') {
          
           initSubscriptionBroker(context, mapping);
         });
+        devices[device.id]=[];
+        devices[device.id].push(device);
       }
       iotAgentLib.setProvisioningHandler(provisioningHandler);
       
