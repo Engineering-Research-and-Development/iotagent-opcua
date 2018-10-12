@@ -1,6 +1,6 @@
 site_name: OPC UA Agent
 site_url: https://opcua-agent.readthedocs.org
-repo_url: https://github.com/Engineering-Research-and-Development/iotagent-opcua.git
+repo_url: https://github.com/Engineering-Research-and-Development/iotagent-opcua
 site_description: OPC UA Agent Documentation
 docs_dir: docs
 site_dir: html
