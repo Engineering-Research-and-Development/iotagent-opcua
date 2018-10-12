@@ -2,7 +2,7 @@
 ### Download 
 Firstly, download git source project
 ```
-git clone "https://github.com/is3labengrd/iotagent-opcua"
+git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua"
 ```
 
 ### Install 

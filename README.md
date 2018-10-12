@@ -9,16 +9,16 @@ The F4I OPC UA Agent is an Open Source component intended to enable capturing da
 The intended level of complexity to support these operations should consider a limited human intervention (mainly during the setup of a new OPC UA endpoint), through the mean of a parametrization task (either manual or semi-automatic, using a text-based parametrization or a simple UI to support the configuration) so that no software coding is required to adapt the agent to different OPC UA devices.
 
 ## ![N|Solid](https://img.shields.io/badge/license-AGPL-blue.svg) License
-https://github.com/is3labengrd/iotagent-opcua/blob/master/LICENSE
+https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/LICENSE
 ## ![N|Solid](https://readthedocs.org/projects/iotagent-opcua/badge/?version=latest) Documentation
-https://github.com/is3labengrd/iotagent-opcua/tree/master/docs <br/>
-https://github.com/is3labengrd/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md
+https://github.com/Engineering-Research-and-Development/iotagent-opcua/tree/master/docs <br/>
+https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md
 
 ## ![N|Solid](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg) Docker
 https://hub.docker.com/r/rdlabengpa/opcuaage/
 
 ## ![N|Solid](https://img.shields.io/badge/support-sof-yellowgreen.svg) Support
-https://github.com/is3labengrd/iotagent-opcua/issues
+https://github.com/Engineering-Research-and-Development/iotagent-opcua/issues
 
 
 ## How to Deploy the GEi
@@ -26,11 +26,11 @@ https://github.com/is3labengrd/iotagent-opcua/issues
 ## How to run tests
 
 For test purpose can use a server available here:<br/>
-https://github.com/is3labengrd/opc-ua-car-server/
+https://github.com/Engineering-Research-and-Development/opc-ua-car-server/
 
-Firstly edit properties https://github.com/is3labengrd/iotagent-opcua/blob/master/conf/config.properties in order to set Northbound (NGSI) and Southbound (OPC UA) settings.
+Firstly edit properties https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/conf/config.properties in order to set Northbound (NGSI) and Southbound (OPC UA) settings.
 
-Here https://github.com/is3labengrd/iotagent-opcua/blob/master/docs/howto.md are available informations about configuration properties.
+Here https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/howto.md are available informations about configuration properties.
 
 ## A walkthrough guide on using the main APIsHow to Deploy the GEi
 
