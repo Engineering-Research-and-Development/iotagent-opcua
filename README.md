@@ -11,8 +11,8 @@ The intended level of complexity to support these operations should consider a l
 ## ![N|Solid](https://img.shields.io/badge/license-AGPL-blue.svg) License
 https://github.com/is3labengrd/iotagent-opcua/blob/master/LICENSE
 ## ![N|Solid](https://readthedocs.org/projects/iotagent-opcua/badge/?version=latest) Documentation
-https://github.com/is3labengrd/iotagent-opcua/tree/master/doc <br/>
-https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/manuals/user_and_programmers_manual.md
+https://github.com/is3labengrd/iotagent-opcua/tree/master/docs <br/>
+https://github.com/is3labengrd/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md
 
 ## ![N|Solid](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg) Docker
 https://hub.docker.com/r/rdlabengpa/opcuaage/
@@ -30,7 +30,7 @@ https://github.com/is3labengrd/opc-ua-car-server/
 
 Firstly edit properties https://github.com/is3labengrd/iotagent-opcua/blob/master/conf/config.properties in order to set Northbound (NGSI) and Southbound (OPC UA) settings.
 
-Here https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/howto.md are available informations about configuration properties.
+Here https://github.com/is3labengrd/iotagent-opcua/blob/master/docs/howto.md are available informations about configuration properties.
 
 ## A walkthrough guide on using the main APIsHow to Deploy the GEi
 
