@@ -32,10 +32,8 @@ Firstly edit properties https://github.com/Engineering-Research-and-Development/
 
 Here https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/howto.md are available informations about configuration properties.
 
-## A walkthrough guide on using the main APIsHow to Deploy the GEi
-
 ## How to get access to the advanced API and Documentation topics
-
+Here https://opcuaiotagent.docs.apiary.io are available documentation about Administration API. 
 ## Installation 
 ```sh
 $ npm install
