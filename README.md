@@ -32,6 +32,8 @@ Firstly edit properties https://github.com/Engineering-Research-and-Development/
 
 Here https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/howto.md are available informations about configuration properties.
 
+For checking current status of the Agent, send a request to /status service (http://{agent-ip-address}:api-port/status)  
+
 ## How to get access to the advanced API and Documentation topics
 Here https://opcuaiotagent.docs.apiary.io are available documentation about Administration API. 
 ## Installation 
