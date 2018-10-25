@@ -13,7 +13,7 @@ https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/mast
 ## ![N|Solid](https://readthedocs.org/projects/iotagent-opcua/badge/?version=latest) Documentation
 https://github.com/Engineering-Research-and-Development/iotagent-opcua/tree/master/docs <br/>
 https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md
-
+## ![N|Solid](https://img.shields.io/badge/tag-fiware+iot-orange.svg?logo=stackoverflow)  
 ## ![N|Solid](https://img.shields.io/docker/pulls/beincpps/opcuaage.svg) Docker
 https://hub.docker.com/r/beincpps/opcuaage/
 
