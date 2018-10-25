@@ -20,8 +20,6 @@ https://hub.docker.com/r/beincpps/opcuaage/
 https://github.com/Engineering-Research-and-Development/iotagent-opcua/issues <br/>
 
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
-<br/>
-[![Documentation badge](https://img.shields.io/readthedocs/iotagent-node-lib.svg)](http://iotagent-opcua.readthedocs.org/en/latest/?badge=latest)
 
 
 ## How to Deploy the GEi
