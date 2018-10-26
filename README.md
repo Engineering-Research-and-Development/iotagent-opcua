@@ -4,7 +4,7 @@ This project is part of FIWARE.
 https://www.fiware.org/ <br/>
 https://catalogue.fiware.org/
     
-The F4I OPC UA Agent is an Open Source component intended to enable capturing data from OPC UA devices on the shopfloor and provide them to the upper levels of a FIWARE-based system. Therefore, the main focus of this component is on the communication from field devices implementing an OPC UA server to FIWARE, allowing the communication to the FIWARE Orion Context Broker.
+The F4I OPC UA Agent is an Open Source component intended to enable capturing data from OPC UA devices on the shopfloor and provide them to the upper levels of a FIWARE-based system. Therefore, the main focus of this component is on the communication from field devices implementing an OPC UA server to FIWARE, allowing the communication to the FIWARE Orion Context Broker. In a nuthshell OPC UA Agent is a bridge between the OPC Unified Architecture protocol and NGSI.
 
 The intended level of complexity to support these operations should consider a limited human intervention (mainly during the setup of a new OPC UA endpoint), through the mean of a parametrization task (either manual or semi-automatic, using a text-based parametrization or a simple UI to support the configuration) so that no software coding is required to adapt the agent to different OPC UA devices.
 
