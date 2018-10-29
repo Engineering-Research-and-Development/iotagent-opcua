@@ -22,8 +22,6 @@ https://github.com/Engineering-Research-and-Development/iotagent-opcua/issues <b
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 
 
-## How to Deploy the GEi
-
 ## How to run tests
 
 For test purpose can use a server available here:<br/>
