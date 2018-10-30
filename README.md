@@ -56,7 +56,7 @@ IDAS links the NGSI southbound API of the FIWARE Orion Context Broker to the
 northbound API of the IoT application stack, by providing a software library
 (the IoT Agent Lib depicted in the previous figure) for developing custom Agents
 that may extend the bridging capabilities of IDAS to other protocols. The F4I
-IDAS OPC-UA Agent makes use of this framework to integrate OPC-UA-based devices
+IDAS OPC UA Agent makes use of this framework to integrate OPC UA-based devices
 in a publish-subscribe system based on the FIWARE Orion Context Broker.
 
 ## Install
@@ -66,7 +66,7 @@ $ npm install
 $ node index.js
 ```
 
-Further Information about how to install the OPC-UA IoT Agent can be found at
+Further Information about how to install the OPC UA IoT Agent can be found at
 the corresponding section of the
 [Installation & Administration Guide](https://iotagent-opcua.readthedocs.io/en/latest/installation_and_administration_guide).
 
@@ -104,7 +104,7 @@ Library [documentation](https://iotagent-node-lib.rtfd.io/).
 
 ## Testing
 
-For test purpose can create an OPC-UA server using the code in the following
+For test purpose can create an OPC UA server using the code in the following
 [GitHub repository](https://github.com/Engineering-Research-and-Development/opc-ua-car-server/)
 
 Firstly edit the
@@ -119,7 +119,7 @@ For checking current status of the Agent, send a request to /status service
 
 ### How to get access to the advanced API and Documentation topics
 
-Documentation about the OPC-UA Administration API can be found
+Documentation about the OPC UA Administration API can be found
 [here](https://opcuaiotagent.docs.apiary.io)
 
 ## Quality Assurance
