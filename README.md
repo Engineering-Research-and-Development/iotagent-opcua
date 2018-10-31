@@ -64,10 +64,10 @@ in a publish-subscribe system based on the FIWARE Orion Context Broker.
 $ npm install
 $ node index.js
 ```
+
 ### Docker Install
 You do need to have docker in your machine. See the [documentation](https://docs.docker.com/installation/) on how to do this.
 
-----
 #### 1. The Fastest Way
 
 Docker Compose allows you to link an OPC UA Agent container to a MongoDB container in a few minutes. This method requires that you install [Docker Compose](https://docs.docker.com/compose/install/).
