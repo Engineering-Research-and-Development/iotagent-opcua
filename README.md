@@ -37,7 +37,6 @@ check the FIWARE Catalogue entry for the
 -   [Install](#install)
 -   [Usage](#usage)
 -   [API](#api)
--   [Command Line Client](#command-line-client)
 -   [Testing](#testing)
 -   [Quality Assurance](#quality-assurance)
 -   [License](#license)
