@@ -1,7 +1,7 @@
 {
   "name": "opcua-iotagent",
   "description": "OPC-UA IoT Agent to interface with NGSI Context Broker",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "homepage": "https://github.com/Engineering-Research-and-Development/iotagent-opcua",
   "keywords": [
     "fiware",
