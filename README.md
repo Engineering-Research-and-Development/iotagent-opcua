@@ -60,7 +60,7 @@ IDAS OPC UA Agent makes use of this framework to integrate OPC UA-based devices
 in a publish-subscribe system based on the FIWARE Orion Context Broker.
 
 ## Install
-
+### NPM Install
 ```console
 $ npm install
 $ node index.js
