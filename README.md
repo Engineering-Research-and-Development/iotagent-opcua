@@ -7,7 +7,6 @@
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-openmtc.svg)
-[![OPC UA](http://b.repl.ca/v1/OPC-UA-blue.png)](http://opcfoundation.org/)
 
 An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent
 is designed to be a bridge between the
