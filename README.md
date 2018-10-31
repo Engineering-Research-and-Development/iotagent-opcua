@@ -34,7 +34,7 @@ check the FIWARE Catalogue entry for the
 ## Contents
 
 -   [Background](#background)
--   [Install](#build--install)
+-   [Install](#install)
 -   [Usage](#usage)
 -   [API](#api)
 -   [Command Line Client](#command-line-client)
