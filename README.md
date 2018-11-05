@@ -2,7 +2,7 @@
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: AGPL](https://img.shields.io/github/license/Engineering-Research-and-Development/iotagent-opcua.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Docker badge](https://img.shields.io/docker/pulls/beincpps/opcuaage.svg)](https://hub.docker.com/r/beincpps/opcuaage/)
+[![Docker badge](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg)](https://hub.docker.com/r/rdlabengpa/opcuaage/)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
@@ -82,7 +82,7 @@ Follow these steps:
 
       iotage:
          hostname: iotage
-         image: beincpps/opcuaage:latest
+         image: rdlabengpa/opcuaage:latest
          networks:
             - hostnet
             - iotnet
@@ -194,7 +194,7 @@ The docker-compose is the preferred method for starting multiple containers and 
 docker run -d --name iotmongo -h iotmongo -v iotmongo_data:/data/db -v iotmongo_conf:/data/configdb mongo:3.4
 ```
 ```
-docker run -d --name iotage -h iotage -p 4001:4001 -p 4081:8080 --link iotmongo -v ./AGECONF:/opt/iotagent-opcua/conf beincpps/opcuaage:latest
+docker run -d --name iotage -h iotage -p 4001:4001 -p 4081:8080 --link iotmongo -v ./AGECONF:/opt/iotagent-opcua/conf rdlabengpa/opcuaage:latest
 ```
 
 Further Information about how to install the OPC UA IoT Agent can be found at
