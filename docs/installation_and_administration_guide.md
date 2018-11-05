@@ -39,7 +39,7 @@ Follow these steps:
 
       iotage:
          hostname: iotage
-         image: beincpps/opcuaage:latest
+         image: rdlabengpa/opcuaage:latest
          networks:
             - hostnet
             - iotnet
@@ -151,6 +151,6 @@ The docker-compose is the preferred method for starting multiple containers and 
 docker run -d --name iotmongo -h iotmongo -v iotmongo_data:/data/db -v iotmongo_conf:/data/configdb mongo:3.4
 ```
 ```
-docker run -d --name iotage -h iotage -p 4001:4001 -p 4081:8080 --link iotmongo -v ./AGECONF:/opt/iotagent-opcua/conf beincpps/opcuaage:latest
+docker run -d --name iotage -h iotage -p 4001:4001 -p 4081:8080 --link iotmongo -v ./AGECONF:/opt/iotagent-opcua/conf rdlabengpa/opcuaage:latest
 ```
 
