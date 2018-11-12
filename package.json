@@ -23,7 +23,7 @@
     "url": "https://github.com/Engineering-Research-and-Development/iotagent-opcua/issues"
   },
   "engines": {
-    "node": ">=6.10.0"
+    "node": ">=8.0.0"
   },
   "dependencies": {
     "async": "1.5.2",
@@ -32,7 +32,7 @@
     "express": "^4.16.3",
     "handlebars": "^4.0.12",
     "http": "0.0.0",
-    "iotagent-node-lib": "^2.7.0",
+    "iotagent-node-lib": "latest",
     "jison": "0.4.17",
     "logops": "1.0.0",
     "mongoose": "4.13.11",
