@@ -239,7 +239,7 @@ For test purpose can create an OPC UA server using the code in the following
 [GitHub repository](https://github.com/Engineering-Research-and-Development/opc-ua-car-server/)
 
 Firstly edit the
-[properties](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/conf/config.propertie)s
+[properties](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/conf/config.properties)
 in order to set Northbound (NGSI) and Southbound (OPC UA) settings.
 
 Further information about configuration properties can be found
