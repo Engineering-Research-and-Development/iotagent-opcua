@@ -473,6 +473,7 @@ module.exports = {
             service: context.service,
             subservice: context.subservice,
             polling: context.polling,
+            trust: context.trust,
             endpoint: endpointUrl
           };
           try {
@@ -709,9 +710,11 @@ module.exports = {
                       if (!err) {
                         logger.info(logContext," read variable % = " , dataValue.toString());
                       }
-
-
-                      callback(err, cR.createResponse(id, type, attributes, ""+dataValue.value.value));
+                      
+                      attributes_array=[];
+                      attributes_array.push(attribute);
+                      
+                      callback(err, cR.createResponse(id, type, attributes_array, ""+dataValue.value.value));
                     });
                   }
 
@@ -775,61 +778,70 @@ module.exports = {
 
           logContext.op="Index.CommandContextHandler";
 
-          contextSubscriptions.forEach(function (contextSubscription) {
+          function executeCommand(){
 
-            if (contextSubscription.id===id){
-
-              contextSubscription.mappings.forEach(function (mapping) {
-                attributes.forEach(function (attribute) {
-                  if (attribute.name===mapping.ocb_id){
-
-                    var input=mapping.inputArguments;
-                    if (input!=null){
-                      var i=0;
-                      input.forEach(function (inputType) {
-                        inputType["value"]=attribute.value[i++];
+            contextSubscriptions.forEach(function (contextSubscription) {
+  
+              if (contextSubscription.id===id){
+  
+                contextSubscription.mappings.forEach(function (mapping) {
+                  attributes.forEach(function (attribute) {
+                    if (attribute.name===mapping.ocb_id){
+  
+                      var input=mapping.inputArguments;
+                      if (input!=null){
+                        var i=0;
+                        input.forEach(function (inputType) {
+                          inputType["value"]=attribute.value[i++];
+                        });
+                      }
+                      var methodsToCall = [];
+                      methodsToCall.push({
+                        objectId: ""+mapping.object_id,
+                        methodId: ""+mapping.opcua_id,
+  
+                        inputArguments: input
                       });
-                    }
-                    var methodsToCall = [];
-                    methodsToCall.push({
-                      objectId: ""+mapping.object_id,
-                      methodId: ""+mapping.opcua_id,
-
-                      inputArguments: input
-                    });
-                    logger.info(logContext,"method to call ="+JSON.stringify(methodsToCall));
-                    the_session.call(methodsToCall,function(err,results){
-
-                      callback(err, {
-                        id: id,
-                        type: type,
-                        attributes: attributes
-                      });
-
-                      contexts.forEach(function (context) {
-                        iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
-                          if (err) {
-                            logger.error(logContext,"could not find the OCB context " + context.id + "".red.bold);
-                            logger.info(logContext,JSON.stringify(err).red.bold);
-                            eUv.executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", "generic error", callback);
-
-                          } else {
-
-                            if (results[0].statusCode.name===opcua.StatusCodes.Bad.name)
-                            eUv.executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", results[0].outputArguments[0].value, callback);
-                            else{
-                              if (results[0].outputArguments[0]!==undefined)
-                              eUv.executeUpdateValues(device, id, type, service, subservice, attributes, "OK", results[0].outputArguments[0].value, callback);
+                      logger.info(logContext,"method to call ="+JSON.stringify(methodsToCall));
+                      the_session.call(methodsToCall,function(err,results){
+  
+                        callback(err, {
+                          id: id,
+                          type: type,
+                          attributes: attributes
+                        }); 
+  
+                        contexts.forEach(function (context) {
+                          iotAgentLib.getDevice(context.id, context.service, context.subservice, function (err, device) {
+                            if (err) {
+                              logger.error(logContext,"could not find the OCB context " + context.id + "".red.bold);
+                              logger.info(logContext,JSON.stringify(err).red.bold);
+                              eUv.executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", "generic error", callback);
+  
+                            } else {
+  
+                              if (results[0].statusCode.name===opcua.StatusCodes.Bad.name)
+                              eUv.executeUpdateValues(device, id, type, service, subservice, attributes, "ERROR", results[0].outputArguments[0].value, callback);
+                              else{
+                                if (results[0].outputArguments[0]!==undefined){
+                                  if (Array.isArray(results[0].outputArguments[0].value))
+                                    results[0].outputArguments[0].value=results[0].outputArguments[0].value[0];    
+                                    eUv.executeUpdateValues(device, id, type, service, subservice, attributes, "OK", results[0].outputArguments[0].value, callback);
+                              }
                             }
-                          }
+                            }
+                          });
                         });
                       });
-                    });
-                  }
+                    }
+                  });
                 });
-              });
-            }
-          });
+              }
+            });
+          }
+          async.waterfall([
+            async.apply(executeCommand)
+        ], callback);
         }
         //iotAgentLib.setDataUpdateHandler(updateContextHandler);
         iotAgentLib.setDataQueryHandler(queryContextHandler);
