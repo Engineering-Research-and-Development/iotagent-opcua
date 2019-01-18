@@ -6,7 +6,9 @@
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
+[![Build badge](https://img.shields.io/travis/Engineering-Research-and-Development/iotagent-opcua.svg)](https://travis-ci.org/Engineering-Research-and-Development/iotagent-opcua/)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-openmtc.svg)
+<br/>
 
 An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent
 is designed to be a bridge between the
