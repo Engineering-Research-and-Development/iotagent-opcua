@@ -26,6 +26,16 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "scripts": {
+    "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
+    "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
+    "test:watch": "npm run test -- -w ./lib",
+    "lint": "eslint . --cache --fix",
+    "prettier": "prettier --single-quote --trailing-comma es5 --write **/*.js *.js",
+    "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
+    "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "watch": "watch 'npm test && npm run lint' ./lib ./test"
+  },
   "dependencies": {
     "async": "1.5.2",
     "body-parser": "^1.18.3",
@@ -53,14 +63,33 @@
     "yargs": "^11.1.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "chai": "3.5.0",
     "closure-linter-wrapper": "1.0.1",
+    "eslint": "^5.6.0",
+    "eslint-config-tamia": "^6.0.1",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.1.0",
     "istanbul": "~0.1.34",
+    "lint-staged": "^7.3.0",
     "mocha": "^2.5.3",
     "nock": "9.0.14",
+    "prettier": "^1.14.2",
     "should": "8.4.0",
     "sinon": "1.17.4",
     "sinon-chai": "2.8.0",
     "timekeeper": "0.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --parser flow --single-quote --trailing-comma es5 --write",
+      "git add"
+    ]
   }
 }
