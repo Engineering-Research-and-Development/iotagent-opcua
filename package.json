@@ -32,7 +32,7 @@
     "test:watch": "npm run test -- -w ./lib",
     "lint": "eslint . --cache --fix",
     "prettier": "prettier --single-quote --trailing-comma es5 --write **/*.js *.js",
-    "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
+    "test:coverage": "istanbul cover _mocha -- --recursive 'test/unit/*.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
   },
