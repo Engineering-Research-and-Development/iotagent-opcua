@@ -1,0 +1,69 @@
+version: "2.3"
+services:
+
+################### TEST DOCKER ENVIRONMENT ##############################
+ 
+   iotage:
+      hostname: iotage
+      image: beincpps/opcuaage:latest
+      networks:
+         - hostnet
+         - iotnet
+      ports:
+         - "9091:9091"
+         - "9090:8080"
+      depends_on:
+         - iotcarsrv
+         - iotmongo
+         - orion
+      volumes:
+         - ./AGE:/opt/iotagent-opcua/conf
+
+   iotcarsrv:
+      hostname: iotcarsrv
+      image: beincpps/opcuacarsrv:latest
+      networks:
+         - iotnet
+      ports:
+         - "5001:5001"
+      volumes:
+         - ./CAR/car.js:/opt/opc-ua-car-server/car.js
+
+   iotmongo:
+      hostname: iotmongo
+      image: mongo:3.4
+      networks:
+         - iotnet
+      ports:
+        - "27017:27017"
+      volumes:
+         - iotmongo_data:/data/db
+         - iotmongo_conf:/data/configdb
+         
+   orion:
+      image: fiware/orion
+      networks:
+         - iotnet
+      links:
+        - mongo
+      ports:
+        - "1026:1026"
+      depends_on:
+         - mongo
+      command: -dbhost mongo      
+    
+   mongo:
+      image: mongo:3.4
+      networks:
+         - iotnet
+      command: --nojournal   
+
+##########################################################
+
+volumes:
+       iotmongo_data:
+       iotmongo_conf:
+
+networks:
+       hostnet:
+       iotnet:
