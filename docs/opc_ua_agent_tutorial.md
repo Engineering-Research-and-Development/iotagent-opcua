@@ -36,7 +36,7 @@ services:
  
    iotage:
       hostname: iotage
-      image: beincpps/opcuaage:latest
+      image: rdlabengpa/opcuaage:latest
       networks:
          - hostnet
          - iotnet
