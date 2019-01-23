@@ -10,8 +10,8 @@ services:
          - hostnet
          - iotnet
       ports:
-         - "9091:9091"
-         - "9090:8080"
+         - "4001:4001"
+         - "8080:8080"
       depends_on:
          - iotcarsrv
          - iotmongo
