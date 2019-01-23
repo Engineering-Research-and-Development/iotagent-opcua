@@ -8,7 +8,9 @@ The OPC UA data will be automatically published in a FIWARE Orion Context Broker
 * **Orion Context Broker**, the broker as entry point of FIWARE platform
 ### OPC UA Server
 For tutorial purposes, a simple server can be found here (https://github.com/Engineering-Research-and-Development/opc-ua-car-server).
+
 ![Car Schema](https://github.com/Engineering-Research-and-Development/opc-ua-car-server/blob/master/img/car_schema.png)
+
 It  represents a car with the follow structure :
 * Car (obj)
   * Speed (attr)
