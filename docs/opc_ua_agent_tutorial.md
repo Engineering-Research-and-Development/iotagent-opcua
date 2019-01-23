@@ -9,7 +9,7 @@ The OPC UA data will be automatically published in a FIWARE Orion Context Broker
 ### OPC UA Server
 For tutorial purposes, a simple server can be found here (https://github.com/Engineering-Research-and-Development/opc-ua-car-server).
 
-![Car Schema](https://github.com/Engineering-Research-and-Development/opc-ua-car-server/blob/master/img/car_schema.png)
+![Car Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/opc-ua-car-server/master/img/car_schema.png)
 
 It  represents a car with the follow structure :
 * Car (obj)
@@ -110,7 +110,7 @@ Under the test folder there are two configuration folders:
 * CAR with OPC UA Car Server javascript file (to set address and port of the server)
 
 Running the docker environment (using configuration files as is) creates the following situation:
-![Car Schema](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20Agent%20tutorial%20Containers.png)
+![Docker Containers Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/iotagent-opcua/master/docs/images/OPC%20UA%20Agent%20tutorial%20Containers.png)
 
 IoT Agent Devices, created by the OPC UA Agent, can be consulted with the follow curl request:
 ```
