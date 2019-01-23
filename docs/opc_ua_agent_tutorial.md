@@ -3,22 +3,22 @@ This is a step-by-step tutorial that will introduce in detail how to enable OPC 
 The OPC UA data will be automatically published in a FIWARE Orion Context Broker using NGSI data model.
 
 ## Actors
-* **OPC UA Server**, representing the data source 
-* **OPC UA Agent**, the connector to join industrial environment to FIWARE
-* **Orion Context Broker**, the broker as entry point of FIWARE platform
++ **OPC UA Server**, representing the data source 
++ **OPC UA Agent**, the connector to join industrial environment to FIWARE
++ **Orion Context Broker**, the broker as entry point of FIWARE platform
 ### OPC UA Server
 For tutorial purposes, a simple server can be found here (https://github.com/Engineering-Research-and-Development/opc-ua-car-server).
 
 ![Car Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/opc-ua-car-server/master/img/car_schema.png)
 
 It  represents a car with the follow structure :
-* Car (obj)
-  * Speed (attr)
-  * Accelerate (meth)
-  * Stop (meth)
-  * Engine (obj)
-    * Temperature (attr)
-    * Oxygen (attr)
++ Car (obj)
+  + Speed (attr)
+  + Accelerate (meth)
+  + Stop (meth)
+  + Engine (obj)
+    + Temperature (attr)
+    + Oxygen (attr)
     
 ### OPC UA Agent
 IoT Agent can be configured as described in https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md. In order to play with OPC UA server above-mentioned, configuration files are already edited and available in test/AGE folder.
