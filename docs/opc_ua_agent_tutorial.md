@@ -105,9 +105,9 @@ git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcu
 cd test
 docker-compose up & 
 ```
-Under test folder there are two configuration folders:
-* AGE with OPC UA Agent configuration files
-* CAR with OPC UA Car Server javascript files 
+Under the test folder there are two configuration folders:
+* AGE with OPC UA Agent configuration files (to set OPC UA variables, methods and to create the mapping with NGSI)
+* CAR with OPC UA Car Server javascript file (to set address and port of the server)
 
 Running the docker environment (using configuration files as is) creates the following situation:
 ![Car Schema](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20Agent%20tutorial%20Containers.png)
