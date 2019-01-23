@@ -21,7 +21,7 @@ It  represents a car with the follow structure :
     * Oxygen (attr)
     
 ### OPC UA Agent
-IoT Agent can be configured as described in https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md. In order to play with OPC UA server, configuration files are already edited and available in test/AGE folder.
+IoT Agent can be configured as described in https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md. In order to play with OPC UA server above-mentioned, configuration files are already edited and available in test/AGE folder.
 
 ### Orion Context Broker
 Orion Context Broker can be external, however to have a black box for testing, it will be included in docker compose in order to have a self-supporting environment. 
