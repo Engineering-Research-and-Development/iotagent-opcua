@@ -48,8 +48,8 @@ module.exports = {
     logger.format = logger.formatters.pipe;
 
     // Specify the context fields to omit as an array
-    var PropertiesReader = require('properties-reader');
-    var properties = PropertiesReader('./conf/config.properties');
+    //var PropertiesReader = require('properties-reader');
+    //var properties = PropertiesReader('./conf/config.properties');
     // fully qualified name
     var endpointUrl = properties.get('endpoint');
     var securityMode = properties.get('securityMode');
@@ -60,7 +60,7 @@ module.exports = {
     var polling_up = properties.get('polling');
 
     if (fs.existsSync('./conf/config.json')) {
-      var config = require('./../../conf/config.json');
+      ;//var config = require('./../../conf/config.json');
     }
     else{
       doAuto = true;
@@ -694,6 +694,9 @@ module.exports = {
         function queryContextHandler(id, type, service, subservice, attributes, callback) {
 
           logContext.op="Index.QueryContextHandler";
+          
+
+
 
           contextSubscriptions.forEach(function (contextSubscription) {
             if (contextSubscription.id===id){
@@ -706,6 +709,8 @@ module.exports = {
                   if (attribute===mapping.ocb_id){
 
                     the_session.readVariableValue(mapping.opcua_id, function(err,dataValue) {
+                      if (dataValue.value==null)
+                        return;
                       logger.info(logContext,"dataValue.value.value="+dataValue.value.value)
                       if (!err) {
                         logger.info(logContext," read variable % = " , dataValue.toString());

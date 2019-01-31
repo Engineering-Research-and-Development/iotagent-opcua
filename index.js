@@ -27,6 +27,7 @@ try{
 
   var PropertiesReader = require('properties-reader');
   var properties = PropertiesReader('./conf/config.properties');
+  global.properties=properties;
   var endpointUrl = properties.get('endpoint');
   var userName = properties.get('userName');
   var password = properties.get('password');
@@ -40,6 +41,8 @@ try{
 
   if (fs.existsSync('./conf/config.json')) {
     var config = require('./conf/config.json');
+   
+    global.config = config;
   }
   else{
     doAuto = true;
