@@ -22,6 +22,8 @@ install:
 
 before_install:
  - ifconfig
+ - netstat -tupnl
+ - ip addr
  - cd test
  - docker-compose up -d
  - docker exec -ti opc_ua_test_orion ip addr
