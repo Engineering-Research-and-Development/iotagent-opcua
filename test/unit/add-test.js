@@ -175,7 +175,7 @@ describe('Verify Northbound flow', function() {
     it('verify update of active attributes on Context Broker', function(done) {
       this.timeout(0);
       // Run test
-
+      console.log("TEST verify update of active attributes on Context Broker");
       var value=null;
       
         
@@ -235,7 +235,12 @@ describe('Verify Northbound flow', function() {
 
     it('verify commands execution as context provider', function(done) {
       this.timeout(0);
+<<<<<<< HEAD
       console.log('verify commands execution as context provider');
+=======
+           console.log("TEST verify commands execution as context provider");
+
+>>>>>>> 257dbcbb07ea8eb28955d2ccb4382ee612673622
       // Run test
       //STOP CAR
       var json={};
