@@ -29,16 +29,16 @@ services:
       volumes:
          - ./CAR/car.js:/opt/opc-ua-car-server/car.js
 
-   iotmongo:
-      hostname: iotmongo
-      image: mongo:3.4
-      networks:
-         - iotnet
-      ports:
-        - "27017:27017"
-      volumes:
-         - iotmongo_data:/data/db
-         - iotmongo_conf:/data/configdb
+    #iotmongo:
+      # hostname: iotmongo
+       #image: mongo:3.4
+       #networks:
+        #  - iotnet
+       #ports:
+         #- "27017:27017"
+       #volumes:
+         # - iotmongo_data:/data/db
+          #- iotmongo_conf:/data/configdb
          
    orion:
       hostname: orion
@@ -65,9 +65,9 @@ services:
 
 ##########################################################
 
-volumes:
-       iotmongo_data:
-       iotmongo_conf:
+ #volumes:
+      #  iotmongo_data:
+       # iotmongo_conf:
 
 networks:
        iotnet:
