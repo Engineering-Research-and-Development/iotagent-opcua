@@ -1,4 +1,8 @@
 language: node_js
+addons:
+  apt:
+    packages:
+      - net-tools
 sudo: required
 
 node_js:
