@@ -22,13 +22,18 @@ var hostIP=null;
 
 child = exec("sudo docker exec opc_ua_test_orion  ip route | grep default | cut -f 3 -d ' '",
    function (error, stdout, stderr) {
+    console.log("stdout="+stdout);
+    console.log("stderr="+stderr);
+
       if (error !== null) {
         loggerTest.info(logContextTest,"exec error: ".rainbow, error);
 
       }
       else{
 
-       hostIP=stdout.replace(/(\r\n|\n|\r)/gm, "");;
+       hostIP=stdout.replace(/(\r\n|\n|\r)/gm, "");
+       console.log("hostIP="+hostIP);
+
        if (hostIP!=null){
         var port=config.providerUrl.split(":")[2];
         config.providerUrl=hostIP+":"+port;
