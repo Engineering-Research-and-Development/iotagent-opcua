@@ -21,6 +21,7 @@ install:
  - npm install
 
 before_install:
+ - ifconfig
  - cd test
  - docker-compose up -d
  - npm update -q
