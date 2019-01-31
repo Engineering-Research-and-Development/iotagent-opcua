@@ -265,7 +265,7 @@ var json={};
 json.value=null;
 json.type="command";
 var stopRequest = {
-  url: 'http://192.168.22.33:1026/v2/registrations',
+  url: 'http://'+config.contextBroker.host+':'+config.contextBroker.port+'/v2/registrations',
   method: 'GET',
   headers: {
       'fiware-service': config.service,
