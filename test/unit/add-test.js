@@ -22,8 +22,7 @@ var hostIP=null;
 
 child = exec("sudo docker exec opc_ua_test_orion  ip route | grep default | cut -f 3 -d ' '",
    function (error, stdout, stderr) {
-    console.log("stdout="+stdout);
-    console.log("stderr="+stderr);
+    
 
       if (error !== null) {
         loggerTest.info(logContextTest,"exec error: ".rainbow, error);
@@ -32,7 +31,6 @@ child = exec("sudo docker exec opc_ua_test_orion  ip route | grep default | cut 
       else{
 
        hostIP=stdout.replace(/(\r\n|\n|\r)/gm, "");
-       console.log("hostIP="+hostIP);
 
        if (hostIP!=null){
         var port=config.providerUrl.split(":")[2];
@@ -237,6 +235,7 @@ describe('Verify Northbound flow', function() {
 
     it('verify commands execution as context provider', function(done) {
       this.timeout(0);
+      console.log('verify commands execution as context provider');
       // Run test
       //STOP CAR
       var json={};
@@ -252,7 +251,10 @@ describe('Verify Northbound flow', function() {
         }
     };
     request(stopRequest, function(error, response, body) {
-     
+      console.log("error STOP="+JSON.stringify(error));
+      console.log("response STOP="+JSON.stringify(response));
+      console.log("body STOP="+JSON.stringify(body));
+
     });
 
     var myVar = setTimeout(accelerateFunction, 2000);
