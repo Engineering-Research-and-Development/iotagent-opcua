@@ -175,7 +175,7 @@ describe('Verify Northbound flow', function() {
     it('verify update of active attributes on Context Broker', function(done) {
       this.timeout(0);
       // Run test
-      console.log("TEST verify update of active attributes on Context Broker");
+
       var value=null;
       
         
@@ -235,10 +235,7 @@ describe('Verify Northbound flow', function() {
 
     it('verify commands execution as context provider', function(done) {
       this.timeout(0);
-
-      console.log("TEST verify commands execution as context provider");
-
-
+      console.log("verify commands execution as context provider");
       // Run test
       //STOP CAR
       var json={};
@@ -259,6 +256,30 @@ describe('Verify Northbound flow', function() {
       console.log("body STOP="+JSON.stringify(body));
 
     });
+
+
+//Just for testing
+//GET REGISTRATIONS
+console.log("GET REGISTRATIONS");
+var json={};
+json.value=null;
+json.type="command";
+var stopRequest = {
+  url: 'http://192.168.22.33:1026/v2/registrations',
+  method: 'GET',
+  headers: {
+      'fiware-service': config.service,
+      'fiware-servicepath': config.subservice
+  }
+};
+request(stopRequest, function(error, response, body) {
+console.log("LOC error STOP="+JSON.stringify(error));
+console.log("LOC response STOP="+JSON.stringify(response));
+console.log("LOC body STOP="+JSON.stringify(body));
+
+});
+    //
+
 
     var myVar = setTimeout(accelerateFunction, 2000);
 
