@@ -24,6 +24,7 @@ before_install:
  - ifconfig
  - cd test
  - docker-compose up -d
+ - docker exec -ti opc_ua_test_orion ip addr
  - npm update -q
 
 # before_script:
