@@ -47,9 +47,9 @@ services:
       networks:
          - iotnet
       links:
-        - mongo
+         - mongo
       ports:
-        - "1026:1026"
+         - "1026:1026"
       depends_on:
          - mongo
       command: -dbhost mongo      
@@ -60,7 +60,7 @@ services:
       networks:
          - iotnet
       ports:
-        - "27027:27017"
+         - "27027:27017"
       command: --nojournal   
 
 ##########################################################
