@@ -17,8 +17,7 @@ install:
  - npm install
 
 before_install:
- - docker pull fiware/orion:latest
- - docker run -d --net host -l orion fiware/orion:latest
+ - test/docker-compose up -d
  - npm update -q
 
 # before_script:
