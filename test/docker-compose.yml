@@ -1,73 +1,28 @@
 version: "2.3"
 services:
 
-################### TEST DOCKER ENVIRONMENT ##############################
- 
-   #iotage:
-    #  hostname: iotage
-     # image: rdlabengpa/opcuaage:latest
-      #networks:
-       #  - hostnet
-        # - iotnet
-      #ports:
-       #  - "4001:4001"
-        # - "8080:8080"
-      #depends_on:
-       #  - iotcarsrv
-        # - iotmongo
-         #- orion
-      #volumes:
-       #  - ./AGE:/opt/iotagent-opcua/conf
 
    iotcarsrv:
       hostname: iotcarsrv
       image: beincpps/opcuacarsrv:latest
-      networks:
-         - iotnet
       ports:
-         - "5001:5001"
+        - "5001:5001"
       volumes:
-         - ./CAR/car.js:/opt/opc-ua-car-server/car.js
-
-    #iotmongo:
-      # hostname: iotmongo
-       #image: mongo:3.4
-       #networks:
-        #  - iotnet
-       #ports:
-         #- "27017:27017"
-       #volumes:
-         # - iotmongo_data:/data/db
-          #- iotmongo_conf:/data/configdb
+        - ./CAR/car.js:/opt/opc-ua-car-server/car.js
          
    orion:
       hostname: orion
       container_name: opc_ua_test_orion
       image: fiware/orion:2.1.0
-      networks:
-         - iotnet
-      links:
-         - mongo
       ports:
-         - "1026:1026"
+        - "1026:1026"
       depends_on:
-         - mongo
+        - mongo
       command: -dbhost mongo      
     
    mongo:
       hostname: mongo
       image: mongo:3.4
-      networks:
-         - iotnet
       ports:
-         - "27027:27017"
+        - "27027:27017"
       command: --nojournal   
-
-##########################################################
-
- #volumes:
-      #  iotmongo_data:
-       # iotmongo_conf:
-
-networks:
-       iotnet:
