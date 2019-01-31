@@ -17,7 +17,8 @@ install:
  - npm install
 
 before_install:
- - test/docker-compose up -d
+ - cd test
+ - docker-compose up -d
  - npm update -q
 
 # before_script:
