@@ -1,39 +1,50 @@
 # OPC UA Agent Installation & Administration Guide
+
 ### NPM Install
-#### Download 
+
+#### Download
+
 Firstly, download git source project
-```
+
+```bash
 git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua"
 ```
 
-#### Install 
+#### Install
+
 Then, launch npm install process in order to download and install all dependencies.
-```
+
+```bash
 cd iotagent-opcua
 npm install
 ```
 
 #### Run
+
 Finally, run the agent.
-```
+
+```bash
 node index.js
 ```
 
-----
+---
 
 ### Docker Install
-You do need to have docker in your machine. See the [documentation](https://docs.docker.com/installation/) on how to do this.
 
+You do need to have docker in your machine. See the [documentation](https://docs.docker.com/installation/) on how to do
+this.
 
 #### 1. The Fastest Way
 
-Docker Compose allows you to link an OPC UA Agent container to a MongoDB container in a few minutes. This method requires that you install [Docker Compose](https://docs.docker.com/compose/install/).
+Docker Compose allows you to link an OPC UA Agent container to a MongoDB container in a few minutes. This method
+requires that you install [Docker Compose](https://docs.docker.com/compose/install/).
 
 Follow these steps:
 
-1. Create a directory on your system on which to work (for example, `~/opc-ua-agent`).
-2. Create a new file called `docker-compose.yml` inside your directory with the following contents:
-```
+1.  Create a directory on your system on which to work (for example, `~/opc-ua-agent`).
+2.  Create a new file called `docker-compose.yml` inside your directory with the following contents:
+
+```yaml
    version: "2.3"
    services:
 
@@ -68,11 +79,13 @@ Follow these steps:
          hostnet:
          iotnet:
 ```
-3. Using the command-line and within the directory you created type: `sudo docker-compose up`.
 
-Before running containers you must create an AGECONF subdirectory in the same directory as the docker-compose.yml file and create in it a config.properties file based on the following template:
+3.  Using the command-line and within the directory you created type: `sudo docker-compose up`.
 
-```
+Before running containers you must create an AGECONF subdirectory in the same directory as the docker-compose.yml file
+and create in it a config.properties file based on the following template:
+
+```text
 namespace-ignore=2
 context-broker-host=<ORIONHOSTIP>
 context-broker-port=<ORIONPORT>
@@ -130,9 +143,10 @@ pollingExpiration=200000
 #AGENT ID
 agent-id=<PREFIX>
 ```
+
 You can set the properties according to your environment, but you should focus at least on:
 
-```
+```text
 context-broker-host=<ORIONHOSTIP>
 context-broker-port=<ORIONPORT>
 
@@ -145,12 +159,14 @@ agent-id=<PREFIX>
 ```
 
 #### 2. Alternative Start Method
-The docker-compose is the preferred method for starting multiple containers and creating related resources, but alternatively you can use the following commands:
 
-```
+The docker-compose is the preferred method for starting multiple containers and creating related resources, but
+alternatively you can use the following commands:
+
+```bash
 docker run -d --name iotmongo -h iotmongo -v iotmongo_data:/data/db -v iotmongo_conf:/data/configdb mongo:3.4
 ```
-```
+
+```bash
 docker run -d --name iotage -h iotage -p 4001:4001 -p 4081:8080 --link iotmongo -v ./AGECONF:/opt/iotagent-opcua/conf rdlabengpa/opcuaage:latest
 ```
-
