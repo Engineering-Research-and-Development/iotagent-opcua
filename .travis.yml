@@ -1,13 +1,15 @@
 language: node_js
+
+sudo: required
+
 addons:
   apt:
     packages:
       - net-tools
-sudo: required
 
 node_js:
- - "8"
- - "10"
+  - "8"
+  - "10"
 
 branches:
   only:
@@ -18,20 +20,22 @@ services:
   - docker
 
 install:
- - npm install
+  - npm install
 
 before_install:
- - ifconfig
- - netstat -tupnl
- - ip addr
- - cd test
- - docker-compose up -d
- - docker exec -ti opc_ua_test_orion ip addr
- - docker exec -ti opc_ua_test_orion curl http://172.17.0.1:4001/iot/devices
- - npm update -q
+  - ifconfig
+  - netstat -tupnl
+  - ip addr
+  - cd test
+  - docker-compose up -d
+  - docker exec -ti opc_ua_test_orion ip addr
+  - docker exec -ti opc_ua_test_orion curl http://172.17.0.1:4001/iot/devices
+  - npm update -q
 
-# before_script:
- # - npm run lint
+before_script:
+  #  - npm run lint
+  - npm run lint:text
+  - npm run lint:md
 
-after_script: 
+after_script:
   - npm run test:coveralls
