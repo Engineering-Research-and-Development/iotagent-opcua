@@ -125,6 +125,7 @@ To run docker-compose follow these steps:
 
 ```bash
 git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua"
+cd iotagent-opcua
 cd test
 docker-compose up &
 ```
