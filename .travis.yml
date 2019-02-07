@@ -21,13 +21,8 @@ install:
  - npm install
 
 before_install:
- - ifconfig
- - netstat -tupnl
- - ip addr
  - cd test
  - docker-compose up -d
- - docker exec -ti opc_ua_test_orion ip addr
- - docker exec -ti opc_ua_test_orion curl http://172.17.0.1:4001/iot/devices
  - npm update -q
 
 # before_script:
