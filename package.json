@@ -78,7 +78,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "husky": "^1.1.0",
-    "istanbul": "~0.1.34",
+    "istanbul": "~0.4.5",
     "lint-staged": "^7.3.0",
     "mocha": "^2.5.3",
     "nock": "9.0.14",

@@ -1,4 +1,4 @@
-ARG  NODE_VERSION=8.12.0-stretch
+ARG  NODE_VERSION=8.15.0-stretch
 FROM node:${NODE_VERSION}
 
 MAINTAINER Engineering Ingegneria Informatica spa - Research and Development Lab
