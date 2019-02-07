@@ -1,21 +1,20 @@
 module.exports = {
-  createResponse: function (id, type, attributes, body) {
+    createResponse: function(id, type, attributes, body) {
+        var values = body.split(','),
+            responses = [];
 
-      var values = body.split(','),
-      responses = [];
+        for (var i = 0; i < attributes.length; i++) {
+            responses.push({
+                name: attributes[i],
+                type: 'string',
+                value: values[i]
+            });
+        }
 
-      for (var i = 0; i < attributes.length; i++) {
-          responses.push({
-              name: attributes[i],
-              type: "string",
-              value: values[i]
-          });
-      }
-
-      return {
-          id: id,
-          type: type,
-          attributes: responses
-      };
-  }
-}
+        return {
+            id: id,
+            type: type,
+            attributes: responses
+        };
+    }
+};

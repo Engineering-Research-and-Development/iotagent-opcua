@@ -1,12 +1,18 @@
-### Install 
+### Install
+
 Firstly, launch npm install process in order to download and install all dependencies.
+
 ```
 npm install
 ```
+
 ### Configure
 
 #### Auto Configuration (using of Mapping Tool)
-Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South side (OPC UA endpoint).
+
+Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South
+side (OPC UA endpoint).
+
 ```
 #SOUTHBOUND CONFIGURATION (OPC UA)
 #Namespace to ignore
@@ -45,9 +51,14 @@ OPC-datatype-String=Text
 OPC-datatype-ByteString=Text
 #END DATATYPE MAPPING OPCUA --> NGSI
 ```
-Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands. It is possible modify configuration output (config.json file in same path) manually in order to drop some attributes/command or add lazy attributes. 
+
+Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching):
+all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
+It is possible modify configuration output (config.json file in same path) manually in order to drop some
+attributes/command or add lazy attributes.
 
 #### Manual Configuration (editing config.json file)
+
 ```
 {
     "logLevel": "INFO",
@@ -164,7 +175,9 @@ Using of Auto Configuration create a mapping for all OPC UA objects (except thos
 ```
 
 ### Run
+
 Finally, run the agent.
+
 ```
 node index.js
 ```

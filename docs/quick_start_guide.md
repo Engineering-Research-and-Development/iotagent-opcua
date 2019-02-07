@@ -1,12 +1,18 @@
-### Install 
+### Install
+
 Firstly, launch npm install process in order to download and install all dependencies.
+
 ```
 npm install
 ```
+
 ### Configure
 
 #### Auto Configuration (using of Mapping Tool)
-Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South side (OPC UA endpoint).
+
+Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South
+side (OPC UA endpoint).
+
 ```
 #SOUTHBOUND CONFIGURATION (OPC UA)
 #Namespace to ignore
@@ -57,26 +63,35 @@ pollingExpiration=200000
 #END POLL CPMMANDS SETTINGS
 
 ```
-Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands. It is possible modify configuration output (config.json file in same path) manually in order to drop some attributes/command, add lazy attributes and enable the command polling. 
+
+Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching):
+all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
+It is possible modify configuration output (config.json file in same path) manually in order to drop some
+attributes/command, add lazy attributes and enable the command polling.
 
 #### Manual Configuration (editing config.json file)
+
 To define active attributes:
-* set the active object in active section array of type object
-* set the mapping object in mappings array of contexts
+
+-   set the active object in active section array of type object
+-   set the mapping object in mappings array of contexts
 
 To define lazy attributes:
-* set the lazy object in lazy section array of type object
-* set the mapping object in mappings array of contextSubscriptions (set object_id to null and inputArguments to empty array)
+
+-   set the lazy object in lazy section array of type object
+-   set the mapping object in mappings array of contextSubscriptions (set object_id to null and inputArguments to empty
+    array)
 
 To define commands attributes:
-* set the command object in commands section array of type object
-* set the mapping object in mappings array of contextSubscriptions (object_id is the parent object of the method)
+
+-   set the command object in commands section array of type object
+-   set the mapping object in mappings array of contextSubscriptions (object_id is the parent object of the method)
 
 To define poll commands:
-* set polling to true to enable or to false to disable poll commands
-* set polling Daemon Frequency and Expiration in ms
-* set polling-commands-timer in ms to execute che poll commands automatically
 
+-   set polling to true to enable or to false to disable poll commands
+-   set polling Daemon Frequency and Expiration in ms
+-   set polling-commands-timer in ms to execute che poll commands automatically
 
 In order to clarify, see the following example:
 
@@ -200,7 +215,9 @@ In order to clarify, see the following example:
 ```
 
 ### Run
-Finally, run the agent. 
+
+Finally, run the agent.
+
 ```
 node index.js
 ```

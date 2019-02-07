@@ -1,9 +1,10 @@
 language: node_js
+
 sudo: required
 
 node_js:
- - "8"
- - "10"
+  - "8"
+  - "10"
 
 branches:
   only:
@@ -14,7 +15,7 @@ services:
   - docker
 
 install:
- - npm install
+  - npm install
 
 before_install:
  - cd test
@@ -22,8 +23,8 @@ before_install:
  - cd ..
  - npm update -q
 
-# before_script:
- # - npm run lint
-
+before_script:
+ - npm run lint:text
+ - npm run lint:md
 after_script: 
   - npm run test:coveralls

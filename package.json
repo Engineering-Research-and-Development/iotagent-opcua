@@ -31,7 +31,10 @@
     "test": "mocha --recursive 'test/unit/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:watch": "npm run test -- -w ./lib",
     "lint": "eslint . --cache --fix",
-    "prettier": "prettier --single-quote --trailing-comma es5 --write **/*.js *.js",
+    "lint:md": "remark 'README.md' docs",
+    "lint:text": "textlint 'README.md' 'docs/*.md' 'docs/**/*.md'",
+    "prettier": "prettier --config .prettierrc.json --write '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
+    "prettier:text": "prettier 'README.md' 'docs/*.md' 'docs/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
     "test:coverage": "istanbul cover _mocha -- --recursive 'test/unit/*.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
@@ -66,18 +69,30 @@
     "coveralls": "^3.0.2",
     "chai": "3.5.0",
     "closure-linter-wrapper": "1.0.1",
-    "eslint": "^5.6.0",
-    "eslint-config-tamia": "^6.0.1",
-    "eslint-plugin-prettier": "^3.0.0",
+    "eslint": "^5.8.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-markdown": "^1.0.0",
+    "eslint-plugin-mocha": "^5.2.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
     "husky": "^1.1.0",
     "istanbul": "~0.4.5",
     "lint-staged": "^7.3.0",
     "mocha": "^2.5.3",
     "nock": "9.0.14",
     "prettier": "^1.14.2",
+    "remark-cli": "^6.0.1",
+    "remark-preset-lint-recommended": "^3.0.2",
     "should": "8.4.0",
     "sinon": "1.17.4",
     "sinon-chai": "2.8.0",
+    "textlint": "^11.0.1",
+    "textlint-rule-common-misspellings": "^1.0.1",
+    "textlint-rule-no-dead-link": "^4.4.1",
+    "textlint-rule-terminology": "^1.1.30",
+    "textlint-rule-write-good": "^1.6.2",
     "timekeeper": "0.0.5"
   },
   "husky": {
@@ -87,8 +102,15 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
-      "prettier --parser flow --single-quote --trailing-comma es5 --write",
+      "prettier --config .prettierrc.json --write",
+      "git add"
+    ],
+    "*.md": [
+      "prettier --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
+      "git add"
+    ], 
+    "*.yml": [
+      "prettier --no-config --write",
       "git add"
     ]
   }
