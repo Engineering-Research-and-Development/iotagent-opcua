@@ -20,6 +20,7 @@ var exec = require('child_process').exec;
 var child;
 var hostIP=null;
 
+
 child = exec("sudo docker exec opc_ua_test_orion  ip route | grep default | cut -f 3 -d ' '",
    function (error, stdout, stderr) {
     
@@ -28,7 +29,7 @@ child = exec("sudo docker exec opc_ua_test_orion  ip route | grep default | cut 
         loggerTest.info(logContextTest,"exec error: ".rainbow, error);
 
       }
-      else{
+   else{
 
        hostIP=stdout.replace(/(\r\n|\n|\r)/gm, "");
 
@@ -36,8 +37,12 @@ child = exec("sudo docker exec opc_ua_test_orion  ip route | grep default | cut 
         var port=config.providerUrl.split(":")[2];
         config.providerUrl=hostIP+":"+port;
       }
-      }
-   });
+   }
+});
+
+
+
+
 
 
 
@@ -237,6 +242,8 @@ describe('Verify Northbound flow', function() {
       this.timeout(0);
       console.log("verify commands execution as context provider");
       // Run test
+      
+     
       //STOP CAR
       var json={};
       json.value=null;
@@ -251,35 +258,104 @@ describe('Verify Northbound flow', function() {
         }
     };
     request(stopRequest, function(error, response, body) {
-      console.log("error STOP="+JSON.stringify(error));
-      console.log("response STOP="+JSON.stringify(response));
-      console.log("body STOP="+JSON.stringify(body));
+      console.log("stopRequest error STOP="+JSON.stringify(error));
+      console.log("stopRequest response STOP="+JSON.stringify(response));
+      console.log("stopRequest body STOP="+JSON.stringify(body));
 
     });
+     
+     
+     
+      //STOP CAR locally (for Travis unreachability)
+      var json={
+        "contextElements": [
+            {
+               "type": "Car",
+                "isPattern": "false",
+                "id": "Car",
+                "attributes": [
+                  {
+                    "name":"Stop",
+                    "type":"command",
+                    "value":null
+                  }
+                ]
+            }
+        ],
+        "updateAction": "UPDATE"
+    };
 
+      var stopRequest = {
+        url: 'http://localhost:4001/v1/updateContext',
+        method: 'POST',
+        json: json,
+        headers: {
+            'fiware-service': config.service,
+            'fiware-servicepath': config.subservice
+        }
+    };
+    request(stopRequest, function(error, response, body) {
+      console.log("stopRequest locally error ="+JSON.stringify(error));
+      console.log("stopRequest locally response ="+JSON.stringify(response));
+      console.log("stopRequest locally body ="+JSON.stringify(body));
 
-//Just for testing
-//GET REGISTRATIONS
-console.log("GET REGISTRATIONS");
-var json={};
-json.value=null;
-json.type="command";
-var stopRequest = {
-  url: 'http://'+config.contextBroker.host+':'+config.contextBroker.port+'/v2/registrations',
-  method: 'GET',
-  headers: {
-      'fiware-service': config.service,
-      'fiware-servicepath': config.subservice
-  }
-};
-request(stopRequest, function(error, response, body) {
-console.log("LOC error STOP="+JSON.stringify(error));
-console.log("LOC response STOP="+JSON.stringify(response));
-console.log("LOC body STOP="+JSON.stringify(body));
+    });
+     
+      
 
-});
-    //
+     
+     
+     
+     
+      
 
+     
+     
+     
+
+     
+      //Accelerate CAR locally (for Travis unreachability)
+      var json={
+        "contextElements": [
+            {
+               "type": "Car",
+                "isPattern": "false",
+                "id": "Car",
+                "attributes": [
+                  {
+                    "name":"Accelerate",
+                    "type":"command",
+                    "value":[2]
+                  }
+                ]
+            }
+        ],
+        "updateAction": "UPDATE"
+    }
+;
+     
+      var accelerateRequest = {
+        url: 'http://localhost:4001/v1/updateContext',
+        method: 'POST',
+        json: json,
+        headers: {
+            'fiware-service': config.service,
+            'fiware-servicepath': config.subservice
+        }
+    };
+    request(accelerateRequest, function(error, response, body) {
+      console.log("accelerateRequest locally error ="+JSON.stringify(error));
+      console.log("accelerateRequest locally response ="+JSON.stringify(response));
+      console.log("accelerateRequest locally body ="+JSON.stringify(body));
+
+    });
+     
+     
+     
+     
+     
+
+ 
 
     var myVar = setTimeout(accelerateFunction, 2000);
 
@@ -304,8 +380,50 @@ console.log("LOC body STOP="+JSON.stringify(body));
         }
     };
     request(accelerateRequest, function(error, response, body) {
-     
+     console.log("accelerateRequest error ="+JSON.stringify(error));
+console.log("accelerateRequest response ="+JSON.stringify(response));
+console.log("accelerateRequest body ="+JSON.stringify(body));
   });
+       
+       
+       
+          //Accelerate CAR locally (for Travis unreachability)
+      var json={
+        "contextElements": [
+            {
+               "type": "Car",
+                "isPattern": "false",
+                "id": "Car",
+                "attributes": [
+                  {
+                    "name":"Accelerate",
+                    "type":"command",
+                    "value":[2]
+                  }
+                ]
+            }
+        ],
+        "updateAction": "UPDATE"
+    }
+;
+     
+      var accelerateRequest = {
+        url: 'http://localhost:4001/v1/updateContext',
+        method: 'POST',
+        json: json,
+        headers: {
+            'fiware-service': config.service,
+            'fiware-servicepath': config.subservice
+        }
+    };
+    request(accelerateRequest, function(error, response, body) {
+      console.log("accelerateRequest locally error ="+JSON.stringify(error));
+      console.log("accelerateRequest locally response ="+JSON.stringify(response));
+      console.log("accelerateRequest locally body ="+JSON.stringify(body));
+
+    });
+       
+       
 }
     function myTimer() {
       var updated=false;
