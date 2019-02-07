@@ -10,7 +10,7 @@
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-openmtc.svg) <br/>
 
 An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between the
-[OPC Unified Architecture](http://www.opcua.us/) protocol and the
+[OPC Unified Architecture](https://opcfoundation.org/about/opc-technologies/opc-ua/) protocol and the
 [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 interface of a context broker.
 
