@@ -5,19 +5,19 @@
  *
  */
 
+
 const request = require('request');
 
 var colors = require('colors');
-// Set Up
-global.logContextTest = {
-    comp: 'iotAgent-OPCUA',
-    op: 'Test'
+ // Set Up
+ global.logContextTest = {
+  comp: 'iotAgent-OPCUA',
+  op: 'Test',
 };
 var loggerTest = require('logops');
 loggerTest.format = loggerTest.formatters.pipe;
 var exec = require('child_process').exec;
 var child;
-
 var hostIP=null;
 
 
@@ -125,17 +125,117 @@ describe('Verify Northbound flow', function() {
         }
         else{
           doAuto = true;
+        }
+      
+        if (doAuto){
+          logContext.op="Index.MappingTool";
+          logger.info(logContext,'----------------    MAPPING TOOL    ----------------');
+      
+          var loadingBar;
+          loadingBar=setInterval(function(){  process.stdout.write('.'); }, 3000);
+      
+          var exec = require('child_process').exec;
+          try {
+            if(userName!=0 && password!=0)
+            {
+              var cmdjava = 'java -jar ../../mapping_tool.jar  -e '+endpointUrl+' -f ./config-test.properties' + ' -u ' + userName + ' -p ' + password;
+            }
+            else {
+              var cmdjava = 'java -jar ../../mapping_tool.jar  -e '+endpointUrl+' -f ./config-test.properties' ;
+            }
+            var child = exec(cmdjava, function(err, stdout, stderr) {
+              clearInterval(loadingBar);
+              if (err) {
+                logger.error(logContext,"There is a problem with automatic configuration. Loading old configuration (if exists)...");
+              }else{
+                logger.info(logContext,"Automatic configuration successfully created. Loading new configuration...");
+              }
+             
+              run.run();
+              server.start();
+            }
+          );
+        } catch (ex) {
+          clearInterval(loadingBar);
+          logger.info(logContext,"There is a problem with automatic configuration. Loading old configuration (if exists)...");
+        }
+        module.exports = child;
+      }else{
+        run.run();
+        server.start();
+      }
+      
+      }
+      catch(ex){
+        var logger = require('logops');
+        logger.error(ex)
+        logger.error(logContext,"Generic error: closing application...".red);
+        process.exit(1);
+      }
+      
+    } 
+ // }
+    );
+    
+    it('verify update of active attributes on Context Broker', function(done) {
+      this.timeout(0);
+      // Run test
+
+      var value=null;
+      
+        
+
+      var temperatureRequest = {
+        url: 'http://'+config.contextBroker.host+':'+config.contextBroker.port+'/v2/entities/Car/attrs/Engine_Temperature',
+        method: 'GET',
+        headers: {
+            'fiware-service': config.service,
+            'fiware-servicepath': config.subservice
+        }
+     };
+    function myTimer() {
+
+      var updated=false;
+
+      request(temperatureRequest, function(error, response, body) {
+
+        var bodyObject={};
+        bodyObject=JSON.parse(body);
+        if (value!=null){
+          if (value!=bodyObject.value){
+            value=bodyObject.value;
+            var text='value updated '+value;
+
+            loggerTest.info(logContextTest,text.rainbow);
+            updated=true;
+            
+            done();
+           
+          }
+        }else{
+          value=bodyObject.value;
+        }
+       
+
+        if (!updated){
+          var text='value '+value;
+          loggerTest.info(logContextTest,text.rainbow);
+          setTimeout( myTimer, 2000 );
+          
+
 
         }
-    }
-});
 
-describe('Verify Northbound flow', function() {
-    beforeEach(function(done) {
-        // Set up
-        done();
+
     });
 
+      }
+
+      
+      myTimer(); //immediate first run 
+
+      //done();
+    });
 
 
     it('verify commands execution as context provider', function(done) {
@@ -202,7 +302,6 @@ describe('Verify Northbound flow', function() {
     });
      
       
-
 
      
      
@@ -360,4 +459,5 @@ console.log("accelerateRequest body ="+JSON.stringify(body));
     });
       }
     });
+  });
 });
