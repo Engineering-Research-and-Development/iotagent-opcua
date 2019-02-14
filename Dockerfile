@@ -24,4 +24,6 @@ VOLUME /opt/iotagent-opcua/conf
 
 WORKDIR /opt/iotagent-opcua
 
-ENTRYPOINT node index.js
+COPY docker-entrypoint.sh entrypoint.sh
+
+ENTRYPOINT ./entrypoint.sh
