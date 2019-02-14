@@ -1,0 +1,9 @@
+####COMMENT ALL LINES IF YOU WANT DISABLE DOCKER SECRETS
+export IOTA_AUTH_HEADER=Authorization  
+export IOTA_AUTH_USER={idm-client-id}
+export IOTA_AUTH_PASSWORD={idm-client-secret}
+export IOTA_AUTH_PERMANENT_TOKEN=true
+export IOTA_AUTH_ENABLED=true
+export IOTA_AUTH_TYPE=oauth2
+export IOTA_AUTH_HOST={idm-host}
+export IOTA_AUTH_PORT={idm-port}
