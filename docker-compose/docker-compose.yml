@@ -1,4 +1,8 @@
 version: "2.3"
+secrets:
+   age_idm_auth:
+      file: age_idm_auth.txt
+
 services:
 
    iotage:
