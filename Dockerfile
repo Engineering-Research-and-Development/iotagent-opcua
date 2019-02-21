@@ -24,6 +24,9 @@ VOLUME /opt/iotagent-opcua/conf
 
 WORKDIR /opt/iotagent-opcua
 
+# Expose 4041 for NORTH PORT
+EXPOSE ${IOTA_NORTH_PORT:-4041}
+
 COPY docker-entrypoint.sh entrypoint.sh
 
 ENTRYPOINT ./entrypoint.sh
