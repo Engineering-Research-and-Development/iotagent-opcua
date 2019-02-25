@@ -10,7 +10,7 @@
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-openmtc.svg) <br/>
 
 An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between the
-[OPC Unified Architecture](https://opcfoundation.org/developer-tools/specifications-unified-architecture) protocol and the
+OPC Unified Architecture protocol and the
 [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 interface of a context broker.
 
@@ -274,7 +274,7 @@ The following third-party libraries are used under license
     
 ### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
 
-There is absolutely no problem in using a product licensed under AGPL 3.0. Issues with GPL 
+No problem in using a product licensed under AGPL 3.0. Issues with GPL 
 (or AGPL) licenses are mostly related with the fact that different people assign different 
 interpretations on the meaning of the term “derivate work” used in these licenses. Due to this,
 some people believe that there is a risk in just _using_ software under GPL or AGPL licenses
