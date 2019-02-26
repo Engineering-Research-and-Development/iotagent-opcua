@@ -8,7 +8,7 @@
 [![Build badge](https://img.shields.io/travis/Engineering-Research-and-Development/iotagent-opcua.svg)](https://travis-ci.org/Engineering-Research-and-Development/iotagent-opcua/)
 [![Coverage Status](https://coveralls.io/repos/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg?branch=master)](https://coveralls.io/github/Engineering-Research-and-Development/iotagent-opcua?branch=master) [![Join the chat at https://gitter.im/iotagent-opcua/community](https://badges.gitter.im/iotagent-opcua/community.svg)](https://gitter.im/iotagent-opcua/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-openmtc.svg) <br/>
-
+[![Known Vulnerabilities](https://snyk.io/test/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg)](https://snyk.io/test/github/Engineering-Research-and-Development/iotagent-opcua)
 An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between the
 OPC Unified Architecture protocol and the
 [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
