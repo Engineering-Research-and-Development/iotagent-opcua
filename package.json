@@ -54,7 +54,6 @@
     "mustache": "2.2.1",
     "node-opcua": "0.0.61",
     "node-uuid": "^1.4.1",
-    "prompt": "*",
     "properties-reader": "0.0.16",
     "request": "2.82.0",
     "requirish": "^0.3.0",
