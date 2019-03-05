@@ -461,3 +461,196 @@ console.log("accelerateRequest body ="+JSON.stringify(body));
     });
   });
 });
+
+
+
+
+describe('Verify ADMIN API services', function() {
+  beforeEach(function(done) {
+    // Set up
+    done();
+  });
+
+  afterEach(function(done) {
+    // Clean Up
+    done();
+  });
+
+  describe('The agent is active...', function() {
+ 
+    
+    it('verify version service', function(done) {
+      this.timeout(0);
+      // Run test
+
+      var value=null;
+      
+        
+
+      var temperatureRequest = {
+        url: 'http://'+'localhost'+':'+properties.get("api-port")+'/version',
+        method: 'GET'
+     };
+    function myTimer() {
+
+      var updated=false;
+
+      request(temperatureRequest, function(error, response, body) {
+
+        loggerTest.info(logContextTest,"RESPONSE="+JSON.stringify(response));
+
+            if (error==null){
+
+            loggerTest.info(logContextTest,"VERSION SERVICE SUCCESSFULLY READ".rainbow);
+
+                done();
+           
+          
+        }else{
+            loggerTest.info(logContextTest,"VERSION SERVICE FAILURE READ".rainbow);
+
+        }
+    });
+
+      }
+
+      
+      myTimer(); //immediate first run 
+
+      //done();
+    });
+
+
+
+    it('verify status service', function(done) {
+        this.timeout(0);
+        // Run test
+  
+        var value=null;
+        
+          
+  
+        var temperatureRequest = {
+          url: 'http://'+'localhost'+':'+properties.get("api-port")+'/status',
+          method: 'GET'
+       };
+      function myTimer() {
+  
+        var updated=false;
+  
+        request(temperatureRequest, function(error, response, body) {
+  
+          loggerTest.info(logContextTest,"RESPONSE="+JSON.stringify(response));
+  
+              if (error==null){
+  
+              loggerTest.info(logContextTest,"STATUS SERVICE SUCCESSFULLY READ".rainbow);
+  
+                  done();
+             
+            
+          }else{
+              loggerTest.info(logContextTest,"STATUS SERVICE FAILURE READ".rainbow);
+  
+          }
+      });
+  
+        }
+  
+        
+        myTimer(); //immediate first run 
+  
+        //done();
+      });
+
+
+
+      it('verify commandsList service', function(done) {
+        this.timeout(0);
+        // Run test
+  
+        var value=null;
+        
+          
+  
+        var temperatureRequest = {
+          url: 'http://'+'localhost'+':'+properties.get("api-port")+'/commandsList',
+          method: 'GET'
+       };
+      function myTimer() {
+  
+        var updated=false;
+  
+        request(temperatureRequest, function(error, response, body) {
+  
+          loggerTest.info(logContextTest,"RESPONSE="+JSON.stringify(response));
+  
+              if (error==null){
+  
+              loggerTest.info(logContextTest,"COMMANDS LIST SERVICE SUCCESSFULLY READ".rainbow);
+  
+                  done();
+             
+            
+          }else{
+              loggerTest.info(logContextTest,"COMMANDS LIST SERVICE FAILURE READ".rainbow);
+  
+          }
+      });
+  
+        }
+  
+        
+        myTimer(); //immediate first run 
+  
+        //done();
+      });
+
+
+
+      it('verify agent lib version service ', function(done) {
+        this.timeout(0);
+        // Run test
+  
+        var value=null;
+        
+          
+  
+        var temperatureRequest = {
+          url: config.providerUrl+'/version',
+          method: 'GET'
+       };
+      function myTimer() {
+  
+        var updated=false;
+  
+        request(temperatureRequest, function(error, response, body) {
+  
+          loggerTest.info(logContextTest,"RESPONSE="+JSON.stringify(response));
+  
+              if (error==null){
+  
+              loggerTest.info(logContextTest,"AGENT LIB VERSION SERVICE SUCCESSFULLY READ".rainbow);
+  
+                  done();
+             
+            
+          }else{
+              loggerTest.info(logContextTest,"AGENT LIB VERSION SERVICE FAILURE READ".rainbow);
+  
+          }
+      });
+  
+        }
+  
+        
+        myTimer(); //immediate first run 
+  
+        //done();
+      });
+
+
+      
+    
+  });
+});
