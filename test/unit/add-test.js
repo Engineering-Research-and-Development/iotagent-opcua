@@ -613,47 +613,6 @@ describe('Verify ADMIN API services', function() {
 
 
 
-      it('verify agent lib version service ', function(done) {
-        this.timeout(0);
-        // Run test
-  
-        var value=null;
-        
-          
-  
-        var temperatureRequest = {
-          url: config.providerUrl+'/version',
-          method: 'GET'
-       };
-      function myTimer() {
-  
-        var updated=false;
-  
-        request(temperatureRequest, function(error, response, body) {
-  
-          loggerTest.info(logContextTest,"RESPONSE="+JSON.stringify(response));
-  
-              if (error==null){
-  
-              loggerTest.info(logContextTest,"AGENT LIB VERSION SERVICE SUCCESSFULLY READ".rainbow);
-  
-                  done();
-             
-            
-          }else{
-              loggerTest.info(logContextTest,"AGENT LIB VERSION SERVICE FAILURE READ".rainbow);
-  
-          }
-      });
-  
-        }
-  
-        
-        myTimer(); //immediate first run 
-  
-        //done();
-      });
-
 
       
     
