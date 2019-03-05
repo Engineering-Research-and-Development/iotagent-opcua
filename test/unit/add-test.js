@@ -156,6 +156,8 @@ describe('Verify Northbound flow', function() {
 
 
     it('verify version service', function(done) {
+      this.timeout(0);
+
       // Run test
       var temperatureRequest = {
         url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
@@ -175,6 +177,8 @@ describe('Verify Northbound flow', function() {
     });
 
     it('verify status service', function(done) {
+           this.timeout(0);
+
       // Run test
 
 
@@ -222,6 +226,8 @@ describe('Verify Northbound flow', function() {
     });
 
     it('verify agent lib version service ', function(done) {
+           this.timeout(0);
+
       // Run test
       var temperatureRequest = {
         url: config.providerUrl + '/version',
