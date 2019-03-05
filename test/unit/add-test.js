@@ -475,6 +475,11 @@ describe('Verify ADMIN API services', function() {
     // Clean Up
     done();
   });
+ after(function(done) {
+    // Clean Up
+    done();
+    process.exit();
+  });
 
   describe('The agent is active...', function() {
  
