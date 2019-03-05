@@ -155,11 +155,28 @@ describe('Verify Northbound flow', function() {
     );
 
 
+    it('verify version service', function(done) {
+      // Run test
+      var temperatureRequest = {
+        url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
+        method: 'GET'
+      };
+   
+    request(temperatureRequest, function(error, response, body) {
+        loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+        if (error == null) {
+          loggerTest.info(logContextTest, 'VERSION SERVICE SUCCESSFULLY READ'.rainbow);
+          done();
+        }else {
+          loggerTest.info(logContextTest, 'VERSION SERVICE FAILURE READ'.rainbow);
+        }
+      });
+   
+    });
+
     it('verify status service', function(done) {
-      this.timeout(0);
       // Run test
 
-      var value = null;
 
 
 
@@ -168,100 +185,62 @@ describe('Verify Northbound flow', function() {
         method: 'GET'
      };
     function myTimer() {
-      var updated = false;
 
       request(temperatureRequest, function(error, response, body) {
         loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-            if (error == null) {
-            loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ'.rainbow);
-
-                done();
+        if (error == null) {
+          loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ'.rainbow);
+          done();
         } else{
             loggerTest.info(logContextTest, 'STATUS SERVICE FAILURE READ'.rainbow);
         }
     });
       }
-
-
       myTimer(); // immediate first run
-
-      // done();
     });
 
     it('verify commandsList service', function(done) {
-      this.timeout(0);
       // Run test
-
-      var value = null;
-
-
-
       var temperatureRequest = {
         url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
         method: 'GET'
      };
     function myTimer() {
-      var updated = false;
-
       request(temperatureRequest, function(error, response, body) {
         loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-            if (error == null) {
+          if (error == null) {
             loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE SUCCESSFULLY READ'.rainbow);
-
-                done();
+            done();
         }else {
             loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE FAILURE READ'.rainbow);
         }
-    });
-      }
-
-
+      });
+    }
       myTimer(); // immediate first run
-
-      // done();
     });
 
     it('verify agent lib version service ', function(done) {
-      this.timeout(0);
       // Run test
-
-      var value = null;
-
-
-
       var temperatureRequest = {
         url: config.providerUrl + '/version',
         method: 'GET'
      };
     function myTimer() {
-      var updated = false;
-
       request(temperatureRequest, function(error, response, body) {
         loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-            if (error == null) {
+          if (error == null) {
             loggerTest.info(logContextTest, 'AGENT LIB VERSION SERVICE SUCCESSFULLY READ'.rainbow);
-
                 done();
         }else {
             loggerTest.info(logContextTest, 'AGENT LIB VERSION SERVICE FAILURE READ'.rainbow);
         }
     });
       }
-
-
       myTimer(); // immediate first run
-
-      // done();
     });
-
-
-
-
-
-
 
     it('verify update of active attributes on Context Broker', function(done) {
       this.timeout(0);
@@ -523,39 +502,6 @@ console.log('accelerateRequest body =' + JSON.stringify(body));
         }
     });
       }
-    });
-
-   it('verify version service', function(done) {
-      this.timeout(0);
-      // Run test
-
-      var value = null;
-
-
-
-      var temperatureRequest = {
-        url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
-        method: 'GET'
-     };
-    function myTimer() {
-      var updated = false;
-
-      request(temperatureRequest, function(error, response, body) {
-        loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-            if (error == null) {
-            loggerTest.info(logContextTest, 'VERSION SERVICE SUCCESSFULLY READ'.rainbow);
-
-                done();
-        }else {
-            loggerTest.info(logContextTest, 'VERSION SERVICE FAILURE READ'.rainbow);
-        }
-    });
-      }
-
-      myTimer(); // immediate first run
-
-      // done();
     });
   });
 });
