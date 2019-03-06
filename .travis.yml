@@ -1,10 +1,10 @@
 language: node_js
-
 sudo: required
 
-node_js:
-  - "8"
-  - "10"
+addons:
+  apt:
+    packages:
+      - net-tools
 
 branches:
   only:
@@ -14,17 +14,49 @@ services:
   - mongodb
   - docker
 
-install:
-  - npm install
+jobs:
+  include:
+    - stage: test
+      name: "Unit Tests: Node 8"
 
-before_install:
- - cd test
- - docker-compose up -d
- - cd ..
- - npm update -q
+      node_js:
+        - 8
 
-before_script:
- - npm run lint:text
- - npm run lint:md
-after_script: 
-  - npm run test:coveralls
+      before_install:
+        - cd test
+        - docker-compose up -d
+        - cd ..
+        - npm update -q
+
+      # before_script:
+      #  - npm run lint
+
+      after_script:
+        - npm run test:coveralls
+
+    - stage: test
+      name: "Unit Tests: Node 10"
+
+      node_js:
+        - 10
+
+      before_install:
+        - cd test
+        - docker-compose up -d
+        - cd ..
+        - npm update -q
+
+      # before_script:
+      #  - npm run lint
+
+      after_script:
+        - npm run test:coveralls
+
+    - stage: test
+      name: "Documentation Tests"
+      node_js:
+        - node
+
+      script:
+        - npm run lint:md
+        - npm run lint:text
