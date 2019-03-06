@@ -1,11 +1,6 @@
 language: node_js
 sudo: required
 
-addons:
-  apt:
-    packages:
-      - net-tools
-
 branches:
   only:
     - master
