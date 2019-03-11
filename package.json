@@ -31,7 +31,7 @@
     "test": "mocha --recursive 'test/unit/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:watch": "npm run test -- -w ./lib",
     "lint": "eslint . --cache --fix",
-    "lint:md": "remark 'README.md' docs",
+    "lint:md": "remark -f 'README.md' docs",
     "lint:text": "textlint 'README.md' 'docs/*.md' 'docs/**/*.md'",
     "prettier": "prettier --config .prettierrc.json --write '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
     "prettier:text": "prettier 'README.md' 'docs/*.md' 'docs/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
@@ -107,10 +107,19 @@
     "*.md": [
       "prettier --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
       "git add"
-    ], 
+    ],
     "*.yml": [
       "prettier --no-config --write",
       "git add"
+    ]
+  },
+  "remarkConfig": {
+    "settings": {
+      "bullet": "-",
+      "paddedTable": true
+    },
+    "plugins": [
+      "remark-preset-lint-recommended"
     ]
   }
 }
