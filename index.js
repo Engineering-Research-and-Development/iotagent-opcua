@@ -82,6 +82,7 @@ try {
                         logContext,
                         'Automatic configuration successfully created. Loading new configuration...'
                     );
+                    const config = require('./conf/config.json');
                 }
 
                 run.run();

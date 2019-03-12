@@ -60,7 +60,7 @@ module.exports = {
         var polling_up = properties.get('polling');
 
         if (fs.existsSync('./conf/config.json')) {
-            var config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf8'));
+            //var config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf8'));
         } else {
             doAuto = true;
         }

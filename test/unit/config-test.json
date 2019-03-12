@@ -1,7 +1,7 @@
 {
     "browseServerOptions": null,
     "contextBroker": {
-        "host": "localhost",
+        "host": "orion",
         "port": 1026
     },
     "contextSubscriptions": [
@@ -66,14 +66,14 @@
     "logLevel": "INFO",
     "mongodb": {
         "db": "iotage",
-        "host": "localhost",
+        "host": "iotmongo",
         "port": "27017",
         "retries": 5,
         "retryTime": 5
     },
     "pollingDaemonFrequency": "20000",
     "pollingExpiration": "200000",
-    "providerUrl": "http://localhost:4001",
+    "providerUrl": "http://iotage:4001",
     "server": {
         "baseRoot": "/",
         "port": 4001
