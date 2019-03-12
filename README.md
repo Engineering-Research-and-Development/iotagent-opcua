@@ -223,6 +223,7 @@ Administration services are reachable at port specified by api-port property (co
 | GET |    `/status`    |                   Returns a status message                    |
 | GET |   `/version`    | Returns information about version, name and agent description |
 | GET | `/commandsList` |  Returns a list of pending commands (only with polling mode)  |
+| GET | `/config`       |  Returns loaded config.json file                              |
 
 ### Poll commands
 
