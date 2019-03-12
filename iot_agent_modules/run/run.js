@@ -371,69 +371,8 @@ module.exports = {
                 },
 
                 function(callback) {
-                    if (doBrowse) {
-                        the_session.browse(config.browseServerOptions.mainFolderToBrowse, function(err, browse_result) {
-                            if (!err) {
-                                var configObj = config.browseServerOptions.mainObjectStructure;
-                                browse_result.forEach(function(result) {
-                                    result.references.forEach(function(reference) {
-                                        var name = reference.browseName.toString();
-                                        if (name.indexOf(configObj.namePrefix) > -1) {
-                                            var contextObj = {
-                                                id: name,
-                                                type: config.defaultType,
-                                                mappings: [],
-                                                active: [], //only active USED in this version
-                                                lazy: [],
-                                                commands: []
-                                            };
-                                            the_session.browse(reference.nodeId, function(err, browse_result_sub) {
-                                                browse_result_sub.forEach(function(resultSub) {
-                                                    resultSub.references.forEach(function(referenceChild) {
-                                                        var nameChild = referenceChild.browseName.toString();
-                                                        if (
-                                                            nameChild.indexOf(configObj.variableType1.nameSuffix) >
-                                                                -1 ||
-                                                            nameChild.indexOf(configObj.variableType2.nameSuffix) > -1
-                                                        ) {
-                                                            var type =
-                                                                nameChild.indexOf(configObj.variableType1.nameSuffix) >
-                                                                -1
-                                                                    ? configObj.variableType1.type
-                                                                    : configObj.variableType2.type;
-                                                            var contextMeasureObj = {
-                                                                ocb_id: nameChild,
-                                                                opcua_id: referenceChild.nodeId.toString(),
-                                                                type: type
-                                                            };
-                                                            var attributeObj = {
-                                                                name: nameChild,
-                                                                type: type
-                                                            };
-                                                            contextObj.mappings.push(contextMeasureObj);
-                                                            contextObj.active.push(attributeObj);
-                                                        } else if (nameChild.indexOf(configObj.methodNameSuffix) > -1) {
-                                                            var method = {
-                                                                objectId: reference.nodeId,
-                                                                methodId: referenceChild.nodeId.toString(),
-                                                                name: nameChild
-                                                            };
-                                                            methods.push(method);
-                                                        }
-                                                    });
-                                                });
-                                            });
-                                            contexts.push(contextObj);
-                                        }
-                                    });
-                                });
-                            }
-                            callback(err);
-                        });
-                    } else {
-                        contexts = config.contexts;
-                        callback();
-                    }
+                    contexts = config.contexts;
+                    callback();
                 },
 
                 // ----------------------------------------
@@ -453,44 +392,6 @@ module.exports = {
                     });
                 },
 
-                //------------------------------------------
-                // crawl the address space, display as a hierarchical tree rooted in ObjectsFolder
-                function(callback) {
-                    if (doCrawling) {
-                        var nodeCrawler = new NodeCrawler(the_session);
-
-                        var t = Date.now();
-                        var t1;
-                        client.on('send_request', function() {
-                            t1 = Date.now();
-                        });
-                        client.on('receive_response', function() {
-                            var t2 = Date.now();
-                            var str = util.format(
-                                'R= %d W= %d T=%d t= %d',
-                                client.bytesRead,
-                                client.bytesWritten,
-                                client.transactionsPerformed,
-                                t2 - t1
-                            );
-                            logger.info(logContext, str.yellow.bold);
-                        });
-
-                        t = Date.now();
-                        var nodeId = 'ObjectsFolder';
-                        logger.info(logContext, 'now crawling object folder ...please wait...');
-                        nodeCrawler.read(nodeId, function(err, obj) {
-                            if (!err) {
-                                treeify.asLines(obj, true, true, function(line) {
-                                    logger.info(logContext, line);
-                                });
-                            }
-                            callback(err);
-                        });
-                    } else {
-                        callback();
-                    }
-                },
                 //------------------------------------------
                 // initialize all subscriptions
                 function(callback) {

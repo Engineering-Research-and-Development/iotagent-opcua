@@ -83,6 +83,7 @@ try {
                         'Automatic configuration successfully created. Loading new configuration...'
                     );
                     const config = require('./conf/config.json');
+                    global.config = config;
                 }
 
                 run.run();

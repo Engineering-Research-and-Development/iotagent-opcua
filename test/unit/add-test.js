@@ -506,6 +506,37 @@ describe('Verify ADMIN API services', function() {
             //done();
         });
 
+        it('verify config service', function(done) {
+            this.timeout(0);
+            // Run test
+
+            var value = null;
+
+            var temperatureRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/config',
+                method: 'GET'
+            };
+            function myTimer() {
+                var updated = false;
+
+                request(temperatureRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'CONFIG SERVICE SUCCESSFULLY READ'.rainbow);
+
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'CONFIG SERVICE FAILURE READ'.rainbow);
+                    }
+                });
+            }
+
+            myTimer(); //immediate first run
+
+            //done();
+        });
+
         it('verify commandsList service', function(done) {
             this.timeout(0);
             // Run test
