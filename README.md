@@ -6,13 +6,12 @@
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/> [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
 [![Build badge](https://img.shields.io/travis/Engineering-Research-and-Development/iotagent-opcua.svg)](https://travis-ci.org/Engineering-Research-and-Development/iotagent-opcua/)
-[![Coverage Status](https://coveralls.io/repos/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg?branch=master)](https://coveralls.io/github/Engineering-Research-and-Development/iotagent-opcua?branch=master) 
+[![Coverage Status](https://coveralls.io/repos/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg?branch=master)](https://coveralls.io/github/Engineering-Research-and-Development/iotagent-opcua?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-openmtc.svg)
 [![Join the chat at https://gitter.im/iotagent-opcua/community](https://badges.gitter.im/iotagent-opcua/community.svg)](https://gitter.im/iotagent-opcua/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Known Vulnerabilities](https://snyk.io/test/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg)](https://snyk.io/test/github/Engineering-Research-and-Development/iotagent-opcua)
-<br/>
-An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between the
-OPC Unified Architecture protocol and the
+<br/> An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between
+the OPC Unified Architecture protocol and the
 [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 interface of a context broker.
 
@@ -122,6 +121,10 @@ and create in it a config.properties file based on the following template:
 
 ```text
 namespace-ignore=2
+################ OPTIONAL FILTERING ################
+nodes-filtering-in=ns\=1;s\=Oxigen,ns\=1;s\=Speed
+nodes-filtering-out=ns\=1;s\=Temperature
+####################################################
 context-broker-host=<ORIONHOSTIP>
 context-broker-port=<ORIONPORT>
 server-base-root=/
@@ -223,7 +226,7 @@ Administration services are reachable at port specified by api-port property (co
 | GET |    `/status`    |                   Returns a status message                    |
 | GET |   `/version`    | Returns information about version, name and agent description |
 | GET | `/commandsList` |  Returns a list of pending commands (only with polling mode)  |
-| GET | `/config`       |  Returns loaded config.json file                              |
+| GET |    `/config`    |                Returns loaded config.json file                |
 
 ### Poll commands
 
@@ -264,8 +267,7 @@ This project is a new component within [FIWARE](https://fiware.org/) and will be
 
 ## License
 
-The IoT Agent for OPC UA is licensed under [Affero General Public License (GPL)
-version 3](./LICENSE).
+The IoT Agent for OPC UA is licensed under [Affero General Public License (GPL) version 3](./LICENSE).
 
 © 2018 Engineering Ingegneria Informatica S.p.A.
 
@@ -274,20 +276,18 @@ The following third-party libraries are used under license
 1.  [node-opcua](http://node-opcua.github.io/) - **MIT** - © 2014-2018 Etienne Rossignon
 2.  [iotagent-node-lib](https://github.com/telefonicaid/iotagent-node-lib) - **AGPL** © 2014-2018 Telefonica
     Investigación y Desarrollo
-    
+
 ### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
 
-No problem in using a product licensed under AGPL 3.0. Issues with GPL 
-(or AGPL) licenses are mostly related with the fact that different people assign different 
-interpretations on the meaning of the term “derivate work” used in these licenses. Due to this,
-some people believe that there is a risk in just _using_ software under GPL or AGPL licenses
+No problem in using a product licensed under AGPL 3.0. Issues with GPL (or AGPL) licenses are mostly related with the
+fact that different people assign different interpretations on the meaning of the term “derivate work” used in these
+licenses. Due to this, some people believe that there is a risk in just _using_ software under GPL or AGPL licenses
 (even without _modifying_ it).
 
 For the avoidance of doubt, the owners of this software licensed under an AGPL 3.0 license  
 wish to make a clarifying public statement as follows:
 
-> Please note that software derived as a result of modifying the source code of this
-> software in order to fix a bug or incorporate enhancements is considered a derivative 
-> work of the product. Software that merely uses or aggregates (i.e. links to) an otherwise 
-> unmodified version of existing software is not considered a derivative work, and therefore
-> it does not need to be released as under the same license, or even released as open source.
+> Please note that software derived as a result of modifying the source code of this software in order to fix a bug or
+> incorporate enhancements is considered a derivative work of the product. Software that merely uses or aggregates (i.e.
+> links to) an otherwise unmodified version of existing software is not considered a derivative work, and therefore it
+> does not need to be released as under the same license, or even released as open source.

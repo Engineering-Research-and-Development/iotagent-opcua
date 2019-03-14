@@ -19,6 +19,10 @@ side (OPC UA endpoint).
 #SOUTHBOUND CONFIGURATION (OPC UA)
 #Namespace to ignore
 namespace-ignore=2,7
+################ OPTIONAL FILTERING ################
+nodes-filtering-in=ns\=1;s\=Oxigen,ns\=1;s\=Speed
+nodes-filtering-out=ns\=1;s\=Temperature
+####################################################
 #OPC UA Endpoint
 endpoint=opc.tcp://localhost:4334/UA/CarServer
 

@@ -87,6 +87,10 @@ and create in it a config.properties file based on the following template:
 
 ```text
 namespace-ignore=2
+################ OPTIONAL FILTERING ################
+nodes-filtering-in=ns\=1;s\=Oxigen,ns\=1;s\=Speed
+nodes-filtering-out=ns\=1;s\=Temperature
+####################################################
 context-broker-host=<ORIONHOSTIP>
 context-broker-port=<ORIONPORT>
 server-base-root=/
