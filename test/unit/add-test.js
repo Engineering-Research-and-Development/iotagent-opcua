@@ -450,14 +450,14 @@ describe('Verify ADMIN API services', function() {
 
             var value = null;
 
-            var temperatureRequest = {
+            var versionRequest = {
                 url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
                 method: 'GET'
             };
             function myTimer() {
                 var updated = false;
 
-                request(temperatureRequest, function(error, response, body) {
+                request(versionRequest, function(error, response, body) {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
@@ -481,14 +481,14 @@ describe('Verify ADMIN API services', function() {
 
             var value = null;
 
-            var temperatureRequest = {
+            var statusRequest = {
                 url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/status',
                 method: 'GET'
             };
             function myTimer() {
                 var updated = false;
 
-                request(temperatureRequest, function(error, response, body) {
+                request(statusRequest, function(error, response, body) {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
@@ -512,14 +512,14 @@ describe('Verify ADMIN API services', function() {
 
             var value = null;
 
-            var temperatureRequest = {
+            var configRequest = {
                 url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/config',
                 method: 'GET'
             };
             function myTimer() {
                 var updated = false;
 
-                request(temperatureRequest, function(error, response, body) {
+                request(configRequest, function(error, response, body) {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
@@ -543,14 +543,14 @@ describe('Verify ADMIN API services', function() {
 
             var value = null;
 
-            var temperatureRequest = {
+            var commandsListRequest = {
                 url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
                 method: 'GET'
             };
             function myTimer() {
                 var updated = false;
 
-                request(temperatureRequest, function(error, response, body) {
+                request(commandsListRequest, function(error, response, body) {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
@@ -559,6 +559,39 @@ describe('Verify ADMIN API services', function() {
                         done();
                     } else {
                         loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE FAILURE READ'.rainbow);
+                    }
+                });
+            }
+
+            myTimer(); //immediate first run
+
+            //done();
+        });
+
+        it('verify config post service', function(done) {
+            this.timeout(0);
+            // Run test
+
+            var value = null;
+            var iotAgentConfig = require('./../../conf/config.json');
+
+            var jsonRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
+                method: 'POST',
+                json: true,
+                body: config
+            };
+            function myTimer() {
+                var updated = false;
+
+                request(jsonRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED'.rainbow);
+
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE FAILURE POSTED'.rainbow);
                     }
                 });
             }
