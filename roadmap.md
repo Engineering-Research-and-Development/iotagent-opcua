@@ -14,10 +14,11 @@ guidelines only, and this section may be revised to provide newer information at
 ## Short term
 
 The following list of features are planned to be addressed in the short term, and incorporated in the next release of
-the product planned for **March 2019**:
+the product planned for **July 2019**:
 
--   Mapping tool improvement, adding attributes filtering capabilities.
--   Administration API improvement.
+-   Performance improvements for both Mapping Tool and OPC UA Agent Core.
+-   Test Coverage increasing.
+-   Improvement of Test scenario.
 
 ## Medium term
 
