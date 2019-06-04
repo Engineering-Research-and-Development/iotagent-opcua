@@ -161,6 +161,11 @@ maxNotificationsPerPublish=10
 publishingEnabled=true
 priority=10
 
+#MONITORING PARAMETERS
+samplingInterval= 0
+queueSize= 10000
+discardOldest= false
+
 #SERVER CERT E AUTH
 securityMode=NONE
 securityPolicy=
