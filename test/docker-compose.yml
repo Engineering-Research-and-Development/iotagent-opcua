@@ -1,0 +1,26 @@
+version: "2.3"
+services:
+  iotcarsrv:
+    hostname: iotcarsrv
+    image: beincpps/opcuacarsrv:latest
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./CAR/car.js:/opt/opc-ua-car-server/car.js
+
+  orion:
+    hostname: orion
+    container_name: opc_ua_test_orion
+    image: fiware/orion:2.1.0
+    ports:
+      - "1026:1026"
+    depends_on:
+      - mongo
+    command: -dbhost mongo
+
+  mongo:
+    hostname: mongo
+    image: mongo:3.4
+    ports:
+      - "27027:27017"
+    command: --nojournal

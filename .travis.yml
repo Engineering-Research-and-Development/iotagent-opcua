@@ -1,0 +1,57 @@
+language: node_js
+sudo: required
+
+branches:
+  only:
+    - master
+
+services:
+  - mongodb
+  - docker
+
+jobs:
+  include:
+    - stage: test
+      name: "Unit Tests: Node 8"
+
+      node_js:
+        - 8
+
+      before_install:
+        - cd test
+        - docker-compose up -d
+        - cd ..
+        - npm update -q
+
+      # before_script:
+      #  - npm run lint
+
+      after_script:
+        - npm run test:coveralls
+
+    - stage: test
+      name: "Unit Tests: Node 10"
+
+      node_js:
+        - 10
+
+      before_install:
+        - cd test
+        - docker-compose up -d
+        - cd ..
+        - npm update -q
+
+      # before_script:
+      #  - npm run lint
+
+      after_script:
+        - npm run test:coveralls
+
+    - stage: test
+      name: "Documentation Tests"
+      node_js:
+        - node
+
+      script:
+        - npm run lint:md
+        - npm run lint:text

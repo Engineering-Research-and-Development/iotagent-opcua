@@ -1,7 +1,7 @@
 {
   "logLevel" : "DEBUG",
   "contextBroker" : {
-    "host" : "192.168.22.139",
+    "host" : "192.168.56.101",
     "port" : 1026
   },
   "server" : {
@@ -12,7 +12,7 @@
     "type" : "mongodb"
   },
   "mongodb" : {
-    "host" : "192.168.22.139",
+    "host" : "192.168.56.101",
     "port" : "27017",
     "db" : "iotagent",
     "retries" : 5,
@@ -22,7 +22,16 @@
     "Device" : {
       "service" : "opcua_energy",
       "subservice" : "/demo",
-      "active" : [ ],
+      "active" : [ {
+        "name" : "Speed",
+        "type" : "Number"
+      }, {
+        "name" : "Engine_Temperature",
+        "type" : "Number"
+      }, {
+        "name" : "Engine_Oxigen",
+        "type" : "Number"
+      } ],
       "lazy" : [ ],
       "commands" : [ ]
     }
@@ -30,11 +39,50 @@
   "browseServerOptions" : null,
   "service" : "opcua_energy",
   "subservice" : "/demo",
-  "providerUrl" : "http://192.168.22.160:4041",
+  "providerUrl" : "http://192.168.56.1:4041",
   "pollingExpiration" : "200000",
   "pollingDaemonFrequency" : "20000",
   "deviceRegistrationDuration" : "P1M",
   "defaultType" : null,
-  "contexts" : [ ],
-  "contextSubscriptions" : [ ]
+  "contexts" : [ {
+    "id" : "Car",
+    "type" : "Car",
+    "service" : "opcua_car",
+    "subservice" : "/demo",
+    "polling" : false,
+    "mappings" : [ {
+      "ocb_id" : "Speed",
+      "opcua_id" : "ns=1;s=Speed",
+      "object_id" : null,
+      "inputArguments" : [ ]
+    }, {
+      "ocb_id" : "Engine_Temperature",
+      "opcua_id" : "ns=1;s=Temperature",
+      "object_id" : null,
+      "inputArguments" : [ ]
+    }, {
+      "ocb_id" : "Engine_Oxigen",
+      "opcua_id" : "ns=1;s=Oxigen",
+      "object_id" : null,
+      "inputArguments" : [ ]
+    } ]
+  } ],
+  "contextSubscriptions" : [ {
+    "id" : "Car",
+    "type" : "Car",
+    "mappings" : [ {
+      "ocb_id" : "Stop",
+      "opcua_id" : "ns=1;s=Stop",
+      "object_id" : "ns=1;i=1000",
+      "inputArguments" : [ ]
+    }, {
+      "ocb_id" : "Accelerate",
+      "opcua_id" : "ns=1;s=Accelerate",
+      "object_id" : "ns=1;i=1000",
+      "inputArguments" : [ {
+        "dataType" : 7,
+        "type" : "Intensity"
+      } ]
+    } ]
+  } ]
 }

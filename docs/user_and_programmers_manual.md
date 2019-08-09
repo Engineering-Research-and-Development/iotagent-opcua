@@ -1,17 +1,28 @@
-### Install 
+### Install
+
 Firstly, launch npm install process in order to download and install all dependencies.
-```
+
+```bash
 npm install
 ```
+
 ### Configure
-![edit config.properties](https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/manuals/images/OPC%20UA%20agent%20flow%20chart_1.png)
+
+![edit config.properties](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_1.png?raw=true)
 
 #### Auto Configuration (using of Mapping Tool)
-Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South side (OPC UA endpoint).
-```
+
+Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South
+side (OPC UA endpoint).
+
+```text
 #SOUTHBOUND CONFIGURATION (OPC UA)
 #Namespace to ignore
 namespace-ignore=2,7
+################ OPTIONAL FILTERING ################
+nodes-filtering-in=ns\=1;s\=Oxigen,ns\=1;s\=Speed
+nodes-filtering-out=ns\=1;s\=Temperature
+####################################################
 #OPC UA Endpoint
 endpoint=opc.tcp://localhost:4334/UA/CarServer
 
@@ -58,35 +69,43 @@ pollingExpiration=200000
 #END POLL COMMANDS SETTINGS
 
 ```
-Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands. It is possible modify configuration output (config.json file in same path) manually in order to drop some attributes/command, add lazy attributes and enable the command polling. 
 
-![OPC UA Agent flow](https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/manuals/images/OPC%20UA%20agent%20flow%20chart_3.png)
+Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching):
+all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
+It is possible modify configuration output (config.json file in same path) manually in order to drop some
+attributes/command, add lazy attributes and enable the command polling.
+
+![OPC UA Agent flow](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_3.png?raw=true)
 
 #### Manual Configuration (editing config.json file)
-![Edit or Delete config.json](https://github.com/is3labengrd/iotagent-opcua/blob/master/doc/manuals/images/OPC%20UA%20agent%20flow%20chart_4.png)
+
+![Edit or Delete config.json](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_4.png?raw=true)
 
 To define active attributes:
-* set the active object in active section array of type object
-* set the mapping object in mappings array of contexts
+
+-   set the active object in active section array of type object
+-   set the mapping object in mappings array of contexts
 
 To define lazy attributes:
-* set the lazy object in lazy section array of type object
-* set the mapping object in mappings array of contextSubscriptions (set object_id to null and inputArguments to empty array)
+
+-   set the lazy object in lazy section array of type object
+-   set the mapping object in mappings array of contextSubscriptions (set object_id to null and inputArguments to empty
+    array)
 
 To define commands attributes:
-* set the command object in commands section array of type object
-* set the mapping object in mappings array of contextSubscriptions (object_id is the parent object of the method)
+
+-   set the command object in commands section array of type object
+-   set the mapping object in mappings array of contextSubscriptions (object_id is the parent object of the method)
 
 To define poll commands:
-* set polling to true to enable or to false to disable poll commands
-* set polling Daemon Frequency and Expiration in ms
-* set polling-commands-timer in ms to execute che poll commands automatically
 
+-   set polling to true to enable or to false to disable poll commands
+-   set polling Daemon Frequency and Expiration in ms
+-   set polling-commands-timer in ms to execute che poll commands automatically
 
 In order to clarify, see the following example:
 
-```
-
+```json
 {
     "logLevel": "INFO",
     "contextBroker": {
@@ -122,7 +141,7 @@ In order to clarify, see the following example:
                 }
             ],
             "lazy": [
-            	{
+                {
                     "name": "Speed",
                     "type": "Number"
                 }
@@ -143,8 +162,8 @@ In order to clarify, see the following example:
     "service": "opcua_car",
     "subservice": "/demo",
     "providerUrl": "http://192.168.56.1:4041",
-    "pollingExpiration":"200000",
-    "pollingDaemonFrequency":"20000",
+    "pollingExpiration": "200000",
+    "pollingDaemonFrequency": "20000",
     "deviceRegistrationDuration": "P1M",
     "defaultType": null,
     "contexts": [
@@ -153,7 +172,7 @@ In order to clarify, see the following example:
             "type": "Car",
             "service": "opcua_car",
             "subservice": "/demo",
-            "polling":"false",
+            "polling": "false",
             "mappings": [
                 {
                     "ocb_id": "Engine_Temperature",
@@ -205,12 +224,15 @@ In order to clarify, see the following example:
 ```
 
 ### Run
-Finally, run the agent. 
-```
+
+Finally, run the agent.
+
+```bash
 node index.js
 ```
+
 It's possible to redirect the output log on a file
-```
+
+```bash
 node index.js > out.log
 ```
-

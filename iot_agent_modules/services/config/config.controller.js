@@ -1,12 +1,13 @@
 var package = require('../../../package');
+const fs = require('fs');
 
 ('use strict');
 
-// Get version information
+// Get config information
 exports.status = function(req, res) {
     var result = {};
-    result.name = package.name;
-    result.description = package.description;
-    result.version = package.version;
+    var config = require('./../../../conf/config.json');
+    result.config = config;
+
     return res.status(200).json(result);
 };

@@ -1,0 +1,16 @@
+{
+	"plugins": [
+		"mocha"
+	],
+    "extends": "standard",
+    "rules": {
+        "semi": [2, "always"],
+        "indent": 0,
+        "mocha/no-exclusive-tests": "error",
+        "space-before-function-paren": 0
+    },
+    "env": {
+    	"node": true,
+    	"mocha": true
+    }
+}
