@@ -266,7 +266,7 @@ Documentation about the OPC UA Administration API can be found [here](https://op
 
 ## Quality Assurance
 
-The **IoT Agent for OPC UA** project is part of [FIWARE](https://fiware.org/)
+The **IoT Agent for OPC UA** project is part of [FIWARE](https://www.fiware.org/)
 and has been rated as follows:
 
 -   **Version Tested:**
