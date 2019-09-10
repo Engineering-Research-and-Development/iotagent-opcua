@@ -7,7 +7,7 @@ site_dir: html
 markdown_extensions: [toc,fenced_code]
 use_directory_urls: false
 theme: readthedocs
-extra_css: ["https://fiware.org/style/fiware_readthedocs.css", "https://fiware.org/style/fiware_readthedocs_iot.css"]
+extra_css: ["https://www.fiware.org/style/fiware_readthedocs.css", "https://www.fiware.org/style/fiware_readthedocs_iot.css"]
 google_analytics: ['UA-118589264-1', 'opcua-agent.readthedocs.io']
 pages:
   - Home: index.md
