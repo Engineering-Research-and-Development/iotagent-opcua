@@ -1,0 +1,8 @@
+# Get all devices
+curl http://localhost:4001/iot/devices -H "fiware-service: opcua_car" -H "fiware-servicepath: /demo"
+
+# Add a new device
+curl http://localhost:4001/iot/devices -H "fiware-service: opcua_car" -H "fiware-servicepath: /demo" -H "Content-Type: application/json" -d @add_device.json
+
+# Delete a device
+curl -X DELETE http://localhost:4001/iot/devices/age01_Car -H "fiware-service: opcua_car" -H "fiware-servicepath: /demo"

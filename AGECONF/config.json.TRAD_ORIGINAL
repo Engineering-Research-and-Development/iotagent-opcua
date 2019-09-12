@@ -1,5 +1,5 @@
 {
-  "logLevel" : "INFO",
+  "logLevel" : "DEBUG",
   "contextBroker" : {
     "host" : "orion",
     "port" : 1026
@@ -14,7 +14,7 @@
   "mongodb" : {
     "host" : "iotmongo",
     "port" : "27017",
-    "db" : "iotage01",
+    "db" : "iotagent",
     "retries" : 5,
     "retryTime" : 5
   },
@@ -22,7 +22,7 @@
     "Device" : {
       "service" : "opcua_car",
       "subservice" : "/demo",
-      "active" : [ {
+      "active" : [{
         "name" : "Speed",
         "type" : "Number"
       }, {
@@ -50,7 +50,7 @@
         "name" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
         "type" : "Boolean"
       }],
-      "lazy" : [ ],
+      "lazy" : [],
       "commands" : [{
         "name" : "Stop",
         "type" : "command"
@@ -72,7 +72,7 @@
   "browseServerOptions" : null,
   "service" : "opcua_car",
   "subservice" : "/demo",
-  "providerUrl" : "http://iotage01:4001",
+  "providerUrl" : "http://iotage:4001",
   "pollingExpiration" : "200000",
   "pollingDaemonFrequency" : "20000",
   "deviceRegistrationDuration" : "P1M",

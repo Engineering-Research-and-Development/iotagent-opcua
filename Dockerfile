@@ -1,14 +1,18 @@
-ARG  NODE_VERSION=8.15.0-stretch
+#ARG  NODE_VERSION=8.15.0-stretch
+ARG  NODE_VERSION=10.16.1-stretch
 FROM node:${NODE_VERSION}
 
 MAINTAINER Engineering Ingegneria Informatica spa - Research and Development Lab
 
 WORKDIR /opt
 
+RUN mkdir -p /opt/iotagent-opcua
+COPY . /opt/iotagent-opcua
+
 RUN \
   apt-get update && \
   apt-get install -y git netcat openjdk-8-jdk-headless && \
-  git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua.git" && \
+  #git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua.git" && \
   cd /opt/iotagent-opcua && \
   npm install && \
   rm -rf /root/.npm/cache/* && \
@@ -28,5 +32,7 @@ WORKDIR /opt/iotagent-opcua
 EXPOSE ${IOTA_NORTH_PORT:-4041}
 
 COPY docker-entrypoint.sh entrypoint.sh
+
+RUN chmod +x entrypoint.sh
 
 ENTRYPOINT ./entrypoint.sh
