@@ -410,8 +410,8 @@ module.exports = {
                 //------------------------------------------
                 // initialize client connection to the OPCUA Server
                 function(callback) {
-                    const certificateFile = '/opt/iotagent-opcua/certificates/client_certificate.pem';
-                    const privateKeyFile = '/opt/iotagent-opcua/certificates/PKI/own/private/private_key.pem';
+                    const certificateFile = './certificates/client_certificate.pem';
+                    const privateKeyFile = './certificates/PKI/own/private/private_key.pem';
 
                     var options = {
                         endpoint_must_exist: false,

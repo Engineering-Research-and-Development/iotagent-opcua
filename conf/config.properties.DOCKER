@@ -1,21 +1,21 @@
 namespace-ignore=2,7
 
-context-broker-host=localhost
+context-broker-host=orion
 context-broker-port=1026
 server-base-root=/
 server-port=4001
 device-registry-type=memory
-mongodb-host=localhost
+mongodb-host=iotmongo
 mongodb-port=27017
 mongodb-db=iotagent
 mongodb-retries=5
 mongodb-retry-time=5
 fiware-service=opcua_car
 fiware-service-path=/demo
-provider-url=http://localhost:4001
+provider-url=http://iotage:4001
 device-registration-duration=P1M
 #endpoint=opc.tcp://localhost:4334/UA/EnergyMESServer
-endpoint=opc.tcp://localhost:5001/UA/CarServer
+endpoint=opc.tcp://carsrv:5001/UA/CarServer
 log-level=DEBUG
 #DATATYPE MAPPING OPCUA --> NGSI
 OPC-datatype-Number=Number

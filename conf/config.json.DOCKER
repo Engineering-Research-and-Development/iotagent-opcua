@@ -1,7 +1,7 @@
 {
   "logLevel" : "INFO",
   "contextBroker" : {
-    "host" : "localhost",
+    "host" : "orion",
     "port" : 1026
   },
   "server" : {
@@ -12,7 +12,7 @@
     "type" : "memory"
   },
   "mongodb" : {
-    "host" : "localhost",
+    "host" : "iotmongo",
     "port" : "27017",
     "db" : "iotagent",
     "retries" : 5,
@@ -30,7 +30,7 @@
   "browseServerOptions" : null,
   "service" : "opcua_car",
   "subservice" : "/demo",
-  "providerUrl" : "http://localhost:4001",
+  "providerUrl" : "http://iotage:4001",
   "pollingExpiration" : "200000",
   "pollingDaemonFrequency" : "20000",
   "deviceRegistrationDuration" : "P1M",
