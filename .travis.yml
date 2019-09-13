@@ -36,10 +36,7 @@ jobs:
         - 10
 
       before_install:
-        - cd test
         - docker-compose up -d
-        - cd ..
-        - npm update -q
 
       # before_script:
       #  - npm run lint
