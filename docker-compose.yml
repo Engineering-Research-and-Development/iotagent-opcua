@@ -19,7 +19,7 @@ services:
       - hostnet
       - iotnet
     ports:
-      - "4001:4001"
+      - "4002:4002"
       - "4081:8080"
     #    extra_hosts:
     #      - "carsrv:192.168.40.42"
