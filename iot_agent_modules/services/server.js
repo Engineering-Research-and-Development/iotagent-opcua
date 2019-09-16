@@ -2,8 +2,8 @@ var exports = (module.exports = {});
 process.env.NODE_ENV = process.env.NODE_ENV;
 var express = require('express');
 var config = require('./server');
-//var PropertiesReader = require('properties-reader');
-//var properties = PropertiesReader('./conf/config.properties');
+// var PropertiesReader = require('properties-reader');
+// var properties = PropertiesReader('./conf/config.properties');
 var app = express();
 
 exports.start = function() {

@@ -22,43 +22,43 @@
  */
 'use strict';
 
-var async = require('async'),
-    restUtils = require('./restUtils'),
-    statsRegistry = require('./../stats/statsRegistry'),
-    deviceService = require('./../devices/deviceService'),
-    intoTrans = require('../common/domain').intoTrans,
-    logger = require('logops'),
-    errors = require('../../errors'),
-    _ = require('underscore'),
-    context = {
-        op: 'IoTAgentNGSI.DeviceProvisioning'
-    },
-    apply = async.apply,
-    provisioningHandler,
-    removeDeviceHandler,
-    updateDeviceTemplate = require('../../templates/updateDevice.json'),
-    createDeviceTemplate = require('../../templates/createDevice.json'),
-    mandatoryHeaders = ['fiware-service', 'fiware-servicepath'],
-    provisioningMiddlewares = [],
-    provisioningAPITranslation = {
-        /* jshint camelcase:false */
+var async = require('async');
+var restUtils = require('./restUtils');
+var statsRegistry = require('./../stats/statsRegistry');
+var deviceService = require('./../devices/deviceService');
+var intoTrans = require('../common/domain').intoTrans;
+var logger = require('logops');
+var errors = require('../../errors');
+var _ = require('underscore');
+var context = {
+    op: 'IoTAgentNGSI.DeviceProvisioning'
+};
+var apply = async.apply;
+var provisioningHandler;
+var removeDeviceHandler;
+var updateDeviceTemplate = require('../../templates/updateDevice.json');
+var createDeviceTemplate = require('../../templates/createDevice.json');
+var mandatoryHeaders = ['fiware-service', 'fiware-servicepath'];
+var provisioningMiddlewares = [];
+var provisioningAPITranslation = {
+    /* jshint camelcase:false */
 
-        name: 'id',
-        service: 'service',
-        service_path: 'subservice',
-        entity_name: 'name',
-        entity_type: 'type',
-        timezone: 'timezone',
-        timestamp: 'timestamp',
-        protocol: 'protocol',
-        transport: 'transport',
-        endpoint: 'endpoint',
-        attributes: 'active',
-        commands: 'commands',
-        lazy: 'lazy',
-        internal_attributes: 'internalAttributes',
-        static_attributes: 'staticAttributes'
-    };
+    name: 'id',
+    service: 'service',
+    service_path: 'subservice',
+    entity_name: 'name',
+    entity_type: 'type',
+    timezone: 'timezone',
+    timestamp: 'timestamp',
+    protocol: 'protocol',
+    transport: 'transport',
+    endpoint: 'endpoint',
+    attributes: 'active',
+    commands: 'commands',
+    lazy: 'lazy',
+    internal_attributes: 'internalAttributes',
+    static_attributes: 'staticAttributes'
+};
 
 /**
  * Express middleware to handle incoming device provisioning requests. Every request is validated and handled to the
@@ -87,9 +87,9 @@ function handleProvision(req, res, next) {
 
     function applyProvisioningMiddlewares(device, callback) {
         if (provisioningMiddlewares.length > 0) {
-            var firstMiddleware = provisioningMiddlewares.slice(0, 1)[0],
-                rest = provisioningMiddlewares.slice(1),
-                executingMiddlewares = [apply(firstMiddleware, device)];
+            var firstMiddleware = provisioningMiddlewares.slice(0, 1)[0];
+            var rest = provisioningMiddlewares.slice(1);
+            var executingMiddlewares = [apply(firstMiddleware, device)];
 
             executingMiddlewares = executingMiddlewares.concat(rest);
 
@@ -300,8 +300,8 @@ function handleUpdateDevice(req, res, next) {
                 if (error) {
                     next(error);
                 } else if (device) {
-                    var pairs = _.pairs(req.body),
-                        newDevice = _.clone(device);
+                    var pairs = _.pairs(req.body);
+                    var newDevice = _.clone(device);
 
                     for (var i in pairs) {
                         newDevice[provisioningAPITranslation[pairs[i][0]]] = pairs[i][1];

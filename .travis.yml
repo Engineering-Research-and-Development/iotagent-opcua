@@ -42,12 +42,10 @@ jobs:
 
       after_script:
         - npm run test:coveralls
-
-    - stage: test
-      name: "Documentation Tests"
-      node_js:
-        - node
-
-      script:
-        - npm run lint:md
-        - npm run lint:text
+    #- stage: test
+    #  name: "Documentation Tests"
+    #  node_js:
+    #    - node
+    #  script:
+    #    - npm run lint:md
+    #    - npm run lint:text

@@ -24,16 +24,16 @@
  */
 'use strict';
 
-var logger = require('logops'),
-    errors = require('../../errors'),
-    constants = require('../../constants'),
-    intoTrans = require('../common/domain').intoTrans,
-    revalidator = require('revalidator'),
-    moment = require('moment'),
-    context = {
-        op: 'IoTAgentNGSI.RestUtils'
-    },
-    _ = require('underscore');
+var logger = require('logops');
+var errors = require('../../errors');
+var constants = require('../../constants');
+var intoTrans = require('../common/domain').intoTrans;
+var revalidator = require('revalidator');
+var moment = require('moment');
+var context = {
+    op: 'IoTAgentNGSI.RestUtils'
+};
+var _ = require('underscore');
 
 /**
  * Checks all the mandatory attributes in the selected array are present in the presented body object.
@@ -81,8 +81,8 @@ function checkMandatoryQueryParams(mandatoryAttributes, body, callback) {
  */
 function checkRequestAttributes(attribute, mandatoryAttributes) {
     return function headerChecker(req, res, next) {
-        var headerKeys = _.keys(req[attribute]),
-            missing = [];
+        var headerKeys = _.keys(req[attribute]);
+        var missing = [];
 
         for (var i = 0; i < mandatoryAttributes.length; i++) {
             if (headerKeys.indexOf(mandatoryAttributes[i]) < 0) {

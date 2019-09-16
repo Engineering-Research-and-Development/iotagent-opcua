@@ -11,7 +11,7 @@ exports.status = function(req, res) {
     // each of the following steps is executed in due order
     // each step MUST call callback() when done in order for the step sequence to proceed further
     async.series([
-        //------------------------------------------
+        // ------------------------------------------
         function(callback) {
             for (var i = 0, len = config.contexts.length; i < len; i++) {
                 var context = config.contexts[i];

@@ -52,8 +52,8 @@ module.exports = {
         logger.format = logger.formatters.pipe;
 
         // Specify the context fields to omit as an array
-        //var PropertiesReader = require('properties-reader');
-        //var properties = PropertiesReader('./conf/config.properties');
+        // var PropertiesReader = require('properties-reader');
+        // var properties = PropertiesReader('./conf/config.properties');
         // fully qualified name
         var endpointUrl = properties.get('endpoint');
         var securityMode = properties.get('securityMode');
@@ -68,7 +68,7 @@ module.exports = {
         var _setInterval = require('setinterval-plus');
 
         if (fs.existsSync('./conf/config.json')) {
-            //var config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf8'));
+            // var config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf8'));
         } else {
             doAuto = true;
         }
@@ -77,10 +77,10 @@ module.exports = {
         logger.info(logContext, '----------------------------------------------------');
 
         // NODE1
-        //var sMode = opcua.MessageSecurityMode.get(securityMode || 'NONE');
-        //if (!sMode) {
+        // var sMode = opcua.MessageSecurityMode.get(securityMode || 'NONE');
+        // if (!sMode) {
         //    throw new Error('Invalid Security mode , should be ' + opcua.MessageSecurityMode.enums.join(' '));
-        //}
+        // }
 
         securityMode = 1;
         securityPolicy = opcua.SecurityPolicy['None'];
@@ -94,20 +94,20 @@ module.exports = {
         }
 
         // NODE1
-        //var sPolicy = opcua.SecurityPolicy.get(securityPolicy || 'None');
-        //if (!sPolicy) {
+        // var sPolicy = opcua.SecurityPolicy.get(securityPolicy || 'None');
+        // if (!sPolicy) {
         //    throw new Error('Invalid securityPolicy , should be ' + opcua.SecurityPolicy.enums.join(' '));
-        //}
+        // }
 
-        var timeout = parseInt(argv.timeout) * 1000 || -1; //604800*1000; //default 20000
-        var doBrowse = argv.browse ? true : false;
+        var timeout = parseInt(argv.timeout) * 1000 || -1; // 604800*1000; //default 20000
+        var doBrowse = !!argv.browse;
 
         logger.info(logContext, 'endpointUrl         = '.cyan, endpointUrl);
         logger.info(logContext, 'securityMode        = '.cyan, securityMode.toString());
         logger.info(logContext, 'securityPolicy      = '.cyan, securityPolicy.toString());
-        logger.info(logContext, 'timeout             = '.cyan, timeout ? timeout : ' Infinity ');
+        logger.info(logContext, 'timeout             = '.cyan, timeout || ' Infinity ');
         // set to false to disable address space crawling: might slow things down if the AS is huge
-        var doCrawling = argv.crawl ? true : false;
+        var doCrawling = !!argv.crawl;
         var client = null;
         var the_session = null;
         global.the_subscriptions = [];
@@ -236,16 +236,16 @@ module.exports = {
                         '';
                     logger.debug(logContext, keepAliveString.gray);
 
-                    /*       
+                    /*
 					iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
 						if(error){
 							subscription.terminate();
 						};
-						* 
+						*
 						if (device.active.length==0){
 							subscription.terminate();
 						}
-					});*/
+					}); */
                 })
                 .on('terminated', function(err) {
                     if (err) {
@@ -271,13 +271,13 @@ module.exports = {
                 // TODO some of this stuff (samplingInterval for sure) should come from config
                 // TODO All these attributes are optional remove ?
                 {
-                    //clientHandle: 13, // TODO need to understand the meaning this! we probably cannot reuse the same handle everywhere
+                    // clientHandle: 13, // TODO need to understand the meaning this! we probably cannot reuse the same handle everywhere
                     samplingInterval: properties.get('samplingInterval'),
                     queueSize: properties.get('queueSize'),
                     discardOldest: properties.get('discardOldest')
                 },
                 // NODE1
-                //opcua.read_service.TimestampsToReturn.Both
+                // opcua.read_service.TimestampsToReturn.Both
                 opcua.TimestampsToReturn.Both,
                 function(err, monItem) {
                     if (err) {
@@ -292,7 +292,7 @@ module.exports = {
                     monItem.on('initialized', function() {
                         logger.info(logContext, 'started monitoring: ' + monItem.itemToMonitor.nodeId.toString());
 
-                        //Collect all monitoring
+                        // Collect all monitoring
                         if (devicesSubs[context.id] == undefined) {
                             devicesSubs[context.id] = [];
                         }
@@ -311,8 +311,9 @@ module.exports = {
                         var variableValue = null;
                         if (dataValue.value && dataValue.value != null) {
                             variableValue = dataValue.value.value || null;
-                            if (dataValue.value.value == 0 || dataValue.value.value == false)
+                            if (dataValue.value.value == 0 || dataValue.value.value == false) {
                                 variableValue = dataValue.value.value;
+                            }
                         }
 
                         variableValue = cfc.cleanForbiddenCharacters(variableValue);
@@ -343,7 +344,7 @@ module.exports = {
                                         }
                                     ];
 
-                                    //Setting ID withoput prefix NAME now
+                                    // Setting ID withoput prefix NAME now
                                     // iotAgentLib.update(device.id, device.type, '', attributes, device, function(err) {
                                     iotAgentLib.update(device.name, device.type, '', attributes, device, function(err) {
                                         if (err) {
@@ -385,13 +386,13 @@ module.exports = {
 
         function notificationHandler(device, updates, callback) {
             logger.info(logContext, 'Data coming from OCB: ', JSON.stringify(updates));
-            cM.callMethods(updates[0].value, methods, the_session); //TODO gestire multiple chiamate
+            cM.callMethods(updates[0].value, methods, the_session); // TODO gestire multiple chiamate
         }
         // each of the following steps is executed in due order
         // each step MUST call callback() when done in order for the step sequence to proceed further
         async.series(
             [
-                //------------------------------------------
+                // ------------------------------------------
                 // initialize client connection to the OCB
                 function(callback) {
                     // This also creates the device registry
@@ -407,7 +408,7 @@ module.exports = {
                     });
                 },
 
-                //------------------------------------------
+                // ------------------------------------------
                 // initialize client connection to the OPCUA Server
                 function(callback) {
                     const certificateFile = './certificates/client_certificate.pem';
@@ -478,7 +479,7 @@ module.exports = {
                     });
                 },
 
-                //------------------------------------------
+                // ------------------------------------------
                 // initialize client session on the OPCUA Server
                 function(callback) {
                     userIdentity = null; // anonymous
@@ -523,17 +524,16 @@ module.exports = {
                     });
                 },
 
-                //------------------------------------------
+                // ------------------------------------------
                 // initialize all subscriptions
                 function(callback) {
-                    //Creating group always
+                    // Creating group always
 
                     if (config.deviceRegistry.type == 'mongodb') {
                         mG.mongoGroup(config);
                         request(optionsCreation, function(error, response, body) {
                             if (error) {
                                 logger.error(logContext, 'CREATION GROUP ERROR. Verify OCB connection.');
-                                return;
                             } else {
                                 logger.info(logContext, 'GROUPS SUCCESSFULLY CREATED!');
                             }
@@ -554,11 +554,11 @@ module.exports = {
                             id: context.id,
                             name: context.id,
                             type: context.type,
-                            active: config.types[context.type].active, //only active used in this VERSION
+                            active: config.types[context.type].active, // only active used in this VERSION
                             lazy: context.lazy,
                             commands: context.commands,
-                            //lazy: config.types[context.type].lazy,
-                            //commands: config.types[context.type].commands,
+                            // lazy: config.types[context.type].lazy,
+                            // commands: config.types[context.type].commands,
                             service: context.service,
                             subservice: context.subservice,
                             polling: context.polling,
@@ -598,7 +598,6 @@ module.exports = {
                                     request(optionsCreation, function(error, response, body) {
                                         if (error) {
                                             logger.error(logContext, 'CREATION GROUP ERROR. Verify OCB connection.');
-                                            return;
                                         } else {
                                             logger.info(logContext, 'GROUPS SUCCESSFULLY CREATED!');
                                         }
@@ -626,7 +625,6 @@ module.exports = {
                                         request(del, function(error, response, body) {
                                             if (error) {
                                                 logger.error(logContext, 'Device delete error.');
-                                                return;
                                             } else {
                                                 logger.info(logContext, 'device deleted!');
                                                 callback();
@@ -668,7 +666,6 @@ module.exports = {
                             logger.error(logContext, 'error registering OCB context');
                             logger.info(logContext, JSON.stringify(err));
                             callback();
-                            return;
                         }
                     });
                     callback();
@@ -733,7 +730,7 @@ module.exports = {
                     */
                 },
 
-                //------------------------------------------
+                // ------------------------------------------
                 // set up a timer that shuts down the client after a given time
                 function(callback) {
                     logger.info(logContext, 'Starting timer ', timeout);
@@ -744,10 +741,10 @@ module.exports = {
                             // TODO don't know if this approach may be broken (see commented code below)
                             // but let's assume it won't matter anyway as we are shutting down...
                             callback();
-                            //the_subscription.once("terminated", function() {
+                            // the_subscription.once("terminated", function() {
                             //    callback();
-                            //});
-                            //the_subscription.terminate();
+                            // });
+                            // the_subscription.terminate();
                         }, timeout);
                     } else if (timeout == -1) {
                         //  Infinite activity
@@ -758,7 +755,7 @@ module.exports = {
                         callback();
                     }
                 },
-                //------------------------------------------
+                // ------------------------------------------
                 // when the timer goes off, we first close the session...
                 function(callback) {
                     logger.info(logContext, ' closing session');
@@ -803,7 +800,7 @@ module.exports = {
         });
 
         // handle CTRL+C
-        //var user_interruption_count = 0;
+        // var user_interruption_count = 0;
 
         process.on('SIGINT', function() {
             logger.error(logContext, ' user interruption ...');
@@ -862,7 +859,7 @@ module.exports = {
             // each of the following steps is executed in due order
             // each step MUST call callback() when done in order for the step sequence to proceed further
             async.series([
-                //------------------------------------------
+                // ------------------------------------------
                 function(callback) {
                     for (var i = 0, len = config.contexts.length; i < len; i++) {
                         var context = config.contexts[i];
@@ -981,7 +978,7 @@ module.exports = {
                                                             callback
                                                         );
                                                     } else {
-                                                        if (results[0].statusCode.name === opcua.StatusCodes.Bad.name)
+                                                        if (results[0].statusCode.name === opcua.StatusCodes.Bad.name) {
                                                             eUv.executeUpdateValues(
                                                                 device,
                                                                 id,
@@ -993,11 +990,14 @@ module.exports = {
                                                                 results[0].outputArguments[0].value,
                                                                 callback
                                                             );
-                                                        else {
+                                                        } else {
                                                             if (results[0].outputArguments[0] !== undefined) {
-                                                                if (Array.isArray(results[0].outputArguments[0].value))
+                                                                if (
+                                                                    Array.isArray(results[0].outputArguments[0].value)
+                                                                ) {
                                                                     results[0].outputArguments[0].value =
                                                                         results[0].outputArguments[0].value[0];
+                                                                }
                                                                 eUv.executeUpdateValues(
                                                                     device,
                                                                     id,
@@ -1024,7 +1024,7 @@ module.exports = {
             }
             async.waterfall([async.apply(executeCommand)], callback);
         }
-        //iotAgentLib.setDataUpdateHandler(updateContextHandler);
+        // iotAgentLib.setDataUpdateHandler(updateContextHandler);
         iotAgentLib.setDataQueryHandler(queryContextHandler);
         iotAgentLib.setCommandHandler(commandContextHandler);
 
@@ -1052,9 +1052,9 @@ module.exports = {
 
             if (deviceExists == false) {
                 executed = true;
-                //Here only if device added with successfully
+                // Here only if device added with successfully
 
-                //Pause device checking
+                // Pause device checking
                 timerId.pause();
                 setTimeout(function() {
                     timerId.resume();
@@ -1078,7 +1078,7 @@ module.exports = {
                 // commandDeviceSubs(device);
                 // lazyDeviceSubs(device);
 
-                /* 
+                /*
 				var newDevice={};
 				if (config.contextBroker.ngsiVersion == undefined){
 					createInitialEntityNgsi1(device, newDevice,  function(error, results) {
@@ -1245,7 +1245,7 @@ module.exports = {
                         }
                     });
 
-                    /*doesOPCUANodeExist(attribute.object_id, function(exitStatus) {
+                    /* doesOPCUANodeExist(attribute.object_id, function(exitStatus) {
 						if(exitStatus == true) {
 							mapping.ocb_id = attribute.name;
 							mapping.opcua_id = attribute.object_id;
@@ -1365,10 +1365,10 @@ module.exports = {
                                 });
 
                                 // Ignoring OPCUA items that are not available on OPCUA server side
-                                //if(doesOPCUANodeExist(lazy.object_id) == false) {
+                                // if(doesOPCUANodeExist(lazy.object_id) == false) {
                                 //	removeOPCUANodeFromDevice(lazy.object_id, 'lazy', device);
                                 //	return; // prevent node from being inserted into contextSubscriptions array - forEach continue
-                                //}
+                                // }
                             });
                         }
 
@@ -1406,16 +1406,16 @@ module.exports = {
 			// creating contextSubscriptions obj item
 			contextSubscriptionObj = {};
 			contextSubscriptionObj.id = device.id;
-			contextSubscriptionObj.type = device.type;	
-			contextSubscriptionObj.mappings = [];	
-			
+			contextSubscriptionObj.type = device.type;
+			contextSubscriptionObj.mappings = [];
+
 			device.commands.forEach(function(command) {
 				command.object_id = parsePayloadProperties(command.object_id);
-				
+
 				var mapping = {};
 				mapping.ocb_id = command.name;
 				mapping.opcua_id = command.object_id;
-				
+
 				// TODO: fetch these data from OPCUA server?
 				mapping.object_id = 'ns=3;i=1000'; 				// mapping.object_id = 'ns=3;i=1000';
 				var dataType = {
@@ -1423,10 +1423,10 @@ module.exports = {
 					"type" : "SensorIndex"
 				};
 				mapping.inputArguments = [dataType];
-				
-				contextSubscriptionObj.mappings.push(mapping);	
+
+				contextSubscriptionObj.mappings.push(mapping);
 			});
-			
+
 			contextSubscriptions.push(contextSubscriptionObj);
 		}
 		*/
@@ -1438,16 +1438,16 @@ module.exports = {
 		function lazyDeviceSubs(device) {
 			device.lazy.forEach(function(lazy) {
 				.object_id = parsePayloadProperties(lazy.object_id);
-				
+
 				var mapping = {};
 				mapping.ocb_id = lazy.name;
 				mapping.opcua_id = lazy.object_id;
-				
+
 				// TODO: fetch these data from OPCUA server?
 				mapping.object_id = 'ns=3;i=1000'; // mapping.object_id = 'ns=3;i=1000';
 				mapping.inputArguments = [];
-				
-				contextSubscriptionObj.mappings.push(mapping);	
+
+				contextSubscriptionObj.mappings.push(mapping);
 			});
 		}
 		*/

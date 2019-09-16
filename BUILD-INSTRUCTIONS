@@ -1,1 +1,1 @@
-docker build --build-arg http_proxy=$http_proxy --build-arg https_proxy=$http_proxy -t iotagent-opcua:1.1_API_ADOPTION .
+docker build --build-arg http_proxy=$http_proxy --build-arg https_proxy=$http_proxy -t pietrogreco4991/iotagent-opcua:1.1_API_ADOPTION .

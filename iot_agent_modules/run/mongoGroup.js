@@ -11,7 +11,7 @@ module.exports = {
                 resource: '/' + key,
                 apikey: apikey,
                 entity_type: key,
-                //trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
+                // trust: '8970A9078A803H3BL98PINEQRW8342HBAMS',
                 cbHost: config.contextBroker.host + ':' + config.contextBroker.port,
                 commands: type.commands,
                 lazy: type.lazy,

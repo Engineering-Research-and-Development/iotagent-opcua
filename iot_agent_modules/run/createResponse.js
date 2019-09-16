@@ -1,7 +1,7 @@
 module.exports = {
     createResponse: function(id, type, attributes, body) {
-        var values = body.split(','),
-            responses = [];
+        var values = body.split(',');
+        var responses = [];
 
         for (var i = 0; i < attributes.length; i++) {
             responses.push({

@@ -49,7 +49,7 @@ describe('Verify Northbound flow', function() {
 
     describe('The agent is monitoring active attributes...', function() {
         before(
-            //async () => {
+            // async () => {
             // await
 
             function() {
@@ -68,8 +68,9 @@ describe('Verify Northbound flow', function() {
                     if (check_prop.checkproperties().length != 0) {
                         console.log('WARNING!!!');
                         console.log('CHECK YOUR config.properties FILE,  THE FOLLOWING PARAMETERS ARE NULL:');
-                        for (var null_params in check_prop.checkproperties())
+                        for (var null_params in check_prop.checkproperties()) {
                             console.log(check_prop.checkproperties()[null_params]);
+                        }
                         process.exit(1);
                     }
 
@@ -83,7 +84,7 @@ describe('Verify Northbound flow', function() {
                     loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...'.rainbow);
 
                     var iotAgentConfig = require('./config-test.json');
-                    //var iotAgentProp = require('./config.properties');
+                    // var iotAgentProp = require('./config.properties');
 
                     var properties = PropertiesReader(require('path').resolve(__dirname, './config-test.properties'));
                     global.properties = properties;
@@ -223,9 +224,9 @@ describe('Verify Northbound flow', function() {
                 });
             }
 
-            myTimer(); //immediate first run
+            myTimer(); // immediate first run
 
-            //done();
+            // done();
         });
 
         it('verify commands execution as context provider', function(done) {
@@ -233,7 +234,7 @@ describe('Verify Northbound flow', function() {
             console.log('verify commands execution as context provider');
             // Run test
 
-            //STOP CAR
+            // STOP CAR
             var json = {};
             json.value = null;
             json.type = 'command';
@@ -257,7 +258,7 @@ describe('Verify Northbound flow', function() {
                 console.log('stopRequest body STOP=' + JSON.stringify(body));
             });
 
-            //STOP CAR locally (for Travis unreachability)
+            // STOP CAR locally (for Travis unreachability)
             var json = {
                 contextElements: [
                     {
@@ -291,7 +292,7 @@ describe('Verify Northbound flow', function() {
                 console.log('stopRequest locally body =' + JSON.stringify(body));
             });
 
-            //Accelerate CAR locally (for Travis unreachability)
+            // Accelerate CAR locally (for Travis unreachability)
             var json = {
                 contextElements: [
                     {
@@ -354,7 +355,7 @@ describe('Verify Northbound flow', function() {
                     console.log('accelerateRequest body =' + JSON.stringify(body));
                 });
 
-                //Accelerate CAR locally (for Travis unreachability)
+                // Accelerate CAR locally (for Travis unreachability)
                 var json = {
                     contextElements: [
                         {
@@ -470,9 +471,9 @@ describe('Verify ADMIN API services', function() {
                 });
             }
 
-            myTimer(); //immediate first run
+            myTimer(); // immediate first run
 
-            //done();
+            // done();
         });
 
         it('verify status service', function(done) {
@@ -501,9 +502,9 @@ describe('Verify ADMIN API services', function() {
                 });
             }
 
-            myTimer(); //immediate first run
+            myTimer(); // immediate first run
 
-            //done();
+            // done();
         });
 
         it('verify config service', function(done) {
@@ -532,9 +533,9 @@ describe('Verify ADMIN API services', function() {
                 });
             }
 
-            myTimer(); //immediate first run
+            myTimer(); // immediate first run
 
-            //done();
+            // done();
         });
 
         it('verify commandsList service', function(done) {
@@ -563,9 +564,9 @@ describe('Verify ADMIN API services', function() {
                 });
             }
 
-            myTimer(); //immediate first run
+            myTimer(); // immediate first run
 
-            //done();
+            // done();
         });
 
         it('verify config post service', function(done) {
@@ -596,9 +597,9 @@ describe('Verify ADMIN API services', function() {
                 });
             }
 
-            myTimer(); //immediate first run
+            myTimer(); // immediate first run
 
-            //done();
+            // done();
         });
     });
 });

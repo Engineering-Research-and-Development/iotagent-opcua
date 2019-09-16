@@ -1,6 +1,6 @@
 module.exports = {
     callMethods: function(value, methods, the_session) {
-        //TODO Metodi multipli
+        // TODO Metodi multipli
         if (!methods) return;
         try {
             methods[0].inputArguments = [

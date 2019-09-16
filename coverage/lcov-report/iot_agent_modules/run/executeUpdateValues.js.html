@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for iot_agent_modules/run/executeUpdateValues.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">iot_agent_modules/run/</a> executeUpdateValues.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">19.05% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>4/21</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/8</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/3</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">19.05% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>4/21</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var constants = require('iotagent-node-lib');
+var async = require('async');
+var ngsi = require('iotagent-node-lib');
+&nbsp;
+module.exports = {
+    executeUpdateValues: <span class="fstat-no" title="function not covered" >function(device, id, type, service, subservice, attributes, status, value, callback) {</span>
+<span class="cstat-no" title="statement not covered" >        var sideEffects = [];</span>
+<span class="cstat-no" title="statement not covered" >        if (device.commands) {</span>
+<span class="cstat-no" title="statement not covered" >            for (var i = 0; i &lt; device.commands.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >                for (var j = 0; j &lt; attributes.length; j++) {</span>
+<span class="cstat-no" title="statement not covered" >                    if (device.commands[i].name === attributes[j].name) {</span>
+<span class="cstat-no" title="statement not covered" >                        var newAttributes = [</span>
+                            {
+                                name: device.commands[i].name + '_status',
+                                type: constants.COMMAND_STATUS,
+                                value: status
+                            },
+                            {
+                                name: device.commands[i].name + '_info',
+                                type: constants.COMMAND_RESULT,
+                                value: value
+                            }
+                        ];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                        sideEffects.push(</span>
+                            async.apply(ngsi.update, device.id, device.resource, device.apikey, newAttributes, device)
+                        );
+                    }
+                }
+            }
+        }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        async.series(sideEffects, <span class="fstat-no" title="function not covered" >function _restParam(func, startIndex) {</span></span>
+<span class="cstat-no" title="statement not covered" >            startIndex = startIndex == null ? func.length - 1 : +startIndex;</span>
+<span class="cstat-no" title="statement not covered" >            return <span class="fstat-no" title="function not covered" >function() {</span></span>
+<span class="cstat-no" title="statement not covered" >                var length = Math.max(arguments.length - startIndex, 0);</span>
+<span class="cstat-no" title="statement not covered" >                var rest = Array(length);</span>
+<span class="cstat-no" title="statement not covered" >                for (var index = 0; index &lt; length; index++) {</span>
+<span class="cstat-no" title="statement not covered" >                    rest[index] = arguments[index + startIndex];</span>
+                }
+<span class="cstat-no" title="statement not covered" >                switch (startIndex) {</span>
+                    case 0:
+<span class="cstat-no" title="statement not covered" >                        return func.call(this, rest);</span>
+                    case 1:
+<span class="cstat-no" title="statement not covered" >                        return func.call(this, arguments[0], rest);</span>
+                }
+            };
+        });
+    }
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Sep 16 2019 11:48:44 GMT+0200 (Central European Summer Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

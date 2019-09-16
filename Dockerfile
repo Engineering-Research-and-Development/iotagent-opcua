@@ -14,6 +14,7 @@ RUN \
   apt-get install -y git netcat openjdk-8-jdk-headless && \
   #git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua.git" && \
   cd /opt/iotagent-opcua && \
+  rm -f package-lock.json && \
   npm install && \
   rm -rf /root/.npm/cache/* && \
   rm -rf docs && \
@@ -27,6 +28,7 @@ RUN \
 VOLUME /opt/iotagent-opcua/conf
 
 WORKDIR /opt/iotagent-opcua
+
 
 # Expose 4041 for NORTH PORT
 EXPOSE ${IOTA_NORTH_PORT:-4041}
