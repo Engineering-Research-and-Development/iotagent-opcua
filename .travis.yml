@@ -36,6 +36,8 @@ jobs:
         - 10
 
       before_install:
+        - netstat -tupln | grep '4001'
+        - kill -15 $(netstat -tupln | grep '4001' | cut -d '/' -f 1 | sed 's/\s\{1,\}/ /g' | cut -d ' ' -f 6)
         - docker-compose up -d
 
       # before_script:
