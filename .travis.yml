@@ -6,7 +6,6 @@ branches:
     - master
 
 services:
-  - mongodb
   - docker
 
 jobs:
@@ -38,8 +37,8 @@ jobs:
       before_install:
         - docker-compose up -d
 
-      # before_script:
-      #  - npm run lint
+      before_script:
+        - npm run lint
 
       after_script:
         - npm run test:coveralls
