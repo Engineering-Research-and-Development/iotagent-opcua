@@ -1,0 +1,296 @@
+- le info relative ai comandi non arrivato L SERVER NEL FORMATO CORRETTO, controllare
+  (il commandContextHandler viene invocato correttamente)
+  
+
+
+### LOG con config.json tradizionale
+
+  
+1) op=IoTAgentNGSI.NorthboundServer | srv=n/a | subsrv=n/a | msg=Using config: contenuto config.json
+2) op=IoTAgentNGSI.ContextServer | srv=n/a | subsrv=n/a | msg=Loading NGSI Contect server routes | comp=IoTAgent
+3) op=Index.Initialize | comp=iotAgent-OPCUA | srv=n/a | subsrv=n/a | msg=registering OCB context age01_Car of type Device
+iotage_1       | @@@### DEL
+iotage_1       | { url: 'http://localhost:4001/iot/devices/age01_Car',
+iotage_1       |   method: 'DELETE'
+
+4) op=IoTAgentNGSI.DomainControl | srv=opcua_car | subsrv=/demo | msg=response-time: 4 | comp=IoTAgent
+iotage_1       | time=2019-09-02T11:45:47.287Z | lvl=INFO | corr=n/a | trans=n/a | op=Index.Initialize | comp=iotAgent-OPCUA | srv=opcua_car | subsrv=/demo | msg=device deleted!
+
+5) op=IoTAgentNGSI.InMemoryGroupRegister | srv=n/a | subsrv=n/a | msg=Looking for device params ["service","subservice","type"] | comp=IoTAgent
+iotage_1       | time=2019-09-02T11:45:47.287Z | lvl=DEBUG | corr=e9c5cfd0-49ef-4b37-a9dc-fc47aab3b744 | trans=e9c5cfd0-49ef-4b37-a9dc-fc47aab3b744 | op=IoTAgentNGSI.DeviceService | srv=n/a | subsrv=n/a | msg=deviceData: {"id":"age01_Car","name":"age01_Car","type":"Device","active":[{"name":"Speed","type":"Number"},{"name":"Acceleration","type":"Number"},{"name":"EngineStopped","type":"Boolean"},{"name":"Engine_Temperature","type":"Number"},{"name":"Engine_Oxigen","type":"Number"},{"name":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy","type":"String"},{"name":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus","type":"Boolean"},{"name":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone","type":"String"},{"name":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus","type":"Boolean"}],"service":"opcua_car","subservice":"/demo","polling":false,"endpoint":"opc.tcp://carsrv:5001/UA/CarServer"} 
+
+6) op=IoTAgentNGSI.DeviceService | srv=n/a | subsrv=n/a | msg=deviceData2: {"id":"age01_Car","name":"age01_Car","type":"Device","active":[{"name":"Speed","type":"Number","object_id":"Speed"},{"name":"Acceleration","type":"Number","object_id":"Acceleration"},{"name":"EngineStopped","type":"Boolean","object_id":"EngineStopped"},{"name":"Engine_Temperature","type":"Number","object_id":"Engine_Temperature"},{"name":"Engine_Oxigen","type":"Number","object_id":"Engine_Oxigen"},{"name":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy","type":"String","object_id":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy"},{"name":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus","type":"Boolean","object_id":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus"},{"name":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone","type":"String","object_id":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone"},{"name":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus","type":"Boolean","object_id":"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus"}],"lazy":[],"commands":[{"name":"Stop","type":"command","object_id":"Stop"},{"name":"Accelerate","type":"command","object_id":"Accelerate"},{"name":"ActivateSensor","type":"command","object_id":"ActivateSensor"},{"name":"DeactivateSensor","type":"command","object_id":"DeactivateSensor"},{"name":"ToggleSensorActivation","type":"command","object_id":"ToggleSensorActivation"}],"service":"opcua_car","subservice":"/demo","polling":false,"endpoint":"opc.tcp://carsrv:5001/UA/CarServer","staticAttributes":[],"subscriptions":[]} | comp=IoTAgent
+
+--->
+*** 7) op=IoTAgentNGSI.DeviceService | srv=n/a | subsrv=n/a | msg=Registering device into NGSI Service:
+iotage_1       | {
+iotage_1       |     "id": "age01_Car",
+iotage_1       |     "name": "age01_Car",
+iotage_1       |     "type": "Device",
+iotage_1       |     "active": [
+iotage_1       |         {
+iotage_1       |             "name": "Speed",
+iotage_1       |             "type": "Number",
+iotage_1       |             "object_id": "Speed"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "Acceleration",
+iotage_1       |             "type": "Number",
+iotage_1       |             "object_id": "Acceleration"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "EngineStopped",
+iotage_1       |             "type": "Boolean",
+iotage_1       |             "object_id": "EngineStopped"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "Engine_Temperature",
+iotage_1       |             "type": "Number",
+iotage_1       |             "object_id": "Engine_Temperature"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "Engine_Oxigen",
+iotage_1       |             "type": "Number",
+iotage_1       |             "object_id": "Engine_Oxigen"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy",
+iotage_1       |             "type": "String",
+iotage_1       |             "object_id": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
+iotage_1       |             "type": "Boolean",
+iotage_1       |             "object_id": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
+iotage_1       |             "type": "String",
+iotage_1       |             "object_id": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
+iotage_1       |             "type": "Boolean",
+iotage_1       |             "object_id": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus"
+iotage_1       |         }
+iotage_1       |     ],
+iotage_1       |     "lazy": [],
+iotage_1       |     "commands": [
+iotage_1       |         {
+iotage_1       |             "name": "Stop",
+iotage_1       |             "type": "command",
+iotage_1       |             "object_id": "Stop"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "Accelerate",
+iotage_1       |             "type": "command",
+iotage_1       |             "object_id": "Accelerate"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "ActivateSensor",
+iotage_1       |             "type": "command",
+iotage_1       |             "object_id": "ActivateSensor"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "DeactivateSensor",
+iotage_1       |             "type": "command",
+iotage_1       |             "object_id": "DeactivateSensor"
+iotage_1       |         },
+iotage_1       |         {
+iotage_1       |             "name": "ToggleSensorActivation",
+iotage_1       |             "type": "command",
+iotage_1       |             "object_id": "ToggleSensorActivation"
+iotage_1       |         }
+iotage_1       |     ],
+iotage_1       |     "service": "opcua_car",
+iotage_1       |     "subservice": "/demo",
+iotage_1       |     "polling": false,
+iotage_1       |     "endpoint": "opc.tcp://carsrv:5001/UA/CarServer",
+iotage_1       |     "staticAttributes": [],
+iotage_1       |     "subscriptions": []
+iotage_1       | }
+
+8)op=IoTAgentNGSI.DeviceService | srv=n/a | subsrv=n/a | msg=Sending device registrations to Context Broker at [http://orion:1026/NGSI9/registerContext] | comp=IoTAgent
+iotage_1       | time=2019-09-02T11:45:47.289Z | lvl=DEBUG | corr=e9c5cfd0-49ef-4b37-a9dc-fc47aab3b744 | trans=e9c5cfd0-49ef-4b37-a9dc-fc47aab3b744 | 
+
+op=IoTAgentNGSI.DeviceService | srv=n/a | subsrv=n/a | msg=Using the following request:
+iotage_1       | {
+iotage_1       |     "url": "http://orion:1026/NGSI9/registerContext",
+iotage_1       |     "method": "POST",
+iotage_1       |     "json": {
+iotage_1       |         "contextRegistrations": [
+iotage_1       |             {
+iotage_1       |                 "entities": [
+iotage_1       |                     {
+iotage_1       |                         "type": "Device",
+iotage_1       |                         "isPattern": "false",
+iotage_1       |                         "id": "age01_Car"
+iotage_1       |                     }
+iotage_1       |                 ],
+iotage_1       |                 "attributes": [
+iotage_1       |                     {
+iotage_1       |                         "name": "Stop",
+iotage_1       |                         "type": "command"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "Accelerate",
+iotage_1       |                         "type": "command"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "ActivateSensor",
+iotage_1       |                         "type": "command"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "DeactivateSensor",
+iotage_1       |                         "type": "command"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "ToggleSensorActivation",
+iotage_1       |                         "type": "command"
+iotage_1       |                     }
+iotage_1       |                 ],
+iotage_1       |                 "providingApplication": "http://iotage:4001"
+iotage_1       |             }
+iotage_1       |         ],
+iotage_1       |         "duration": "P1M"
+iotage_1       |     },
+iotage_1       |     "headers": {
+iotage_1       |         "fiware-service": "opcua_car",
+iotage_1       |         "fiware-servicepath": "/demo"
+iotage_1       |     }
+iotage_1       | }
+iotage_1       | 
+iotage_1       |  | comp=IoTAgent
+
+9) op=IoTAgentNGSI.DeviceService | srv=n/a | subsrv=n/a | msg=Registration success.
+10) op=IoTAgentNGSI.DeviceService | srv=n/a | subsrv=n/a | msg=Creating initial entity in the Context Broker:
+11) iotage_1       |  {
+iotage_1       |     "url": "http://orion:1026/v1/updateContext",
+iotage_1       |     "method": "POST",
+iotage_1       |     "json": {
+iotage_1       |         "contextElements": [
+iotage_1       |             {
+iotage_1       |                 "type": "Device",
+iotage_1       |                 "isPattern": "false",
+iotage_1       |                 "id": "age01_Car",
+iotage_1       |                 "attributes": [
+iotage_1       |                     {
+iotage_1       |                         "name": "Speed",
+iotage_1       |                         "type": "Number",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "Acceleration",
+iotage_1       |                         "type": "Number",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "EngineStopped",
+iotage_1       |                         "type": "Boolean",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "Engine_Temperature",
+iotage_1       |                         "type": "Number",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "Engine_Oxigen",
+iotage_1       |                         "type": "Number",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy",
+iotage_1       |                         "type": "String",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
+iotage_1       |                         "type": "Boolean",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
+iotage_1       |                         "type": "String",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
+iotage_1       |                         "type": "Boolean",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "Stop_status",
+iotage_1       |                         "type": "commandStatus",
+iotage_1       |                         "value": "UNKNOWN"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "Stop_info",
+iotage_1       |                         "type": "commandResult",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "Accelerate_status",
+iotage_1       |                         "type": "commandStatus",
+iotage_1       |                         "value": "UNKNOWN"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "Accelerate_info",
+iotage_1       |                         "type": "commandResult",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "ActivateSensor_status",
+iotage_1       |                         "type": "commandStatus",
+iotage_1       |                         "value": "UNKNOWN"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "ActivateSensor_info",
+iotage_1       |                         "type": "commandResult",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "DeactivateSensor_status",
+iotage_1       |                         "type": "commandStatus",
+iotage_1       |                         "value": "UNKNOWN"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "DeactivateSensor_info",
+iotage_1       |                         "type": "commandResult",
+iotage_1       |                         "value": " "
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "ToggleSensorActivation_status",
+iotage_1       |                         "type": "commandStatus",
+iotage_1       |                         "value": "UNKNOWN"
+iotage_1       |                     },
+iotage_1       |                     {
+iotage_1       |                         "name": "ToggleSensorActivation_info",
+iotage_1       |                         "type": "commandResult",
+iotage_1       |                         "value": " "
+iotage_1       |                     }
+iotage_1       |                 ]
+iotage_1       |             }
+iotage_1       |         ],
+iotage_1       |         "updateAction": "APPEND"
+iotage_1       |     },
+iotage_1       |     "headers": {
+iotage_1       |         "fiware-service": "opcua_car",
+iotage_1       |         "fiware-servicepath": "/demo",
+iotage_1       |         "fiware-correlator": "e9c5cfd0-49ef-4b37-a9dc-fc47aab3b744"
+iotage_1       |     }
+iotage_1       | }
+
+12) 'values changed' sono eseguiti almeno una volta
+
+
+
+
+## Note con config.json API
+
+iotage_1       | @@@ ExecuteCommand
+iotage_1       | time=2019-09-02T12:45:06.076Z | lvl=DEBUG | corr=n/a | trans=n/a | op=IoTAgentNGSI.MongoDBDeviceRegister | srv=opcua_car | subsrv=/demo | msg=Looking for device with id [age01_Car]. | comp=IoTAgent
+iotage_1       | time=2019-09-02T12:45:08.076Z | lvl=DEBUG | corr=n/a | trans=n/a | op=IoTAgentNGSI.MongoDBDeviceRegister | srv=opcua_car | subsrv=/demo | msg=Looking for device with id [age01_Car]. | comp=IoTAgent
+orion_1        | ERROR@12:45:09  postUpdateContext.cpp[218]: Runtime Error (error 'Timeout was reached' forwarding 'Update' to providing application)
+orion_1        | INFO@12:45:09  logMsg.h[1874]: Transaction ended
+iotage_1       | time=2019-09-02T12:45:10.076Z | lvl=DEBUG | corr=n/a | trans=n/a | op=IoTAgentNGSI.MongoDBDeviceRegister | srv=opcua_car | subsrv=/demo | msg=Looking for device with id [age01_Car]. | comp=IoTAgent

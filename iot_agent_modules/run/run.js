@@ -1215,7 +1215,21 @@ module.exports = {
                         if (!err) {
                             let result = results[0];
                             console.log('@@@ BROWSE RESULT' + new Date().getTime());
+                            console.log('@@@ ACTIVE BROWSE RESULT ', results);
+							
+							// Fetch the Status in another way
+							var nodes_to_read = [
+								{
+									nodeId: attribute.object_id,
+									attributeId: opcua.AttributeIds.Value
+								}
+							];
 
+							the_session.read(nodes_to_read, function(err, response) {
+								console.log("@@@ SESSION_READ");
+								console.log(JSON.stringify(response));
+							});
+							
                             if (result.statusCode == opcua.StatusCodes.Good) {
                                 mapping.ocb_id = attribute.name;
                                 mapping.opcua_id = attribute.object_id;
@@ -1283,7 +1297,6 @@ module.exports = {
                                     if (!err) {
                                         let result = results[0];
                                         console.log('@@@ COMMAND RESULTS' + new Date().getTime());
-                                        console.log('@@@ RESULTS ', results);
 
                                         if (result.statusCode == opcua.StatusCodes.Good) {
                                             var mapping = {};

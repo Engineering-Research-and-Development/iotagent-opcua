@@ -1,4 +1,4 @@
-// ACORN123 const opcua = require('node-opcua');
+const opcua = require('node-opcua');
 
 try {
     const fs = require('fs');
