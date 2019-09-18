@@ -130,7 +130,7 @@ describe('Verify Northbound flow', function() {
         var temperatureRequest = {
             url:
                 'http://' +
-                config.contextBroker.host +
+                'localhost' +
                 ':' +
                 config.contextBroker.port +
                 '/v2/entities/' +
@@ -142,6 +142,7 @@ describe('Verify Northbound flow', function() {
                 'fiware-servicepath': config.subservice
             }
         };
+
         function myTimer() {
             var updated = false;
 
@@ -173,5 +174,238 @@ describe('Verify Northbound flow', function() {
         myTimer(); // immediate first run
 
         // done();
+    });
+
+    it('verify commands execution as context provider', function(done) {
+        var errors = [];
+
+        this.timeout(0);
+        console.log('verify commands execution as context provider');
+        // Run test
+
+        // STOP CAR
+        var json = {};
+        json.value = null;
+        json.type = 'command';
+        var stopRequest = {
+            url:
+                'http://' +
+                'localhost' +
+                ':' +
+                config.contextBroker.port +
+                '/v2/entities/' +
+                properties.get('entity-id') +
+                '/attrs/Stop?type=Device',
+            method: 'PUT',
+            json: json,
+            headers: {
+                'fiware-service': config.service,
+                'fiware-servicepath': config.subservice
+            }
+        };
+
+        // Initially the car engine is off. Stop commands turn the engine on
+        // after that the oxygen must be greater than 0
+        request(stopRequest, function(error, response, body) {
+            console.log('stopRequest error STOP=' + JSON.stringify(error));
+            console.log('stopRequest response STOP=' + JSON.stringify(response));
+            console.log('stopRequest body STOP=' + JSON.stringify(body));
+
+            var oxygenRequest = {
+                url:
+                    'http://' +
+                    'localhost' +
+                    ':' +
+                    config.contextBroker.port +
+                    '/v2/entities/' +
+                    properties.get('entity-id') +
+                    '/attrs/Oxigen',
+                method: 'GET',
+                headers: {
+                    'fiware-service': config.service,
+                    'fiware-servicepath': config.subservice
+                }
+            };
+
+            request(oxygenRequest, function(error, response, body) {
+                var bodyObject = JSON.parse(body);
+
+                if (bodyObject != null) {
+                    if (bodyObject.value <= 0) {
+                        console.log('Oxygen is not greater than 0');
+                        done(error);
+                    }
+                }
+            });
+        });
+
+        /*
+            // STOP CAR locally (for Travis unreachability)
+            var json = {
+                contextElements: [
+                    {
+                        type: 'Car',
+                        isPattern: 'false',
+                        id: 'Car',
+                        attributes: [
+                            {
+                                name: 'Stop',
+                                type: 'command',
+                                value: null
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'UPDATE'
+            };
+
+            var stopRequest = {
+                url: 'http://localhost:4001/v1/updateContext',
+                method: 'POST',
+                json: json,
+                headers: {
+                    'fiware-service': config.service,
+                    'fiware-servicepath': config.subservice
+                }
+            };
+            request(stopRequest, function(error, response, body) {
+                console.log('stopRequest locally error =' + JSON.stringify(error));
+                console.log('stopRequest locally response =' + JSON.stringify(response));
+                console.log('stopRequest locally body =' + JSON.stringify(body));
+            });
+
+            // Accelerate CAR locally (for Travis unreachability)
+            var json = {
+                contextElements: [
+                    {
+                        type: 'Car',
+                        isPattern: 'false',
+                        id: 'Car',
+                        attributes: [
+                            {
+                                name: 'Accelerate',
+                                type: 'command',
+                                value: [2]
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'UPDATE'
+            };
+            var accelerateRequest = {
+                url: 'http://localhost:4001/v1/updateContext',
+                method: 'POST',
+                json: json,
+                headers: {
+                    'fiware-service': config.service,
+                    'fiware-servicepath': config.subservice
+                }
+            };
+            request(accelerateRequest, function(error, response, body) {
+                console.log('accelerateRequest locally error =' + JSON.stringify(error));
+                console.log('accelerateRequest locally response =' + JSON.stringify(response));
+                console.log('accelerateRequest locally body =' + JSON.stringify(body));
+            });
+
+            var myVar = setTimeout(accelerateFunction, 2000);
+
+            var myVar = setInterval(myTimer, 10000);
+            var value = null;
+
+            function accelerateFunction() {
+                var json = {};
+                json.value = [2];
+                json.type = 'command';
+
+                var accelerateRequest = {
+                    url:
+                        'http://' +
+                        config.contextBroker.host +
+                        ':' +
+                        config.contextBroker.port +
+                        '/v2/entities/Car/attrs/Accelerate?type=Car',
+                    method: 'PUT',
+                    json: json,
+                    headers: {
+                        'fiware-service': config.service,
+                        'fiware-servicepath': config.subservice
+                    }
+                };
+                request(accelerateRequest, function(error, response, body) {
+                    console.log('accelerateRequest error =' + JSON.stringify(error));
+                    console.log('accelerateRequest response =' + JSON.stringify(response));
+                    console.log('accelerateRequest body =' + JSON.stringify(body));
+                });
+
+                // Accelerate CAR locally (for Travis unreachability)
+                var json = {
+                    contextElements: [
+                        {
+                            type: 'Car',
+                            isPattern: 'false',
+                            id: 'Car',
+                            attributes: [
+                                {
+                                    name: 'Accelerate',
+                                    type: 'command',
+                                    value: [2]
+                                }
+                            ]
+                        }
+                    ],
+                    updateAction: 'UPDATE'
+                };
+                var accelerateRequest = {
+                    url: 'http://localhost:4001/v1/updateContext',
+                    method: 'POST',
+                    json: json,
+                    headers: {
+                        'fiware-service': config.service,
+                        'fiware-servicepath': config.subservice
+                    }
+                };
+                request(accelerateRequest, function(error, response, body) {
+                    console.log('accelerateRequest locally error =' + JSON.stringify(error));
+                    console.log('accelerateRequest locally response =' + JSON.stringify(response));
+                    console.log('accelerateRequest locally body =' + JSON.stringify(body));
+                });
+            }
+            function myTimer() {
+                var updated = false;
+                var speedRequest = {
+                    url:
+                        'http://' +
+                        config.contextBroker.host +
+                        ':' +
+                        config.contextBroker.port +
+                        '/v2/entities/Car/attrs/Speed',
+                    method: 'GET',
+                    headers: {
+                        'fiware-service': config.service,
+                        'fiware-servicepath': config.subservice
+                    }
+                };
+                request(speedRequest, function(error, response, body) {
+                    var bodyObject = {};
+                    bodyObject = JSON.parse(body);
+                    if (value != null) {
+                        if (value != bodyObject.value) {
+                            value = bodyObject.value;
+                            var text = 'value updated ' + value;
+                            loggerTest.info(logContextTest, text.rainbow);
+                            updated = true;
+                            clearInterval(myVar);
+                            done();
+                        }
+                    } else {
+                        value = bodyObject.value;
+                    }
+                    if (!updated) {
+                        var text = 'value ' + value;
+                        loggerTest.info(logContextTest, text.rainbow);
+                    }
+                });
+            }
+            */
     });
 });
