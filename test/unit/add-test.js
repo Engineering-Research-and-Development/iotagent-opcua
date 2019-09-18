@@ -44,7 +44,7 @@ describe('Verify REST Devices Management', function() {
     });
 
     describe('The agent is active...', function() {
-        it('verify devices retrieval', function(done) {
+        it('verify get devices', function(done) {
             this.timeout(0);
 
             // Run test
@@ -62,10 +62,11 @@ describe('Verify REST Devices Management', function() {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
-                        loggerTest.info(logContextTest, 'DEVICES RETRIEVAL SERVICE SUCCESS');
+                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
                         done();
                     } else {
-                        loggerTest.info(logContextTest, 'DEVICES RETRIEVAL SERVICE FAILURE');
+                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
+                        done(new Error('REST - GET DEVICES FAILURE'));
                     }
                 });
             }
@@ -104,10 +105,12 @@ describe('Verify REST Devices Management', function() {
                             loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                             if (error == null) {
-                                loggerTest.info(logContextTest, 'ADD DEVICE SERVICE SUCCESSFULLY READ');
+                                loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
+
                                 done();
                             } else {
-                                loggerTest.info(logContextTest, 'ADD DEVICE SERVICE FAILURE READ');
+                                loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
+                                done(new Error('REST - ADD DEVICE FAILURE'));
                             }
                         });
                     }
@@ -158,7 +161,7 @@ describe('Verify Northbound flow', function() {
                         value = bodyObject.value;
                         var text = 'value updated ' + value;
 
-                        loggerTest.info(logContextTest, text.rainbow);
+                        loggerTest.info(logContextTest, text);
                         updated = true;
 
                         done();
@@ -169,7 +172,7 @@ describe('Verify Northbound flow', function() {
 
                 if (!updated) {
                     var text = 'value ' + value;
-                    loggerTest.info(logContextTest, text.rainbow);
+                    loggerTest.info(logContextTest, text);
                     setTimeout(myTimer, 2000);
                 }
             });
@@ -233,7 +236,7 @@ describe('Verify Northbound flow', function() {
 
             async function timedTest() {
                 var bodyObject = null;
-                const N_OF_TRIES = 5;
+                const N_OF_TRIES = 20;
                 var i = 0;
                 for (; i < N_OF_TRIES; ++i) {
                     request(oxygenRequest, function(error, response, body) {
@@ -241,11 +244,12 @@ describe('Verify Northbound flow', function() {
 
                         if (bodyObject != null) {
                             if (bodyObject.value > 0) {
+                                console.log('Success after ' + i + ' tries');
                                 i = N_OF_TRIES;
                             }
                         }
                     });
-                    await sleep(1000);
+                    await sleep(2000);
                 }
 
                 if (bodyObject != null) {
@@ -351,7 +355,6 @@ describe('Verify Northbound flow', function() {
     });
 });
 
-/*
 describe('Verify ADMIN API services', function() {
     describe('The agent is active...', function() {
         it('verify version service', function(done) {
@@ -361,7 +364,7 @@ describe('Verify ADMIN API services', function() {
             var value = null;
 
             var versionRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
+                url: 'http://' + 'localhost' + ':' + properties.get('test-api-port') + '/version',
                 method: 'GET'
             };
             function myTimer() {
@@ -371,11 +374,11 @@ describe('Verify ADMIN API services', function() {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
-                        loggerTest.info(logContextTest, 'VERSION SERVICE SUCCESSFULLY READ'.rainbow);
+                        loggerTest.info(logContextTest, 'VERSION SERVICE SUCCESSFULLY READ');
 
                         done();
                     } else {
-                        loggerTest.info(logContextTest, 'VERSION SERVICE FAILURE READ'.rainbow);
+                        loggerTest.info(logContextTest, 'VERSION SERVICE FAILURE READ');
                     }
                 });
             }
@@ -392,7 +395,7 @@ describe('Verify ADMIN API services', function() {
             var value = null;
 
             var statusRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/status',
+                url: 'http://' + 'localhost' + ':' + properties.get('test-api-port') + '/status',
                 method: 'GET'
             };
             function myTimer() {
@@ -402,11 +405,11 @@ describe('Verify ADMIN API services', function() {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
-                        loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ'.rainbow);
+                        loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ');
 
                         done();
                     } else {
-                        loggerTest.info(logContextTest, 'STATUS SERVICE FAILURE READ'.rainbow);
+                        loggerTest.info(logContextTest, 'STATUS SERVICE FAILURE READ');
                     }
                 });
             }
@@ -423,7 +426,7 @@ describe('Verify ADMIN API services', function() {
             var value = null;
 
             var configRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/config',
+                url: 'http://' + 'localhost' + ':' + properties.get('test-api-port') + '/config',
                 method: 'GET'
             };
             function myTimer() {
@@ -433,11 +436,11 @@ describe('Verify ADMIN API services', function() {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
-                        loggerTest.info(logContextTest, 'CONFIG SERVICE SUCCESSFULLY READ'.rainbow);
+                        loggerTest.info(logContextTest, 'CONFIG SERVICE SUCCESSFULLY READ');
 
                         done();
                     } else {
-                        loggerTest.info(logContextTest, 'CONFIG SERVICE FAILURE READ'.rainbow);
+                        loggerTest.info(logContextTest, 'CONFIG SERVICE FAILURE READ');
                     }
                 });
             }
@@ -454,7 +457,7 @@ describe('Verify ADMIN API services', function() {
             var value = null;
 
             var commandsListRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
+                url: 'http://' + 'localhost' + ':' + properties.get('test-api-port') + '/commandsList',
                 method: 'GET'
             };
             function myTimer() {
@@ -464,11 +467,11 @@ describe('Verify ADMIN API services', function() {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
-                        loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE SUCCESSFULLY READ'.rainbow);
+                        loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE SUCCESSFULLY READ');
 
                         done();
                     } else {
-                        loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE FAILURE READ'.rainbow);
+                        loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE FAILURE READ');
                     }
                 });
             }
@@ -478,7 +481,7 @@ describe('Verify ADMIN API services', function() {
             // done();
         });
 
-
+        /*
         it('verify config post service', function(done) {
             this.timeout(0);
             // Run test
@@ -487,7 +490,7 @@ describe('Verify ADMIN API services', function() {
             var iotAgentConfig = require('./../../conf/config.json');
 
             var jsonRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
+                url: 'http://' + 'localhost' + ':' + properties.get('test-api-port') + '/json',
                 method: 'POST',
                 json: true,
                 body: config
@@ -498,11 +501,11 @@ describe('Verify ADMIN API services', function() {
                 request(jsonRequest, function(error, response, body) {
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
                     if (error == null) {
-                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED'.rainbow);
+                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED');
 
                         done();
                     } else {
-                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE FAILURE POSTED'.rainbow);
+                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE FAILURE POSTED');
                     }
                 });
             }
@@ -511,8 +514,6 @@ describe('Verify ADMIN API services', function() {
 
             // done();
         });
-        
+        */
     });
-    
 });
-**/
