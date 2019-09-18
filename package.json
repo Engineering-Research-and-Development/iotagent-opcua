@@ -57,6 +57,7 @@
     "npm": "^6.11.2",
     "properties-reader": "0.0.16",
     "request": "^2.82.0",
+    "request-debug": "^0.2.0",
     "requirish": "^0.3.0",
     "revalidator": "^0.3.1",
     "sax": "^0.6.0",

@@ -24,6 +24,10 @@ var exec = require('child_process').exec;
 var child;
 var hostIP = null;
 
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 describe('Verify REST Devices Management', function() {
     beforeEach(function(done) {
         // Set up
@@ -177,8 +181,6 @@ describe('Verify Northbound flow', function() {
     });
 
     it('verify commands execution as context provider', function(done) {
-        var errors = [];
-
         this.timeout(0);
         console.log('verify commands execution as context provider');
         // Run test
@@ -187,6 +189,7 @@ describe('Verify Northbound flow', function() {
         var json = {};
         json.value = null;
         json.type = 'command';
+
         var stopRequest = {
             url:
                 'http://' +
@@ -199,6 +202,7 @@ describe('Verify Northbound flow', function() {
             method: 'PUT',
             json: json,
             headers: {
+                'content-type': 'application/json',
                 'fiware-service': config.service,
                 'fiware-servicepath': config.subservice
             }
@@ -227,185 +231,288 @@ describe('Verify Northbound flow', function() {
                 }
             };
 
-            request(oxygenRequest, function(error, response, body) {
-                var bodyObject = JSON.parse(body);
+            async function timedTest() {
+                var bodyObject = null;
+                const N_OF_TRIES = 5;
+                var i = 0;
+                for (; i < N_OF_TRIES; ++i) {
+                    request(oxygenRequest, function(error, response, body) {
+                        bodyObject = JSON.parse(body);
+
+                        if (bodyObject != null) {
+                            if (bodyObject.value > 0) {
+                                i = N_OF_TRIES;
+                            }
+                        }
+                    });
+                    await sleep(1000);
+                }
 
                 if (bodyObject != null) {
                     if (bodyObject.value <= 0) {
-                        console.log('Oxygen is not greater than 0');
-                        done(error);
+                        done(new Error('Oxygen is NOT greater than 0'));
                     }
                 }
-            });
+            }
+
+            timedTest();
         });
 
-        /*
-            // STOP CAR locally (for Travis unreachability)
-            var json = {
-                contextElements: [
-                    {
-                        type: 'Car',
-                        isPattern: 'false',
-                        id: 'Car',
-                        attributes: [
-                            {
-                                name: 'Stop',
-                                type: 'command',
-                                value: null
-                            }
-                        ]
-                    }
-                ],
-                updateAction: 'UPDATE'
-            };
-
-            var stopRequest = {
-                url: 'http://localhost:4001/v1/updateContext',
-                method: 'POST',
-                json: json,
-                headers: {
-                    'fiware-service': config.service,
-                    'fiware-servicepath': config.subservice
-                }
-            };
-            request(stopRequest, function(error, response, body) {
-                console.log('stopRequest locally error =' + JSON.stringify(error));
-                console.log('stopRequest locally response =' + JSON.stringify(response));
-                console.log('stopRequest locally body =' + JSON.stringify(body));
-            });
-
-            // Accelerate CAR locally (for Travis unreachability)
-            var json = {
-                contextElements: [
-                    {
-                        type: 'Car',
-                        isPattern: 'false',
-                        id: 'Car',
-                        attributes: [
-                            {
-                                name: 'Accelerate',
-                                type: 'command',
-                                value: [2]
-                            }
-                        ]
-                    }
-                ],
-                updateAction: 'UPDATE'
-            };
-            var accelerateRequest = {
-                url: 'http://localhost:4001/v1/updateContext',
-                method: 'POST',
-                json: json,
-                headers: {
-                    'fiware-service': config.service,
-                    'fiware-servicepath': config.subservice
-                }
-            };
-            request(accelerateRequest, function(error, response, body) {
-                console.log('accelerateRequest locally error =' + JSON.stringify(error));
-                console.log('accelerateRequest locally response =' + JSON.stringify(response));
-                console.log('accelerateRequest locally body =' + JSON.stringify(body));
-            });
-
-            var myVar = setTimeout(accelerateFunction, 2000);
-
-            var myVar = setInterval(myTimer, 10000);
-            var value = null;
-
-            function accelerateFunction() {
-                var json = {};
-                json.value = [2];
-                json.type = 'command';
-
-                var accelerateRequest = {
-                    url:
-                        'http://' +
-                        config.contextBroker.host +
-                        ':' +
-                        config.contextBroker.port +
-                        '/v2/entities/Car/attrs/Accelerate?type=Car',
-                    method: 'PUT',
-                    json: json,
-                    headers: {
-                        'fiware-service': config.service,
-                        'fiware-servicepath': config.subservice
-                    }
-                };
-                request(accelerateRequest, function(error, response, body) {
-                    console.log('accelerateRequest error =' + JSON.stringify(error));
-                    console.log('accelerateRequest response =' + JSON.stringify(response));
-                    console.log('accelerateRequest body =' + JSON.stringify(body));
-                });
-
-                // Accelerate CAR locally (for Travis unreachability)
-                var json = {
-                    contextElements: [
+        // Accelerate CAR locally (for Travis unreachability)
+        var json = {
+            contextElements: [
+                {
+                    type: 'Device',
+                    isPattern: 'false',
+                    id: 'age01_Car',
+                    attributes: [
                         {
-                            type: 'Car',
-                            isPattern: 'false',
-                            id: 'Car',
-                            attributes: [
-                                {
-                                    name: 'Accelerate',
-                                    type: 'command',
-                                    value: [2]
-                                }
-                            ]
+                            name: 'Accelerate',
+                            type: 'command',
+                            value: [2]
                         }
-                    ],
-                    updateAction: 'UPDATE'
-                };
-                var accelerateRequest = {
-                    url: 'http://localhost:4001/v1/updateContext',
-                    method: 'POST',
-                    json: json,
-                    headers: {
-                        'fiware-service': config.service,
-                        'fiware-servicepath': config.subservice
-                    }
-                };
-                request(accelerateRequest, function(error, response, body) {
-                    console.log('accelerateRequest locally error =' + JSON.stringify(error));
-                    console.log('accelerateRequest locally response =' + JSON.stringify(response));
-                    console.log('accelerateRequest locally body =' + JSON.stringify(body));
-                });
+                    ]
+                }
+            ],
+            updateAction: 'UPDATE'
+        };
+
+        var accelerateRequest = {
+            url: 'http://localhost' + ':' + config.contextBroker.port + '/v1/updateContext',
+            method: 'POST',
+            json: json,
+            headers: {
+                'content-type': 'application/json',
+                'fiware-service': config.service,
+                'fiware-servicepath': config.subservice
             }
-            function myTimer() {
-                var updated = false;
-                var speedRequest = {
-                    url:
-                        'http://' +
-                        config.contextBroker.host +
-                        ':' +
-                        config.contextBroker.port +
-                        '/v2/entities/Car/attrs/Speed',
-                    method: 'GET',
-                    headers: {
-                        'fiware-service': config.service,
-                        'fiware-servicepath': config.subservice
-                    }
-                };
-                request(speedRequest, function(error, response, body) {
-                    var bodyObject = {};
-                    bodyObject = JSON.parse(body);
-                    if (value != null) {
-                        if (value != bodyObject.value) {
-                            value = bodyObject.value;
-                            var text = 'value updated ' + value;
-                            loggerTest.info(logContextTest, text.rainbow);
-                            updated = true;
-                            clearInterval(myVar);
-                            done();
+        };
+
+        request(accelerateRequest, function(error, response, body) {
+            console.log('accelerateRequest locally error =' + JSON.stringify(error));
+            console.log('accelerateRequest locally response =' + JSON.stringify(response));
+            console.log('accelerateRequest locally body =' + JSON.stringify(body));
+
+            var bodyObject = body;
+            if (bodyObject != null) {
+                if (bodyObject.contextResponses[0].statusCode.code != 200) {
+                    console.log(body);
+                    done(new Error('Accelerate request status code <> 200'));
+                }
+            } else {
+                done(new Error('Accelerate request returned no body'));
+            }
+        });
+
+        var value = null;
+
+        function myTimer() {
+            var updated = false;
+
+            var speedRequest = {
+                url:
+                    'http://' +
+                    'localhost' +
+                    ':' +
+                    config.contextBroker.port +
+                    '/v2/entities/' +
+                    properties.get('entity-id') +
+                    '/attrs/Speed',
+                method: 'GET',
+                headers: {
+                    'fiware-service': config.service,
+                    'fiware-servicepath': config.subservice
+                }
+            };
+
+            async function timedTest() {
+                const N_OF_SAMPLES = 5;
+                var i = 0;
+                for (; i < N_OF_SAMPLES; ++i) {
+                    request(speedRequest, function(error, response, body) {
+                        var bodyObject = JSON.parse(body);
+
+                        if (bodyObject != null) {
+                            if (bodyObject.value > 0) {
+                                done();
+                            }
+                        } else {
+                            done(new Error('Error during acceleration request'));
                         }
-                    } else {
-                        value = bodyObject.value;
-                    }
-                    if (!updated) {
-                        var text = 'value ' + value;
-                        loggerTest.info(logContextTest, text.rainbow);
-                    }
-                });
+                    });
+
+                    await sleep(1000);
+                }
             }
-            */
+
+            timedTest();
+        }
+        myTimer();
     });
 });
+
+/*
+describe('Verify ADMIN API services', function() {
+    describe('The agent is active...', function() {
+        it('verify version service', function(done) {
+            this.timeout(0);
+            // Run test
+
+            var value = null;
+
+            var versionRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
+                method: 'GET'
+            };
+            function myTimer() {
+                var updated = false;
+
+                request(versionRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'VERSION SERVICE SUCCESSFULLY READ'.rainbow);
+
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'VERSION SERVICE FAILURE READ'.rainbow);
+                    }
+                });
+            }
+
+            myTimer(); // immediate first run
+
+            // done();
+        });
+
+        it('verify status service', function(done) {
+            this.timeout(0);
+            // Run test
+
+            var value = null;
+
+            var statusRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/status',
+                method: 'GET'
+            };
+            function myTimer() {
+                var updated = false;
+
+                request(statusRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ'.rainbow);
+
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'STATUS SERVICE FAILURE READ'.rainbow);
+                    }
+                });
+            }
+
+            myTimer(); // immediate first run
+
+            // done();
+        });
+
+        it('verify config service', function(done) {
+            this.timeout(0);
+            // Run test
+
+            var value = null;
+
+            var configRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/config',
+                method: 'GET'
+            };
+            function myTimer() {
+                var updated = false;
+
+                request(configRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'CONFIG SERVICE SUCCESSFULLY READ'.rainbow);
+
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'CONFIG SERVICE FAILURE READ'.rainbow);
+                    }
+                });
+            }
+
+            myTimer(); // immediate first run
+
+            // done();
+        });
+
+        it('verify commandsList service', function(done) {
+            this.timeout(0);
+            // Run test
+
+            var value = null;
+
+            var commandsListRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
+                method: 'GET'
+            };
+            function myTimer() {
+                var updated = false;
+
+                request(commandsListRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE SUCCESSFULLY READ'.rainbow);
+
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE FAILURE READ'.rainbow);
+                    }
+                });
+            }
+
+            myTimer(); // immediate first run
+
+            // done();
+        });
+
+
+        it('verify config post service', function(done) {
+            this.timeout(0);
+            // Run test
+
+            var value = null;
+            var iotAgentConfig = require('./../../conf/config.json');
+
+            var jsonRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
+                method: 'POST',
+                json: true,
+                body: config
+            };
+            function myTimer() {
+                var updated = false;
+
+                request(jsonRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED'.rainbow);
+
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE FAILURE POSTED'.rainbow);
+                    }
+                });
+            }
+
+            myTimer(); // immediate first run
+
+            // done();
+        });
+        
+    });
+    
+});
+**/

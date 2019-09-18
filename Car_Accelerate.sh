@@ -9,7 +9,7 @@ fi
 let ACC=$DELTA_VEL_SEC
 echo "
 # age01_Car accelerate (factor $DELTA_VEL_SEC)"
-curl -s -X POST --noproxy "*" http://localhost:1026/v1/updateContext \
+curl -X POST --noproxy "*" http://localhost:1026/v1/updateContext \
   -H 'accept: application/json' \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
@@ -32,5 +32,5 @@ curl -s -X POST --noproxy "*" http://localhost:1026/v1/updateContext \
         ],
         "updateAction": "UPDATE"
     }
-' | python3 -mjson.tool
+' | python3 -m json.tool
 
