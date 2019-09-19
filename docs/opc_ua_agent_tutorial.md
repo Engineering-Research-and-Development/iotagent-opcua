@@ -1,3 +1,6 @@
+[![FIWARE Banner](https://fiware.github.io/tutorials.IoT-over-MQTT/img/fiware.png)](https://www.fiware.org/developers)
+[![FIWARE Banner](https://github.com/PietroGreco/iotagent-api-adoption/blob/master/docs/img/opcua-logo.png)](https://opcfoundation.org/)
+
 # OPC UA Agent Tutorial
 
 This is a step-by-step tutorial that will introduce in detail how to enable OPC UA to FIWARE connecting an OPC UA server

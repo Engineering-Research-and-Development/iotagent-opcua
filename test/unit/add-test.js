@@ -234,29 +234,49 @@ describe('Verify Northbound flow', function() {
                 }
             };
 
+            /*
+				async function timedTest() {
+					var bodyObject = null;
+					const N_OF_TRIES = 20;
+					var i = 0;
+					for( ; i < N_OF_TRIES ; ++i) {
+						request(oxygenRequest, function(error, response, body) {
+							bodyObject = JSON.parse(body);
+							
+							if(bodyObject != null) {
+								if(bodyObject.value > 0) {
+									console.log("Success after " + i + " tries");
+									i = N_OF_TRIES;
+								}
+							}
+						});
+						await sleep(2000);
+					}
+					
+					if(bodyObject != null) {
+						if(bodyObject.value <= 0) {
+							done(new Error("Oxygen is NOT greater than 0"));
+						}
+					} 
+				}*/
+
             async function timedTest() {
                 var bodyObject = null;
-                const N_OF_TRIES = 20;
-                var i = 0;
-                for (; i < N_OF_TRIES; ++i) {
-                    request(oxygenRequest, function(error, response, body) {
-                        bodyObject = JSON.parse(body);
 
-                        if (bodyObject != null) {
-                            if (bodyObject.value > 0) {
-                                console.log('Success after ' + i + ' tries');
-                                i = N_OF_TRIES;
-                            }
+                await sleep(10000);
+
+                request(oxygenRequest, function(error, response, body) {
+                    bodyObject = JSON.parse(body);
+
+                    if (bodyObject != null) {
+                        if (bodyObject.value > 0) {
+                            console.log('Success after ' + i + ' tries');
+                            done();
+                        } else {
+                            done(new Error('Oxygen is not greater than zero'));
                         }
-                    });
-                    await sleep(2000);
-                }
-
-                if (bodyObject != null) {
-                    if (bodyObject.value <= 0) {
-                        done(new Error('Oxygen is NOT greater than 0'));
                     }
-                }
+                });
             }
 
             timedTest();
