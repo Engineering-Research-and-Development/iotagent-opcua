@@ -40,8 +40,8 @@ jobs:
       #before_script:
       #  - npm run lint
 
-      after_script:
-        - npm run test:coveralls
+      after_success:
+        - npm run coverage
     #- stage: test
     #  name: "Documentation Tests"
     #  node_js:
