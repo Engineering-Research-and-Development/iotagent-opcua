@@ -275,6 +275,8 @@ describe('Verify Northbound flow', function() {
                         } else {
                             done(new Error('Oxygen is not greater than zero'));
                         }
+                    } else {
+                        done(new Error('Oxygen request null body'));
                     }
                 });
             }
