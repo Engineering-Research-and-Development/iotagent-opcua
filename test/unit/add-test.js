@@ -270,7 +270,7 @@ describe('Verify Northbound flow', function() {
 
                     if (bodyObject != null) {
                         if (bodyObject.value > 0) {
-                            console.log('Success after ' + i + ' tries');
+                            console.log('Oxygen is OK');
                             done();
                         } else {
                             done(new Error('Oxygen is not greater than zero'));
