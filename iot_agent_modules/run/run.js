@@ -119,6 +119,7 @@ module.exports = {
         var devicesSubs = [];
         var devices = [];
 
+        /*
         // Load persisted devices to monitor
         function loadDevices() {
             iotAgentLib.listDevices(function(error, results) {
@@ -158,6 +159,7 @@ module.exports = {
                 });
             });
         }
+        */
 
         /*
          * Initializes a subscription to OPCUA server and
@@ -304,8 +306,6 @@ module.exports = {
 
                     monItem.on('changed', function(dataValue) {
                         logContext.op = 'Index.Monitoring';
-
-                        console.log('@@@ MONITEM', dataValue);
 
                         // TODO: Be aware that with the new version you have to change something here
                         var variableValue = null;
@@ -541,7 +541,7 @@ module.exports = {
                     }
 
                     // loading services
-                    loadDevices();
+                    //loadDevices();
 
                     contexts.forEach(function(context) {
                         logger.info(logContext, 'registering OCB context ' + context.id + ' of type ' + context.type);
@@ -1477,6 +1477,7 @@ module.exports = {
          * @param {Object} newDevice        Device object that will be stored in the database.
          * @return {function}               Handler to pass to the request() function.
          */
+        /*
         function createInitialEntityHandlerNgsi1(deviceData, newDevice, callback) {
             return function handleInitialEntityResponse(error, response, body) {
                 if (error) {
@@ -1516,6 +1517,7 @@ module.exports = {
                 }
             };
         }
+        * */
 
         /**
          * Creates the response handler for the initial entity creation request using NGSIv2.
@@ -1526,6 +1528,7 @@ module.exports = {
          * @param {Object} newDevice        Device object that will be stored in the database.
          * @return {function}               Handler to pass to the request() function.
          */
+        /*
         function createInitialEntityHandlerNgsi2(deviceData, newDevice, callback) {
             return function handleInitialEntityResponse(error, response, body) {
                 if (error) {
@@ -1558,6 +1561,7 @@ module.exports = {
                 }
             };
         }
+        */
 
         /**
          * Creates the initial entity representing the device in the Context Broker using NGSIv2.
@@ -1566,6 +1570,7 @@ module.exports = {
          * @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
          * @param {Object} newDevice        Device object that will be stored in the database.
          */
+        /*
         function createInitialEntityNgsi2(deviceData, newDevice, callback) {
             var options = {
                 url: config.contextBroker.url + '/v2/entities?options=upsert',
@@ -1599,6 +1604,7 @@ module.exports = {
 
             request(options, createInitialEntityHandlerNgsi2(deviceData, newDevice, callback));
         }
+		*/
 
         /**
          * Creates the initial entity representing the device in the Context Broker using NGSIv1.
@@ -1608,6 +1614,7 @@ module.exports = {
          * @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
          * @param {Object} newDevice        Device object that will be stored in the database.
          */
+        /*
         function createInitialEntityNgsi1(deviceData, newDevice, callback) {
             var options = {
                 url: config.contextBroker.url + '/v1/updateContext',
@@ -1692,6 +1699,7 @@ module.exports = {
 
             request(options, createInitialEntityHandlerNgsi1(deviceData, newDevice, callback));
         }
+        */
         var handlerCalled = false;
     }
 };
