@@ -1,18 +1,18 @@
 {
   "logLevel" : "INFO",
   "contextBroker" : {
-    "host" : "orion",
+    "host" : "192.168.1.20",
     "port" : 1026
   },
   "server" : {
-    "port" : 4001,
+    "port" : 4002,
     "baseRoot" : "/"
   },
   "deviceRegistry" : {
     "type" : "memory"
   },
   "mongodb" : {
-    "host" : "iotmongo",
+    "host" : "192.168.1.20",
     "port" : "27017",
     "db" : "iotagent",
     "retries" : 5,
@@ -30,7 +30,7 @@
   "browseServerOptions" : null,
   "service" : "opcua_car",
   "subservice" : "/demo",
-  "providerUrl" : "http://iotage:4001",
+  "providerUrl" : "http://192.168.1.20:4002",
   "pollingExpiration" : "200000",
   "pollingDaemonFrequency" : "20000",
   "deviceRegistrationDuration" : "P1M",
