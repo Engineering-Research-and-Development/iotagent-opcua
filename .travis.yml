@@ -36,8 +36,6 @@ jobs:
 
       install:
         - npm install
-
-      after_install:
         - ./travis_ip.sh
         - cd TESTS
         - docker-compose up -d
