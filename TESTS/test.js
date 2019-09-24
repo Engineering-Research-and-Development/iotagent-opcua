@@ -628,6 +628,10 @@ describe('Verify REST Devices Management', function() {
 
 describe('Verify ADMIN API services', function() {
     describe('The agent is active...', function() {
+        after(function() {
+            process.kill(process.pid, 'SIGINT');
+        });
+
         it('verify version service', function(done) {
             this.timeout(0);
             // Run test
