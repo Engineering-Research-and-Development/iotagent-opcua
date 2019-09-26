@@ -507,7 +507,7 @@ describe('The agent is monitoring active attributes...', function() {
 
     it('delete device', function(done) {
         // Delete device
-        // TODO: parametrize age01_Car in the whole file.
+        // TODO: parametrize age01_Car in the whole test.js file.
 
         var deviceDeleteRequest = {
             url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices/age01_Car',
@@ -576,6 +576,8 @@ describe('Verify REST Devices Management', function() {
             // done();
         });
 
+        // The new device contains missing active attributes, existent active
+        // and lazy attributes
         it('verify the addition of a new device', function(done) {
             this.timeout(0);
             // Run test
@@ -628,10 +630,6 @@ describe('Verify REST Devices Management', function() {
 
 describe('Verify ADMIN API services', function() {
     describe('The agent is active...', function() {
-        after(function() {
-            process.kill(process.pid, 'SIGINT');
-        });
-
         it('verify version service', function(done) {
             this.timeout(0);
             // Run test
