@@ -77,10 +77,10 @@ order to have a self-supporting environment.
 In this paragraph we are going to describe how to quickly deploy a working testbed consisting of all the actors: Car,
 Agent, Orion Context Broker and the two MongoDB instances.
 
-#### Step 0 - Prerequisites
+#### Requirements
 
--   Docker
--   Docker-compose
+-   Docker (Version 19.03.1+)
+-   Docker-compose (Version 1.24.1+)
 
 Install docker and docker-compose by following the instructions on the official web site
 
