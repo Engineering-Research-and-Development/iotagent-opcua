@@ -15,7 +15,7 @@ docker build -t johndoe/opcuaDoeAgent:1.0 .
 
 Be aware that using an existing Docker Hub username is required to push the image to Docker Hub
 
-#### Behind proxy
+#### Behind a proxy
 
 Assuming **http_proxy** environment variable is available for the current shell, run:
 

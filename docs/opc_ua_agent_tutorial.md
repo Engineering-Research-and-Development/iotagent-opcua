@@ -9,19 +9,19 @@ Broker using NGSI data model.
 
 ## What is OPC UA ?
 
-OPC-UA is a well-known client-server protocol used in the Industry.
+OPC UA is a well-known client-server protocol used in the Industry.
 
-Usually an OPC-UA server is responsible for fetching sensor data from factory-level machinery and make them available to
-an OPC-UA client.
+Usually an OPC UA server is responsible for fetching sensor data from factory-level machinery and make them available to
+an OPC UA client (the Agent in this case).
 
-Sensor data is mapped to the OPC-UA Server Address Space as variables. It is also possible to have methods which provide
-you with the possibility of control the machine.
+Sensors are mapped to the OPC UA Server Address Space as variables (or attributes). A client can then retrieve their
+values. Moreover, it is also possible to control the machinery invoking methods.
 
-An OPC-UA client chooses a set of variables to monitor creating a set of subscriptions, one for each variable. During
-the subscription stage the client specifies, with a set of parameters, how it should receive sensor data from the
-server.
+In particular, an OPC UA client chooses a set of variables to monitor creating a set of subscriptions, one for each
+variable. During the subscription stage the client specifies, through some parameters, how it should receive sensor data
+from the server.
 
-In our case OPC-UA Agent acts as bridge between the OPC-UA server and the Orion Context Broker, behaving as an OPC-UA
+In our case OPC UA Agent acts as bridge between the OPC UA server and the Orion Context Broker, behaving as an OPC-UA
 client.
 
 ## Actors
@@ -64,7 +64,7 @@ It represents a car with the following structure:
 
 IoT Agent can be configured as described in the
 [user guide](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md).
-In order to play with OPC UA server above-mentioned, configuration files are already edited and available in test/AGE
+In order to play with OPC UA server above-mentioned, configuration files are already edited and available in AGECONF
 folder.
 
 #### Orion Context Broker
@@ -87,7 +87,7 @@ Install docker and docker-compose by following the instructions on the official 
 -   Docker: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 -   Docker-Compose: https://docs.docker.com/compose/install/
 
-Before continuing we suggest you to check if both docker and docker-compose work correctly
+Once docker has been correctly installed you can continue with the other steps
 
 #### Step 1 - Clone the OPCUA Agent Repository
 
@@ -114,7 +114,7 @@ After that you can run:
 docker ps
 ```
 
-To check if all the required components are running
+to check if all the required components are running.
 
 Running the docker environment (using configuration files as is) creates the following situation:
 ![Docker Containers Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/iotagent-opcua/master/docs/images/OPC%20UA%20Agent%20tutorial%20Containers.png)
@@ -149,6 +149,9 @@ curl http://localhost:4002/iot/devices \
 
 Where add_device.json is the one you find inside iotagent-opcua/API_Server_Tests folder
 
+add_device.json sample payload contains several attributes even of different type. Some of them are missing on the OPC
+UA Server side but have been included to prove that the Agent is able to manage such situations.
+
 #### Step 5 - Get devices
 
 Check if the operation gone well, by sending the following REST call:
@@ -159,7 +162,7 @@ curl http://localhost:4002/iot/devices \
      -H "fiware-servicepath: /demo"
 ```
 
-You will obtain a JSON indicating that there is one device:
+You should obtain a JSON indicating that there is one device:
 
 [aggiungere estratto corpo JSON]
 
@@ -176,6 +179,8 @@ You can interact with the CarServer through the Agent in three different ways:
 -   **Commands**
 
     Through the requests described below it is possible to execute methods on the OPC UA server.
+
+Examples of what has been just illustrated can be found on add_device.json file.
 
 #### Step 6 - Monitor Agent behaviour
 
@@ -237,7 +242,7 @@ curl -X GET \
 #### Appendix A - Customize the environment
 
 Docker Compose can be downloaded here
-[docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/test/docker-compose.yml):
+[docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/api_adoption/docker-compose.yml):
 
 ```yaml
 version: "3"
@@ -332,4 +337,109 @@ Coming soon ... How to add new sensors
 
 #### Customize Agent
 
-Coming soon ...
+Below, a copy of config.properties file is included.
+
+This file contains all the information required to establish connections to othe components. You find OCB hostname and
+port, Agent port, Device Registry Mo
+
+-   OCB hostname and port
+-   Agent port
+-   Information about a MongoDB instance that could be used as Device Registry (depending whether you have specified
+    "memory" or "mongo" as device-registry-type)
+-   OPC UA Server endpoint to which establish a connection
+-   OPC UA Session and Monitoring parameters
+-   Security Policies
+
+```yaml
+namespace-ignore=2,7
+
+context-broker-host=orion
+context-broker-port=1026
+server-base-root=/
+server-port=4002
+device-registry-type=memory
+mongodb-host=iotmongo
+mongodb-port=27017
+mongodb-db=iotagent
+mongodb-retries=5
+mongodb-retry-time=5
+fiware-service=opcua_car
+fiware-service-path=/demo
+provider-url=http://iotage:4002
+device-registration-duration=P1M
+endpoint=opc.tcp://iotcarsrv:5001/UA/CarServer
+log-level=DEBUG
+#DATATYPE MAPPING OPCUA --> NGSI
+OPC-datatype-Number=Number
+OPC-datatype-Decimal128=Number
+OPC-datatype-Double=Number
+OPC-datatype-Float=Number
+OPC-datatype-Integer=Integer
+OPC-datatype-UInteger=Integer
+OPC-datatype-String=Text
+OPC-datatype-ByteString=Text
+#END DATATYPE MAPPING OPCUA --> NGSI
+
+#SESSION PARAMETERS
+requestedPublishingInterval=10
+requestedLifetimeCount=1000
+requestedMaxKeepAliveCount=10
+maxNotificationsPerPublish=100
+publishingEnabled=true
+priority=10
+
+#MONITORING PARAMETERS
+samplingInterval=1
+queueSize=10000
+discardOldest=false
+
+#SERVER CERT E AUTH
+securityMode=1
+securityPolicy=0
+userName=
+password=
+
+#securityMode=SIGNANDENCRYPT
+#securityMode=1Basic256
+#password=password1
+#userName=user1
+
+#api-ip=192.168.13.153
+
+#Administration Services
+api-port=8080
+#End Administration Services
+
+#POLL COMMANDS SETTINGS
+polling=false
+polling-commands-timer=30000
+pollingDaemonFrequency=20000
+pollingExpiration=200000
+#END POLL COMMANDS SETTINGS
+
+#AGENT ID
+agent-id=age01_
+entity-id=age01_Car
+
+#CONFIGURATION
+configuration=api
+#CHECK TIMER POLLING DEVICES
+checkTimer=2000
+```
+
+A recap of the most important properties:
+
+```yaml
+# OCB
+context-broker-host=<ORIONHOSTIP>
+context-broker-port=<ORIONPORT>
+
+# Needed to identify Devices
+fiware-service=<SERVICE>
+fiware-service-path=<SERVICE-PATH>
+
+# OPC UA Server endpoint
+endpoint=opc.tcp://<IPADDR>:<PORT>
+
+agent-id=<PREFIX>
+```
