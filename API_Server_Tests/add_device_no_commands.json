@@ -55,26 +55,6 @@
                 "object_id": "ns*3:s*Stop",
                 "name" : "Stop",
                 "type" : "command"
-            }, {
-                "object_id": "ns*3:s*Accelerate",
-                "name" : "Accelerate",
-                "type" : "command"
-            }, {
-                "object_id": "ns*3:s*ActivateSensor",
-                "name" : "ActivateSensor",
-                "type" : "command"
-            }, {
-                "object_id": "ns*3:s*DeactivateSensor",
-                "name" : "DeactivateSensor",
-                "type" : "command"
-            }, {
-                "object_id": "ns*3:s*ToggleSensorActivation",
-                "name" : "ToggleSensorActivation",
-                "type" : "command"
-            }, {
-                "object_id": "ns*3:s*LaunchMissiles",
-                "name" : "LaunchMissiles",
-                "type" : "command"
             }]
       }
     ]

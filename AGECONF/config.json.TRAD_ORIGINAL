@@ -110,22 +110,22 @@
       "inputArguments" : [ ]
     }, {
       "ocb_id" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy",
-      "opcua_id" : "ns=3;s=3:DataBlocksGlobal_3:dbRfidCntr_3:ID1_3:xBusy",
+      "opcua_id" : "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy",
       "object_id" : null,
       "inputArguments" : [ ]
     }, {
       "ocb_id" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
-      "opcua_id" : "ns=3;s=3:DataBlocksGlobal_3:dbRfidCntr_3:ID1_3:xBusyStatus",
+      "opcua_id" : "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
       "object_id" : null,
       "inputArguments" : [ ]
     }, {
       "ocb_id" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
-      "opcua_id" : "ns=3;s=3:DataBlocksGlobal_3:dbRfidCntr_3:ID1_3:xDone",
+      "opcua_id" : "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
       "object_id" : null,
       "inputArguments" : [ ]
     }, {
       "ocb_id" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
-      "opcua_id" : "ns=3;s=3:DataBlocksGlobal_3:dbRfidCntr_3:ID1_3:xDoneStatus",
+      "opcua_id" : "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
       "object_id" : null,
       "inputArguments" : [ ]
     }]

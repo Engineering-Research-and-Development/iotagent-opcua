@@ -5,7 +5,7 @@
             "entity_name": "age01_Car",
             "entity_type": "Device",
             "attributes": [
-		{
+                {
                     "object_id": "ns*3:s*EngineBrake",
                     "name": "EngineBrake",
                     "type": "Number"
@@ -39,46 +39,39 @@
                     "object_id": "ns*3:s*DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
                     "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
                     "type": "Boolean"
-                },
-                {
-                    "object_id": "ns*3:s*DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
-                    "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
-                    "type": "String"
-                },
-                {
-                    "object_id": "ns*3:s*DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
-                    "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
-                    "type": "Boolean"
                 }
             ],
-	    "lazy": [
-		{
+            "lazy": [{
                     "object_id": "ns*3:s*Speed",
                     "name": "Speed",
                     "type": "Number"
+                }, {
+                    "object_id": "ns*3:s*GPSCoordinates",
+                    "name": "GPSCoordinates",
+                    "type": "Number"
                 }
-	    ],
-			"commands" : [{
-				"object_id": "ns*3:s*Stop",
-				"name" : "Stop",
-				"type" : "command"
-			}, {
-				"object_id": "ns*3:s*Accelerate",
-				"name" : "Accelerate",
-				"type" : "command"
-			}, {
-				"object_id": "ns*3:s*ActivateSensor",
-				"name" : "ActivateSensor",
-				"type" : "command"
-			}, {
-				"object_id": "ns*3:s*DeactivateSensor",
-				"name" : "DeactivateSensor",
-				"type" : "command"
-			}, {
-				"object_id": "ns*3:s*ToggleSensorActivation",
-				"name" : "ToggleSensorActivation",
-				"type" : "command"
-			}]        
+            ],
+            "commands" : [{
+                "object_id": "ns*3:s*Accelerate",
+                "name" : "Accelerate",
+                "type" : "command"
+            }, {
+                "object_id": "ns*3:s*ActivateSensor",
+                "name" : "ActivateSensor",
+                "type" : "command"
+            }, {
+                "object_id": "ns*3:s*DeactivateSensor",
+                "name" : "DeactivateSensor",
+                "type" : "command"
+            }, {
+                "object_id": "ns*3:s*ToggleSensorActivation",
+                "name" : "ToggleSensorActivation",
+                "type" : "command"
+            }, {
+                "object_id": "ns*3:s*LaunchMissiles",
+                "name" : "LaunchMissiles",
+                "type" : "command"
+            }]
       }
     ]
 }

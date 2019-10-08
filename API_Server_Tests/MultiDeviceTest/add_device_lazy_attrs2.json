@@ -1,0 +1,27 @@
+{ 
+    "devices": [
+        {
+            "device_id": "age01_Car2",
+            "entity_name": "age01_Car2",
+            "entity_type": "Device",
+            "attributes": [
+                {
+                    "object_id": "ns*3:s*DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
+                    "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
+                    "type": "String"
+                },
+                {
+                    "object_id": "ns*3:s*DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
+                    "name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
+                    "type": "Boolean"
+                }
+            ],
+            "lazy": [],
+            "commands" : [{
+                "object_id": "ns*3:s*Stop",
+                "name" : "Stop",
+                "type" : "command"
+            }]
+      }
+    ]
+}

@@ -4,7 +4,8 @@ var PropertiesReader = require('properties-reader');
 var properties = PropertiesReader(require('path').resolve(__dirname, '../conf/config.properties'));
 var testProperties = PropertiesReader(require('path').resolve(__dirname, './test-file-paths.properties'));
 var fs = require('fs');
-var config = require(require('path').resolve(__dirname, '../conf/config.json'));
+
+// var config = require(require('path').resolve(__dirname, '../conf/config.json'));
 
 // Set Up
 global.logContextTest = {
@@ -23,13 +24,14 @@ function sleep(ms) {
 }
 
 describe('The agent is monitoring active attributes...', function() {
+    /*
     before(
         // async () => {
         // await
         function() {
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@òòò WAIT 15 secs');
-            var myTimeout = setTimeout(init, 1000);
-
+            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@ WAIT 5 secs');
+            var myTimeout = setTimeout(init, 5000);
+			
             function init() {
                 // Set Up
                 global.logContext = {
@@ -55,13 +57,14 @@ describe('The agent is monitoring active attributes...', function() {
                     var server = require('../iot_agent_modules/services/server');
                     var run = require('../iot_agent_modules/run/run');
                     var fs = require('fs');
+                    
                     // custom simple logger
-
+					var logger = require('logops');
                     var PropertiesReader = require('properties-reader');
 
-                    loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...'.rainbow);
+                    loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...');
 
-                    var iotAgentConfig = require('../conf/config.json');
+                    // var iotAgentConfig = require('../conf/config.json');
                     // var iotAgentProp = require('./config.properties');
 
                     var properties = PropertiesReader(require('path').resolve(__dirname, '../conf/config.properties'));
@@ -71,12 +74,13 @@ describe('The agent is monitoring active attributes...', function() {
                     var password = properties.get('password');
 
                     if (endpointUrl == null) {
-                        logger.info(logContext, '/AGE/config-test.properties: endpoint not found...'.red);
+                        loggerTest.info(logContext, '/AGE/config-test.properties: endpoint not found...');
                         process.exit(1);
                     }
-
+                    
                     var doAuto = false;
                     var configPath = require('path').resolve(__dirname, '../conf/config.json');
+                    
                     if (fs.existsSync(configPath)) {
                         var config = require(configPath);
 
@@ -85,13 +89,14 @@ describe('The agent is monitoring active attributes...', function() {
                             config.providerUrl = hostIP + ':' + port;
                         }
                         global.config = config;
+                        
                     } else {
                         doAuto = true;
                     }
 
                     if (doAuto) {
                         logContext.op = 'Index.MappingTool';
-                        logger.info(logContext, '----------------    MAPPING TOOL    ----------------');
+                        loggerTest.info(logContext, '----------------    MAPPING TOOL    ----------------');
 
                         var loadingBar;
                         loadingBar = setInterval(function() {
@@ -102,25 +107,25 @@ describe('The agent is monitoring active attributes...', function() {
                         try {
                             if (userName != 0 && password != 0) {
                                 var cmdjava =
-                                    'java -jar ../../mapping_tool.jar  -e ' +
+                                    'java -jar ' + require(require('path').resolve(__dirname, '../mapping_tool.jar')) + ' -e ' +
                                     endpointUrl +
-                                    ' -f ./config-test.properties' +
+                                    ' -f ' + require(require('path').resolve(__dirname, '../conf/config.properties')) +
                                     ' -u ' +
                                     userName +
                                     ' -p ' +
                                     password;
                             } else {
                                 var cmdjava =
-                                    'java -jar ../../mapping_tool.jar  -e ' +
+                                    'java -jar ' + require('path').resolve(__dirname, '../mapping_tool.jar') + ' -e ' +
                                     endpointUrl +
-                                    ' -f ./config-test.properties';
+                                    ' -f ' + require('path').resolve(__dirname, '../conf/config.properties');
                             }
                             var child = exec(cmdjava, function(err, stdout, stderr) {
                                 clearInterval(loadingBar);
                                 if (err) {
                                     logger.error(
                                         logContext,
-                                        'There is a problem with automatic configuration. Loading old configuration (if exists)...'
+                                        'There is a problem with automatic configuration. Loading old configuration (if exists)...' + err
                                     );
                                 } else {
                                     logger.info(
@@ -138,7 +143,7 @@ describe('The agent is monitoring active attributes...', function() {
                             clearInterval(loadingBar);
                             logger.info(
                                 logContext,
-                                'There is a problem with automatic configuration. Loading old configuration (if exists)...'
+                                'There is a problem with automatic configuration. Loading old configuration (if exists)...' + ex
                             );
                         }
                         module.exports = child;
@@ -156,6 +161,142 @@ describe('The agent is monitoring active attributes...', function() {
         }
         // }
     );
+    */
+
+    it('opcua-agent start', function(done) {
+        // Set Up
+        global.logContext = {
+            comp: 'iotAgent-OPCUA',
+            op: 'Index',
+            srv: '',
+            subsrv: ''
+        };
+
+        try {
+            // node-opcue dependencies
+            require('requirish')._(module);
+            var check_prop = require('../iot_agent_modules/check_properties');
+            if (check_prop.checkproperties().length != 0) {
+                console.log('WARNING!!!');
+                console.log('CHECK YOUR config.properties FILE,  THE FOLLOWING PARAMETERS ARE NULL:');
+                for (var null_params in check_prop.checkproperties()) {
+                    console.log(check_prop.checkproperties()[null_params]);
+                }
+                process.exit(1);
+            }
+
+            var server = require('../iot_agent_modules/services/server');
+            var run = require('../iot_agent_modules/run/run');
+            var fs = require('fs');
+
+            // custom simple logger
+            var logger = require('logops');
+            var PropertiesReader = require('properties-reader');
+
+            loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...');
+
+            // var iotAgentConfig = require('../conf/config.json');
+            // var iotAgentProp = require('./config.properties');
+
+            var properties = PropertiesReader(require('path').resolve(__dirname, '../conf/config.properties'));
+            global.properties = properties;
+            var endpointUrl = properties.get('endpoint');
+            var userName = properties.get('userName');
+            var password = properties.get('password');
+
+            if (endpointUrl == null) {
+                loggerTest.info(logContext, '/AGE/config-test.properties: endpoint not found...');
+                process.exit(1);
+            }
+
+            var doAuto = false;
+            var configPath = require('path').resolve(__dirname, '../conf/config.json');
+
+            if (fs.existsSync(configPath)) {
+                var config = require(configPath);
+
+                if (hostIP != null) {
+                    var port = config.providerUrl.split(':')[2];
+                    config.providerUrl = hostIP + ':' + port;
+                }
+                global.config = config;
+            } else {
+                doAuto = true;
+            }
+
+            if (doAuto) {
+                logContext.op = 'Index.MappingTool';
+                loggerTest.info(logContext, '----------------    MAPPING TOOL    ----------------');
+
+                var loadingBar;
+                loadingBar = setInterval(function() {
+                    process.stdout.write('.');
+                }, 3000);
+
+                var exec = require('child_process').exec;
+                try {
+                    if (userName != 0 && password != 0) {
+                        var cmdjava =
+                            'java -jar ' +
+                            require(require('path').resolve(__dirname, '../mapping_tool.jar')) +
+                            ' -e ' +
+                            endpointUrl +
+                            ' -f ' +
+                            require(require('path').resolve(__dirname, '../conf/config.properties')) +
+                            ' -u ' +
+                            userName +
+                            ' -p ' +
+                            password;
+                    } else {
+                        var cmdjava =
+                            'java -jar ' +
+                            require('path').resolve(__dirname, '../mapping_tool.jar') +
+                            ' -e ' +
+                            endpointUrl +
+                            ' -f ' +
+                            require('path').resolve(__dirname, '../conf/config.properties');
+                    }
+                    var child = exec(cmdjava, function(err, stdout, stderr) {
+                        clearInterval(loadingBar);
+                        if (err) {
+                            logger.error(
+                                logContext,
+                                'There is a problem with automatic configuration. Loading old configuration (if exists)...' +
+                                    err
+                            );
+                        } else {
+                            logger.info(
+                                logContext,
+                                'Automatic configuration successfully created. Loading new configuration...'
+                            );
+                            var config = require(configPath);
+                        }
+
+                        run.run();
+                        server.start();
+                        done();
+                        process.exit(0);
+                    });
+                } catch (ex) {
+                    clearInterval(loadingBar);
+                    logger.info(
+                        logContext,
+                        'There is a problem with automatic configuration. Loading old configuration (if exists)...' + ex
+                    );
+                }
+                module.exports = child;
+            } else {
+                run.run();
+                server.start();
+                done();
+            }
+        } catch (ex) {
+            var logger = require('logops');
+            logger.error(ex);
+            logger.error(logContext, 'Generic error: closing application...'.red);
+            process.exit(1);
+        }
+    });
 
     it('verify update of active attributes on Context Broker', function(done) {
         this.timeout(0);
@@ -166,16 +307,16 @@ describe('The agent is monitoring active attributes...', function() {
         var temperatureRequest = {
             url:
                 'http://' +
-                properties.get('test-machine-ip') +
+                properties.get('context-broker-host') +
                 ':' +
-                config.contextBroker.port +
+                properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
                 '/attrs/Engine_Temperature',
             method: 'GET',
             headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
             }
         };
 
@@ -224,12 +365,15 @@ describe('The agent is monitoring active attributes...', function() {
         json.type = 'command';
 
         var stopRequest = {
-            url: 'http://localhost:' + config.contextBroker.port + '/v2/entities/age01_Car/attrs/Stop?type=Device',
+            url:
+                'http://localhost:' +
+                properties.get('context-broker-port') +
+                '/v2/entities/age01_Car/attrs/Stop?type=Device',
             method: 'PUT',
             json: json,
             headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
             }
         };
 
@@ -259,12 +403,12 @@ describe('The agent is monitoring active attributes...', function() {
         };
 
         var stopRequest = {
-            url: 'http://localhost:' + config.contextBroker.port + '/v1/updateContext',
+            url: 'http://localhost:' + properties.get('context-broker-port') + '/v1/updateContext',
             method: 'POST',
             json: json,
             headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
             }
         };
 
@@ -287,14 +431,14 @@ describe('The agent is monitoring active attributes...', function() {
 					'http://' +
 					properties.get('test-machine-ip') +
 					':' +
-					config.contextBroker.port +
+					properties.get('context-broker-port') +
 					'/v2/entities/' + properties.get("entity-id") + '/attrs/Stop?type=Device',
 				method: 'PUT',
 				json: json,
 				headers: {
 					'content-type': 'application/json',
-					'fiware-service': config.service,
-					'fiware-servicepath': config.subservice
+					'fiware-service': properties.get('fiware-service'),
+					'fiware-servicepath': properties.get('fiware-service-path')
 				}
 			};
 			
@@ -310,12 +454,12 @@ describe('The agent is monitoring active attributes...', function() {
 						'http://' +
 						properties.get('test-machine-ip') +
 						':' +
-						config.contextBroker.port +
+						properties.get('context-broker-port') +
 						'/v2/entities/' + properties.get("entity-id") + '/attrs/Oxigen',
 					method: 'GET',
 					headers: {
-						'fiware-service': config.service,
-						'fiware-servicepath': config.subservice
+						'fiware-service': properties.get('fiware-service'),
+						'fiware-servicepath': properties.get('fiware-service-path')
 					}
 				};
 				
@@ -395,8 +539,8 @@ describe('The agent is monitoring active attributes...', function() {
             method: 'POST',
             json: json,
             headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
             }
         };
 
@@ -421,13 +565,13 @@ describe('The agent is monitoring active attributes...', function() {
                     'http://' +
                     'localhost' +
                     ':' +
-                    config.contextBroker.port +
+                    properties.get('context-broker-port') +
                     '/v2/entities/age01_Car/attrs/Accelerate?type=Device',
                 method: 'PUT',
                 json: json,
                 headers: {
-                    'fiware-service': config.service,
-                    'fiware-servicepath': config.subservice
+                    'fiware-service': properties.get('fiware-service'),
+                    'fiware-servicepath': properties.get('fiware-service-path')
                 }
             };
             request(accelerateRequest, function(error, response, body) {
@@ -460,8 +604,8 @@ describe('The agent is monitoring active attributes...', function() {
                 method: 'POST',
                 json: json,
                 headers: {
-                    'fiware-service': config.service,
-                    'fiware-servicepath': config.subservice
+                    'fiware-service': properties.get('fiware-service'),
+                    'fiware-servicepath': properties.get('fiware-service-path')
                 }
             };
             request(accelerateRequest, function(error, response, body) {
@@ -474,11 +618,16 @@ describe('The agent is monitoring active attributes...', function() {
         function myTimer() {
             var updated = false;
             var speedRequest = {
-                url: 'http://' + 'localhost' + ':' + config.contextBroker.port + '/v2/entities/age01_Car/attrs/Speed',
+                url:
+                    'http://' +
+                    'localhost' +
+                    ':' +
+                    properties.get('context-broker-port') +
+                    '/v2/entities/age01_Car/attrs/Speed',
                 method: 'GET',
                 headers: {
-                    'fiware-service': config.service,
-                    'fiware-servicepath': config.subservice
+                    'fiware-service': properties.get('fiware-service'),
+                    'fiware-servicepath': properties.get('fiware-service-path')
                 }
             };
 
@@ -594,8 +743,8 @@ describe('Verify REST Devices Management', function() {
                     var addDeviceRequest = {
                         url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
                         headers: {
-                            'fiware-service': config.service,
-                            'fiware-servicepath': config.subservice,
+                            'fiware-service': properties.get('fiware-service'),
+                            'fiware-servicepath': properties.get('fiware-service-path'),
                             'content-type': 'application/json'
                         },
                         method: 'POST',
@@ -733,6 +882,7 @@ describe('Verify ADMIN API services', function() {
                 url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
                 method: 'GET'
             };
+
             function myTimer() {
                 var updated = false;
 

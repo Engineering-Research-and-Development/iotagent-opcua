@@ -68,7 +68,7 @@ module.exports = {
         var _setInterval = require('setinterval-plus');
 
         if (fs.existsSync('./conf/config.json')) {
-            // var config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf8'));
+            var config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf8'));
         } else {
             doAuto = true;
         }
@@ -112,10 +112,11 @@ module.exports = {
         var the_session = null;
         global.the_subscriptions = [];
         var contexts = [];
+
         // Getting contextSubscriptions configuration
         var contextSubscriptions = config.contextSubscriptions;
-        var methods = [];
 
+        var methods = [];
         var devicesSubs = [];
         var devices = [];
 
@@ -159,7 +160,7 @@ module.exports = {
                 });
             });
         }
-        */
+		*/
 
         /*
          * Initializes a subscription to OPCUA server and
@@ -411,8 +412,8 @@ module.exports = {
                 // ------------------------------------------
                 // initialize client connection to the OPCUA Server
                 function(callback) {
-                    const certificateFile = './certificates/client_certificate.pem';
-                    const privateKeyFile = './certificates/PKI/own/private/private_key.pem';
+                    // const certificateFile = './certificates/client_certificate.pem';
+                    // const privateKeyFile = './certificates/PKI/own/private/private_key.pem';
 
                     var options = {
                         endpoint_must_exist: false,
@@ -425,9 +426,9 @@ module.exports = {
                             maxRetry: 10,
                             initialDelay: 2000,
                             maxDelay: 10 * 1000
-                        },
-                        certificateFile: certificateFile,
-                        privateKeyFile: privateKeyFile
+                        }
+                        // certificateFile: certificateFile,
+                        // privateKeyFile: privateKeyFile
                     };
 
                     logger.info(
@@ -847,8 +848,8 @@ module.exports = {
         }
 
         /*
-			function updateContextHandler(id, type, service, subservice, attributes, callback) {
-			}
+		function updateContextHandler(id, type, service, subservice, attributes, callback) {
+		}
 		*/
 
         var result = {};

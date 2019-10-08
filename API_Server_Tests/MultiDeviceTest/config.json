@@ -5,7 +5,7 @@
     "port" : 1026
   },
   "server" : {
-    "port" : 4001,
+    "port" : 4002,
     "baseRoot" : "/"
   },
   "deviceRegistry" : {
@@ -43,21 +43,12 @@
       }, {
         "name" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
         "type" : "Boolean"
-      }, {
-        "name" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
-        "type" : "String"
-      }, {
-        "name" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
-        "type" : "Boolean"
       }],
       "lazy" : [{
           "name": "Speed",
           "type": "Number"
       }],
-      "commands" : [{
-        "name" : "Stop",
-        "type" : "command"
-      }, {
+      "commands" : [ {
         "name" : "Accelerate",
         "type" : "command"
       }, {
@@ -75,7 +66,7 @@
   "browseServerOptions" : null,
   "service" : "opcua_car",
   "subservice" : "/demo",
-  "providerUrl" : "http://iotage:4001",
+  "providerUrl" : "http://iotage:4002",
   "pollingExpiration" : "200000",
   "pollingDaemonFrequency" : "20000",
   "deviceRegistrationDuration" : "P1M",
@@ -116,16 +107,6 @@
       "opcua_id" : "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
       "object_id" : null,
       "inputArguments" : [ ]
-    }, {
-      "ocb_id" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
-      "opcua_id" : "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone",
-      "object_id" : null,
-      "inputArguments" : [ ]
-    }, {
-      "ocb_id" : "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
-      "opcua_id" : "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDoneStatus",
-      "object_id" : null,
-      "inputArguments" : [ ]
     }]
   } ],
   "contextSubscriptions" : [ {
@@ -135,11 +116,6 @@
       "ocb_id": "Speed",
       "opcua_id": "ns=3;s=Speed",
       "object_id": "ns=3;i=1000",
-      "inputArguments" : [ ]
-    }, {
-      "ocb_id" : "Stop",
-      "opcua_id" : "ns=3;s=Stop",
-      "object_id" : "ns=3;i=1000",
       "inputArguments" : [ ]
     }, {
       "ocb_id" : "Accelerate",

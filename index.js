@@ -75,7 +75,8 @@ try {
                 if (err) {
                     logger.error(
                         logContext,
-                        'There is a problem with automatic configuration. Loading old configuration (if exists)...'
+                        'There is a problem with automatic configuration. Loading old configuration (if exists)...' +
+                            err
                     );
                 } else {
                     logger.info(
@@ -93,7 +94,7 @@ try {
             clearInterval(loadingBar);
             logger.info(
                 logContext,
-                'There is a problem with automatic configuration. Loading old configuration (if exists)...'
+                'There is a problem with automatic configuration. Loading old configuration (if exists)...' + ex
             );
         }
         module.exports = child;

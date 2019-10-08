@@ -1,0 +1,12 @@
+These two files can be used to test the addition of multiple devices.
+You can:
+1)
+  Upload:
+    1.1) add_device_lazy_attrs.json
+    1.2) add_device_lazy_attrs2.json
+  in this order via REST calls
+  
+or
+2)
+  2.1) Start the Agent preloading the config.json file you find inside this folder
+  2.2) Upload add_device_lazy_attrs2.json via REST calls

@@ -30,6 +30,7 @@ services:
     volumes:
       - ./AGECONF:/opt/iotagent-opcua/conf
       - ./iot_agent_modules/run/run.js:/opt/iotagent-opcua/iot_agent_modules/run/run.js
+      - ./index.js:/opt/iotagent-opcua/index.js
     command: /usr/bin/tail -f /var/log/lastlog
 
   iotmongo:
