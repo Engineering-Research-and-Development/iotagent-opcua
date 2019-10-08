@@ -240,87 +240,96 @@ Docker Compose can be downloaded here
 [docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/test/docker-compose.yml):
 
 ```yaml
-version: "2.3"
+version: "3"
+#secrets:
+#   age_idm_auth:
+#      file: age_idm_auth.txt
+
 services:
+    iotcarsrv:
+        hostname: iotcarsrv
+        image: pietrogreco4991/opcuacarsrv:1.3-PG_2.0.0-NODEOPCUA
+        networks:
+            - hostnet
+        ports:
+            - "5001:5001"
 
-################### TEST DOCKER ENVIRONMENT ##############################
+    iotage:
+        hostname: iotage
+        image: pietrogreco4991/iotagent-opcua:1.1_API_ADOPTION
+        networks:
+            - hostnet
+            - iotnet
+        ports:
+            - "4002:4002"
+            - "4081:8080"
+        depends_on:
+            - iotcarsrv
+            - iotmongo
+            - orion
+        volumes:
+            - ./AGECONF:/opt/iotagent-opcua/conf
+        command: /usr/bin/tail -f /var/log/lastlog
 
-   iotage:
-      hostname: iotage
-      image: rdlabengpa/opcuaage:latest
-      networks:
-         - hostnet
-         - iotnet
-      ports:
-         - "4001:4001"
-         - "8080:8080"
-      depends_on:
-         - iotcarsrv
-         - iotmongo
-         - orion
-      volumes:
-         - ./AGE:/opt/iotagent-opcua/conf
+    iotmongo:
+        hostname: iotmongo
+        image: mongo:3.4
+        networks:
+            - iotnet
+        volumes:
+            - iotmongo_data:/data/db
+            - iotmongo_conf:/data/configdb
 
-   iotcarsrv:
-      hostname: iotcarsrv
-      image: beincpps/opcuacarsrv:latest
-      networks:
-         - iotnet
-      ports:
-         - "5001:5001"
-      volumes:
-         - ./CAR/car.js:/opt/opc-ua-car-server/car.js
+    ################ OCB ################
 
-   iotmongo:
-      hostname: iotmongo
-      image: mongo:3.4
-      networks:
-         - iotnet
-      ports:
-        - "27017:27017"
-      volumes:
-         - iotmongo_data:/data/db
-         - iotmongo_conf:/data/configdb
+    orion:
+        hostname: orion
+        image: fiware/orion:latest
+        networks:
+            - hostnet
+            - ocbnet
+        ports:
+            - "1026:1026"
+        depends_on:
+            - orion_mongo
+        #command: -dbhost mongo
+        entrypoint:
+            /usr/bin/contextBroker -fg -multiservice -ngsiv1Autocast -statCounters -dbhost mongo -logForHumans -logLevel
+            DEBUG -t 255
 
-   orion:
-      image: fiware/orion
-      networks:
-         - iotnet
-      links:
-        - mongo
-      ports:
-        - "1026:1026"
-      depends_on:
-         - mongo
-      command: -dbhost mongo
-
-   mongo:
-      image: mongo:3.4
-      networks:
-         - iotnet
-      command: --nojournal
-
-##########################################################
+    orion_mongo:
+        hostname: orion_mongo
+        image: mongo:3.4
+        networks:
+            ocbnet:
+                aliases:
+                    - mongo
+        volumes:
+            - orion_mongo_data:/data/db
+            - orion_mongo_conf:/data/configdb
+        command: --nojournal
 
 volumes:
-       iotmongo_data:
-       iotmongo_conf:
+    iotmongo_data:
+    iotmongo_conf:
+    orion_mongo_data:
+    orion_mongo_conf:
 
 networks:
-       hostnet:
-       iotnet:
+    hostnet:
+    iotnet:
+    ocbnet:
 ```
 
-To run docker-compose follow these steps:
+By modifying this file you can:
 
-```bash
-git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua"
-cd iotagent-opcua
-cd test
-docker-compose up &
-```
+-   Change exposed ports
+-   Extend the stack with other services (e.g. Cygnus)
 
-Under the test folder there are two configuration folders:
+#### Customize CarServer
 
--   AGE with OPC UA Agent configuration files (to set OPC UA variables, methods and to create the mapping with NGSI)
--   CAR with OPC UA Car Server JavaScript file (to set address and port of the server)
+Coming soon ... How to add new sensors
+
+#### Customize Agent
+
+Coming soon ...

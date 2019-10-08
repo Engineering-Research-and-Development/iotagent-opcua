@@ -1,4 +1,3 @@
-#ARG  NODE_VERSION=8.15.0-stretch
 ARG  NODE_VERSION=10.16.1-stretch
 FROM node:${NODE_VERSION}
 
@@ -12,7 +11,6 @@ COPY . /opt/iotagent-opcua
 RUN \
   apt-get update && \
   apt-get install -y git netcat openjdk-8-jdk-headless && \
-  #git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua.git" && \
   cd /opt/iotagent-opcua && \
   rm -f package-lock.json && \
   npm install && \
