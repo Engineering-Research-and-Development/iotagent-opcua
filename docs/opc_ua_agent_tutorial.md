@@ -140,7 +140,7 @@ By Device we mean the set of variables (attributes) and methods available on OPC
 To provision the Device corresponding to what the CarServer offers, use the following REST call:
 
 ```bash
-curl http://localhost:4002/iot/devices \
+curl http://localhost:4001/iot/devices \
      -H "fiware-service: opcua_car" \
      -H "fiware-servicepath: /demo" \
      -H "Content-Type: application/json" \
@@ -157,7 +157,7 @@ UA Server side but have been included to prove that the Agent is able to manage 
 Check if the operation gone well, by sending the following REST call:
 
 ```bash
-curl http://localhost:4002/iot/devices \
+curl http://localhost:4001/iot/devices \
      -H "fiware-service: opcua_car" \
      -H "fiware-servicepath: /demo"
 ```
@@ -253,7 +253,7 @@ version: "3"
 services:
     iotcarsrv:
         hostname: iotcarsrv
-        image: pietrogreco4991/opcuacarsrv:1.3-PG_2.0.0-NODEOPCUA
+        image: engpalab/opcuacarsrv:1.3_NODEOPCUA-2.0.0
         networks:
             - hostnet
         ports:
@@ -261,12 +261,12 @@ services:
 
     iotage:
         hostname: iotage
-        image: pietrogreco4991/iotagent-opcua:1.1_API_ADOPTION
+        image: engpalab/iotagent-opcua:1.1_API_ADOPTION
         networks:
             - hostnet
             - iotnet
         ports:
-            - "4002:4002"
+            - "4001:4001"
             - "4081:8080"
         depends_on:
             - iotcarsrv
