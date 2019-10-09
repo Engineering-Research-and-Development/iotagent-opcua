@@ -28,7 +28,7 @@
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
-    "test": "mocha TESTS/test.js --timeout=3000 --exit",
+    "test": "mocha tests/test.js --timeout=3000 --exit",
     "test:watch": "npm run test -- -w ./lib",
     "lint": "eslint . --cache --fix",
     "lint:md": "remark -f 'README.md' docs",
