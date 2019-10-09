@@ -36,9 +36,9 @@ IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
 -   [Background](#background)
 -   [Install](#install)
-    -   [Docker install](#Docker Install - Recommended)
-        -   [How to build a Docker Image](#How to build a Docker Image)
-    -   [NPM Install](#NPM Install)
+    -   [Docker install](docker-install-recommended)
+        -   [How to build a Docker Image](#how-to-build-a-docker-image)
+    -   [NPM Install](#npm-install)
 -   [Usage](#usage)
 -   [API](#api)
 -   [Testing](#testing)
