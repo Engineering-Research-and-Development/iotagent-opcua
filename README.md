@@ -25,8 +25,8 @@ It is based on the [IoT Agent Node.js Library](https://github.com/telefonicaid/i
 information about the FIWARE IoT Agents framework, its architecture and the common interaction model can be found in the
 library's GitHub repository.
 
-This project is part of [FIWARE](https://www.fiware.org/). For more information check the FIWARE Catalogue entry for the
-IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
+This project is part of [FIWARE](https://www.fiware.org/). For more information check the
+[FIWARE Catalogue entry for the IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
 | :books: [Documentation](https://iotagent-opcua.rtfd.io) | :whale: [Docker Hub](https://hub.docker.com/r/rdlabengpa/opcuaage) | :dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
 | ------------------------------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
@@ -105,8 +105,8 @@ Further Information about how to install the OPC UA IoT Agent can be found at th
 
 ## Usage
 
-Information about how to use the IoT Agent can be found in the User & Programmers
-Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual).
+Information about how to use the IoT Agent can be found in the
+[User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual).
 
 ### Administration Services
 
