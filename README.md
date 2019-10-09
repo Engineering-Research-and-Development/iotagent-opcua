@@ -4,14 +4,15 @@
 [![License: AGPL](https://img.shields.io/github/license/Engineering-Research-and-Development/iotagent-opcua.svg)](https://opensource.org/licenses/AGPL-3.0)
 [![Docker badge](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg)](https://hub.docker.com/r/rdlabengpa/opcuaage/)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
-<br/> [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
+[![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
 [![Build badge](https://img.shields.io/travis/Engineering-Research-and-Development/iotagent-opcua.svg)](https://travis-ci.org/Engineering-Research-and-Development/iotagent-opcua/)
 [![Coverage Status](https://coveralls.io/repos/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg?branch=master)](https://coveralls.io/github/Engineering-Research-and-Development/iotagent-opcua?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-openmtc.svg)
 [![Join the chat at https://gitter.im/iotagent-opcua/community](https://badges.gitter.im/iotagent-opcua/community.svg)](https://gitter.im/iotagent-opcua/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Known Vulnerabilities](https://snyk.io/test/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg)](https://snyk.io/test/github/Engineering-Research-and-Development/iotagent-opcua)
-<br/> An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between
-the OPC Unified Architecture protocol and the
+
+An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between the
+OPC Unified Architecture protocol and the
 [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 interface of a context broker.
 
@@ -25,7 +26,7 @@ information about the FIWARE IoT Agents framework, its architecture and the comm
 library's GitHub repository.
 
 This project is part of [FIWARE](https://www.fiware.org/). For more information check the FIWARE Catalogue entry for the
-[IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
+IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
 | :books: [Documentation](https://iotagent-opcua.rtfd.io) | :whale: [Docker Hub](https://hub.docker.com/r/rdlabengpa/opcuaage) | :dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
 | ------------------------------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
@@ -35,6 +36,9 @@ This project is part of [FIWARE](https://www.fiware.org/). For more information 
 
 -   [Background](#background)
 -   [Install](#install)
+    -   [Docker install](#Docker Install - Recommended)
+        -   [How to build a Docker Image](#How to build a Docker Image)
+    -   [NPM Install](#NPM Install)
 -   [Usage](#usage)
 -   [API](#api)
 -   [Testing](#testing)
@@ -56,149 +60,31 @@ UA-based devices in a publish-subscribe system based on the FIWARE Orion Context
 
 ## Install
 
+Currently two options are available to install the Agent:
+
+### Docker Install - Recommended
+
+We suggest using a **Docker-first** approach in order to avoid issues related to your environment configuration.
+Moreover, using this approach you will be provided with all the needed component: OCB, Mongo instances and a sample
+OPC-UA server
+
+A step-by-step tutorial is available here [LINK to tutorial]
+
+#### How to build a Docker Image
+
+Here [LINK to DOCKER-README] you find the instructions on how to build a Docker Image for the Agent
+
 ### NPM Install
+
+Before launching the Agent you must install Orion Context Broker and a OPC UA Server. After that you must tell the Agent
+how to interact with these components by using config.properties file. A short description of it is available here [LINK
+Customize Agent - Tutorial].
+
+Once configuration is complete you can execute these commands to run the Agent.
 
 ```console
 $ npm install
 $ node index.js
-```
-
-### Docker Install
-
-You do need to have docker in your machine. See the [documentation](https://docs.docker.com/installation/) on how to do
-this.
-
-#### 1. The Fastest Way
-
-Docker Compose allows you to link an OPC UA Agent container to a MongoDB container in a few minutes. This method
-requires that you install [Docker Compose](https://docs.docker.com/compose/install/).
-
-Follow these steps:
-
-1.  Create a directory on your system on which to work (for example, `~/opc-ua-agent`).
-2.  Create a new file called `docker-compose.yml` inside your directory with the following contents:
-
-```yaml
-   version: "2.3"
-   services:
-
-      iotage:
-         hostname: iotage
-         image: rdlabengpa/opcuaage:latest
-         networks:
-            - hostnet
-            - iotnet
-         ports:
-            - "4001:4001"
-            - "4081:8080"
-      depends_on:
-         - iotmongo
-      volumes:
-         - ./AGECONF:/opt/iotagent-opcua/conf
-
-      iotmongo:
-         hostname: iotmongo
-         image: mongo:3.4
-         networks:
-            - iotnet
-         volumes:
-            - iotmongo_data:/data/db
-            - iotmongo_conf:/data/configdb
-
-   volumes:
-         iotmongo_data:
-         iotmongo_conf:
-
-   networks:
-         hostnet:
-         iotnet:
-```
-
-3.  Using the command-line and within the directory you created type: `sudo docker-compose up`.
-
-Before running containers you must create an AGECONF subdirectory in the same directory as the docker-compose.yml file
-and create in it a config.properties file based on the following template:
-
-```text
-namespace-ignore=2
-################ OPTIONAL FILTERING ################
-nodes-filtering-in=ns\=1;s\=Oxigen,ns\=1;s\=Speed
-nodes-filtering-out=ns\=1;s\=Temperature
-####################################################
-context-broker-host=<ORIONHOSTIP>
-context-broker-port=<ORIONPORT>
-server-base-root=/
-server-port=4001
-device-registry-type=memory
-mongodb-host=iotmongo
-mongodb-port=27017
-mongodb-db=iotagent
-mongodb-retries=5
-mongodb-retry-time=5
-fiware-service=<SERVICE>
-fiware-service-path=<SERVICE-PATH>
-provider-url=http://iotage:4001
-device-registration-duration=P1M
-endpoint=opc.tcp://<IPADDR>:<PORT>
-log-level=DEBUG
-
-#DATATYPE MAPPING OPCUA --> NGSI
-OPC-datatype-Number=Number
-OPC-datatype-Decimal128=Number
-OPC-datatype-Double=Number
-OPC-datatype-Float=Number
-OPC-datatype-Integer=Integer
-OPC-datatype-UInteger=Integer
-OPC-datatype-String=Text
-OPC-datatype-ByteString=Text
-#END DATATYPE MAPPING OPCUA --> NGSI
-
-#SESSION PARAMETERS
-requestedPublishingInterval=500
-requestedLifetimeCount=1000
-requestedMaxKeepAliveCount=5
-maxNotificationsPerPublish=10
-publishingEnabled=true
-priority=10
-
-#MONITORING PARAMETERS
-samplingInterval= 0
-queueSize= 10000
-discardOldest= false
-
-#SERVER CERT E AUTH
-securityMode=NONE
-securityPolicy=
-userName=
-password=
-
-#Administration Services
-api-port=4081
-#End Administration Services
-
-#POLL COMMANDS SETTINGS
-polling=false
-polling-commands-timer=30000
-pollingDaemonFrequency=20000
-pollingExpiration=200000
-#END POLL COMMANDS SETTINGS
-
-#AGENT ID
-agent-id=<PREFIX>
-```
-
-You can set the properties according to your environment, but you should focus at least on:
-
-```text
-context-broker-host=<ORIONHOSTIP>
-context-broker-port=<ORIONPORT>
-
-fiware-service=<SERVICE>
-fiware-service-path=<SERVICE-PATH>
-
-endpoint=opc.tcp://<IPADDR>:<PORT>
-
-agent-id=<PREFIX>
 ```
 
 #### 2. Alternative Start Method
@@ -219,8 +105,8 @@ Further Information about how to install the OPC UA IoT Agent can be found at th
 
 ## Usage
 
-Information about how to use the IoT Agent can be found in the
-[User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual).
+Information about how to use the IoT Agent can be found in the User & Programmers
+Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual).
 
 ### Administration Services
 
@@ -303,8 +189,8 @@ fact that different people assign different interpretations on the meaning of th
 licenses. Due to this, some people believe that there is a risk in just _using_ software under GPL or AGPL licenses
 (even without _modifying_ it).
 
-For the avoidance of doubt, the owners of this software licensed under an AGPL 3.0 license  
-wish to make a clarifying public statement as follows:
+For the avoidance of doubt, the owners of this software licensed under an AGPL 3.0 license wish to make a clarifying
+public statement as follows:
 
 > Please note that software derived as a result of modifying the source code of this software in order to fix a bug or
 > incorporate enhancements is considered a derivative work of the product. Software that merely uses or aggregates (i.e.
