@@ -301,8 +301,6 @@ module.exports = {
                         }
 
                         devicesSubs[context.id].push(subscription);
-
-                        console.log('@@@ DEVICES SUBS', devicesSubs);
                     });
 
                     monItem.on('changed', function(dataValue) {
@@ -1039,8 +1037,6 @@ module.exports = {
         function provisioningHandler(device, provisioningCallback) {
             logContext.op = 'Index.IoTAgentProvisioningHandler';
 
-            console.log('@@@ PROVISIONING HANDLER');
-
             // Handling duplicated devices
             var deviceExists = false;
 
@@ -1216,7 +1212,6 @@ module.exports = {
                         if (!err) {
                             let result = results[0];
                             console.log('@@@ BROWSE RESULT' + new Date().getTime());
-                            console.log('@@@ ACTIVE BROWSE RESULT ', results);
 
                             // Fetch the Status in another way
                             var nodes_to_read = [

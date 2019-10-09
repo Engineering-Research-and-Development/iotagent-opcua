@@ -12,28 +12,6 @@ services:
     ports:
       - "5001:5001"
 
-  # Commented for testing purposes
-  #
-  #  iotage:
-  #    hostname: iotage
-  #    image: pietrogreco4991/iotagent-opcua:1.1_API_ADOPTION
-  #    networks:
-  #      - hostnet
-  #      - iotnet
-  #    ports:
-  #      - "4002:4002"
-  #      - "4081:8080"
-  #    #    extra_hosts:
-  #    #      - "carsrv:192.168.40.42"
-  #    depends_on:
-  #      - iotcarsrv
-  #      - iotmongo
-  #      - orion
-  #    volumes:
-  #      - ./AGECONF:/opt/iotagent-opcua/conf
-  #      - ./iot_agent_modules/run/run.js:/opt/iotagent-opcua/iot_agent_modules/run/run.js
-  #    command: /usr/bin/tail -f /var/log/lastlog
-
   iotmongo:
     hostname: iotmongo
     image: mongo:3.4
