@@ -147,7 +147,7 @@ curl http://localhost:4001/iot/devices \
      -d @add_device.json
 ```
 
-Where add_device.json is the one you find inside iotagent-opcua/API_Server_Tests folder
+Where **add_device.json** is the one you find inside **iotagent-opcua/testCommands** folder
 
 add_device.json sample payload contains several attributes even of different type. Some of them are missing on the OPC
 UA Server side but have been included to prove that the Agent is able to manage such situations.
@@ -163,8 +163,6 @@ curl http://localhost:4001/iot/devices \
 ```
 
 You should obtain a JSON indicating that there is one device:
-
-[aggiungere estratto corpo JSON]
 
 #### Interlude
 
@@ -203,11 +201,11 @@ curl -X PUT \
   'http://localhost:1026/v2/entities/age01_Car/attrs/Accelerate?type=Device' \
   -H 'content-type: application/json' \
   -H 'fiware-service: opcua_car' \
-  -H 'fiware-servicepath: /demo'
+  -H 'fiware-servicepath: /demo' \
   -d '{
   "value": [2],
   "type": "command"
-}
+}'
 ```
 
 To proof that the method Accelerate is arrived to the device, It is sufficient to evaluate the speed attribute (must be
@@ -225,16 +223,7 @@ proof:
 
 ```bash
 curl -X GET \
-  http://orion:1026/v2/entities \
-  -H 'fiware-service: opcua_car' \
-  -H 'fiware-servicepath: /demo'
-```
-
-Every value change can be seen into docker-compose logs and performing requests to Orion as:
-
-```bash
-curl -X GET \
-  http://orion:1026/v2/entities \
+  http://localhost:1026/v2/entities \
   -H 'fiware-service: opcua_car' \
   -H 'fiware-servicepath: /demo'
 ```
