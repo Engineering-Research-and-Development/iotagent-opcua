@@ -6,7 +6,7 @@ version: "3"
 services:
   iotcarsrv:
     hostname: iotcarsrv
-    image: pietrogreco4991/opcuacarsrv:1.3-PG_2.0.0-NODEOPCUA
+    image: engpalab/opcuacarsrv:1.3_NODEOPCUA-2.0.0
     networks:
       - hostnet
     ports:
