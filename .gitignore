@@ -1,2 +1,5 @@
 node_modules/
 .eslintcache
+GITIGNORE
+testCommands/NOTES
+BUILD-INSTRUCTIONS
