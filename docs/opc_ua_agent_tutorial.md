@@ -123,7 +123,7 @@ Running the docker environment (using configuration files as is) creates the fol
 
 #### Step 3 - Start using the testbed
 
-For the Agent to work an initialization phase is required. During this phase the Agent becomes aware of what variables
+For the Agent to work an **initialization** phase is required. During this phase the Agent becomes aware of what variables
 and methods are available on OPC UA server side. These information can be provided to the agent by means of a
 configuration file (config.json) or through the REST API
 
@@ -149,14 +149,14 @@ curl http://localhost:4001/iot/devices \
      -d @add_device.json
 ```
 
-Where **add_device.json** is the one you find inside **iotagent-opcua/testCommands** folder
+Where `add_device.json` is the one you find inside `iotagent-opcua/testCommands` folder
 
-add_device.json sample payload contains several attributes even of different type. Some of them are missing on the OPC
+`add_device.json` sample payload contains several attributes even of different type. Some of them are missing on the OPC
 UA Server side but have been included to prove that the Agent is able to manage such situations.
 
 #### Step 5 - Get devices
 
-Check if the operation gone well, by sending the following REST call:
+Check if the operation went well, by sending the following REST call:
 
 ```bash
 curl http://localhost:4001/iot/devices \
@@ -164,7 +164,7 @@ curl http://localhost:4001/iot/devices \
      -H "fiware-servicepath: /demo"
 ```
 
-You should obtain a JSON indicating that there is one device:
+You should obtain a JSON indicating that there is one device
 
 #### Interlude
 
@@ -180,7 +180,7 @@ You can interact with the CarServer through the Agent in three different ways:
 
     Through the requests described below it is possible to execute methods on the OPC UA server
 
-Examples of what has been just illustrated can be found on add_device.json file
+Examples of what has been just illustrated can be found in `add_device.json` file
 
 #### Step 6 - Monitor Agent behaviour
 
@@ -210,7 +210,7 @@ curl -X PUT \
 }'
 ```
 
-To proof that the method Accelerate is arrived to the device, It is sufficient to evaluate the speed attribute (must be
+To proof that the method Accelerate is arrived to the device, it is sufficient to evaluate the speed attribute (must be
 greater than zero):
 
 ```bash
@@ -220,7 +220,7 @@ curl -X GET \
   -H 'fiware-servicepath: /demo'
 ```
 
-The OPC UA Agent monitors all attributes defined as active into config.json file, after creation of NGSI entity as
+The OPC UA Agent monitors all attributes defined as active into `config.json` file, after creation of NGSI entity as
 proof:
 
 ```bash
