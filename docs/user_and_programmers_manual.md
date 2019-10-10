@@ -1,11 +1,14 @@
+## Connecting OPC UA IoTAgent to an external OPC UA Server
+
 In this section you find all what you need to know about linking the OPC UA IoTAgent to an external OPC UA Server.
 
-### Configure
-
+## Step 1 - Agent configuration
+First of all, you have to inform the Agent of where it can find the other components. IP addresses, hostnames, ports 
+and all the other required properties must be specified within ```AGECONF/config.properties``` file.
 
 ![edit config.properties](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_1.png?raw=true)
 
-#### Auto Configuration (using of Mapping Tool)
+This is how ```config.properties``` looks like:
 
 Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South
 side (OPC UA endpoint).
@@ -64,6 +67,10 @@ pollingExpiration=200000
 #END POLL COMMANDS SETTINGS
 
 ```
+
+As you can see the file is organized in sections, below we include, for each section, the most relevant properties you should consider:
+
+#### Auto Configuration (using of Mapping Tool)
 
 Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching):
 all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
