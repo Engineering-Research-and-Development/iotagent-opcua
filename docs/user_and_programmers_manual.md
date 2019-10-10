@@ -2,7 +2,7 @@
 
 In this section you find all what you need to know about linking the OPC UA IoTAgent to an external OPC UA Server.
 
-## Step 1 - Agent configuration
+## Step 1 - Configure the Agent
 First of all, you have to inform the Agent of where it can find the other components. IP addresses, hostnames, ports 
 and all the other required properties must be specified within ```AGECONF/config.properties``` file.
 
@@ -110,6 +110,26 @@ As you can see the file is organized in sections, below we include, for each sec
   These parameters are the homonymous counterparts of OPC UA official ones. See OPC UA Documentation for further information
 
 If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP addresses. 
+
+## Step 2 - Map IP addresses
+When using an external OPC UA Server the ```docker-compose-external-server.yml``` file must be used. Unlike ```docker-compose.yml``` file (testbed) the CarServer section has clearly been removed.
+
+Now, the Agent (and the built-in mapping tool) needs to know the address of the OPC UA Server. You have to map the OPC UA Server address against two hostnames.
+
+Open the ```docker-compose-external-server.yml``` file:
+
+```yaml
+services:
+  iotage:
+    ...
+    extra_hosts:
+      - "iotcarsrv:<opc-ua-car-server-IP-ADDRESS>"
+      - "<opc-ua-server-hostname>:<opc-ua-car-server-IP-ADDRESS>"
+    ...
+```
+
+The first line of extra_hosts section is used by the Agent during the communication with the OPC UA Server. The second one is needed when the OPC UA Server answers to the mapping tool returning its hostname.
+
 
 #### Auto Configuration (using of Mapping Tool)
 
