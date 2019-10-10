@@ -234,9 +234,12 @@ Finishing this tutorial you have an overview on how the Agent works and interact
 
 In order to fully understand how the OPC UA IotAgent can be used in a real environment you probably need some further information  on the initialization/configuration stage, i.e. where the link between the Agent and the machinery is established.
 
-Read [HERE]
+These information are available in the following appendix
 
-#### Appendix A - Customize the environment
+#### Appendix A - Connecting OPC UA Server to OPC UA IotAgent
+
+
+#### Appendix B - Customize the environment
 
 Docker Compose can be downloaded here
 [docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/api_adoption/docker-compose.yml):
