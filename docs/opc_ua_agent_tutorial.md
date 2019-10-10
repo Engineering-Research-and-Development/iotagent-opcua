@@ -1,5 +1,5 @@
 [![FIWARE Banner](https://fiware.github.io/tutorials.IoT-over-MQTT/img/fiware.png)](https://www.fiware.org/developers)
-[![FIWARE Banner](https://github.com/PietroGreco/iotagent-api-adoption/blob/master/docs/img/opcua-logo.png)](https://opcfoundation.org/)
+[![OPC Banner](https://opcfoundation.org/wp-content/themes/opc/images/logo.jpg](https://opcfoundation.org/)
 
 # OPC UA Agent Tutorial
 
