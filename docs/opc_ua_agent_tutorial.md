@@ -84,7 +84,7 @@ Agent, Orion Context Broker and the two MongoDB instances.
 -   Docker (Version 19.03.1+)
 -   Docker-compose (Version 1.24.1+)
 
-Install docker and docker-compose by following the instructions on the official web site
+Install docker and docker-compose by following the instructions available on the official web site:
 
 -   Docker: https://docs.docker.com/install/linux/docker-ce/ubuntu/
 -   Docker-Compose: https://docs.docker.com/compose/install/
@@ -93,7 +93,7 @@ Once docker has been correctly installed you can continue with the other steps
 
 #### Step 1 - Clone the OPCUA Agent Repository
 
-Open a terminal and move into a folder in which to create the new folder containing the IotAgent testbed.
+Open a terminal and move into a folder in which to create the new folder containing the IotAgent testbed
 
 Then run:
 
@@ -116,7 +116,7 @@ After that you can run:
 docker ps
 ```
 
-to check if all the required components are running.
+to check if all the required components are running
 
 Running the docker environment (using configuration files as is) creates the following situation:
 ![Docker Containers Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/iotagent-opcua/master/docs/images/OPC%20UA%20Agent%20tutorial%20Containers.png)
@@ -125,7 +125,7 @@ Running the docker environment (using configuration files as is) creates the fol
 
 For the Agent to work an initialization phase is required. During this phase the Agent becomes aware of what variables
 and methods are available on OPC UA server side. These information can be provided to the agent by means of a
-configuration file (config.json) or through the REST API.
+configuration file (config.json) or through the REST API
 
 Three different initialization modalities are available:
 
@@ -133,7 +133,7 @@ Three different initialization modalities are available:
 -   Invoke a mapping tool responsible of automatically building the config.json
 -   Use the REST API
 
-In the following parts of this tutorial we are going to use the REST API (default config.json is empty)
+Since in the following parts of this tutorial we are going to use the REST API you do not have to worry about the initialization. The default empty config.json is preloaded
 
 #### Step 4 - Provision a new Device
 
@@ -178,9 +178,9 @@ You can interact with the CarServer through the Agent in three different ways:
 
 -   **Commands**
 
-    Through the requests described below it is possible to execute methods on the OPC UA server.
+    Through the requests described below it is possible to execute methods on the OPC UA server
 
-Examples of what has been just illustrated can be found on add_device.json file.
+Examples of what has been just illustrated can be found on add_device.json file
 
 #### Step 6 - Monitor Agent behaviour
 
@@ -191,7 +191,7 @@ cd iotagent-opcua
 docker-compose logs -f
 ```
 
-Looking at these logs is useful to spot possible errors.
+Looking at these logs is useful to spot possible errors
 
 #### Step 7 - Accelerate
 
