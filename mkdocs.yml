@@ -14,8 +14,7 @@ extra_css:
   ]
 google_analytics: ["UA-118589264-1", "opcua-agent.readthedocs.io"]
 pages:
-  - Home: index.md
-  - "Getting Started": "quick_start_guide.md"
+  - "Home - Getting Started": "index.md"
   - "User & Programmers Manual": "user_and_programmers_manual.md"
   - "Installation & Administration Manual": "installation_and_administration_guide.md"
   - "Tutorial": "opc_ua_agent_tutorial.md"
