@@ -235,6 +235,11 @@ curl -X GET \
 Docker Compose can be downloaded here
 [docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/api_adoption/docker-compose.yml):
 
+Modifying this file you can:
+
+-   Change exposed ports
+-   Extend the stack with other services (e.g. Cygnus)
+
 ```yaml
 version: "3"
 #secrets:
@@ -316,16 +321,6 @@ networks:
     iotnet:
     ocbnet:
 ```
-
-By modifying this file you can:
-
--   Change exposed ports
--   Extend the stack with other services (e.g. Cygnus)
-
-#### Customize CarServer
-
-Coming soon ... How to add new sensors
-
 #### Customize Agent
 
 Below, a copy of config.properties file is included.
