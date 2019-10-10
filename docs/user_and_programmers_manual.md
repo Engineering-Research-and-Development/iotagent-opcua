@@ -147,13 +147,11 @@ At Agent start up time the mapping tool will be invoked and OPC UA variables wil
 It is possible modify configuration output (config.json file in same path) manually in order to drop some
 attributes/command, add lazy attributes and enable the command polling.
 
-This schema depicts what happens when after having executed the above command
+This schema depicts what happens after executing the above command
 
 ![OPC UA Agent flow](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_3.png?raw=true)
 
 #### Manual Configuration (editing config.json file)
-
-![Edit or Delete config.json](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_4.png?raw=true)
 
 To define active attributes:
 
@@ -295,18 +293,4 @@ In order to clarify, see the following example:
         }
     ]
 }
-```
-
-### Run
-
-Finally, run the agent.
-
-```bash
-node index.js
-```
-
-It's possible to redirect the output log on a file
-
-```bash
-node index.js > out.log
 ```
