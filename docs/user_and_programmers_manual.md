@@ -14,37 +14,35 @@ Then, configure the properties file in order to set parameters about North side 
 side (OPC UA endpoint).
 
 ```text
-#SOUTHBOUND CONFIGURATION (OPC UA)
-#Namespace to ignore
+## SOUTHBOUND CONFIGURATION (OPC UA)
 namespace-ignore=2,7
-################ OPTIONAL FILTERING ################
-nodes-filtering-in=ns\=1;s\=Oxigen,ns\=1;s\=Speed
-nodes-filtering-out=ns\=1;s\=Temperature
-####################################################
-#OPC UA Endpoint
-endpoint=opc.tcp://localhost:4334/UA/CarServer
+endpoint=opc.tcp://iotcarsrv:5001/UA/CarServer
 
-#NORTHBOUND CONFIGURATION (ORION CB)
-context-broker-host=192.168.56.101
+## NORTHBOUND CONFIGURATION (ORION CONTEXT BROKER)
+context-broker-host=orion
 context-broker-port=1026
 fiware-service=opcua_car
 fiware-service-path=/demo
 
-#AGENT SERVER CONFIGURATION
+
+## AGENT CONFIGURATION
 server-base-root=/
-server-port=4041
-device-registry-type=memory
-provider-url=http://192.168.56.1:4041
+server-port=4001
+provider-url=http://iotage:4001
+
 device-registration-duration=P1M
-log-level=INFO
-#MongoDB Agent Config
-mongodb-host=192.168.56.101
+device-registry-type=memory
+
+log-level=DEBUG
+
+# MONGO-DB CONFIGURATION (required if device-registry-type=mongodb)
+mongodb-host=iotmongo
 mongodb-port=27017
 mongodb-db=iotagent
 mongodb-retries=5
 mongodb-retry-time=5
 
-#DATATYPE MAPPING OPCUA --> NGSI
+## DATATYPE MAPPING OPCUA --> NGSI
 OPC-datatype-Number=Number
 OPC-datatype-Decimal128=Number
 OPC-datatype-Double=Number
@@ -55,17 +53,50 @@ OPC-datatype-String=Text
 OPC-datatype-ByteString=Text
 #END DATATYPE MAPPING OPCUA --> NGSI
 
-#Administration Services
-api-port=8080
-#End Administration Services
+## SESSION PARAMETERS
+requestedPublishingInterval=10
+requestedLifetimeCount=1000
+requestedMaxKeepAliveCount=10
+maxNotificationsPerPublish=100
+publishingEnabled=true
+priority=10
 
-#POLL COMMANDS SETTINGS
+## MONITORING PARAMETERS
+samplingInterval=1
+queueSize=10000
+discardOldest=false
+
+## SERVER CERT E AUTH
+securityMode=1
+securityPolicy=0
+userName=
+password=
+
+#securityMode=SIGNANDENCRYPT
+#securityMode=1Basic256
+#password=password1
+#userName=user1
+
+#api-ip=192.168.13.153
+
+## ADMINISTRATION SERVICES
+api-port=8080
+
+## POLL COMMANDS SETTINGS
 polling=false
-polling-commands-timer=3000
+polling-commands-timer=30000
 pollingDaemonFrequency=20000
 pollingExpiration=200000
-#END POLL COMMANDS SETTINGS
 
+## AGENT ID
+agent-id=age01_
+entity-id=age01_Car # used only during tests
+
+## CONFIGURATION
+configuration=api
+
+## CHECK TIMER POLLING DEVICES
+checkTimer=2000
 ```
 
 As you can see the file is organized in sections, below we include, for each section, the most relevant properties you should consider:
