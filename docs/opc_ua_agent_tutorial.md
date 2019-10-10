@@ -229,6 +229,11 @@ curl -X GET \
   -H 'fiware-servicepath: /demo'
 ```
 
+#### What's next?
+Finishing this tutorial you have an overview on how the Agent works and interacts with the other components (OPC UA Server and Orion Context Broker).
+
+In order to fully understand how the OPC UA IotAgent can be used in a real environment you probably need some further information  on the initialization/configuration stage, i.e. where the link between the Agent and the machinery is established.
+
 #### Appendix A - Customize the environment
 
 Docker Compose can be downloaded here
