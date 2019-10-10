@@ -2,7 +2,7 @@
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: AGPL](https://img.shields.io/github/license/Engineering-Research-and-Development/iotagent-opcua.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Docker badge](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg)](https://hub.docker.com/r/rdlabengpa/opcuaage/)
+[![Docker badge](https://img.shields.io/docker/pulls/rdlabengpa/opcuaage.svg)](https://hub.docker.com/r/rdlabengpa/opcuaage/)+[![Docker badge](https://img.shields.io/docker/pulls/engpalab/iotagent-opcua.svg)](https://hub.docker.com/r/engpalab/iotagent-opcua/)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
 [![Build badge](https://img.shields.io/travis/Engineering-Research-and-Development/iotagent-opcua.svg)](https://travis-ci.org/Engineering-Research-and-Development/iotagent-opcua/)
@@ -58,7 +58,7 @@ software library (the IoT Agent Lib depicted in the previous figure) for develop
 bridging capabilities of IDAS to other protocols. The F4I IDAS OPC UA Agent makes use of this framework to integrate OPC
 UA-based devices in a publish-subscribe system based on the FIWARE Orion Context Broker.
 
-## Install
+## Getting Started - Install
 
 Currently two options are available to install the Agent:
 
