@@ -6,21 +6,18 @@ This is a step-by-step tutorial that will introduce in detail how to enable OPC 
 to Orion Context Broker using the agent. The OPC UA data will be automatically published in a FIWARE Orion Context
 Broker using NGSI data model.
 
-## What is OPC UA ?
+## What is OPC UA?
 
 OPC UA is a well-known client-server protocol used in the Industry.
 
-Usually an OPC UA server is responsible for fetching sensor data from factory-level machinery and make them available to
-an OPC UA client (the Agent in this case).
+In real environments, an OPC UA server is usually responsible for fetching sensor data from factory-level machinery making them available to an OPC UA client (the Agent in our case).
 
-Sensors are mapped to the OPC UA Server Address Space as variables (or attributes). A client can then retrieve their
-values. Moreover, it is also possible to control the machinery invoking methods.
+Before a client can retrieve their values, sensors are mapped to the OPC UA Server Address Space as variables (or attributes).
+Moreover, it is also possible to control the machinery invoking methods.
 
-In particular, an OPC UA client chooses a set of variables to monitor creating a set of subscriptions, one for each
-variable. During the subscription stage the client specifies, through some parameters, how it should receive sensor data
-from the server.
+Sensor values access is provided through a subscription mechanism. For each sensor value the OPC UA client wants to have access to, it creates a subscription specifying some parameters. Using these parameters the client asks the server to send data according to some particular modalities. At that point the server determines if the requests can be fullfilled, otherwise it will continue sending data in a best effort mode.
 
-In our case OPC UA Agent acts as bridge between the OPC UA server and the Orion Context Broker, behaving as an OPC-UA
+In our case the OPC UA Agent acts as bridge between the OPC UA server and the Orion Context Broker behaving as an OPC UA
 client.
 
 ## Actors
