@@ -130,15 +130,24 @@ services:
 
 The first line of ```extra_hosts``` section is used by the Agent during the communication with the OPC UA Server. The second one is needed when the OPC UA Server answers to the mapping tool returning its hostname.
 
-## Step 
+## Step 3 - Preparing the Agent for start up
 
+- Erase the default empty ```config.json``` (this will be created by the mapping tool)
+- Comment the "configuration=api" line inside ```config.properties``` file
 
-#### Auto Configuration (using of Mapping Tool)
-
-Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching):
-all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
+## Step 4 - Run the Agent
+```bash
+docker-compose down -v
+```
+Assuming the OPC UA Server is running, execute:
+```bash
+docker-compose -f docker-compose-external-server.yml up -d
+```
+At Agent start up time the mapping tool will be invoked and OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
 It is possible modify configuration output (config.json file in same path) manually in order to drop some
 attributes/command, add lazy attributes and enable the command polling.
+
+This schema depicts what happens when after having executed the above command
 
 ![OPC UA Agent flow](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_3.png?raw=true)
 
