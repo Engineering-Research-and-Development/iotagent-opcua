@@ -1,6 +1,6 @@
-### Configure
-
 In this section you find all what you need to know about linking the OPC UA IoTAgent to an external OPC UA Server.
+
+### Configure
 
 
 ![edit config.properties](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_1.png?raw=true)
