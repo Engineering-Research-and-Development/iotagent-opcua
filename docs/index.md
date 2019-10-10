@@ -8,5 +8,8 @@ shopfloor and provide them to the upper levels of a FIWARE-based system. Therefo
 on the communication from field devices implementing an OPC UA server to FIWARE, allowing the communication to the
 FIWARE Orion Context Broker.
 
-Github's [README.md](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/README.md)
-provides a good documentation summary.
+# Getting Started
+
+As first step we suggest you to follow the instructions available in Github's [README.md](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/README.md)
+
+In this way you will be soon able to install and run a testbed containing the OPC UA IoTAgent. Then read the "What's next" section to know how the IoTAgent can be used with your own OPC UA Server
