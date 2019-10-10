@@ -106,6 +106,7 @@ As you can see the file is organized in sections, below we include, for each sec
 - **Agent Server Configuration**
   - device-registry-type=memory|mongodb
 - **Session and monitoring parameters**
+  
   These parameters are the homonymous counterparts of OPC UA official ones. See OPC UA Documentation for further information
 
 If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP addresses. 
