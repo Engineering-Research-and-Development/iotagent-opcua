@@ -34,9 +34,9 @@ The actors involved in the scenario are:
 -   **OPC UA Agent**, the connector to join industrial environment to FIWARE
 -   **Orion Context Broker**, the broker as entry point of FIWARE platform
 
-#### OPC-UA Server
+#### OPC UA Server
 
-For tutorial purposes, you will use a simple OPC-UA server (source code
+For tutorial purposes, you will use a simple OPC UA server (source code
 [here](https://github.com/Engineering-Research-and-Development/opc-ua-car-server)).
 
 ![Car Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/opc-ua-car-server/master/img/car_schema.png)
@@ -66,7 +66,7 @@ It represents a car with the following structure:
 
 IoT Agent can be configured as described in the
 [user guide](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md).
-In order to play with OPC UA server above-mentioned, configuration files are already edited and available in AGECONF
+In order to start playing with the above mentioned OPC UA server, configuration files have been already edited and available in AGECONF
 folder.
 
 #### Orion Context Broker
