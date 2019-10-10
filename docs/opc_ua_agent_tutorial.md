@@ -130,6 +130,7 @@ Three different initialization modalities are available:
 
 -   Use a preloaded config.json
 -   Invoke a mapping tool responsible of automatically building the config.json
+    (**NOTE:*****Before using the MappingTool, erase the current config.json and comment "configuration=api row in config.properties"***)
 -   Use the REST API
 
 Since in the following parts of this tutorial we are going to use the REST API you do not have to worry about the initialization. The default empty config.json is preloaded
