@@ -128,7 +128,9 @@ services:
     ...
 ```
 
-The first line of extra_hosts section is used by the Agent during the communication with the OPC UA Server. The second one is needed when the OPC UA Server answers to the mapping tool returning its hostname.
+The first line of ```extra_hosts``` section is used by the Agent during the communication with the OPC UA Server. The second one is needed when the OPC UA Server answers to the mapping tool returning its hostname.
+
+## Step 
 
 
 #### Auto Configuration (using of Mapping Tool)
