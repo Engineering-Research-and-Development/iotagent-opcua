@@ -13,9 +13,15 @@ OPC UA is a well-known client-server protocol used in the Industry.
 In real environments, an OPC UA server is usually responsible for fetching sensor data from factory-level machinery making them available to an OPC UA client (the Agent in our case).
 
 Before a client can retrieve their values, sensors are mapped to the OPC UA Server Address Space as variables (or attributes).
-Moreover, it is also possible to control the machinery invoking methods.
+Moreover, it is also possible to control the machinery invoking methods exposed by the server.
 
 Sensor values access is provided through a subscription mechanism. For each sensor value the OPC UA client wants to have access to, it creates a subscription specifying some parameters. Using these parameters the client asks the server to send data according to some particular modalities. At that point the server determines if the requests can be fullfilled, otherwise it will continue sending data in a best effort mode.
+
+Here a short description of the most relevant parameters:
+ - **samplingInterval** defines, for each MonitoredItem, the interval used by the server to evaluate changes in the value of the variable. The actual value chosen by the server depends on the underlying hardware capabilities.
+ - **publishingInterval** defines the interval that has to elapse to notify possible changes to the client. Whenever the server discovers a change in the value of a variable, this new value is stored into the queue. When publishingInterval expires the entire queue is sent to the client. In this way the client can receive even very fast changes that otherwise would not have been detected. 
+ - **queueSize** defines, for each Monitoreditem, the size of the queue within which to store changes in the variable. When samples are sent to the client the queue is emptied.
+
 
 In our case the OPC UA Agent acts as bridge between the OPC UA server and the Orion Context Broker behaving as an OPC UA
 client.
