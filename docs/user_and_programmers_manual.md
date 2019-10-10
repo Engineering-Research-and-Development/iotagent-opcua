@@ -1,12 +1,7 @@
-### Install
-
-Firstly, launch npm install process in order to download and install all dependencies.
-
-```bash
-npm install
-```
-
 ### Configure
+
+In this section you find all what you need to know about linking the OPC UA IoTAgent to an external OPC UA Server.
+
 
 ![edit config.properties](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_1.png?raw=true)
 
