@@ -2,7 +2,7 @@
 
 In this section you find all what you need to know about linking the OPC UA IoTAgent to an external OPC UA Server.
 
-## Step 1 - Agent configuration
+## Step 1 - Configure the Agent
 First of all, you have to inform the Agent of where it can find the other components. IP addresses, hostnames, ports 
 and all the other required properties must be specified within ```AGECONF/config.properties``` file.
 
@@ -10,41 +10,36 @@ and all the other required properties must be specified within ```AGECONF/config
 
 This is how ```config.properties``` looks like:
 
-Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South
-side (OPC UA endpoint).
-
 ```text
-#SOUTHBOUND CONFIGURATION (OPC UA)
-#Namespace to ignore
+## SOUTHBOUND CONFIGURATION (OPC UA)
 namespace-ignore=2,7
-################ OPTIONAL FILTERING ################
-nodes-filtering-in=ns\=1;s\=Oxigen,ns\=1;s\=Speed
-nodes-filtering-out=ns\=1;s\=Temperature
-####################################################
-#OPC UA Endpoint
-endpoint=opc.tcp://localhost:4334/UA/CarServer
+endpoint=opc.tcp://iotcarsrv:5001/UA/CarServer
 
-#NORTHBOUND CONFIGURATION (ORION CB)
-context-broker-host=192.168.56.101
+## NORTHBOUND CONFIGURATION (ORION CONTEXT BROKER)
+context-broker-host=orion
 context-broker-port=1026
 fiware-service=opcua_car
 fiware-service-path=/demo
 
-#AGENT SERVER CONFIGURATION
+
+## AGENT SERVER CONFIGURATION
 server-base-root=/
-server-port=4041
-device-registry-type=memory
-provider-url=http://192.168.56.1:4041
+server-port=4001
+provider-url=http://iotage:4001
+
 device-registration-duration=P1M
-log-level=INFO
-#MongoDB Agent Config
-mongodb-host=192.168.56.101
+device-registry-type=memory
+
+log-level=DEBUG
+
+# MONGO-DB CONFIGURATION (required if device-registry-type=mongodb)
+mongodb-host=iotmongo
 mongodb-port=27017
 mongodb-db=iotagent
 mongodb-retries=5
 mongodb-retry-time=5
 
-#DATATYPE MAPPING OPCUA --> NGSI
+## DATATYPE MAPPING OPCUA --> NGSI
 OPC-datatype-Number=Number
 OPC-datatype-Decimal128=Number
 OPC-datatype-Double=Number
@@ -53,35 +48,110 @@ OPC-datatype-Integer=Integer
 OPC-datatype-UInteger=Integer
 OPC-datatype-String=Text
 OPC-datatype-ByteString=Text
-#END DATATYPE MAPPING OPCUA --> NGSI
 
-#Administration Services
+## SESSION PARAMETERS
+requestedPublishingInterval=10
+requestedLifetimeCount=1000
+requestedMaxKeepAliveCount=10
+maxNotificationsPerPublish=100
+publishingEnabled=true
+priority=10
+
+## MONITORING PARAMETERS
+samplingInterval=1
+queueSize=10000
+discardOldest=false
+
+## SERVER CERT E AUTH
+securityMode=1
+securityPolicy=0
+userName=
+password=
+
+#securityMode=SIGNANDENCRYPT
+#securityMode=1Basic256
+#password=password1
+#userName=user1
+
+#api-ip=192.168.13.153
+
+## ADMINISTRATION SERVICES
 api-port=8080
-#End Administration Services
 
-#POLL COMMANDS SETTINGS
+## POLL COMMANDS SETTINGS
 polling=false
-polling-commands-timer=3000
+polling-commands-timer=30000
 pollingDaemonFrequency=20000
 pollingExpiration=200000
-#END POLL COMMANDS SETTINGS
 
+## AGENT ID
+agent-id=age01_
+entity-id=age01_Car # used only during tests
+
+## CONFIGURATION
+configuration=api
+
+## CHECK TIMER POLLING DEVICES
+checkTimer=2000
+```
+As you can see the file is organized in sections, below we include, for each section, the most relevant properties you should consider:
+- **Southbound configuration**
+  - namespace-ignore=2,7
+    
+    The OPC UA Objects corresponding available within the specified namespaces will not be mapped by the OPC UA IotAgent.
+- **Northbound configuration**
+  - fiware-service=opcua_car, fiware-service-path=/demo
+    
+    These are important for identifying the Device location and will be useful when contacting the Orion Context Broker  requesting values or methods execution.
+- **Agent Server Configuration**
+  - device-registry-type=memory|mongodb
+- **Session and monitoring parameters**
+  
+  These parameters are the homonymous counterparts of OPC UA official ones. See OPC UA Documentation for further information
+
+If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP addresses. 
+
+## Step 2 - Map IP addresses
+When using an external OPC UA Server the ```docker-compose-external-server.yml``` file must be used. Unlike ```docker-compose.yml``` file (testbed) the CarServer section has clearly been removed.
+
+Now, the Agent (and the built-in mapping tool) needs to know the address of the OPC UA Server. You have to map the OPC UA Server address against two hostnames.
+
+Open the ```docker-compose-external-server.yml``` file:
+
+```yaml
+services:
+  iotage:
+    ...
+    extra_hosts:
+      - "iotcarsrv:<opc-ua-car-server-IP-ADDRESS>"
+      - "<opc-ua-server-hostname>:<opc-ua-car-server-IP-ADDRESS>"
+    ...
 ```
 
-As you can see the file is organized in sections, below we include, for each section, the most relevant properties you should consider:
+The first line of ```extra_hosts``` section is used by the Agent during the communication with the OPC UA Server. The second one is needed when the OPC UA Server answers to the mapping tool returning its hostname.
 
-#### Auto Configuration (using of Mapping Tool)
+## Step 3 - Preparing the Agent for start up
 
-Using of Auto Configuration create a mapping for all OPC UA objects (except those with namespace to ignore matching):
-all OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
+- Erase the default empty ```config.json``` (this will be created by the mapping tool)
+- Comment the "configuration=api" line inside ```config.properties``` file
+
+## Step 4 - Run the Agent
+```bash
+docker-compose down -v
+```
+Assuming the OPC UA Server is running, execute:
+```bash
+docker-compose -f docker-compose-external-server.yml up -d
+```
+At Agent start up time the mapping tool will be invoked and OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
 It is possible modify configuration output (config.json file in same path) manually in order to drop some
 attributes/command, add lazy attributes and enable the command polling.
+
+This schema depicts what happens after executing the above command
 
 ![OPC UA Agent flow](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_3.png?raw=true)
 
 #### Manual Configuration (editing config.json file)
-
-![Edit or Delete config.json](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_4.png?raw=true)
 
 To define active attributes:
 
@@ -223,18 +293,4 @@ In order to clarify, see the following example:
         }
     ]
 }
-```
-
-### Run
-
-Finally, run the agent.
-
-```bash
-node index.js
-```
-
-It's possible to redirect the output log on a file
-
-```bash
-node index.js > out.log
 ```
