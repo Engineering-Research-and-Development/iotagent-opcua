@@ -101,6 +101,7 @@ As you can see the file is organized in sections, below we include, for each sec
     The OPC UA Objects corresponding available within the specified namespaces will not be mapped by the OPC UA IotAgent.
 - **Northbound configuration**
   - fiware-service=opcua_car, fiware-service-path=/demo
+    
     These are important for identifying the Device location and will be useful when contacting the Orion Context Broker  requesting values or methods execution.
 - **Agent Server Configuration**
   - device-registry-type=memory|mongodb
