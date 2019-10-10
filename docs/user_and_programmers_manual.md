@@ -10,9 +10,6 @@ and all the other required properties must be specified within ```AGECONF/config
 
 This is how ```config.properties``` looks like:
 
-Then, configure the properties file in order to set parameters about North side (Context Broker), agent server and South
-side (OPC UA endpoint).
-
 ```text
 ## SOUTHBOUND CONFIGURATION (OPC UA)
 namespace-ignore=2,7
@@ -25,7 +22,7 @@ fiware-service=opcua_car
 fiware-service-path=/demo
 
 
-## AGENT CONFIGURATION
+## AGENT SERVER CONFIGURATION
 server-base-root=/
 server-port=4001
 provider-url=http://iotage:4001
@@ -51,7 +48,6 @@ OPC-datatype-Integer=Integer
 OPC-datatype-UInteger=Integer
 OPC-datatype-String=Text
 OPC-datatype-ByteString=Text
-#END DATATYPE MAPPING OPCUA --> NGSI
 
 ## SESSION PARAMETERS
 requestedPublishingInterval=10
@@ -98,8 +94,19 @@ configuration=api
 ## CHECK TIMER POLLING DEVICES
 checkTimer=2000
 ```
-
 As you can see the file is organized in sections, below we include, for each section, the most relevant properties you should consider:
+- Southbound configuration
+  - namespace-ignore=2,7
+    The OPC UA Objects corresponding available within the specified namespaces will not be mapped by the OPC UA IotAgent.
+- Northbound configuration
+  - fiware-service=opcua_car, fiware-service-path=/demo
+    These are important for identifying the Device location and will be useful when contacting the Orion Context Broker  requesting values or methods execution.
+- Agent Server Configuration
+  - device-registry-type=memory|mongodb
+- Session and monitoring parameters
+  These parameters are the homonymous counterparts of OPC UA official ones. See OPC UA Documentation for further information
+
+If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP address. 
 
 #### Auto Configuration (using of Mapping Tool)
 
