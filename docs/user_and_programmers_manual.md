@@ -95,18 +95,18 @@ configuration=api
 checkTimer=2000
 ```
 As you can see the file is organized in sections, below we include, for each section, the most relevant properties you should consider:
-- Southbound configuration
+- **Southbound configuration**
   - namespace-ignore=2,7
     The OPC UA Objects corresponding available within the specified namespaces will not be mapped by the OPC UA IotAgent.
-- Northbound configuration
+- **Northbound configuration**
   - fiware-service=opcua_car, fiware-service-path=/demo
     These are important for identifying the Device location and will be useful when contacting the Orion Context Broker  requesting values or methods execution.
-- Agent Server Configuration
+- **Agent Server Configuration**
   - device-registry-type=memory|mongodb
-- Session and monitoring parameters
+- **Session and monitoring parameters**
   These parameters are the homonymous counterparts of OPC UA official ones. See OPC UA Documentation for further information
 
-If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP address. 
+If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP addresses. 
 
 #### Auto Configuration (using of Mapping Tool)
 
