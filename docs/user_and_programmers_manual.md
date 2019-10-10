@@ -97,7 +97,7 @@ checkTimer=2000
 As you can see the file is organized in sections, below we include, for each section, the most relevant properties you should consider:
 - **Southbound configuration**
   - namespace-ignore=2,7
-    The OPC UA Objects corresponding available within the specified namespaces will not be mapped by the OPC UA IotAgent.
+    &br;The OPC UA Objects corresponding available within the specified namespaces will not be mapped by the OPC UA IotAgent.
 - **Northbound configuration**
   - fiware-service=opcua_car, fiware-service-path=/demo
     These are important for identifying the Device location and will be useful when contacting the Orion Context Broker  requesting values or methods execution.
