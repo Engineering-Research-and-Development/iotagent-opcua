@@ -6,7 +6,7 @@ version: "3"
 services:
   iotage:
     hostname: iotage
-    image: engpalab/iotagent-opcua:1.1_API_ADOPTION
+    image: iotagent4fiware/iotagent-opcua:1.3.4
     networks:
       - hostnet
       - iotnet
