@@ -51,11 +51,7 @@
                     "type": "Number"
                 }
             ],
-            "commands" : [{
-                "object_id": "ns*3:s*Stop",
-                "name" : "Stop",
-                "type" : "command"
-            }]
+            "commands" : []
       }
     ]
 }

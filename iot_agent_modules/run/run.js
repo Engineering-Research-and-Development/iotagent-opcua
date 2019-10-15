@@ -1221,11 +1221,13 @@ module.exports = {
                                 }
                             ];
 
+                            // TODO: use session.read instead
+                            /*
                             the_session.read(nodes_to_read, function(err, response) {
                                 console.log('TODO @@@ SESSION_READ');
                                 console.log(JSON.stringify(response));
                             });
-
+                            */
                             if (result.statusCode == opcua.StatusCodes.Good) {
                                 mapping.ocb_id = attribute.name;
                                 mapping.opcua_id = attribute.object_id;
@@ -1254,19 +1256,6 @@ module.exports = {
                             }
                         }
                     });
-
-                    /* doesOPCUANodeExist(attribute.object_id, function(exitStatus) {
-						if(exitStatus == true) {
-							mapping.ocb_id = attribute.name;
-							mapping.opcua_id = attribute.object_id;
-							mapping.object_id = null;
-							mapping.inputArguments = [];
-							deviceMappings.push(mapping);
-						} else {
-							removeOPCUANodeFromDevice(attribute.object_id, 'active', device);
-						}
-					});
-					*/
                 });
             }
         }
@@ -1344,6 +1333,8 @@ module.exports = {
                                 });
                             });
                         }
+
+                        callback();
                     },
                     function(callback) {
                         // handling lazy attributes
@@ -1372,12 +1363,6 @@ module.exports = {
                                         }
                                     }
                                 });
-
-                                // Ignoring OPCUA items that are not available on OPCUA server side
-                                // if(doesOPCUANodeExist(lazy.object_id) == false) {
-                                //	removeOPCUANodeFromDevice(lazy.object_id, 'lazy', device);
-                                //	return; // prevent node from being inserted into contextSubscriptions array - forEach continue
-                                // }
                             });
                         }
 
