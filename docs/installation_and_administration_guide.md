@@ -50,7 +50,7 @@ Follow these steps:
 
       iotage:
          hostname: iotage
-         image: rdlabengpa/opcuaage:latest
+         image: iotagent4fiware/iotagent-opcua:latest
          networks:
             - hostnet
             - iotnet
