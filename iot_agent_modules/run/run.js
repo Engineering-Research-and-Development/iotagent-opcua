@@ -528,8 +528,13 @@ module.exports = {
                 function(callback) {
                     // Creating group always
 
-                    if (config.deviceRegistry.type == 'mongodb') {
+                    // NOTE: We do not need anymore to create a dummy device
+                    // The service is created when the device is loaded
+                    /*
+                    if (config.deviceRegistry.type == 'mongodb' || config.deviceRegistry.type == 'memory') {
                         mG.mongoGroup(config);
+                        console.log("@@ INIT MONGO");
+                        console.log(JSON.stringify(optionsCreation.json));
                         request(optionsCreation, function(error, response, body) {
                             if (error) {
                                 logger.error(logContext, 'CREATION GROUP ERROR. Verify OCB connection.');
@@ -538,6 +543,7 @@ module.exports = {
                             }
                         });
                     }
+                    */
 
                     // loading services
                     //loadDevices();
@@ -589,6 +595,8 @@ module.exports = {
                                                         }
                                                     );
                                                 }
+                                            } else {
+                                                callback();
                                             }
                                         });
                                 },
@@ -600,8 +608,8 @@ module.exports = {
                                         } else {
                                             logger.info(logContext, 'GROUPS SUCCESSFULLY CREATED!');
                                         }
+                                        callback();
                                     });
-                                    callback();
                                 }
                             ]);
 
@@ -1057,6 +1065,26 @@ module.exports = {
                     timerId.resume();
                 }, 5000);
 
+                var config = {};
+                config.service = device.service;
+                config.subservice = device.subservice;
+
+                config.contextBroker = {};
+                config.contextBroker.host = properties.get('context-broker-host');
+                config.contextBroker.port = properties.get('context-broker-port');
+
+                config.server = {};
+                config.server.port = properties.get('server-port');
+
+                config.types = {};
+                config.types[device.type] = {
+                    service: device.service,
+                    subservice: device.subservice,
+                    active: device.active,
+                    lazy: device.lazy,
+                    commands: device.commands
+                };
+
                 async.series(
                     [
                         function(callback) {
@@ -1064,10 +1092,23 @@ module.exports = {
                         },
                         function(callback) {
                             updateContextSubscriptions(device, callback);
+                        },
+                        function(callback) {
+                            mG.mongoGroup(config);
+
+                            request(optionsCreation, function(error, response, body) {
+                                if (error) {
+                                    logger.error(logContext, 'CREATION GROUP ERROR. Verify OCB connection.');
+                                } else {
+                                    logger.info(logContext, 'GROUPS SUCCESSFULLY CREATED!');
+                                }
+
+                                callback();
+                            });
                         }
                     ],
                     function(err, results) {
-                        console.log('@@@ LAST CALLBACK ' + new Date().getTime());
+                        // console.log('@@@ LAST CALLBACK ' + new Date().getTime());
                         provisioningCallback(null, device);
                     }
                 );
@@ -1177,7 +1218,7 @@ module.exports = {
          * @param {Object} device			Device object that will be stored in the database.
          */
         function removeOPCUANodeFromDevice(opcuaNodeId, nodeType, device) {
-            console.log('@@@ removeOPCUANodeFromDevice ' + new Date().getTime());
+            // console.log('@@@ removeOPCUANodeFromDevice ' + new Date().getTime());
 
             var tmpNodesArray = device[nodeType];
             if (tmpNodesArray !== undefined) {
@@ -1211,7 +1252,7 @@ module.exports = {
                     doesOPCUANodeExist(attribute.object_id, function(err, results) {
                         if (!err) {
                             let result = results[0];
-                            console.log('@@@ BROWSE RESULT' + new Date().getTime());
+                            // console.log('@@@ BROWSE RESULT' + new Date().getTime());
 
                             // Fetch the Status in another way
                             var nodes_to_read = [
@@ -1281,7 +1322,7 @@ module.exports = {
                                 doesOPCUANodeExist(command.object_id, function(err, results) {
                                     if (!err) {
                                         let result = results[0];
-                                        console.log('@@@ COMMAND RESULTS' + new Date().getTime());
+                                        // console.log('@@@ COMMAND RESULTS' + new Date().getTime());
 
                                         if (result.statusCode == opcua.StatusCodes.Good) {
                                             var mapping = {};
@@ -1332,9 +1373,9 @@ module.exports = {
                                     }
                                 });
                             });
+                        } else {
+                            callback();
                         }
-
-                        callback();
                     },
                     function(callback) {
                         // handling lazy attributes
@@ -1347,7 +1388,7 @@ module.exports = {
                                 doesOPCUANodeExist(lazy.object_id, function(err, results) {
                                     if (!err) {
                                         let result = results[0];
-                                        console.log('@@@ BROWSE RESULT' + new Date().getTime());
+                                        // console.log('@@@ BROWSE RESULT' + new Date().getTime());
 
                                         if (result.statusCode == opcua.StatusCodes.Good) {
                                             mapping.ocb_id = lazy.name;

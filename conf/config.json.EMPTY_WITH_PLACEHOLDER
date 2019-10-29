@@ -1,0 +1,40 @@
+{
+  "logLevel" : "INFO",
+  "contextBroker" : {
+    "host" : "TEST_MACHINE_IP",
+    "port" : 1026
+  },
+  "server" : {
+    "port" : 4003,
+    "baseRoot" : "/"
+  },
+  "deviceRegistry" : {
+    "type" : "memory"
+  },
+  "mongodb" : {
+    "host" : "TEST_MACHINE_IP",
+    "port" : "27017",
+    "db" : "iotagent",
+    "retries" : 5,
+    "retryTime" : 5
+  },
+  "types" : {
+    "Device" : {
+      "service" : "opcua_car",
+      "subservice" : "/demo",
+      "active" : [ ],
+      "lazy" : [ ],
+      "commands" : [ ]
+    }
+  },
+  "browseServerOptions" : null,
+  "service" : "opcua_car",
+  "subservice" : "/demo",
+  "providerUrl" : "http://TEST_MACHINE_IP:4003",
+  "pollingExpiration" : "200000",
+  "pollingDaemonFrequency" : "20000",
+  "deviceRegistrationDuration" : "P1M",
+  "defaultType" : null,
+  "contexts" : [ ],
+  "contextSubscriptions" : []
+}
