@@ -239,6 +239,10 @@ In order to fully understand how the OPC UA IotAgent can be used in a ***real en
 
 These information are available in the [User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual/index.html) section
 
+If you want to develop new modules for the Agent, you probably want to know ***how to build the Docker Image***
+
+[Here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/docker_readme.md) you find the instructions on how to build a Docker Image for the Agent
+
 ## Appendices
 #### Appendix A - Customize the environment
 
