@@ -27,7 +27,7 @@ You need a ```config.json``` for your OPC UA Server, so discard the existing one
 Be sure the addresses contained inside the ```config.json``` are the correct ones.
 
 ##### Step 3 - Configure the environment
-Open the ```conf/config.properties``` and make your changes (see how to do this here).
+Open the ```conf/config.properties``` and make your changes (see how to do this [here](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual/index.html)).
 
 ##### Step 4 - Install the npm packages
 
