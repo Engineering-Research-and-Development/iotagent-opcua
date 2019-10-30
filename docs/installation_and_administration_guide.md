@@ -23,9 +23,7 @@ cd iotagent-opcua
 ##### Step 2 - Configure device
 The downloaded repository comes with a ```config.json``` (conf/config.json) in which a configuration for a test OPC UA Server is preloaded.
 
-You need a config.json for your OPC UA Server, so discard the existing one and read this on how to generate a ```config.json``` using the mapping tool. Or, if you want, you can use the REST API, in that case read this
-
-If you have choosen the mapping tool, insert the obtained ```config.json``` into the ```iotagent-opcua/conf``` folder.
+You need a ```config.json``` for your OPC UA Server, so discard the existing one. When you launch the Agent, a mapping tool will automatically be triggered and will extract the ```config.json``` you need.
 Be sure the addresses contained inside the ```config.json``` are the correct ones.
 
 ##### Step 3 - Configure the environment
