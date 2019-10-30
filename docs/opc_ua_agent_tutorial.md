@@ -235,7 +235,7 @@ curl -X GET \
 ## What's next?
 Finishing this tutorial you have an overview on how the Agent works and interacts with the other components (OPC UA Server and Orion Context Broker).
 
-In order to fully understand how the OPC UA IotAgent can be used in a real environment you probably need some further information  on the initialization/configuration stage, i.e. where the link between the Agent and the machinery is established.
+In order to fully understand how the OPC UA IotAgent can be used in a ***real environment*** (i.e. connecting to an ***external OPC UA Server***) you probably need some further information  on the initialization/configuration stage, i.e. where the link between the Agent and the machinery is established.
 
 These information are available in the [User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual/index.html) section
 
