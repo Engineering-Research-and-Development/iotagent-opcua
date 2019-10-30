@@ -10,24 +10,6 @@ services:
 
 jobs:
   include:
-    #- stage: test
-    #  name: "Unit Tests: Node 8"
-
-    #  node_js:
-    #    - 8
-
-    #  before_install:
-    #    - cd test
-    #    - docker-compose up -d
-    #    - cd ..
-    #    - npm update -q
-
-    # before_script:
-    #  - npm run lint
-
-    #  after_script:
-    #    - npm run test:coveralls
-
     - stage: test
       name: "Unit Tests: Node 10"
 
@@ -36,7 +18,7 @@ jobs:
 
       install:
         - npm install
-        - ./travis_ip.sh
+        - ./replace_local_ip.sh
         - cd testCommands
         - docker-compose up -d
 
