@@ -17,25 +17,35 @@ Firstly, download git source project
 
 ```bash
 git clone "https://github.com/Engineering-Research-and-Development/iotagent-opcua"
+cd iotagent-opcua
 ```
 
-##### Step 2 - Configure
-The downloaded repository comes with a ```config.json``` in which a configuration for a test OPC UA Server is preloaded.
+##### Step 2 - Configure device
+The downloaded repository comes with a ```config.json``` (conf/config.json) in which a configuration for a test OPC UA Server is preloaded.
 
-You need a config.json for your OPC UA Server, so discard the existing one and read this on how to generate a config.json using the mapping tool.
+You need a config.json for your OPC UA Server, so discard the existing one and read this on how to generate a ```config.json``` using the mapping tool. Or, if you want, you can use the REST API, in that case read this
 
-Once you have obtained your ```config.json```, insert it into the ```iotagent-opcua/conf``` folder.
+If you have choosen the mapping tool, insert the obtained ```config.json``` into the ```iotagent-opcua/conf``` folder.
 Be sure the addresses contained inside the ```config.json``` are the correct ones.
 
-##### Step 3 - Install the npm packages
+##### Step 3 - Configure the environment
+Open the ```conf/config.properties``` and make your changes (see how to do this here).
+
+##### Step 4 - Install the npm packages
 
 ```bash
-cd iotagent-opcua
 npm install
 ```
 
-##### Step 4 - Run the agent
+##### Step 5 - Run the agent
 
 ```bash
 node index.js
 ```
+##### Step 6 - Check the device configuration 
+Run the following command to get the loaded device. In this way you will know if the OPCUA Server -> OPCUA Agent mapping has been established successfully (change headers if needed):
+
+```bash
+curl http://localhost:4003/iot/devices -H "fiware-service: opcua_car" -H "fiware-servicepath: /demo"
+```
+
