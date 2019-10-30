@@ -1,4 +1,4 @@
-## Connecting OPC UA IoTAgent to an external OPC UA Server
+## Connecting the OPC UA IoTAgent to an external OPC UA Server
 
 In this section you find all what you need to know about linking the OPC UA IoTAgent to an external OPC UA Server.
 
