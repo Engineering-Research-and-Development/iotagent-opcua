@@ -35,10 +35,9 @@ This project is part of [FIWARE](https://www.fiware.org/). For more information 
 ## Contents
 
 -   [Background](#background)
--   [Install](#install)
-    -   [Docker install](docker-install-recommended)
-        -   [How to build a Docker Image](#how-to-build-a-docker-image)
-    -   [NPM Install](#npm-install)
+-   [Install](#getting-started-install)
+    -   [Docker install](docker-recommended)
+    -   [NPM Install](#npm)
 -   [Usage](#usage)
 -   [API](#api)
 -   [Testing](#testing)
