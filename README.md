@@ -62,7 +62,7 @@ UA-based devices in a publish-subscribe system based on the FIWARE Orion Context
 
 Currently two options are available to install the Agent:
 
-### Docker Install - Recommended
+### Docker - Recommended
 
 We suggest using a **Docker-first** approach in order to avoid issues related to your environment configuration.
 Moreover, using this approach you will be provided with all the needed component: OCB, Mongo instances and a sample
@@ -70,7 +70,7 @@ OPC-UA server
 
 A step-by-step tutorial is available [here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_tutorial.md)
 
-#### How to build a Docker Image
+###### How to build a Docker Image
 
 [Here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/docker_readme.md) you find the instructions on how to build a Docker Image for the Agent
 
@@ -83,19 +83,6 @@ Once configuration is complete you can execute these commands to run the Agent.
 ```console
 $ npm install
 $ node index.js
-```
-
-#### 2. Alternative Start Method
-
-The docker-compose is the preferred method for starting multiple containers and creating related resources, but
-alternatively you can use the following commands:
-
-```console
-docker run -d --name iotmongo -h iotmongo -v iotmongo_data:/data/db -v iotmongo_conf:/data/configdb mongo:3.4
-```
-
-```console
-docker run -d --name iotage -h iotage -p 4001:4001 -p 4081:8080 --link iotmongo -v ./AGECONF:/opt/iotagent-opcua/conf rdlabengpa/opcuaage:latest
 ```
 
 Further Information about how to install the OPC UA IoT Agent can be found at the corresponding section of the
