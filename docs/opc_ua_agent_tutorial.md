@@ -120,7 +120,7 @@ to check if all the required components are running
 Running the docker environment (using configuration files as is) creates the following situation:
 ![Docker Containers Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/iotagent-opcua/master/docs/images/OPC%20UA%20Agent%20tutorial%20Containers.png)
 
-Appendix A quickly describe what you can do with the docker-compose.yml
+Appendix A quickly describes what you can do with the docker-compose.yml
 
 #### Step 3 - Start using the testbed
 
