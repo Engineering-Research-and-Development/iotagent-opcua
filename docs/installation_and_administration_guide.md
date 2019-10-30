@@ -24,11 +24,17 @@ cd iotagent-opcua
 Open the ```conf/config.properties``` and make your changes (see how to do this [here](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual/index.html)).
 
 ##### Step 3 - Configure device
-The downloaded repository comes with a ```config.json``` (conf/config.json) in which a configuration for a test OPC UA Server is preloaded.
+The downloaded repository comes with a ```config.json``` (conf/config.json) in which an empty Device is preloaded.
+Modify the addresses contained inside the ```config.json``` as needed.
 
-You need a ```config.json``` for your OPC UA Server, so discard the existing one.
-When you launch the Agent, a mapping tool will automatically be triggered and will extract the ```config.json``` you need using the information contained inside the ```config.properties``` file.
+At this point, you have two options:
+- Use the mapping tool to automatically generate a ```config.json```
+- Provision the new Device (mapping between OPC UA Server and OPC UA Agent) via REST interface
+
+If you want to use the mapping tool simply delete the existing config.json. When you launch the Agent, the mapping tool will automatically be triggered and will extract the ```config.json``` you need using the information contained inside the ```config.properties``` file.
 Be sure the addresses contained inside the ```config.json``` are the correct ones.
+
+If you want to use the REST interface have a look at Step 4 [here](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial/index.html#step-by-step-tutorial) to see how to provision a new device.
 
 ##### Step 4 - Install the npm packages
 
