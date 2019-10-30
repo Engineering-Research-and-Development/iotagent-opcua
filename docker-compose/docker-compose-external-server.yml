@@ -1,0 +1,71 @@
+version: "3"
+#secrets:
+#   age_idm_auth:
+#      file: age_idm_auth.txt
+
+services:
+  iotage:
+    hostname: iotage
+    image: iotagent4fiware/iotagent-opcua:1.3.4
+    networks:
+      - hostnet
+      - iotnet
+    ports:
+      - "4001:4001"
+      - "4081:8080"
+    extra_hosts:
+      - "iotcarsrv:192.168.40.42"
+      - "pietro-deb.pietro.local:192.168.40.42"
+    depends_on:
+      - iotmongo
+      - orion
+    volumes:
+      - ./AGECONF:/opt/iotagent-opcua/conf
+    command: /usr/bin/tail -f /var/log/lastlog
+
+  iotmongo:
+    hostname: iotmongo
+    image: mongo:3.4
+    networks:
+      - iotnet
+    volumes:
+      - iotmongo_data:/data/db
+      - iotmongo_conf:/data/configdb
+
+  ################ OCB ################
+
+  orion:
+    hostname: orion
+    image: fiware/orion:latest
+    networks:
+      - hostnet
+      - ocbnet
+    ports:
+      - "1026:1026"
+    depends_on:
+      - orion_mongo
+    #command: -dbhost mongo
+    entrypoint: /usr/bin/contextBroker -fg -multiservice -ngsiv1Autocast -statCounters -dbhost mongo -logForHumans -logLevel DEBUG -t 255
+
+  orion_mongo:
+    hostname: orion_mongo
+    image: mongo:3.4
+    networks:
+      ocbnet:
+        aliases:
+          - mongo
+    volumes:
+      - orion_mongo_data:/data/db
+      - orion_mongo_conf:/data/configdb
+    command: --nojournal
+
+volumes:
+  iotmongo_data:
+  iotmongo_conf:
+  orion_mongo_data:
+  orion_mongo_conf:
+
+networks:
+  hostnet:
+  iotnet:
+  ocbnet:
