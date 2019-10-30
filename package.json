@@ -51,7 +51,7 @@
     "mongoose": "5.7.5",
     "mu2": "^0.5.20",
     "mustache": "2.2.1",
-    "node-opcua": "2.1.8",
+    "node-opcua": "https://github.com/node-opcua/node-opcua.git#v2.1.8",
     "node-uuid": "^1.4.1",
     "npm": "6.12.1",
     "properties-reader": "0.0.16",
