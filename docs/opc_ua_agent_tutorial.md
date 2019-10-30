@@ -238,9 +238,7 @@ In order to fully understand how the OPC UA IotAgent can be used in a real envir
 These information are available in the [User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual/index.html) section
 
 ## Appendices
-
-#### Appendix A - Connecting OPC UA Server to OPC UA IotAgent
-#### Appendix B - Customize the environment
+#### Appendix A - Customize the environment
 
 Docker Compose can be downloaded here
 [docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/api_adoption/docker-compose.yml):
