@@ -66,15 +66,11 @@ Currently two options are available to install the Agent:
 
 We suggest using a **Docker-first** approach in order to avoid issues related to your environment configuration.
 Moreover, using this approach you will be provided with all the needed component: OCB, Mongo instances and a sample
-OPC-UA server
+OPC-UA server.
 
 A step-by-step tutorial is available [here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_tutorial.md)
 
-###### How to build a Docker Image
-
-[Here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/docker_readme.md) you find the instructions on how to build a Docker Image for the Agent
-
-### NPM Install
+### npm
 
 Before launching the Agent you must install Orion Context Broker and a OPC UA Server. After that you must tell the Agent
 how to interact with these components by using config.properties file.
