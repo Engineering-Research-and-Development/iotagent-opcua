@@ -121,7 +121,7 @@ agent-id=<PREFIX>
 # See OPC UA Documentation for further information
 ```
 
-If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP addresses. 
+If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP addresses in the next section. 
 
 ## Step 2 - Map IP addresses
 When using an external OPC UA Server the ```docker-compose-external-server.yml``` file must be used. Unlike ```docker-compose.yml``` file (testbed) the CarServer section has clearly been removed.
