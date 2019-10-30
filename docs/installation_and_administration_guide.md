@@ -25,7 +25,6 @@ Open the ```conf/config.properties``` and make your changes (see how to do this 
 
 ##### Step 3 - Configure device
 The downloaded repository comes with a ```config.json``` (conf/config.json) in which an empty Device is preloaded.
-Modify the addresses contained inside the ```config.json``` as needed.
 
 At this point, you have two options:
 - Use the mapping tool to automatically generate a ```config.json```
@@ -35,6 +34,7 @@ If you want to use the mapping tool simply delete the existing config.json. When
 Be sure the addresses contained inside the ```config.json``` are the correct ones.
 
 If you want to use the REST interface have a look at Step 4 [here](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial/index.html#step-by-step-tutorial) to see how to provision a new device.
+Set your local ip address inside ```config.json``` by running the ```./iotagent-opcua/replace_local_ip.sh``` script.
 
 ##### Step 4 - Install the npm packages
 
