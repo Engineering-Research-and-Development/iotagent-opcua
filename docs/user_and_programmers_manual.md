@@ -98,7 +98,7 @@ As you can see the file is organized in sections, below we include, for each sec
 
 ```yaml
 # Southbound configuration
-# The OPC UA Objects corresponding available within the specified namespaces will not be mapped by the OPC UA IotAgent.
+# The OPC UA Objects available within the specified namespaces will not be mapped by the OPC UA IotAgent.
 namespace-ignore=2,7
 
 # Northbound configuration
