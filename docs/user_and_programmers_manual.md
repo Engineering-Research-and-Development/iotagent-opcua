@@ -100,6 +100,8 @@ As you can see the file is organized in sections, below we include, for each sec
 # Southbound configuration
 # The OPC UA Objects available within the specified namespaces will not be mapped by the OPC UA IotAgent.
 namespace-ignore=2,7
+# OPC UA Server address
+endpoint=opc.tcp://<IPADDR>:<PORT>
 
 # Northbound configuration
 # These are important for identifying the Device location and will be useful
@@ -111,7 +113,6 @@ fiware-service-path=<SERVICE-PATH>
 
 # OPC UA Server endpoint
 device-registry-type=memory|mongodb
-endpoint=opc.tcp://<IPADDR>:<PORT>
 
 agent-id=<PREFIX>
 
