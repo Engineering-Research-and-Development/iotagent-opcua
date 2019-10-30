@@ -120,7 +120,7 @@ to check if all the required components are running
 Running the docker environment (using configuration files as is) creates the following situation:
 ![Docker Containers Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/iotagent-opcua/master/docs/images/OPC%20UA%20Agent%20tutorial%20Containers.png)
 
-Appendix A quickly describe what you can do with the docker-compose.yml
+Appendix A quickly describes what you can do with the docker-compose.yml
 
 #### Step 3 - Start using the testbed
 
@@ -252,84 +252,83 @@ Modifying this file you can:
 
 ```yaml
 version: "3"
-#secrets:
-#   age_idm_auth:
-#      file: age_idm_auth.txt
+secrets:
+   age_idm_auth:
+      file: age_idm_auth.txt
 
 services:
-    iotcarsrv:
-        hostname: iotcarsrv
-        image: engpalab/opcuacarsrv:1.3_NODEOPCUA-2.0.0
-        networks:
-            - hostnet
-        ports:
-            - "5001:5001"
+  iotcarsrv:
+    hostname: iotcarsrv
+    image: iotagent4fiware/opcuacarsrv:1.3.4
+    networks:
+      - hostnet
+    ports:
+      - "5001:5001"
 
-    iotage:
-        hostname: iotage
-        image: engpalab/iotagent-opcua:1.1_API_ADOPTION
-        networks:
-            - hostnet
-            - iotnet
-        ports:
-            - "4001:4001"
-            - "4081:8080"
-        depends_on:
-            - iotcarsrv
-            - iotmongo
-            - orion
-        volumes:
-            - ./AGECONF:/opt/iotagent-opcua/conf
-        command: /usr/bin/tail -f /var/log/lastlog
+  iotage:
+    hostname: iotage
+    image: iotagent4fiware/iotagent-opcua:1.3.4
+    networks:
+      - hostnet
+      - iotnet
+    ports:
+      - "4001:4001"
+      - "4081:8080"
+    depends_on:
+      - iotcarsrv
+      - iotmongo
+      - orion
+    volumes:
+      - ./AGECONF:/opt/iotagent-opcua/conf
+    command: /usr/bin/tail -f /var/log/lastlog
 
-    iotmongo:
-        hostname: iotmongo
-        image: mongo:3.4
-        networks:
-            - iotnet
-        volumes:
-            - iotmongo_data:/data/db
-            - iotmongo_conf:/data/configdb
+  iotmongo:
+    hostname: iotmongo
+    image: mongo:3.4
+    networks:
+      - iotnet
+    volumes:
+      - iotmongo_data:/data/db
+      - iotmongo_conf:/data/configdb
 
-    ################ OCB ################
+  ################ OCB ################
 
-    orion:
-        hostname: orion
-        image: fiware/orion:latest
-        networks:
-            - hostnet
-            - ocbnet
-        ports:
-            - "1026:1026"
-        depends_on:
-            - orion_mongo
-        #command: -dbhost mongo
-        entrypoint:
-            /usr/bin/contextBroker -fg -multiservice -ngsiv1Autocast -statCounters -dbhost mongo -logForHumans -logLevel
-            DEBUG -t 255
+  orion:
+    hostname: orion
+    image: fiware/orion:latest
+    networks:
+      - hostnet
+      - ocbnet
+    ports:
+      - "1026:1026"
+    depends_on:
+      - orion_mongo
+    #command: -dbhost mongo
+    entrypoint: /usr/bin/contextBroker -fg -multiservice -ngsiv1Autocast -statCounters -dbhost mongo -logForHumans -logLevel DEBUG -t 255
 
-    orion_mongo:
-        hostname: orion_mongo
-        image: mongo:3.4
-        networks:
-            ocbnet:
-                aliases:
-                    - mongo
-        volumes:
-            - orion_mongo_data:/data/db
-            - orion_mongo_conf:/data/configdb
-        command: --nojournal
+  orion_mongo:
+    hostname: orion_mongo
+    image: mongo:3.4
+    networks:
+      ocbnet:
+        aliases:
+          - mongo
+    volumes:
+      - orion_mongo_data:/data/db
+      - orion_mongo_conf:/data/configdb
+    command: --nojournal
 
 volumes:
-    iotmongo_data:
-    iotmongo_conf:
-    orion_mongo_data:
-    orion_mongo_conf:
+  iotmongo_data:
+  iotmongo_conf:
+  orion_mongo_data:
+  orion_mongo_conf:
 
 networks:
-    hostnet:
-    iotnet:
-    ocbnet:
+  hostnet:
+  iotnet:
+  ocbnet:
+
 ```
 #### Customize Agent
 
