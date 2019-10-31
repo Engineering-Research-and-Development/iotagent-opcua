@@ -42,8 +42,8 @@ queueSize=10000
 discardOldest=false
 
 #SERVER CERT E AUTH
-securityMode=1
-securityPolicy=0
+securityMode=None
+securityPolicy=None
 userName=
 password=
 
