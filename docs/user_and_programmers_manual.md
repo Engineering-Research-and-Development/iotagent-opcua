@@ -310,7 +310,7 @@ In order to clarify, see the following example:
 
 According to the OPC UA Security Model the OPC UA IotAgent, acting as an OPC UA Client, can specify a "Security Policy" and a "Security Mode". Nevertheless, these requests must find a match with the OPC UA Server policies.
 
-You can specify the Security Policy/Mode pair through the ```config.properties``` file, and by modifying this section:
+You can specify the Security Policy/Mode pair through the ```config.properties``` file, and in particular by modifying this section:
 
 ```yaml
 ## SERVER CERT E AUTH
@@ -337,3 +337,6 @@ Allowed values for ```securityMode``` are:
 - None
 - Sign
 - SignAndEncrypt
+
+In the ```docker-compose.yml``` you find a ```certificates``` volume inside the ```iotage``` section
+The ```certificates``` folder contains two files ```client_certificate.pem``` and ```client_private_key.pem```: overwrite them with yours.
