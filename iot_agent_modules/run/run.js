@@ -82,14 +82,13 @@ module.exports = {
         //    throw new Error('Invalid Security mode , should be ' + opcua.MessageSecurityMode.enums.join(' '));
         // }
 
-        securityMode = 1;
-        securityPolicy = opcua.SecurityPolicy['None'];
+        opcuaSecurityPolicy = opcua.SecurityPolicy[securityPolicy];
 
         if (securityMode === opcua.MessageSecurityMode.Invalid) {
             throw new Error('Invalid Security mode,  should be ' + opcua.MessageSecurityMode.enums.join(' '));
         }
 
-        if (securityPolicy === opcua.SecurityPolicy.Invalid) {
+        if (opcuaSecurityPolicy === opcua.SecurityPolicy.Invalid) {
             throw new Error('Invalid securityPolicy should be ' + opcua.SecurityPolicy.enums.join(' '));
         }
 
@@ -102,10 +101,10 @@ module.exports = {
         var timeout = parseInt(argv.timeout) * 1000 || -1; // 604800*1000; //default 20000
         var doBrowse = !!argv.browse;
 
-        logger.info(logContext, 'endpointUrl         = '.cyan, endpointUrl);
-        logger.info(logContext, 'securityMode        = '.cyan, securityMode.toString());
-        logger.info(logContext, 'securityPolicy      = '.cyan, securityPolicy.toString());
-        logger.info(logContext, 'timeout             = '.cyan, timeout || ' Infinity ');
+        logger.info(logContext, 'endpointUrl         = ', endpointUrl);
+        logger.info(logContext, 'securityMode        = ', securityMode.toString());
+        logger.info(logContext, 'securityPolicy      = ', opcuaSecurityPolicy.toString());
+        logger.info(logContext, 'timeout             = ', timeout || ' Infinity ');
         // set to false to disable address space crawling: might slow things down if the AS is huge
         var doCrawling = !!argv.crawl;
         var client = null;
@@ -410,13 +409,23 @@ module.exports = {
                 // ------------------------------------------
                 // initialize client connection to the OPCUA Server
                 function(callback) {
-                    // const certificateFile = './certificates/client_certificate.pem';
-                    // const privateKeyFile = './certificates/PKI/own/private/private_key.pem';
+                    if (securityMode != 'None' && securityMode != 'Invalid') {
+                        // certificate and private key needed
+                        certificateFile = './certificates/client_certificate.pem';
+                        privateKeyFile = './certificates/client_private_key.pem';
+                    } else {
+                        certificateFile = null;
+                        privateKeyFile = null;
+                    }
+
+                    console.log('@@@ CERTIFICATES');
+                    console.log(certificateFile);
+                    console.log(privateKeyFile);
 
                     var options = {
                         endpoint_must_exist: false,
                         securityMode: securityMode,
-                        securityPolicy: securityPolicy,
+                        securityPolicy: opcuaSecurityPolicy,
                         defaultSecureTokenLifetime: 400000,
                         keepSessionAlive: true,
                         requestedSessionTimeout: 100000, // very long 100 seconds
@@ -424,9 +433,9 @@ module.exports = {
                             maxRetry: 10,
                             initialDelay: 2000,
                             maxDelay: 10 * 1000
-                        }
-                        // certificateFile: certificateFile,
-                        // privateKeyFile: privateKeyFile
+                        },
+                        certificateFile: certificateFile,
+                        privateKeyFile: privateKeyFile
                     };
 
                     logger.info(
@@ -443,7 +452,7 @@ module.exports = {
 
                     // NODE1
                     // logger.info(logContext, ' connecting to ', endpointUrl.cyan.bold);
-                    logger.info(logContext, ' connecting to '.cyan, endpointUrl);
+                    logger.info(logContext, ' connecting to ', endpointUrl);
 
                     client.connect(endpointUrl, callback);
 
@@ -780,10 +789,10 @@ module.exports = {
             ],
             function(err) {
                 // this is called whenever a step call callback() passing along an err object
-                logger.error(logContext, ' disconnected'.cyan);
+                logger.error(logContext, ' disconnected');
 
                 if (err) {
-                    logger.error(logContext, ' client : process terminated with an error'.red);
+                    logger.error(logContext, ' client : process terminated with an error');
                     logger.error(logContext, ' error', err);
                     logger.error(logContext, ' stack trace', err.stack);
                 } else {
@@ -792,10 +801,8 @@ module.exports = {
                 // force disconnection
                 if (client) {
                     client.disconnect(function() {
-                        var exit = require('exit');
                         logger.info(logContext, 'Exiting');
-
-                        exit();
+                        process.exit(1);
                     });
                 }
             }
