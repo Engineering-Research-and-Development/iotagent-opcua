@@ -338,5 +338,5 @@ Allowed values for ```securityMode``` are:
 - Sign
 - SignAndEncrypt
 
-In the ```docker-compose.yml``` you find a ```certificates``` volume inside the ```iotage``` section
+In the ```docker-compose.yml``` you find a ```certificates``` volume inside the ```iotage``` section.
 The ```certificates``` folder contains two files ```client_certificate.pem``` and ```client_private_key.pem```: overwrite them with yours.
