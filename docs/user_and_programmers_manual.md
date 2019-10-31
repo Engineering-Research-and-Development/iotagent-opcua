@@ -306,3 +306,34 @@ In order to clarify, see the following example:
     ]
 }
 ```
+## Security
+
+According to the OPC UA Security Model the OPC UA IotAgent, acting as an OPC UA Client, can specify a "Security Policy" and a "Security Mode". Nevertheless, these requests must find a match with the OPC UA Server policies.
+
+You can specify the Security Policy/Mode pair through the ```config.properties``` file, and by modifying this section:
+
+```yaml
+## SERVER CERT E AUTH
+securityMode=None
+securityPolicy=None
+userName=
+password=
+```
+Allowed values for ```securityPolicy``` are:
+
+- None
+- Basic128
+- Basic192
+- Basic192Rsa15
+- Basic256Rsa15
+- Basic256Sha256
+- Aes128_Sha256_RsaOaep
+- PubSub_Aes128_CTR
+- PubSub_Aes256_CTR
+- Basic128Rsa15
+- Basic256
+
+Allowed values for ```securityMode``` are:
+- None
+- Sign
+- SignAndEncrypt
