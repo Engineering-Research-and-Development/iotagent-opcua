@@ -418,10 +418,6 @@ module.exports = {
                         privateKeyFile = null;
                     }
 
-                    console.log('@@@ CERTIFICATES');
-                    console.log(certificateFile);
-                    console.log(privateKeyFile);
-
                     var options = {
                         endpoint_must_exist: false,
                         securityMode: securityMode,
@@ -1316,8 +1312,59 @@ module.exports = {
             contextSubscriptionObj.type = device.type;
             contextSubscriptionObj.mappings = [];
 
+            var deviceBrowseName = contextSubscriptionObj.id.replace(properties.get('agent-id'), '');
+            var namespaceIndex = null;
+            var namespaceNumericIdentifier = null;
+
+            if (
+                device.active != undefined &&
+                device.active != null &&
+                device.active.length != null &&
+                device.active.length > 0
+            ) {
+                namespaceIndex = device.active[0].object_id;
+            } else if (
+                device.lazy != undefined &&
+                device.lazy != null &&
+                device.lazy.length != null &&
+                device.lazy.length > 0
+            ) {
+                namespaceIndex = device.lazy[0].object_id;
+            } else if (
+                device.commands != undefined &&
+                device.commands != null &&
+                device.commands.length != null &&
+                device.commands.length > 0
+            ) {
+                namespaceIndex = device.commands[0].object_id;
+            } else {
+                asyncCallback('Unable to determine namespace index', null);
+            }
+
+            namespaceIndex = namespaceIndex.replace(/[:;].*/gi, '');
+            namespaceIndex = namespaceIndex.replace(/ns./gi, '');
+
+            // TODO: Remove after solving translateBrowserPath issue
+            namespaceIndex = properties.get('namespaceIndex');
+            namespaceNumericIdentifier = properties.get('namespaceNumericIdentifier');
+
+            var browsePath = opcua.makeBrowsePath('RootFolder', '/Objects/' + namespaceIndex + ':' + deviceBrowseName);
             async.series(
                 [
+                    /*
+                    function(callback) {
+                        the_session.translateBrowsePath(browsePath, function(err, results) {
+                            if(err) {
+                                console.log("@@@ ERRORE");
+                                console.log(err);
+                                callback(err, null);
+                            }
+
+                            namespaceNumericIdentifier = results.targets[0].targetId.value;
+                            callback();
+                        });
+                    },
+                    */
                     function(callback) {
                         // handling commands
                         if (device.commands !== undefined) {
@@ -1338,7 +1385,8 @@ module.exports = {
                                                     mapping.ocb_id = command.name;
                                                     mapping.opcua_id = command.object_id;
 
-                                                    mapping.object_id = 'ns=3;i=1000'; // TODO: How to fetch this from OPCUA?
+                                                    mapping.object_id =
+                                                        'ns=' + namespaceIndex + ';i=' + namespaceNumericIdentifier;
                                                     mapping.inputArguments = [];
 
                                                     // Fetch the DataType of each InputArguments from OPCUA server
@@ -1395,14 +1443,13 @@ module.exports = {
                                 doesOPCUANodeExist(lazy.object_id, function(err, results) {
                                     if (!err) {
                                         let result = results[0];
-                                        // console.log('@@@ BROWSE RESULT' + new Date().getTime());
 
                                         if (result.statusCode == opcua.StatusCodes.Good) {
                                             mapping.ocb_id = lazy.name;
                                             mapping.opcua_id = lazy.object_id;
 
-                                            // TODO: fetch these data from OPCUA server?
-                                            mapping.object_id = 'ns=3;i=1000'; // mapping.object_id = 'ns=3;i=1000';
+                                            mapping.object_id =
+                                                'ns=' + namespaceIndex + ';i=' + namespaceNumericIdentifier;
                                             mapping.inputArguments = [];
 
                                             contextSubscriptionObj.mappings.push(mapping);
@@ -1439,60 +1486,6 @@ module.exports = {
 
             removalCallback(null, deviceToDelete);
         }
-
-        /*
-         * Handles commands
-         */
-        /*
-        function commandDeviceSubs(device) {
-			// creating contextSubscriptions obj item
-			contextSubscriptionObj = {};
-			contextSubscriptionObj.id = device.id;
-			contextSubscriptionObj.type = device.type;
-			contextSubscriptionObj.mappings = [];
-
-			device.commands.forEach(function(command) {
-				command.object_id = parsePayloadProperties(command.object_id);
-
-				var mapping = {};
-				mapping.ocb_id = command.name;
-				mapping.opcua_id = command.object_id;
-
-				// TODO: fetch these data from OPCUA server?
-				mapping.object_id = 'ns=3;i=1000'; 				// mapping.object_id = 'ns=3;i=1000';
-				var dataType = {
-					"dataType" : 6,
-					"type" : "SensorIndex"
-				};
-				mapping.inputArguments = [dataType];
-
-				contextSubscriptionObj.mappings.push(mapping);
-			});
-
-			contextSubscriptions.push(contextSubscriptionObj);
-		}
-		*/
-
-        /*
-         * Handles lazy devices
-         */
-        /*
-		function lazyDeviceSubs(device) {
-			device.lazy.forEach(function(lazy) {
-				.object_id = parsePayloadProperties(lazy.object_id);
-
-				var mapping = {};
-				mapping.ocb_id = lazy.name;
-				mapping.opcua_id = lazy.object_id;
-
-				// TODO: fetch these data from OPCUA server?
-				mapping.object_id = 'ns=3;i=1000'; // mapping.object_id = 'ns=3;i=1000';
-				mapping.inputArguments = [];
-
-				contextSubscriptionObj.mappings.push(mapping);
-			});
-		}
-		*/
 
         iotAgentLib.setProvisioningHandler(provisioningHandler);
         iotAgentLib.setRemoveDeviceHandler(removeDeviceHandler);
