@@ -14,18 +14,17 @@ guidelines only, and this section may be revised to provide newer information at
 ## Short term
 
 The following list of features are planned to be addressed in the short term, and incorporated in the next release of
-the product planned for **July 2019**:
+the product planned for **December 2019**:
 
 -   Performance improvements for both Mapping Tool and OPC UA Agent Core.
 -   Test Coverage increasing.
--   Improvement of Test scenario.
 
 ## Medium term
 
 The following list of features are planned to be addressed in the medium term, typically within the subsequent
-release(s) generated in the next **9 months** after next planned release:
+release(s) generated in the next **6 months** after next planned release:
 
--   Merging of API adoption branch, adding configuration via API capabilities also for lazy attributes and commands.
+-   Multi-Server support.
 
 ## Long term
 
@@ -34,4 +33,3 @@ of these features has not yet been scheduled for a release in the near future. P
 wish to get involved in the implementation or influence the roadmap
 
 -   Mapping tool nodejs migration.
--   Multi-Server support.
