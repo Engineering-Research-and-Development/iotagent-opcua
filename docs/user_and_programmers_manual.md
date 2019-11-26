@@ -114,10 +114,14 @@ context-broker-port=<ORIONPORT>
 fiware-service=<SERVICE>
 fiware-service-path=<SERVICE-PATH>
 
-# OPC UA Server endpoint
+# Agent Server Configuration
 device-registry-type=memory|mongodb
-
 agent-id=<PREFIX>
+
+# The identifiers of the namespace the nodes belong to
+namespaceIndex=3
+namespaceNumericIdentifier=1000
+
 
 # Session and monitoring parameters
 # These parameters are the homonymous counterparts of OPC UA official ones.
