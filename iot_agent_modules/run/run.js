@@ -76,12 +76,6 @@ module.exports = {
         logContext.op = 'Index.Initialize';
         logger.info(logContext, '----------------------------------------------------');
 
-        // NODE1
-        // var sMode = opcua.MessageSecurityMode.get(securityMode || 'NONE');
-        // if (!sMode) {
-        //    throw new Error('Invalid Security mode , should be ' + opcua.MessageSecurityMode.enums.join(' '));
-        // }
-
         opcuaSecurityPolicy = opcua.SecurityPolicy[securityPolicy];
 
         if (securityMode === opcua.MessageSecurityMode.Invalid) {
@@ -91,13 +85,6 @@ module.exports = {
         if (opcuaSecurityPolicy === opcua.SecurityPolicy.Invalid) {
             throw new Error('Invalid securityPolicy should be ' + opcua.SecurityPolicy.enums.join(' '));
         }
-
-        // NODE1
-        // var sPolicy = opcua.SecurityPolicy.get(securityPolicy || 'None');
-        // if (!sPolicy) {
-        //    throw new Error('Invalid securityPolicy , should be ' + opcua.SecurityPolicy.enums.join(' '));
-        // }
-
         var timeout = parseInt(argv.timeout) * 1000 || -1; // 604800*1000; //default 20000
         var doBrowse = !!argv.browse;
 
@@ -178,8 +165,6 @@ module.exports = {
             };
 
             // Creating a subscription to OPCUA Server
-            // NODE1
-            // var subscription = new opcua.ClientSubscription(the_session, parameters);
             var subscription = opcua.ClientSubscription.create(the_session, parameters);
 
             function getTick() {
@@ -213,8 +198,6 @@ module.exports = {
                         ' ( requested ',
                         parameters.requestedPublishingInterval + ')'
                     );
-                    // NODE1
-                    // logger.info(logContext, '  suggested timeout hint     ', subscription.publish_engine.timeoutHint);
                     logger.info(logContext, '  suggested timeout hint     ', subscription.publishEngine.timeoutHint);
                 })
                 .on('internal_error', function(err) {
@@ -232,8 +215,6 @@ module.exports = {
                         ' ' +
                         'sec' +
                         ' pending request on server = ' +
-                        // NODE1
-                        // subscription.publish_engine.nbPendingPublishRequests +
                         subscription.publishEngine.nbPendingPublishRequests +
                         '';
                     logger.debug(logContext, keepAliveString.gray);
@@ -278,8 +259,6 @@ module.exports = {
                     queueSize: properties.get('queueSize'),
                     discardOldest: properties.get('discardOldest')
                 },
-                // NODE1
-                // opcua.read_service.TimestampsToReturn.Both
                 opcua.TimestampsToReturn.Both,
                 function(err, monItem) {
                     if (err) {
@@ -290,7 +269,7 @@ module.exports = {
                         return;
                     }
 
-                    // TODO. initialized seems to be not working on the latest OPCUA 2.1.5. Is possible move it in !err code block?
+                    // TODO. initialized seems not to be working on the latest OPCUA 2.1.5. Is possible move it in !err code block?
                     monItem.on('initialized', function() {
                         logger.info(logContext, 'started monitoring: ' + monItem.itemToMonitor.nodeId.toString());
 
@@ -442,12 +421,8 @@ module.exports = {
                     );
 
                     // OPCUA-IoTAgent acts as OPCUA Client
-                    // NODE1
-                    // client = new opcua.OPCUAClient(options);
                     client = opcua.OPCUAClient.create(options);
 
-                    // NODE1
-                    // logger.info(logContext, ' connecting to ', endpointUrl.cyan.bold);
                     logger.info(logContext, ' connecting to ', endpointUrl);
 
                     client.connect(endpointUrl, callback);
@@ -554,17 +529,13 @@ module.exports = {
                     //loadDevices();
 
                     contexts.forEach(function(context) {
-                        logger.info(logContext, 'registering OCB context ' + context.id + ' of type ' + context.type);
-                        logContext.srv = context.service;
-                        logContext.subsrv = context.subservice;
-
                         // TODO: as some lazy attributes are loaded, the IotAgent works and the registrations
                         // are inserted into OCB. But which component is adding the registrations?
                         var device = {
                             id: context.id,
                             name: context.id,
                             type: context.type,
-                            active: config.types[context.type].active, // only active used in this VERSION
+                            active: config.types[context.type].active,
                             lazy: context.lazy,
                             commands: context.commands,
                             // lazy: config.types[context.type].lazy,
@@ -576,12 +547,95 @@ module.exports = {
                             endpoint: endpointUrl
                         };
 
-                        // loading devices
-                        devices[device.id] = [];
-                        devices[device.id].push(device);
-
                         try {
                             async.series([
+                                function(callback) {
+                                    // Congruity check for OCB/OPCUA mapping in config.json
+                                    for (var i = 0; i < device.active.length; ++i) {
+                                        if (
+                                            context.mappings.findIndex((x) => x.ocb_id === device.active[i].name) == -1
+                                        ) {
+                                            logger.warn(
+                                                logContext,
+                                                'Attribute [' +
+                                                    device.active[i].name +
+                                                    '] not found in context.mappings'
+                                            );
+                                            device.active.splice(i, 1);
+                                            i--;
+                                        }
+                                    }
+                                    callback();
+                                },
+                                function(callback) {
+                                    logger.info(
+                                        logContext,
+                                        'registering OCB context ' + context.id + ' of type ' + context.type
+                                    );
+                                    logContext.srv = context.service;
+                                    logContext.subsrv = context.subservice;
+
+                                    context.mappings.forEach(function(mapping, mappingIndex) {
+                                        var object_id = mapping.opcua_id;
+
+                                        // Removing non-existent active attributes
+                                        // Ignoring OPCUA items that are not available on OPCUA server side
+                                        doesOPCUANodeExist(object_id, function(err, results) {
+                                            if (!err) {
+                                                let result = results[0];
+                                                // TODO: you can use session.read here too
+
+                                                if (result.statusCode != opcua.StatusCodes.Good) {
+                                                    var ocb_id_to_remove = '';
+
+                                                    // Removing active attributes from context mappings
+                                                    var tmpContextMappingsArray = context.mappings;
+                                                    if (tmpContextMappingsArray !== undefined) {
+                                                        var index = tmpContextMappingsArray.findIndex(
+                                                            (x) => x.opcua_id === object_id
+                                                        );
+
+                                                        if (index > -1) {
+                                                            ocb_id_to_remove = tmpContextMappingsArray[index].ocb_id;
+
+                                                            tmpContextMappingsArray.splice(index, 1);
+                                                            context.mappings = tmpContextMappingsArray;
+                                                        }
+                                                    }
+
+                                                    // Removing active attributes from device
+                                                    var tmpDeviceActiveArray = device.active;
+                                                    if (tmpDeviceActiveArray !== undefined) {
+                                                        var index = tmpDeviceActiveArray.findIndex(
+                                                            (x) => x.name === ocb_id_to_remove
+                                                        );
+
+                                                        if (index > -1) {
+                                                            tmpDeviceActiveArray.splice(index, 1);
+                                                            device.active = tmpDeviceActiveArray;
+                                                        }
+                                                    }
+
+                                                    // logger.info(logContext, 'Attribute [' + object_id + '] not found in the OPC UA address space');
+                                                }
+
+                                                // loading devices
+                                                devices[device.id] = [];
+                                                devices[device.id].push(device);
+                                            } else {
+                                                logger.error(
+                                                    logContext,
+                                                    'Something went wrong during OPCUA node existence check'
+                                                );
+                                                console.log(err);
+                                            }
+
+                                            if (mappingIndex == context.mappings.length - 1) {
+                                                callback();
+                                            }
+                                        });
+                                    });
+                                },
                                 function(callback) {
                                     commonConfig
                                         .getRegistry()
@@ -929,10 +983,9 @@ module.exports = {
             logContext.op = 'Index.CommandContextHandler';
 
             function executeCommand() {
-                // contextSubscription viene preso in considerazione solo in fase di esecuzione del comando
-                // Fino ad allora l'agent dichiara di essere il responsabile per i comandi aventi un determinato nome
-
-                // Ciò significa che implementando l'API è necessario conservare queste info (opcua_id in particolare) da qualche parte
+                // contextSubscription is taken into account only during command execution
+                // Until then, the Agent declares to be in charge for the commands with a determined name
+                // This means that implementing the API the storaging of these information (opcua_id in particular) is needed
                 contextSubscriptions.forEach(function(contextSubscription) {
                     if (contextSubscription.id === id) {
                         contextSubscription.mappings.forEach(function(mapping) {
@@ -1175,8 +1228,6 @@ module.exports = {
 
         // Check if the specified node exists in the server address space
         function doesOPCUANodeExist(opcuaNodeId, callback2) {
-            var exitStatus = false;
-
             if (!the_session) {
                 throw new Error('No Connection');
             }
@@ -1279,6 +1330,12 @@ module.exports = {
                                 mapping.inputArguments = [];
                                 deviceMappings.push(mapping);
                             } else {
+                                logger.warn(
+                                    logContext,
+                                    'Active attribute [' +
+                                        attribute.object_id +
+                                        '] not found in the OPC UA address space'
+                                );
                                 removeOPCUANodeFromDevice(attribute.object_id, 'active', device);
                             }
 
@@ -1419,6 +1476,12 @@ module.exports = {
                                                 }
                                             ]);
                                         } else {
+                                            logger.warn(
+                                                logContext,
+                                                'Command [' +
+                                                    command.object_id +
+                                                    '] not found in the OPC UA address space'
+                                            );
                                             removeOPCUANodeFromDevice(command.object_id, 'command', device);
                                         }
                                     }
@@ -1454,6 +1517,12 @@ module.exports = {
 
                                             contextSubscriptionObj.mappings.push(mapping);
                                         } else {
+                                            logger.warn(
+                                                logContext,
+                                                'Lazy attribute [' +
+                                                    lazy.object_id +
+                                                    '] not found in the OPC UA address space'
+                                            );
                                             removeOPCUANodeFromDevice(lazy.object_id, 'lazy', device);
                                         }
                                     }

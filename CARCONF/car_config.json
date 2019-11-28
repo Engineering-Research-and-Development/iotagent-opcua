@@ -1,0 +1,33 @@
+{
+    "development": {
+        "sharedCarProperties": {
+		"speed": 0,
+		"oxigenBoost": 0,
+		"boost": 0,
+		"boostDirection": 1,
+		"stopped": true,
+		"oxigen": 0,
+		"MAX_SPEED": 150,
+		"acceleration": 0
+	},
+	"namespaceIndex": 3,
+	"sensors": {
+		"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy": {
+			"refreshPeriod": 10,
+			"logicStatus": "1970-01-01T00:00:00.000Z"
+		},
+		"DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xDone": {
+			"refreshPeriod": 20,
+			"logicStatus": "1970-01-01T00:00:00.000Z"
+		},
+		"ene2_rfid1": {
+			"refreshPeriod": 20,
+			"logicStatus": "1970-01-01T00:00:00.000Z"
+		},
+		"ene2_rfid2": {
+			"refreshPeriod": 20,
+			"logicStatus": "1970-01-01T00:00:00.000Z"
+		}
+	}
+    }
+}
