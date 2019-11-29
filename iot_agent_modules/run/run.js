@@ -657,6 +657,7 @@ module.exports = {
                                                     );
                                                 }
                                             } else {
+                                                logger.error(logContext, JSON.stringify(error));
                                                 callback();
                                             }
                                         });
@@ -1514,12 +1515,7 @@ module.exports = {
                                     if (!err) {
                                         let result = results[0];
 
-                                        logger.error(logContext, '@@@ RESULT');
-                                        logger.error(logContext, result);
-
                                         if (result.statusCode == opcua.StatusCodes.Good) {
-                                            logger.error(logContext, '@@@ STATUS GOOD');
-
                                             mapping.ocb_id = lazy.name;
                                             mapping.opcua_id = lazy.object_id;
 
