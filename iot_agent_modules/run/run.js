@@ -575,6 +575,8 @@ module.exports = {
                                     logContext.srv = context.service;
                                     logContext.subsrv = context.subservice;
 
+                                    var contextMappingsInitialArray = context.mappings.length;
+
                                     context.mappings.forEach(function(mapping, mappingIndex) {
                                         var object_id = mapping.opcua_id;
 
@@ -630,7 +632,7 @@ module.exports = {
                                                 console.log(err);
                                             }
 
-                                            if (mappingIndex == context.mappings.length - 1) {
+                                            if (mappingIndex == contextMappingsInitialArray - 1) {
                                                 callback();
                                             }
                                         });
