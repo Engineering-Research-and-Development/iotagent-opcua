@@ -62,8 +62,8 @@ api-port=8080
 #End Administration Services
 
 #POLL COMMANDS SETTINGS
-polling=false
-polling-commands-timer=30000
+polling=true
+polling-commands-timer=1000
 pollingDaemonFrequency=20000
 pollingExpiration=200000
 #END POLL COMMANDS SETTINGS

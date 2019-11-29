@@ -35,7 +35,7 @@
     "lint:text": "textlint 'README.md' 'docs/*.md' 'docs/**/*.md'",
     "prettier": "prettier --config .prettierrc.json --write '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
     "prettier:text": "prettier 'README.md' 'docs/*.md' 'docs/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
-    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
+    "coverage": "nyc npm test && nyc report --reporter=html --report-dir ./reportage | coveralls",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
   },
   "dependencies": {

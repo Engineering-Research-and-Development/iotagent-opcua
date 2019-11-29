@@ -19,9 +19,11 @@ var exec = require('child_process').exec;
 var child;
 var hostIP = null;
 
+/*
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
+*/
 
 describe('The agent is monitoring active attributes...', function() {
     /*
@@ -904,39 +906,32 @@ describe('Verify ADMIN API services', function() {
             // done();
         });
 
-        /*
-		it('verify config post service', function(done) {
-			this.timeout(0);
-			// Run test
+        it('verify config post service', function(done) {
+            this.timeout(0);
+            // Run test
 
-			var value = null;
-			var iotAgentConfig = require('../AGECONF/config.testing.json');
+            var jsonRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
+                method: 'POST',
+                json: true,
+                body: config
+            };
+            function myTimer() {
+                request(jsonRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED');
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE FAILURE POSTED');
+                        done(new Error(error));
+                    }
+                });
+            }
 
-			var jsonRequest = {
-				url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
-				method: 'POST',
-				json: true,
-				body: config
-			};
-			function myTimer() {
-				var updated = false;
+            myTimer(); // immediate first run
 
-				request(jsonRequest, function(error, response, body) {
-					loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-					if (error == null) {
-						loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED');
-						done();
-					} else {
-						loggerTest.info(logContextTest, 'CONFIG JSON SERVICE FAILURE POSTED');
-						done(new Error(error));
-					}
-				});
-			}
-
-			myTimer(); // immediate first run
-
-			// done();
-		});
-		*/
+            // done();
+        });
     });
 });

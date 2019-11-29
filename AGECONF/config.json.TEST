@@ -1,19 +1,19 @@
 {
     "logLevel": "INFO",
     "contextBroker": {
-        "host": "TEST_MACHINE_IP",
+        "host": "orion",
         "port": 1026,
-        "url": "http://TEST_MACHINE_IP:1026"
+        "url": "http://orion:1026"
     },
     "server": {
-        "port": 4003,
+        "port": 4001,
         "baseRoot": "/"
     },
     "deviceRegistry": {
         "type": "memory"
     },
     "mongodb": {
-        "host": "TEST_MACHINE_IP",
+        "host": "iotmongo",
         "port": "27017",
         "db": "iotagent",
         "retries": 5,
@@ -24,11 +24,6 @@
             "service": "opcua_car",
             "subservice": "/demo",
             "active": [
-                {
-                    "name": "EngineBrake",
-                    "type": "Number",
-                    "object_id": "EngineBrake"
-                },
                 {
                     "name": "Speed",
                     "type": "Number",
@@ -108,7 +103,7 @@
     "browseServerOptions": null,
     "service": "opcua_car",
     "subservice": "/demo",
-    "providerUrl": "http://TEST_MACHINE_IP:4003",
+    "providerUrl": "http://iotage:4001",
     "pollingExpiration": "200000",
     "pollingDaemonFrequency": "20000",
     "deviceRegistrationDuration": "P1M",
@@ -121,12 +116,6 @@
             "subservice": "/demo",
             "polling": false,
             "mappings": [
-                {
-                    "ocb_id": "EngineBrake",
-                    "opcua_id": "ns=3;s=EngineBrake",
-                    "object_id": null,
-                    "inputArguments": []
-                },
                 {
                     "ocb_id": "Speed",
                     "opcua_id": "ns=3;s=Speed",

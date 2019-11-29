@@ -269,17 +269,17 @@ module.exports = {
                         return;
                     }
 
+                    /// Old 'INITIALIZED' event handling
                     // TODO. initialized seems not to be working on the latest OPCUA 2.1.5. Is possible move it in !err code block?
-                    monItem.on('initialized', function() {
-                        logger.info(logContext, 'started monitoring: ' + monItem.itemToMonitor.nodeId.toString());
+                    logger.info(logContext, 'started monitoring: ' + monItem.itemToMonitor.nodeId.toString());
 
-                        // Collect all monitoring
-                        if (devicesSubs[context.id] == undefined) {
-                            devicesSubs[context.id] = [];
-                        }
+                    // Collect all monitoring
+                    if (devicesSubs[context.id] == undefined) {
+                        devicesSubs[context.id] = [];
+                    }
 
-                        devicesSubs[context.id].push(subscription);
-                    });
+                    devicesSubs[context.id].push(subscription);
+                    // END
 
                     monItem.on('changed', function(dataValue) {
                         logContext.op = 'Index.Monitoring';
@@ -930,7 +930,7 @@ module.exports = {
                         commands.list(config.service, config.subservice, context.id, function(error, commandList) {
                             count += commandList.count;
                             commandListAllDevices.push.apply(commandListAllDevices, commandList.commands);
-                            if (i == len) callback();
+                            if (i == len - 1) callback();
                         });
                     }
                 },
@@ -1290,7 +1290,7 @@ module.exports = {
          * Handles the active attributes of the device
          * For each of these attributes both OPCUA and OCB side subscriptions are handled
          */
-        function activeDeviceSubs(device, asyncCallback) {
+        function activeDeviceSubs(device, ucsCallback) {
             var deviceMappings = [];
 
             // Handling ACTIVE attributes
@@ -1353,7 +1353,7 @@ module.exports = {
 
                                 devices[device.id] = [];
                                 devices[device.id].push(device);
-                                asyncCallback();
+                                ucsCallback();
                             }
                         }
                     });
@@ -1362,7 +1362,7 @@ module.exports = {
         }
 
         // Updates contextSubscriptions array when a new device is provisioned
-        function updateContextSubscriptions(device, asyncCallback) {
+        function updateContextSubscriptions(device, ucsCallback) {
             // creating contextSubscriptions obj item
             contextSubscriptionObj = {};
             contextSubscriptionObj.id = device.id;
@@ -1395,7 +1395,7 @@ module.exports = {
             ) {
                 namespaceIndex = device.commands[0].object_id;
             } else {
-                asyncCallback('Unable to determine namespace index', null);
+                ucsCallback('Unable to determine namespace index', null);
             }
 
             namespaceIndex = namespaceIndex.replace(/[:;].*/gi, '');
@@ -1425,6 +1425,8 @@ module.exports = {
                     function(callback) {
                         // handling commands
                         if (device.commands !== undefined) {
+                            var commandsArrayInitialLength = device.commands.length;
+
                             device.commands.forEach(function(command, index) {
                                 // Replacing prohibited chars
                                 command.object_id = parsePayloadProperties(command.object_id);
@@ -1486,7 +1488,7 @@ module.exports = {
                                         }
                                     }
 
-                                    if (index == device.commands.length - 1) {
+                                    if (index == commandsArrayInitialLength - 1) {
                                         callback();
                                     }
                                 });
@@ -1498,7 +1500,9 @@ module.exports = {
                     function(callback) {
                         // handling lazy attributes
                         if (device.lazy !== undefined) {
-                            device.lazy.forEach(function(lazy) {
+                            var lazyArrayInitialLength = device.lazy.length;
+
+                            device.lazy.forEach(function(lazy, index) {
                                 var mapping = {};
 
                                 lazy.object_id = parsePayloadProperties(lazy.object_id);
@@ -1507,7 +1511,12 @@ module.exports = {
                                     if (!err) {
                                         let result = results[0];
 
+                                        logger.error(logContext, '@@@ RESULT');
+                                        logger.error(logContext, result);
+
                                         if (result.statusCode == opcua.StatusCodes.Good) {
+                                            logger.error(logContext, '@@@ STATUS GOOD');
+
                                             mapping.ocb_id = lazy.name;
                                             mapping.opcua_id = lazy.object_id;
 
@@ -1525,12 +1534,18 @@ module.exports = {
                                             );
                                             removeOPCUANodeFromDevice(lazy.object_id, 'lazy', device);
                                         }
+                                    } else {
+                                        logger.error(logContext, 'Error during lazy attributes existence check' + err);
+                                    }
+
+                                    if (index == lazyArrayInitialLength - 1) {
+                                        callback();
                                     }
                                 });
                             });
+                        } else {
+                            callback();
                         }
-
-                        callback();
                     },
                     function(callback) {
                         if (device.commands !== undefined || device.lazy !== undefined) {
@@ -1540,7 +1555,7 @@ module.exports = {
                     }
                 ],
                 function(err, results) {
-                    asyncCallback();
+                    ucsCallback();
                 }
             );
         }
