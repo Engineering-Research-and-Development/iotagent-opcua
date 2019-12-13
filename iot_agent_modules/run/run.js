@@ -69,8 +69,6 @@ module.exports = {
 
         if (fs.existsSync('./conf/config.json')) {
             var config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf8'));
-        } else {
-            doAuto = true;
         }
 
         logContext.op = 'Index.Initialize';
@@ -86,7 +84,7 @@ module.exports = {
             throw new Error('Invalid securityPolicy should be ' + opcua.SecurityPolicy.enums.join(' '));
         }
         var timeout = parseInt(argv.timeout) * 1000 || -1; // 604800*1000; //default 20000
-        var doBrowse = !!argv.browse;
+        // var doBrowse = !!argv.browse;
 
         logger.info(logContext, 'endpointUrl         = ', endpointUrl);
         logger.info(logContext, 'securityMode        = ', securityMode.toString());
@@ -220,15 +218,15 @@ module.exports = {
                     logger.debug(logContext, keepAliveString.gray);
 
                     /*
-					iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
-						if(error){
-							subscription.terminate();
-						};
-						*
-						if (device.active.length==0){
-							subscription.terminate();
-						}
-					}); */
+                        iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
+                            if(error){
+                                subscription.terminate();
+                            };
+                            *
+                            if (device.active.length==0){
+                                subscription.terminate();
+                            }
+                        }); */
                 })
                 .on('terminated', function(err) {
                     if (err) {
@@ -355,16 +353,18 @@ module.exports = {
                     });
 
                     monItem.on('err', function(err_message) {
-                        logger.error(monItem.itemToMonitor.nodeId.toString(), ' ERROR'.red, err_message);
+                        logger.error(monItem.itemToMonitor.nodeId.toString(), ' ERROR', err_message);
                     });
                 }
             );
         }
 
-        function notificationHandler(device, updates, callback) {
-            logger.info(logContext, 'Data coming from OCB: ', JSON.stringify(updates));
-            cM.callMethods(updates[0].value, methods, the_session); // TODO gestire multiple chiamate
-        }
+        // Currently we don't handle notification coming from OCB
+        // function notificationHandler(device, updates, callback) {
+        //    logger.info(logContext, 'Data coming from OCB: ', JSON.stringify(updates));
+        //    cM.callMethods(updates[0].value, methods, the_session); // TODO gestire multiple chiamate
+        // }
+
         // each of the following steps is executed in due order
         // each step MUST call callback() when done in order for the step sequence to proceed further
         async.series(
@@ -377,10 +377,12 @@ module.exports = {
                         if (err) {
                             logger.error(logContext, 'There was an error activating the Agent: ' + err.message);
                             rSfN.removeSuffixFromName.exit(1);
-                        } else {
-                            logger.info(logContext, 'NotificationHandler attached to ContextBroker');
-                            iotAgentLib.setNotificationHandler(notificationHandler);
                         }
+                        // We are not using the notificationHandler (see the lines just above async.series start to activate the handler)
+                        // else {
+                        //    logger.info(logContext, 'NotificationHandler attached to ContextBroker');
+                        //    iotAgentLib.setNotificationHandler(notificationHandler);
+                        // }
                         callback();
                     });
                 },
@@ -657,7 +659,10 @@ module.exports = {
                                                     );
                                                 }
                                             } else {
-                                                logger.error(logContext, JSON.stringify(error));
+                                                logger.error(
+                                                    logContext,
+                                                    '@@@ groupService remove: ' + JSON.stringify(error)
+                                                );
                                                 callback();
                                             }
                                         });
@@ -728,6 +733,8 @@ module.exports = {
                                                 });
                                             }
                                         });
+
+                                        // TODO: callback is missing
                                     }
                                 ]);
                             }
@@ -1373,7 +1380,7 @@ module.exports = {
             contextSubscriptionObj.type = device.type;
             contextSubscriptionObj.mappings = [];
 
-            var deviceBrowseName = contextSubscriptionObj.id.replace(properties.get('agent-id'), '');
+            var deviceBrowseName = rSfN.removeSuffixFromName(contextSubscriptionObj.id, properties.get('agent-id'));
             var namespaceIndex = null;
             var namespaceNumericIdentifier = null;
 
