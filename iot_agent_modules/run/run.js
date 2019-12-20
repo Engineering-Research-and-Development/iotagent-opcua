@@ -28,6 +28,8 @@ module.exports = {
         var commonConfig = require('../../node_modules/iotagent-node-lib/lib/commonConfig');
         var deviceService = require('../../node_modules/iotagent-node-lib/lib/services/devices/deviceService');
         var fs = require('fs');
+        var exec = require('child_process').exec;
+        var path = require('path');
 
         var argv = require('yargs')
             .wrap(132)
@@ -432,8 +434,11 @@ module.exports = {
                     client.on('connection_reestablished', function() {
                         logger.info(
                             logContext,
-                            ' !!!!!!!!!!!!!!!!!!!!!!!!  CONNECTION RESTABLISHED !!!!!!!!!!!!!!!!!!!'
+                            ' !!!!!!!!!!!!!!!!!!!!!!!! CONNECTION RESTABLISHED !!!!!!!!!!!!!!!!!!!'
                         );
+
+                        var flagPath = path.resolve(__dirname, '../../tests/connectionRestablishedFlag');
+                        fs.closeSync(fs.openSync(flagPath, 'w'));
                     });
 
                     client.on('after_reconnection', function(err) {

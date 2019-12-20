@@ -28,7 +28,6 @@ services:
       - iotmongo
       - orion
     volumes:
-      - ./iot_agent_modules/run/run.js:/opt/iotagent-opcua/iot_agent_modules/run/run.js
       - ./AGECONF:/opt/iotagent-opcua/conf
       - ./certificates:/opt/iotagent-opcua/certificates
     command: /usr/bin/tail -f /var/log/lastlog

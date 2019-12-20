@@ -2,11 +2,12 @@ const request = require('request');
 var async = require('async');
 
 var PropertiesReader = require('properties-reader');
-var properties = PropertiesReader(require('path').resolve(__dirname, '../conf/config.properties'));
-var testProperties = PropertiesReader(require('path').resolve(__dirname, './test-file-paths.properties'));
+var path = require('path');
+var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
+var testProperties = PropertiesReader(path.resolve(__dirname, './test-file-paths.properties'));
 var fs = require('fs');
 
-// var config = require(require('path').resolve(__dirname, '../conf/config.json'));
+// var config = require(path.resolve(__dirname, '../conf/config.json'));
 
 // Set Up
 global.logContextTest = {
@@ -69,7 +70,7 @@ describe('The agent is monitoring active attributes...', function() {
                     // var iotAgentConfig = require('../conf/config.json');
                     // var iotAgentProp = require('./config.properties');
 
-                    var properties = PropertiesReader(require('path').resolve(__dirname, '../conf/config.properties'));
+                    var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
                     global.properties = properties;
                     var endpointUrl = properties.get('endpoint');
                     var userName = properties.get('userName');
@@ -81,7 +82,7 @@ describe('The agent is monitoring active attributes...', function() {
                     }
                     
                     var doAuto = false;
-                    var configPath = require('path').resolve(__dirname, '../conf/config.json');
+                    var configPath = path.resolve(__dirname, '../conf/config.json');
                     
                     if (fs.existsSync(configPath)) {
                         var config = require(configPath);
@@ -109,18 +110,18 @@ describe('The agent is monitoring active attributes...', function() {
                         try {
                             if (userName != 0 && password != 0) {
                                 var cmdjava =
-                                    'java -jar ' + require(require('path').resolve(__dirname, '../mapping_tool.jar')) + ' -e ' +
+                                    'java -jar ' + require(path.resolve(__dirname, '../mapping_tool.jar')) + ' -e ' +
                                     endpointUrl +
-                                    ' -f ' + require(require('path').resolve(__dirname, '../conf/config.properties')) +
+                                    ' -f ' + require(path.resolve(__dirname, '../conf/config.properties')) +
                                     ' -u ' +
                                     userName +
                                     ' -p ' +
                                     password;
                             } else {
                                 var cmdjava =
-                                    'java -jar ' + require('path').resolve(__dirname, '../mapping_tool.jar') + ' -e ' +
+                                    'java -jar ' + path.resolve(__dirname, '../mapping_tool.jar') + ' -e ' +
                                     endpointUrl +
-                                    ' -f ' + require('path').resolve(__dirname, '../conf/config.properties');
+                                    ' -f ' + path.resolve(__dirname, '../conf/config.properties');
                             }
                             var child = exec(cmdjava, function(err, stdout, stderr) {
                                 clearInterval(loadingBar);
@@ -200,7 +201,7 @@ describe('The agent is monitoring active attributes...', function() {
             // var iotAgentConfig = require('../conf/config.json');
             // var iotAgentProp = require('./config.properties');
 
-            var properties = PropertiesReader(require('path').resolve(__dirname, '../conf/config.properties'));
+            var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
             global.properties = properties;
             var endpointUrl = properties.get('endpoint');
             var userName = properties.get('userName');
@@ -212,7 +213,7 @@ describe('The agent is monitoring active attributes...', function() {
             }
 
             var doAuto = false;
-            var configPath = require('path').resolve(__dirname, '../conf/config.json');
+            var configPath = path.resolve(__dirname, '../conf/config.json');
 
             if (fs.existsSync(configPath)) {
                 var config = require(configPath);
@@ -240,11 +241,11 @@ describe('The agent is monitoring active attributes...', function() {
                     if (userName != 0 && password != 0) {
                         var cmdjava =
                             'java -jar ' +
-                            require(require('path').resolve(__dirname, '../mapping_tool.jar')) +
+                            require(path.resolve(__dirname, '../mapping_tool.jar')) +
                             ' -e ' +
                             endpointUrl +
                             ' -f ' +
-                            require(require('path').resolve(__dirname, '../conf/config.properties')) +
+                            require(path.resolve(__dirname, '../conf/config.properties')) +
                             ' -u ' +
                             userName +
                             ' -p ' +
@@ -252,11 +253,11 @@ describe('The agent is monitoring active attributes...', function() {
                     } else {
                         var cmdjava =
                             'java -jar ' +
-                            require('path').resolve(__dirname, '../mapping_tool.jar') +
+                            path.resolve(__dirname, '../mapping_tool.jar') +
                             ' -e ' +
                             endpointUrl +
                             ' -f ' +
-                            require('path').resolve(__dirname, '../conf/config.properties');
+                            path.resolve(__dirname, '../conf/config.properties');
                     }
                     var child = exec(cmdjava, function(err, stdout, stderr) {
                         clearInterval(loadingBar);
@@ -295,37 +296,10 @@ describe('The agent is monitoring active attributes...', function() {
         } catch (ex) {
             var logger = require('logops');
             logger.error(ex);
-            logger.error(logContext, 'Generic error: closing application...'.red);
+            logger.error(logContext, 'Generic error: closing application...');
             process.exit(1);
         }
     });
-
-    /*
-    it('test backoff mechanism', function(done) {        
-        setTimeout(function() {
-            child.exec('docker-compose -f ./tests/docker-compose.yml up -d iotcarsrv', function(err, stdout, stderr) {
-                if(err) {
-                    console.log("An error occurred during car server restart ...");
-                    console.log(err);
-                }
-
-                done();
-            });
-        }, 5000);
-
-        // TODO: fix this
-        //var childProcess = child.spawn(require('path').resolve(__dirname, '../tests/print.sh'), {stdio: [process.stdout, "ignore", process.stderr]});
-        /*
-        childProcess.on('exit', function (code) {
-            if(code == 0) {
-                done();
-            } else {
-                done(new Error("backoff hunter exit code: ", code));
-            }
-        });
-        
-    });
-    */
 
     it('verify update of active attributes on Context Broker', function(done) {
         console.log('verify update of active attributes on Context Broker');
@@ -353,10 +327,15 @@ describe('The agent is monitoring active attributes...', function() {
         function myTimer() {
             var updated = false;
             request(temperatureRequest, function(error, response, body) {
+                if (error) {
+                    console.log('An error occurred during temperature request send');
+                    console.log(error);
+                }
+
                 var bodyObject = {};
                 bodyObject = JSON.parse(body);
 
-                console.log(bodyObject);
+                console.log(typeof bodyObject);
 
                 if (value != null) {
                     if (bodyObject.value != 0) {
@@ -383,6 +362,67 @@ describe('The agent is monitoring active attributes...', function() {
         myTimer(); // immediate first run
 
         // done();
+    });
+
+    it('stop car srv', function(done) {
+        setTimeout(function() {
+            child.exec(path.resolve(__dirname, './stop_carsrv.sh'), function(err, stdout, stderr) {
+                if (err) {
+                    console.log('An error occurred during car server stop ...');
+                    console.log(err);
+                }
+                console.log('car stop script log');
+                console.log('STDOUT: ');
+                console.log(stdout);
+                console.log('STDERR: ');
+                console.log(stderr);
+                done();
+            });
+        }, 5000);
+    });
+
+    it('start car srv', function(done) {
+        setTimeout(function() {
+            child.exec(path.resolve(__dirname, './start_carsrv.sh'), function(err, stdout, stderr) {
+                if (err) {
+                    console.log('An error occurred during car server restart ...');
+                    console.log(err);
+                }
+                console.log('car start script log');
+                console.log('STDOUT: ');
+                console.log(stdout);
+                console.log('STDERR: ');
+                console.log(stderr);
+            });
+        }, 5000);
+
+        function resetReconnectionFlag() {
+            var flagPath = path.resolve(__dirname, './connectionRestablishedFlag');
+            try {
+                if (fs.existsSync(flagPath)) {
+                    fs.unlinkSync(flagPath);
+                    done();
+                } else {
+                    setTimeout(resetReconnectionFlag, 1000);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        resetReconnectionFlag();
+
+        /*
+        // TODO: fix this
+        //var childProcess = child.spawn(path.resolve(__dirname, '../tests/print.sh'), {stdio: [process.stdout, "ignore", process.stderr]});
+        childProcess.on('exit', function (code) {
+            if(code == 0) {
+                done();
+            } else {
+                done(new Error("backoff hunter exit code: ", code));
+            }
+        });
+        */
     });
 
     it('verify commands execution as context provider', function(done) {
@@ -421,13 +461,20 @@ describe('The agent is monitoring active attributes...', function() {
                         }
                     };
 
-                    request(stopRequest, function(error, response, body) {
-                        console.log('stopRequest locally error =' + JSON.stringify(error));
-                        console.log('stopRequest locally response =' + JSON.stringify(response));
-                        console.log('stopRequest locally body =' + JSON.stringify(body));
+                    function sendRequest() {
+                        request(stopRequest, function(error, response, body) {
+                            console.log('stopRequest locally error =' + JSON.stringify(error));
+                            console.log('stopRequest locally response =' + JSON.stringify(response));
+                            console.log('stopRequest locally body =' + JSON.stringify(body));
+                            if (body.errorCode != undefined) {
+                                setTimeout(sendRequest, 2000);
+                            } else {
+                                callback();
+                            }
+                        });
+                    }
 
-                        callback();
-                    });
+                    sendRequest();
                 },
                 function(callback) {
                     // Accelerate CAR locally (for Travis unreachability)
@@ -459,13 +506,21 @@ describe('The agent is monitoring active attributes...', function() {
                         }
                     };
 
-                    request(accelerateRequest, function(error, response, body) {
-                        console.log('accelerateRequest locally error =' + JSON.stringify(error));
-                        console.log('accelerateRequest locally response =' + JSON.stringify(response));
-                        console.log('accelerateRequest locally body =' + JSON.stringify(body));
+                    function sendRequest() {
+                        request(accelerateRequest, function(error, response, body) {
+                            console.log('accelerateRequest locally error =' + JSON.stringify(error));
+                            console.log('accelerateRequest locally response =' + JSON.stringify(response));
+                            console.log('accelerateRequest locally body =' + JSON.stringify(body));
 
-                        callback();
-                    });
+                            if (body.errorCode != undefined) {
+                                setTimeout(sendRequest, 2000);
+                            } else {
+                                callback();
+                            }
+                        });
+                    }
+
+                    sendRequest();
                 },
                 function(callback) {
                     // Declares test done when the value retrieved from the agent is != null
@@ -537,7 +592,7 @@ describe('The agent is monitoring active attributes...', function() {
 
     /*
     it('verify reconnection mechanisms (OPC UA side)', function(done) {
-        var composeFilePath = require('path').resolve(__dirname, '../tests/docker-compose.yml');
+        var composeFilePath = path.resolve(__dirname, '../tests/docker-compose.yml');
         var stopCar = 'docker-compose -f ' + composeFilePath + ' stop iotcarsrv';
         child.exec(stopCar, function(err, stdout, stderr) {
             if(err) {
