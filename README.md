@@ -64,8 +64,8 @@ Currently two options are available to install the Agent:
 ### Docker - Recommended
 
 We suggest using a **Docker-first** approach in order to avoid issues related to your environment configuration.
-Moreover, using this approach you will be provided with all the needed component: OCB, Mongo instances and a sample
-OPC-UA server.
+Moreover, using this approach you will be provided with all the needed components: OCB, Mongo instances and a sample
+OPC UA server.
 
 A step-by-step tutorial is available [here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_tutorial.md)
 
