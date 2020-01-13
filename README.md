@@ -154,7 +154,7 @@ The **IoT Agent for OPC UA** project is part of [FIWARE](https://fiware.org/) an
 
 The IoT Agent for OPC UA is licensed under [Affero General Public License (GPL) version 3](./LICENSE).
 
-© 2019 Engineering Ingegneria Informatica S.p.A.
+© 2020 Engineering Ingegneria Informatica S.p.A.
 
 The following third-party libraries are used under license
 
