@@ -14,7 +14,7 @@ guidelines only, and this section may be revised to provide newer information at
 ## Short term
 
 The following list of features are planned to be addressed in the short term, and incorporated in the next release of
-the product planned for **February 2019**:
+the product planned for **February 2020**:
 
 -   Upgrade from Node 8=>10 
 -   Bug Fixing
