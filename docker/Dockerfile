@@ -3,7 +3,7 @@
 ARG  NODE_VERSION=10.17.0-stretch
 FROM node:${NODE_VERSION}
 
-ARG GITHUB_ACCOUNT=telefonicaid
+ARG GITHUB_ACCOUNT=Engineering-Research-and-Development
 ARG GITHUB_REPOSITORY=iotagent-opcua
 ARG DOWNLOAD=latest
 ARG SOURCE_BRANCH=master
