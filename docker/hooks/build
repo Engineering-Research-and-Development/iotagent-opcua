@@ -1,0 +1,5 @@
+#!/bin/bash
+#
+# Copyright 2020 Engineering Ingegneria Informatica S.p.A.
+#
+docker build --build-arg SOURCE_BRANCH=$SOURCE_BRANCH -t $IMAGE_NAME .
