@@ -1238,6 +1238,7 @@ module.exports = {
         function parsePayloadProperties(jsonAttribute) {
             jsonAttribute = jsonAttribute.replace(/:/g, ';');
             jsonAttribute = jsonAttribute.replace(/\*/g, '=');
+            jsonAttribute = jsonAttribute.replace(/&qm/g, '"');
 
             return jsonAttribute;
         }
