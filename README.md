@@ -7,7 +7,7 @@
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
 [![Build badge](https://img.shields.io/travis/Engineering-Research-and-Development/iotagent-opcua.svg)](https://travis-ci.org/Engineering-Research-and-Development/iotagent-opcua/)
 [![Coverage Status](https://coveralls.io/repos/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg?branch=master)](https://coveralls.io/github/Engineering-Research-and-Development/iotagent-opcua?branch=master)
-![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-openmtc.svg)
+![Status](https://nexus.lab.fiware.org/static/badges/statuses/full.svg)
 [![Join the chat at https://gitter.im/iotagent-opcua/community](https://badges.gitter.im/iotagent-opcua/community.svg)](https://gitter.im/iotagent-opcua/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Known Vulnerabilities](https://snyk.io/test/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg)](https://snyk.io/test/github/Engineering-Research-and-Development/iotagent-opcua)
 
