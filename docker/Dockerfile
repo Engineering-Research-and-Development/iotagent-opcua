@@ -1,3 +1,5 @@
+# Copyright 2020 Engineering Ingegneria Informatica S.p.A.
+
 ARG  NODE_VERSION=10.17.0-stretch
 FROM node:${NODE_VERSION}
 
@@ -71,7 +73,7 @@ RUN \
   apt-get -y autoremove && \
   chmod +x docker/entrypoint.sh
 
-USER node
+#USER node
 ENV NODE_ENV=production
 
 VOLUME /opt/iotagent-opcua/conf
