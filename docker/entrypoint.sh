@@ -3,8 +3,6 @@
 # Copyright 2020 Engineering Ingegneria Informatica S.p.A.
 #
 
-./run/secrets/age_idm_auth
-
 # usage: file_env VAR [DEFAULT]
 #    ie: file_env 'XYZ_DB_PASSWORD' 'example'
 # (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
@@ -27,8 +25,14 @@ file_env() {
 	unset "$fileVar"
 }
 
+file_env 'IOTA_AUTH_HEADER'
 file_env 'IOTA_AUTH_USER'
 file_env 'IOTA_AUTH_PASSWORD'
+file_env 'IOTA_AUTH_PERMANENT_TOKEN'
+file_env 'IOTA_AUTH_ENABLED'
+file_env 'IOTA_AUTH_TYPE'
+file_env 'IOTA_AUTH_HOST'
+file_env 'IOTA_AUTH_POST'
 file_env 'IOTA_AUTH_CLIENT_ID'
 file_env 'IOTA_AUTH_CLIENT_SECRET'
 
