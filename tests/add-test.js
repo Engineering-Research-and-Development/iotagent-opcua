@@ -242,7 +242,7 @@ describe('Verify Northbound flow', function() {
 					for( ; i < N_OF_TRIES ; ++i) {
 						request(oxygenRequest, function(error, response, body) {
 							bodyObject = JSON.parse(body);
-							
+
 							if(bodyObject != null) {
 								if(bodyObject.value > 0) {
 									console.log("Success after " + i + " tries");
@@ -252,13 +252,13 @@ describe('Verify Northbound flow', function() {
 						});
 						await sleep(2000);
 					}
-					
+
 					if(bodyObject != null) {
 						if(bodyObject.value <= 0) {
 							done(new Error("Oxygen is NOT greater than 0"));
 						}
-					} 
-				}*/
+					}
+				} */
 
             async function timedTest() {
                 var bodyObject = null;

@@ -533,7 +533,7 @@ module.exports = {
                     */
 
                     // loading services
-                    //loadDevices();
+                    // loadDevices();
 
                     contexts.forEach(function(context) {
                         // TODO: as some lazy attributes are loaded, the IotAgent works and the registrations

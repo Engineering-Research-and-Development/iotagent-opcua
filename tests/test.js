@@ -34,7 +34,7 @@ describe('The agent is monitoring active attributes...', function() {
         function() {
             console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@ WAIT 5 secs');
             var myTimeout = setTimeout(init, 5000);
-			
+
             function init() {
                 // Set Up
                 global.logContext = {
@@ -60,7 +60,7 @@ describe('The agent is monitoring active attributes...', function() {
                     var server = require('../iot_agent_modules/services/server');
                     var run = require('../iot_agent_modules/run/run');
                     var fs = require('fs');
-                    
+
                     // custom simple logger
 					var logger = require('logops');
                     var PropertiesReader = require('properties-reader');
@@ -80,10 +80,10 @@ describe('The agent is monitoring active attributes...', function() {
                         loggerTest.info(logContext, '/AGE/config-test.properties: endpoint not found...');
                         process.exit(1);
                     }
-                    
+
                     var doAuto = false;
                     var configPath = path.resolve(__dirname, '../conf/config.json');
-                    
+
                     if (fs.existsSync(configPath)) {
                         var config = require(configPath);
 
@@ -92,7 +92,7 @@ describe('The agent is monitoring active attributes...', function() {
                             config.providerUrl = hostIP + ':' + port;
                         }
                         global.config = config;
-                        
+
                     } else {
                         doAuto = true;
                     }
@@ -599,7 +599,7 @@ describe('The agent is monitoring active attributes...', function() {
                 console.log("An error occurred during carsrv stopping ...");
                 console.log(err);
             }
-            
+
             setTimeout(function() {
                 var startCar = 'docker-compose -f ' + composeFilePath + ' up -d iotcarsrv';
                 child.exec(startCar, function(err, stdout, stderr) {
@@ -607,7 +607,7 @@ describe('The agent is monitoring active attributes...', function() {
                         console.log("An error occurred during carsrv starting ...");
                         console.log(err);
                     }
-    
+
                     done();
                 });
             }, 5000);

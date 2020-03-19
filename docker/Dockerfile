@@ -18,6 +18,9 @@ ENV DOWNLOAD=${DOWNLOAD}
 
 MAINTAINER Engineering Ingegneria Informatica spa - Research and Development Lab
 
+RUN groupadd -g 99 opcua && useradd -r -u 1000 -g opcua opcua
+USER opcua
+
 #
 # The following RUN command retrieves the source code from GitHub.
 # 
