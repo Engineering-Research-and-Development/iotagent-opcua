@@ -143,20 +143,20 @@ associated with this image can be used to build an image in several ways:
     optional):
 
 ```console
-docker build -t iot-agent . --build-arg DOWNLOAD=latest
+docker build -t iot-agent . --no-cache --build-arg DOWNLOAD=latest
 ```
 
 -   You can alter this to obtain the last **stable** release run this `Dockerfile` with the build argument
     `DOWNLOAD=stable`
 
 ```console
-docker build -t iot-agent . --build-arg DOWNLOAD=stable
+docker build -t iot-agent . --no-cache --build-arg DOWNLOAD=stable
 ```
 
 -   You can also download a specific release by running this `Dockerfile` with the build argument `DOWNLOAD=<version>`
 
 ```console
-docker build -t iot-agent . --build-arg DOWNLOAD=1.7.0
+docker build -t iot-agent . --no-cache --build-arg DOWNLOAD=1.7.0
 ```
 
 ## Building from your own fork
