@@ -18,9 +18,6 @@ ENV DOWNLOAD=${DOWNLOAD}
 
 MAINTAINER Engineering Ingegneria Informatica spa - Research and Development Lab
 
-RUN groupadd -g 99 opcua && useradd -r -u 1000 -g opcua opcua
-USER opcua
-
 #
 # The following RUN command retrieves the source code from GitHub.
 # 
@@ -76,7 +73,10 @@ RUN \
   apt-get -y autoremove && \
   chmod +x docker/entrypoint.sh
 
+RUN groupadd -g 999 opcua && useradd -r -u 1001 -g opcua opcua
+USER opcua
 #USER node
+
 ENV NODE_ENV=production
 
 VOLUME /opt/iotagent-opcua/conf
