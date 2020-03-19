@@ -71,6 +71,7 @@ RUN \
   apt-get clean && \
   apt-get remove -y git && \
   apt-get -y autoremove && \
+  chown 1001:999 docker/entrypoint.sh && \
   chmod +x docker/entrypoint.sh
 
 RUN groupadd -g 999 opcua && useradd -r -u 1001 -g opcua opcua
