@@ -73,6 +73,7 @@ RUN \
   apt-get clean && \
   apt-get remove -y git && \
   apt-get -y autoremove && \
+  chown 1001:999 -R ./conf && \
   chown 1001:999 -R ./node_modules/node-opcua-client/certificates && \
   chown 1001:999 docker/entrypoint.sh && \
   chmod +x docker/entrypoint.sh

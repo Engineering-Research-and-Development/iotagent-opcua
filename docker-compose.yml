@@ -27,6 +27,7 @@ services:
     volumes:
       - ./AGECONF:/opt/iotagent-opcua/conf
       - ./certificates:/opt/iotagent-opcua/certificates
+      - ./index.js:/opt/iotagent-opcua/index.js
     command: /usr/bin/tail -f /var/log/lastlog
 
   iotmongo:
