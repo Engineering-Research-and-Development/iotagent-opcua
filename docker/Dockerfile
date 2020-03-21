@@ -61,8 +61,6 @@ RUN if [ "${DOWNLOAD}" = "latest" ] ; \
 
 WORKDIR /opt/iotagent-opcua
 
-RUN groupadd -g 999 opcua && useradd -r -u 1001 -g opcua opcua
-
 RUN \
   apt-get update && \
   apt-get install -y git netcat openjdk-8-jdk-headless && \
@@ -73,13 +71,10 @@ RUN \
   apt-get clean && \
   apt-get remove -y git && \
   apt-get -y autoremove && \
-  chown 1001:999 -R ./conf && \
-  chown 1001:999 -R ./node_modules/node-opcua-client/certificates && \
-  chown 1001:999 docker/entrypoint.sh && \
+  chown node:node -R . && \
   chmod +x docker/entrypoint.sh
 
-USER opcua
-#USER node
+USER node
 
 ENV NODE_ENV=production
 
