@@ -212,6 +212,9 @@ Currently, this `_FILE` suffix is supported for:
 -   `IOTA_AUTH_PASSWORD`
 -   `IOTA_AUTH_CLIENT_ID`
 -   `IOTA_AUTH_CLIENT_SECRET`
+-   `IOTA_MONGO_USER`
+-   `IOTA_MONGO_PASSWORD`
+
 
 ## Best Practices
 
