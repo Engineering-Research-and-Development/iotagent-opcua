@@ -56,27 +56,28 @@ try {
             process.stdout.write('.');
         }, 3000);
 
-        const exec = require('child_process').exec;
+        const spawn = require('child_process').spawn;
+        var args = [];
         try {
             if (userName != 0 && password != 0) {
-                var cmdjava =
-                    'java -jar mapping_tool.jar  -e ' +
-                    endpointUrl +
-                    ' -f conf/config.properties' +
-                    ' -u ' +
-                    userName +
-                    ' -p ' +
-                    password;
+                args = ['-jar', 'mapping_tool.jar', '-e', endpointUrl, '-f', 'conf/config.properties', '-u', userName, '-p', password];
             } else {
-                var cmdjava = 'java -jar mapping_tool.jar  -e ' + endpointUrl + ' -f conf/config.properties';
+                args = ['-jar', 'mapping_tool.jar', '-e', endpointUrl, '-f', 'conf/config.properties'];
             }
-            var child = exec(cmdjava, function(err, stdout, stderr) {
-                clearInterval(loadingBar);
-                if (err) {
+
+            var child = spawn('java', args);
+
+            child.stdout.on('data', function (data) {
+              console.log('[MAPPING TOOL]: ' + data);
+            });
+            
+            child.on('exit', function (code) {
+                console.log('child process exited with code ' + code);
+                if(code != 0) {
                     logger.error(
                         logContext,
                         'There is a problem with automatic configuration. Loading old configuration (if exists)...' +
-                            err
+                            code
                     );
                 } else {
                     logger.info(
@@ -85,10 +86,10 @@ try {
                     );
                     const config = require('./conf/config.json');
                     global.config = config;
-                }
 
-                run.run();
-                server.start();
+                    run.run();
+                    server.start();
+                }
             });
         } catch (ex) {
             clearInterval(loadingBar);
