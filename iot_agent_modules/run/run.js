@@ -317,7 +317,19 @@ module.exports = {
                                         {
                                             name: mapping.ocb_id,
                                             type: mapping.type || fT.findType(mapping.ocb_id, device),
-                                            value: variableValue
+                                            value: variableValue,
+                                            metadatas: [
+                                                {
+                                                  "name": "SourceTimestamp",
+                                                  "type": "ISO8601",
+                                                  "value": dataValue.sourceTimestamp
+                                                },
+                                                {
+                                                    "name": "ServerTimestamp",
+                                                    "type": "ISO8601",
+                                                    "value": dataValue.serverTimestamp
+                                                }
+                                            ]
                                         }
                                     ];
 
@@ -912,9 +924,23 @@ module.exports = {
                                         attributes_array = [];
                                         attributes_array.push(attribute);
 
+                                        metadata_array = [];
+                                        metadata_array.push([
+                                            {
+                                                "name": "SourceTimestamp",
+                                                "type": "ISO8601",
+                                                "value": dataValue.sourceTimestamp
+                                            },
+                                            {
+                                                "name": "ServerTimestamp",
+                                                "type": "ISO8601",
+                                                "value": dataValue.serverTimestamp
+                                            }
+                                        ]);
+
                                         callback(
                                             err,
-                                            cR.createResponse(id, type, attributes_array, '' + dataValue.value.value)
+                                            cR.createResponse(id, type, attributes_array, '' + dataValue.value.value, metadata_array)
                                         );
                                     });
                                 }
