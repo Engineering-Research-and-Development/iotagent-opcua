@@ -69,6 +69,10 @@ module.exports = {
 
         var _setInterval = require('setinterval-plus');
 
+        //Subscription Strategy from config.properties
+        var uniqueSubscription = properties.get('uniqueSubscription');
+        if (uniqueSubscription == undefined) uniqueSubscription = false;
+
         if (fs.existsSync('./conf/config.json')) {
             var config = JSON.parse(fs.readFileSync('./conf/config.json', 'utf8'));
         }
@@ -147,6 +151,222 @@ module.exports = {
             });
         }
 		*/
+
+        /*
+         * Initializes a subscription to OPCUA server and
+         * notifies every change in the variable value to OCB
+         */
+        function initUniqueSubscriptionBroker(context, mappings) {
+            logContext.op = 'Index.InitSubscriptions';
+            // TODO this stuff too should come from config
+            var parameters = {
+                requestedPublishingInterval: properties.get('requestedPublishingInterval'),
+                requestedLifetimeCount: properties.get('requestedLifetimeCount'),
+                requestedMaxKeepAliveCount: properties.get('requestedMaxKeepAliveCount'),
+                maxNotificationsPerPublish: properties.get('maxNotificationsPerPublish'),
+                publishingEnabled: properties.get('publishingEnabled'),
+                priority: properties.get('priority')
+            };
+
+            // Creating a subscription to OPCUA Server
+            var subscription = opcua.ClientSubscription.create(the_session, parameters);
+
+            function getTick() {
+                return Date.now();
+            }
+
+            var t = getTick();
+
+            subscription
+                .on('started', function() {
+                    logger.info(logContext, 'started subscription: ', subscription.subscriptionId);
+                    logger.info(logContext, ' revised parameters ');
+                    logger.info(
+                        logContext,
+                        '  revised maxKeepAliveCount  ',
+                        subscription.maxKeepAliveCount,
+                        ' ( requested ',
+                        parameters.requestedMaxKeepAliveCount + ')'
+                    );
+                    logger.info(
+                        logContext,
+                        '  revised lifetimeCount      ',
+                        subscription.lifetimeCount,
+                        ' ( requested ',
+                        parameters.requestedLifetimeCount + ')'
+                    );
+                    logger.info(
+                        logContext,
+                        '  revised publishingInterval ',
+                        subscription.publishingInterval,
+                        ' ( requested ',
+                        parameters.requestedPublishingInterval + ')'
+                    );
+                    logger.info(logContext, '  suggested timeout hint     ', subscription.publishEngine.timeoutHint);
+                })
+                .on('internal_error', function(err) {
+                    logger.error(logContext, 'received internal error');
+                    logger.info(JSON.stringify(err));
+                })
+                .on('keepalive', function() {
+                    logContext.op = 'Index.keepaliveSubscriptionBroker';
+                    var t1 = getTick();
+                    var span = t1 - t;
+                    t = t1;
+                    var keepAliveString =
+                        'keepalive ' +
+                        span / 1000 +
+                        ' ' +
+                        'sec' +
+                        ' pending request on server = ' +
+                        subscription.publishEngine.nbPendingPublishRequests +
+                        '';
+                    logger.debug(logContext, keepAliveString.gray);
+
+                    /*
+                        iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
+                            if(error){
+                                subscription.terminate();
+                            };
+                            *
+                            if (device.active.length==0){
+                                subscription.terminate();
+                            }
+                        }); */
+                })
+                .on('terminated', function(err) {
+                    if (err) {
+                        logger.error(
+                            logContext,
+                            'could not terminate subscription: ' + subscription.subscriptionId + ''
+                        );
+                        logger.info(logContext, JSON.stringify(err));
+                    } else {
+                        logger.info(logContext, 'successfully terminated subscription: ' + subscription.subscriptionId);
+                    }
+                });
+
+            the_subscriptions.push(subscription);
+
+            mappings.forEach(function(mapping) {
+                logger.info(logContext, 'initializing monitoring: ' + mapping.opcua_id);
+                subscription.monitor(
+                    {
+                        nodeId: opcua.resolveNodeId(mapping.opcua_id),
+                        attributeId: opcua.AttributeIds.Value
+                    },
+                    // TODO some of this stuff (samplingInterval for sure) should come from config
+                    // TODO All these attributes are optional remove ?
+                    {
+                        //clientHandle: 13, // TODO need to understand the meaning this! we probably cannot reuse the same handle everywhere
+                        samplingInterval: properties.get('samplingInterval'),
+                        queueSize: properties.get('queueSize'),
+                        discardOldest: properties.get('discardOldest')
+                    },
+                    opcua.TimestampsToReturn.Both,
+                    function(err, monItem) {
+                        if (err) {
+                            logger.error(
+                                logContext,
+                                'An error occured while creating subscription for opcua_id = ' + mapping.opcua_id
+                            );
+                            return;
+                        }
+
+                        /// Old 'INITIALIZED' event handling
+                        // TODO. initialized seems not to be working on the latest OPCUA 2.1.5. Is possible move it in !err code block?
+                        logger.info(logContext, 'started monitoring: ' + monItem.itemToMonitor.nodeId.toString());
+
+                        // Collect all monitoring
+                        if (devicesSubs[context.id] == undefined) {
+                            devicesSubs[context.id] = [];
+                        }
+
+                        devicesSubs[context.id].push(subscription);
+                        // END
+
+                        monItem.on('changed', function(dataValue) {
+                            logContext.op = 'Index.Monitoring';
+
+                            // TODO: Be aware that with the new version you have to change something here
+                            var variableValue = null;
+                            if (dataValue.value && dataValue.value != null) {
+                                variableValue = dataValue.value.value || null;
+                                if (dataValue.value.value == 0 || dataValue.value.value == false) {
+                                    variableValue = dataValue.value.value;
+                                }
+                            }
+
+                            variableValue = cfc.cleanForbiddenCharacters(variableValue);
+                            if (variableValue == null) {
+                                logger.debug('ON CHANGED DO NOTHING');
+                            } else {
+                                logger.info(
+                                    logContext,
+                                    monItem.itemToMonitor.nodeId.toString(),
+                                    ' value has changed to ' + variableValue + ''
+                                );
+
+                                // Notifying OPCUA variable change to OCB
+                                iotAgentLib.getDevice(context.id, context.service, context.subservice, function(
+                                    err,
+                                    device
+                                ) {
+                                    if (err) {
+                                        logger.error(logContext, 'could not find the OCB context ' + context.id + '');
+                                        logger.info(logContext, JSON.stringify(err));
+                                    } else {
+                                        /* WARNING attributes must be an ARRAY */
+                                        var attributes = [
+                                            {
+                                                name: mapping.ocb_id,
+                                                type: mapping.type || fT.findType(mapping.ocb_id, device),
+                                                value: variableValue
+                                            }
+                                        ];
+
+                                        // Setting ID withoput prefix NAME now
+                                        // iotAgentLib.update(device.id, device.type, '', attributes, device, function(err) {
+                                        iotAgentLib.update(device.name, device.type, '', attributes, device, function(
+                                            err
+                                        ) {
+                                            if (err) {
+                                                logger.error(
+                                                    logContext,
+                                                    'error updating ' +
+                                                        mapping.ocb_id +
+                                                        ' on ' +
+                                                        device.name +
+                                                        ' value=' +
+                                                        variableValue +
+                                                        ''
+                                                );
+
+                                                logger.info(logContext, JSON.stringify(err));
+                                            } else {
+                                                logger.info(
+                                                    logContext,
+                                                    'successfully updated ' +
+                                                        mapping.ocb_id +
+                                                        ' on ' +
+                                                        device.name +
+                                                        ' value=' +
+                                                        variableValue
+                                                );
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
+
+                        monItem.on('err', function(err_message) {
+                            logger.error(monItem.itemToMonitor.nodeId.toString(), ' ERROR', err_message);
+                        });
+                    }
+                );
+            });
+        }
 
         /*
          * Initializes a subscription to OPCUA server and
@@ -248,13 +468,13 @@ module.exports = {
 
             subscription.monitor(
                 {
-                    nodeId: mapping.opcua_id,
+                    nodeId: opcua.resolveNodeId(mapping.opcua_id),
                     attributeId: opcua.AttributeIds.Value
                 },
                 // TODO some of this stuff (samplingInterval for sure) should come from config
                 // TODO All these attributes are optional remove ?
                 {
-                    // clientHandle: 13, // TODO need to understand the meaning this! we probably cannot reuse the same handle everywhere
+                    //clientHandle: 13, // TODO need to understand the meaning this! we probably cannot reuse the same handle everywhere
                     samplingInterval: properties.get('samplingInterval'),
                     queueSize: properties.get('queueSize'),
                     discardOldest: properties.get('discardOldest')
@@ -538,11 +758,15 @@ module.exports = {
                     contexts.forEach(function(context) {
                         // TODO: as some lazy attributes are loaded, the IotAgent works and the registrations
                         // are inserted into OCB. But which component is adding the registrations?
+                        console.log('context=' + JSON.stringify(context));
+                        console.log('context.type=' + JSON.stringify(context.type));
+                        console.log('config.types[context.type]=' + JSON.stringify(config.types[context.type]));
+
                         var device = {
                             id: context.id,
                             name: context.id,
                             type: context.type,
-                            active: config.types[context.type].active,
+                            active: config.types[context.type] == null ? null : config.types[context.type].active,
                             lazy: context.lazy,
                             commands: context.commands,
                             // lazy: config.types[context.type].lazy,
@@ -625,7 +849,12 @@ module.exports = {
                                                         }
                                                     }
 
-                                                    // logger.info(logContext, 'Attribute [' + object_id + '] not found in the OPC UA address space');
+                                                    logger.info(
+                                                        logContext,
+                                                        'Attribute [' +
+                                                            object_id +
+                                                            '] not found in the OPC UA address space'
+                                                    );
                                                 }
 
                                                 // loading devices
@@ -636,11 +865,10 @@ module.exports = {
                                                     logContext,
                                                     'Something went wrong during OPCUA node existence check'
                                                 );
-                                                console.log(err);
+                                                console.log('error=' + err);
                                             }
-
                                             if (mappingIndex == contextMappingsInitialArray - 1) {
-                                                callback();
+                                                return; //callback();
                                             }
                                         });
                                     });
@@ -655,7 +883,7 @@ module.exports = {
                                                         device.service,
                                                         device.subservice,
                                                         '/' + key,
-                                                        apikey,
+                                                        device.apikey,
                                                         function(error) {
                                                             if (!error) {
                                                                 callback();
@@ -722,20 +950,26 @@ module.exports = {
                                                     'could not register OCB context ' + context.id + ''
                                                 );
                                                 logger.info(logContext, JSON.stringify(err));
-                                                context.mappings.forEach(function(mapping) {
-                                                    initSubscriptionBroker(context, mapping);
-                                                });
+                                                if (uniqueSubscription)
+                                                    initUniqueSubscriptionBroker(context, context.mappings);
+                                                else {
+                                                    context.mappings.forEach(function(mapping) {
+                                                        initSubscriptionBroker(context, mapping);
+                                                    });
+                                                }
                                             } else {
                                                 // init subscriptions
                                                 logger.info(
                                                     logContext,
                                                     'registered successfully OCB context ' + context.id
                                                 );
-
-                                                // Each mapping between OPCUA and OCB is processed
-                                                context.mappings.forEach(function(mapping) {
-                                                    initSubscriptionBroker(context, mapping);
-                                                });
+                                                if (uniqueSubscription)
+                                                    initUniqueSubscriptionBroker(context, context.mappings);
+                                                else {
+                                                    context.mappings.forEach(function(mapping) {
+                                                        initSubscriptionBroker(context, mapping);
+                                                    });
+                                                }
                                             }
                                         });
 
@@ -1363,9 +1597,9 @@ module.exports = {
                                     context.service = device.service;
                                     context.subservice = device.subservice;
                                     context.polling = false;
-
-                                    initSubscriptionBroker(context, mapping);
+                                    if (!uniqueSubscription) initSubscriptionBroker(context, mapping);
                                 });
+                                if (uniqueSubscription) initUniqueSubscriptionBroker(context, context.deviceMappings);
 
                                 devices[device.id] = [];
                                 devices[device.id].push(device);
