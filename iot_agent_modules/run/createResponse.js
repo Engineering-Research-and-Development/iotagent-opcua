@@ -1,5 +1,5 @@
 module.exports = {
-    createResponse: function(id, type, attributes, body) {
+    createResponse: function(id, type, attributes, body, metadata) {
         var values = body.split(',');
         var responses = [];
 
@@ -7,7 +7,8 @@ module.exports = {
             responses.push({
                 name: attributes[i],
                 type: 'string',
-                value: values[i]
+                value: values[i],
+                metadatas: metadata[i]
             });
         }
 
