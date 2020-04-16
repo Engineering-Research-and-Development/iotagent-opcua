@@ -13,7 +13,7 @@ services:
 
   iotage:
     hostname: iotage
-    image: iotagent4fiware/iotagent-opcua:1.3.4.1
+    image: iotagent4fiware/iotagent-opcua:latest
     networks:
       - hostnet
       - iotnet
