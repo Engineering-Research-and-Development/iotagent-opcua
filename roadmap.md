@@ -14,19 +14,20 @@ guidelines only, and this section may be revised to provide newer information at
 ## Short term
 
 The following list of features are planned to be addressed in the short term, and incorporated in the next release of
-the product planned for **February 2020**:
+the product planned for **May 2020**:
 
--   Upgrade from Node 8=>10 
--   Bug Fixing
+-  Upgrade from Node 8=>10
+-  Enabling multicore support for Northbound Communication
+-  Features imrpovement and Bug Fixing from validation scenarios
 
 ## Medium term
 
 The following list of features are planned to be addressed in the medium term, typically within the subsequent
 release(s) generated in the next **6 months** after next planned release:
 
-- Test Coverage increasing.  
+- Test Coverage increasing 
+- NGSI-LD support for Northbound Communication
 - Investigate compatibility with future LTS (e.g. Node 12 & Node 14)
-- Multi-Server support.
 
 ## Long term
 
@@ -34,4 +35,4 @@ The following list of features are proposals regarding the longer-term evolution
 of these features has not yet been scheduled for a release in the near future. Please feel free to contact us if you
 wish to get involved in the implementation or influence the roadmap
 
--   Mapping tool nodejs migration.
+-  Mapping tool nodejs migration
