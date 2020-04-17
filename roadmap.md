@@ -17,8 +17,8 @@ The following list of features are planned to be addressed in the short term, an
 the product planned for **May 2020**:
 
 -  Upgrade from Node 8=>10
--  Enabling multicore support for Northbound Communication
--  Features imrpovement and Bug Fixing from validation scenarios
+-  Enabling multicore support for the Northbound communication
+-  Features improvement and Bug Fixing from validation scenarios
 
 ## Medium term
 
@@ -26,7 +26,7 @@ The following list of features are planned to be addressed in the medium term, t
 release(s) generated in the next **6 months** after next planned release:
 
 - Test Coverage increasing 
-- NGSI-LD support for Northbound Communication
+- NGSI-LD support for the Northbound Communication
 - Investigate compatibility with future LTS (e.g. Node 12 & Node 14)
 
 ## Long term
