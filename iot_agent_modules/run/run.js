@@ -1,36 +1,33 @@
+require('requirish')._(module);
+
+var _ = require('underscore');
+var _setInterval = require('setinterval-plus');
+var async = require('async');
+var exec = require('child_process').exec;
+var fs = require('fs');
+var opcua = require('node-opcua');
+var path = require('path');
+var request = require('request');
+var treeify = require('treeify');
+var util = require('util');
+var iotAgentLibWrapper = require('./iotAgentLibWrapper');
+
+var logger = require('logops');
+logger.format = logger.formatters.pipe;
+
+// internal dependencies
+var cM = require('./callMethods');
+var cR = require('./createResponse');
+var disconnect = require('./disconnect');
+var eUv = require('./executeUpdateValues');
+var fT = require('./findType');
+var mG = require('./mongoGroup');
+var rSfN = require('./removeSuffixFromName');
+var tAs = require('./terminateAllSubscriptions');
+var cfc = require('./../cleanForbiddenCharacters');
+
 module.exports = {
     run: function() {
-        require('requirish')._(module);
-
-        var alarms = require('../../node_modules/iotagent-node-lib/lib/services/common/alarmManagement');
-        var constants = require('../../node_modules/iotagent-node-lib/lib/constants');
-
-        var treeify = require('treeify');
-        var _ = require('underscore');
-        var util = require('util');
-        var async = require('async');
-        var opcua = require('node-opcua');
-        var NodeCrawler = opcua.NodeCrawler;
-        // iotagent-node-lib dependencies
-        var iotAgentLib = require('iotagent-node-lib');
-        var userIdentity = null; // anonymous
-        var request = require('request');
-        var cfc = require('./../cleanForbiddenCharacters');
-        var mG = require('./mongoGroup');
-        var rSfN = require('./removeSuffixFromName');
-        var tAs = require('./terminateAllSubscriptions');
-        var disconnect = require('./disconnect');
-        var cM = require('./callMethods');
-        var fT = require('./findType');
-        var cR = require('./createResponse');
-        var eUv = require('./executeUpdateValues');
-        var groupService = require('../../node_modules/iotagent-node-lib/lib/services/groups/groupService');
-        var commonConfig = require('../../node_modules/iotagent-node-lib/lib/commonConfig');
-        var deviceService = require('../../node_modules/iotagent-node-lib/lib/services/devices/deviceService');
-        var fs = require('fs');
-        var exec = require('child_process').exec;
-        var path = require('path');
-
         var argv = require('yargs')
             .wrap(132)
 
@@ -49,9 +46,6 @@ module.exports = {
             .alias('t', 'timeout')
             .alias('d', 'debug')
             .alias('b', 'browse').argv;
-
-        var logger = require('logops');
-        logger.format = logger.formatters.pipe;
 
         // Specify the context fields to omit as an array
         // var PropertiesReader = require('properties-reader');
@@ -96,8 +90,9 @@ module.exports = {
         logger.info(logContext, 'securityMode        = ', securityMode.toString());
         logger.info(logContext, 'securityPolicy      = ', opcuaSecurityPolicy.toString());
         logger.info(logContext, 'timeout             = ', timeout || ' Infinity ');
+
         // set to false to disable address space crawling: might slow things down if the AS is huge
-        var doCrawling = !!argv.crawl;
+        //var doCrawling = !!argv.crawl;
         var client = null;
         var the_session = null;
         global.the_subscriptions = [];
@@ -109,48 +104,6 @@ module.exports = {
         var methods = [];
         var devicesSubs = [];
         var devices = [];
-
-        /*
-        // Load persisted devices to monitor
-        function loadDevices() {
-            iotAgentLib.listDevices(function(error, results) {
-                results.devices.forEach(function(device) {
-                    console.log('@@@ LOAD DEVICES');
-
-                    if (device.protocol != 'OPCUA') {
-                        return;
-                    }
-                    devicesSubs[device.id] = [];
-                    devices[device.id] = device;
-
-                    iotAgentLib.updateRegister(device, function(err) {
-                        var newDevice = {};
-                        if (config.contextBroker.ngsiVersion == undefined) {
-                            createInitialEntityNgsi1(device, newDevice, function(error, results) {});
-                        } else {
-                            if (config.contextBroker.ngsiVersion == 'v2') {
-                                createInitialEntityNgsi2(device, newDevice, function(error, results) {});
-                            } else {
-                                createInitialEntityNgsi1(device, newDevice, function(error, results) {});
-                            }
-                        }
-                        if (err) {
-                            // skip context
-                            logger.error(logContext, 'could not register OCB context ' + device.id + '');
-                            // NODE1
-                            // logger.info(logContext, JSON.stringify(err).red.bold);
-                            logger.info(logContext, JSON.stringify(err));
-                        } else {
-                            // init subscriptions
-                            logger.info(logContext, 'registered successfully OCB context ' + device.id);
-                        }
-                    });
-
-                    activeDeviceSubs(device);
-                });
-            });
-        }
-		*/
 
         /*
          * Initializes a subscription to OPCUA server and
@@ -222,17 +175,6 @@ module.exports = {
                         subscription.publishEngine.nbPendingPublishRequests +
                         '';
                     logger.debug(logContext, keepAliveString.gray);
-
-                    /*
-                        iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
-                            if(error){
-                                subscription.terminate();
-                            };
-                            *
-                            if (device.active.length==0){
-                                subscription.terminate();
-                            }
-                        }); */
                 })
                 .on('terminated', function(err) {
                     if (err) {
@@ -308,10 +250,7 @@ module.exports = {
                                 );
 
                                 // Notifying OPCUA variable change to OCB
-                                iotAgentLib.getDevice(context.id, context.service, context.subservice, function(
-                                    err,
-                                    device
-                                ) {
+                                iotAgentLibWrapper.getDevice(context, function(err, device) {
                                     if (err) {
                                         logger.error(logContext, 'could not find the OCB context ' + context.id + '');
                                         logger.info(logContext, JSON.stringify(err));
@@ -339,9 +278,7 @@ module.exports = {
 
                                         // Setting ID withoput prefix NAME now
                                         // iotAgentLib.update(device.id, device.type, '', attributes, device, function(err) {
-                                        iotAgentLib.update(device.name, device.type, '', attributes, device, function(
-                                            err
-                                        ) {
+                                        iotAgentLibWrapper.update(device, attributes, mapping, function(err) {
                                             if (err) {
                                                 logger.error(
                                                     logContext,
@@ -353,7 +290,6 @@ module.exports = {
                                                         variableValue +
                                                         ''
                                                 );
-
                                                 logger.info(logContext, JSON.stringify(err));
                                             } else {
                                                 logger.info(
@@ -450,17 +386,6 @@ module.exports = {
                         subscription.publishEngine.nbPendingPublishRequests +
                         '';
                     logger.debug(logContext, keepAliveString.gray);
-
-                    /*
-                        iotAgentLib.retrieveDevice(context.id, null, function(error, device) {
-                            if(error){
-                                subscription.terminate();
-                            };
-                            *
-                            if (device.active.length==0){
-                                subscription.terminate();
-                            }
-                        }); */
                 })
                 .on('terminated', function(err) {
                     if (err) {
@@ -536,10 +461,8 @@ module.exports = {
                             );
 
                             // Notifying OPCUA variable change to OCB
-                            iotAgentLib.getDevice(context.id, context.service, context.subservice, function(
-                                err,
-                                device
-                            ) {
+                            //iotAgentLib.getDevice(context.id, context.service, context.subservice, function(err, device) {
+                            iotAgentLibWrapper.getDevice(context, function(err, device) {
                                 if (err) {
                                     logger.error(logContext, 'could not find the OCB context ' + context.id + '');
                                     logger.info(logContext, JSON.stringify(err));
@@ -567,7 +490,7 @@ module.exports = {
 
                                     // Setting ID withoput prefix NAME now
                                     // iotAgentLib.update(device.id, device.type, '', attributes, device, function(err) {
-                                    iotAgentLib.update(device.name, device.type, '', attributes, device, function(err) {
+                                    iotAgentLibWrapper.update(device, attributes, mapping, function(err) {
                                         if (err) {
                                             logger.error(
                                                 logContext,
@@ -579,7 +502,6 @@ module.exports = {
                                                     variableValue +
                                                     ''
                                             );
-
                                             logger.info(logContext, JSON.stringify(err));
                                         } else {
                                             logger.info(
@@ -619,7 +541,13 @@ module.exports = {
                 // initialize client connection to the OCB
                 function(callback) {
                     // This also creates the device registry
-                    iotAgentLib.activate(config, function(err) {
+
+                    /*
+                     * Customize configuration of IoTAgentLib
+                     */
+                    //config["multiCore"] = true;
+
+                    iotAgentLibWrapper.activate(config, function(err) {
                         if (err) {
                             logger.error(logContext, 'There was an error activating the Agent: ' + err.message);
                             rSfN.removeSuffixFromName.exit(1);
@@ -629,6 +557,7 @@ module.exports = {
                         //    logger.info(logContext, 'NotificationHandler attached to ContextBroker');
                         //    iotAgentLib.setNotificationHandler(notificationHandler);
                         // }
+                        logger.info(logContext, 'Agent is running with multiCore property set to: ' + config.multiCore);
                         callback();
                     });
                 },
@@ -681,8 +610,9 @@ module.exports = {
                             ' !!!!!!!!!!!!!!!!!!!!!!!! CONNECTION RESTABLISHED !!!!!!!!!!!!!!!!!!!'
                         );
 
-                        var flagPath = path.resolve(__dirname, '../../tests/connectionRestablishedFlag');
-                        fs.closeSync(fs.openSync(flagPath, 'w'));
+                        //what is it supposed to do?!
+                        //var flagPath = path.resolve(__dirname, '../../tests/connectionRestablishedFlag');
+                        //fs.closeSync(fs.openSync(flagPath, 'w'));
                     });
 
                     client.on('after_reconnection', function(err) {
@@ -965,7 +895,7 @@ module.exports = {
                                     function(callback) {
                                         // NOTE: This registration will also trigger a Context Provider registration in the Context Broker for all its lazy attributes.
                                         // Registers a new device
-                                        iotAgentLib.register(device, function(err) {
+                                        iotAgentLibWrapper.register(device, function(err) {
                                             if (err) {
                                                 console.log('ERROR iotAgentLib.register');
                                                 // skip context
@@ -1007,66 +937,6 @@ module.exports = {
                             callback();
                         }
                     });
-                    callback();
-                },
-
-                function(callback) {
-                    /*
-                    if (doBrowse) {
-                        var attributeTriggers = [];
-                        config.contextSubscriptions.forEach(function(cText) {
-                            cText.mappings.forEach(function(map) {
-                                attributeTriggers.push(map.ocb_id);
-                            });
-                        });
-
-                        config.contextSubscriptions.forEach(function(context) {
-                            logger.info(logContext, 'subscribing OCB context ' + context.id + ' for attributes: ');
-                            attributeTriggers.forEach(function(attr) {
-                                logger.info(logContext, 'attribute name: ' + attr + ''.cyan.bold);
-                            });
-                            var device = {
-                                id: context.id,
-                                name: context.id,
-                                type: context.type,
-                                service: config.service,
-                                subservice: config.subservice
-                            };
-                            try {
-                                iotAgentLib.subscribe(device, attributeTriggers, attributeTriggers, function(err) {
-                                    if (err) {
-                                        logger.error(
-                                            logContext,
-                                            'There was an error subscribing device [%s] to attributes [%j]'.bold.red,
-                                            device.name,
-                                            attributeTriggers
-                                        );
-                                    } else {
-                                        logger.info(
-                                            logContext,
-                                            'Successfully subscribed device [%s] to attributes[%j]'.bold.yellow,
-                                            device.name,
-                                            attributeTriggers
-                                        );
-                                    }
-                                    callback();
-                                });
-                            } catch (err) {
-                                logger.error(
-                                    logContext,
-                                    'There was an error subscribing device [%s] to attributes [%j]',
-                                    device.name,
-                                    attributeTriggers
-                                );
-                                logger.info(logContext, JSON.stringify(err).red.bold);
-                                callback();
-                                return;
-                            }
-                        });
-                    } else {
-                        callback();
-                    }
-                    */
                     callback();
                 },
 
@@ -1310,19 +1180,28 @@ module.exports = {
                                         });
 
                                         contexts.forEach(function(context) {
-                                            iotAgentLib.getDevice(
-                                                context.id,
-                                                context.service,
-                                                context.subservice,
-                                                function(err, device) {
-                                                    if (err) {
-                                                        logger.error(
-                                                            logContext,
-                                                            'could not find the OCB context ' + context.id + ''
-                                                        );
-                                                        // NODE1
-                                                        // logger.info(logContext, JSON.stringify(err).red.bold);
-                                                        logger.info(logContext, JSON.stringify(err));
+                                            iotAgentLibWrapper.getDevice(context, function(err, device) {
+                                                if (err) {
+                                                    logger.error(
+                                                        logContext,
+                                                        'could not find the OCB context ' + context.id + ''
+                                                    );
+                                                    // NODE1
+                                                    // logger.info(logContext, JSON.stringify(err).red.bold);
+                                                    logger.info(logContext, JSON.stringify(err));
+                                                    eUv.executeUpdateValues(
+                                                        device,
+                                                        id,
+                                                        type,
+                                                        service,
+                                                        subservice,
+                                                        attributes,
+                                                        'ERROR',
+                                                        'generic error',
+                                                        callback
+                                                    );
+                                                } else {
+                                                    if (results[0].statusCode.name === opcua.StatusCodes.Bad.name) {
                                                         eUv.executeUpdateValues(
                                                             device,
                                                             id,
@@ -1331,11 +1210,15 @@ module.exports = {
                                                             subservice,
                                                             attributes,
                                                             'ERROR',
-                                                            'generic error',
+                                                            results[0].outputArguments[0].value,
                                                             callback
                                                         );
                                                     } else {
-                                                        if (results[0].statusCode.name === opcua.StatusCodes.Bad.name) {
+                                                        if (results[0].outputArguments[0] !== undefined) {
+                                                            if (Array.isArray(results[0].outputArguments[0].value)) {
+                                                                results[0].outputArguments[0].value =
+                                                                    results[0].outputArguments[0].value[0];
+                                                            }
                                                             eUv.executeUpdateValues(
                                                                 device,
                                                                 id,
@@ -1343,34 +1226,14 @@ module.exports = {
                                                                 service,
                                                                 subservice,
                                                                 attributes,
-                                                                'ERROR',
+                                                                'OK',
                                                                 results[0].outputArguments[0].value,
                                                                 callback
                                                             );
-                                                        } else {
-                                                            if (results[0].outputArguments[0] !== undefined) {
-                                                                if (
-                                                                    Array.isArray(results[0].outputArguments[0].value)
-                                                                ) {
-                                                                    results[0].outputArguments[0].value =
-                                                                        results[0].outputArguments[0].value[0];
-                                                                }
-                                                                eUv.executeUpdateValues(
-                                                                    device,
-                                                                    id,
-                                                                    type,
-                                                                    service,
-                                                                    subservice,
-                                                                    attributes,
-                                                                    'OK',
-                                                                    results[0].outputArguments[0].value,
-                                                                    callback
-                                                                );
-                                                            }
                                                         }
                                                     }
                                                 }
-                                            );
+                                            });
                                         });
                                     });
                                 }
@@ -1382,8 +1245,11 @@ module.exports = {
             async.waterfall([async.apply(executeCommand)], callback);
         }
         // iotAgentLib.setDataUpdateHandler(updateContextHandler);
-        iotAgentLib.setDataQueryHandler(queryContextHandler);
-        iotAgentLib.setCommandHandler(commandContextHandler);
+        //wrapper test
+        //iotAgentLib.setDataQueryHandler(queryContextHandler);
+        //iotAgentLib.setCommandHandler(commandContextHandler);
+        iotAgentLibWrapper.setDataQueryHandler(queryContextHandler);
+        iotAgentLibWrapper.setCommandHandler(commandContextHandler);
 
         /**
          * This callback is invoked every time a request for adding a new device
@@ -1462,27 +1328,6 @@ module.exports = {
                         provisioningCallback(null, device);
                     }
                 );
-
-                // commandDeviceSubs(device);
-                // lazyDeviceSubs(device);
-
-                /*
-				var newDevice={};
-				if (config.contextBroker.ngsiVersion == undefined){
-					createInitialEntityNgsi1(device, newDevice,  function(error, results) {
-					});
-				}else{
-					if(config.contextBroker.ngsiVersion=='v2') {
-						createInitialEntityNgsi2(device, newDevice, function(error, results) {
-
-						});
-					} else {
-						createInitialEntityNgsi1(device, newDevice, function(error, results) {
-
-						});
-					}
-				}
-				*/
             } else {
                 logger.info(logContext, 'Device already exists. id = ' + device.id);
                 provisioningCallback(null, device);
@@ -1492,11 +1337,13 @@ module.exports = {
         // repeat with the interval of checkTimer seconds
         let timerId = new _setInterval(() => {
             Object.keys(devicesSubs).forEach(function(key) {
-                iotAgentLib.getDevice(key, devices[key][0].service, devices[key][0].subservice, function(
-                    error,
-                    device
-                ) {
-                    if (error) {
+                var context = {
+                    id: key,
+                    service: devices[key][0].service,
+                    subservice: devices[key][0].subservice
+                };
+                iotAgentLibWrapper.getDevice(context, function(err, device) {
+                    if (err) {
                         devicesSubs[key].forEach(function(subscription) {
                             logger.debug('terminating...');
                             subscription.terminate();
@@ -1702,20 +1549,6 @@ module.exports = {
             var browsePath = opcua.makeBrowsePath('RootFolder', '/Objects/' + namespaceIndex + ':' + deviceBrowseName);
             async.series(
                 [
-                    /*
-                    function(callback) {
-                        the_session.translateBrowsePath(browsePath, function(err, results) {
-                            if(err) {
-                                console.log("@@@ ERRORE");
-                                console.log(err);
-                                callback(err, null);
-                            }
-
-                            namespaceNumericIdentifier = results.targets[0].targetId.value;
-                            callback();
-                        });
-                    },
-                    */
                     function(callback) {
                         // handling commands
                         if (device.commands !== undefined) {
@@ -1860,241 +1693,7 @@ module.exports = {
             removalCallback(null, deviceToDelete);
         }
 
-        iotAgentLib.setProvisioningHandler(provisioningHandler);
-        iotAgentLib.setRemoveDeviceHandler(removeDeviceHandler);
-
-        /**
-         * Creates the response handler for the initial entity creation request NGSIv1.
-         * This handler basically deals with the errors that could have been rised during
-         * the communication with the Context Broker.
-         *
-         * @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
-         * @param {Object} newDevice        Device object that will be stored in the database.
-         * @return {function}               Handler to pass to the request() function.
-         */
-        /*
-        function createInitialEntityHandlerNgsi1(deviceData, newDevice, callback) {
-            return function handleInitialEntityResponse(error, response, body) {
-                if (error) {
-                    logger.error(
-                        logContext,
-                        'ORION-001: Connection error creating inital entity in the Context Broker: %s',
-                        error
-                    );
-
-                    alarms.raise(constants.ORION_ALARM, error);
-
-                    callback(error);
-                } else if (response && body && response.statusCode === 200) {
-                    var errorField = null;
-
-                    if (errorField) {
-                        logger.error(logContext, 'Update error connecting to the Context Broker: %j', errorField);
-                        callback(JSON.stringify(errorField));
-                    } else {
-                        alarms.release(constants.ORION_ALARM);
-                        logger.debug(logContext, 'Initial entity created successfully.');
-                        callback(null, newDevice);
-                    }
-                } else {
-                    var errorObj;
-
-                    logger.error(
-                        logContext,
-                        'Protocol error connecting to the Context Broker [%d]: %s',
-                        response.statusCode,
-                        body
-                    );
-
-                    errorObj = new 'error ='() + deviceData.id + ' type=' + deviceData.type + ' body=' + body;
-
-                    callback(errorObj);
-                }
-            };
-        }
-        * */
-
-        /**
-         * Creates the response handler for the initial entity creation request using NGSIv2.
-         * This handler basically deals with the errors that could have been rised during
-         * the communication with the Context Broker.
-         *
-         * @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
-         * @param {Object} newDevice        Device object that will be stored in the database.
-         * @return {function}               Handler to pass to the request() function.
-         */
-        /*
-        function createInitialEntityHandlerNgsi2(deviceData, newDevice, callback) {
-            return function handleInitialEntityResponse(error, response, body) {
-                if (error) {
-                    logger.error(
-                        logContext,
-                        'ORION-001: Connection error creating inital entity in the Context Broker: %s',
-                        error
-                    );
-
-                    alarms.raise(constants.ORION_ALARM, error);
-
-                    callback(error);
-                } else if (response && response.statusCode === 204) {
-                    alarms.release(constants.ORION_ALARM);
-                    logger.debug(logContext, 'Initial entity created successfully.');
-                    callback(null, newDevice);
-                } else {
-                    var errorObj;
-
-                    logger.error(
-                        logContext,
-                        'Protocol error connecting to the Context Broker [%d]: %s',
-                        response.statusCode,
-                        body
-                    );
-
-                    errorObj = new errors.EntityGenericError(deviceData.id, deviceData.type, body);
-
-                    callback(errorObj);
-                }
-            };
-        }
-        */
-
-        /**
-         * Creates the initial entity representing the device in the Context Broker using NGSIv2.
-         * This is important mainly to allow the rest of the updateContext operations to be performed.
-         *
-         * @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
-         * @param {Object} newDevice        Device object that will be stored in the database.
-         */
-        /*
-        function createInitialEntityNgsi2(deviceData, newDevice, callback) {
-            var options = {
-                url: config.contextBroker.url + '/v2/entities?options=upsert',
-                method: 'POST',
-                json: {
-                    id: String(deviceData.name),
-                    type: deviceData.type
-                },
-                headers: {
-                    'fiware-service': deviceData.service,
-                    'fiware-servicepath': deviceData.subservice
-                }
-            };
-
-            jsonConcat(options.json, formatAttributesNgsi2(deviceData.active, false));
-            jsonConcat(options.json, formatAttributesNgsi2(deviceData.staticAttributes, true));
-            jsonConcat(options.json, formatCommandsNgsi2(deviceData.commands));
-
-            if (config.timestamp && !utils.isTimestampedNgsi2(options.json)) {
-                options.json[constants.TIMESTAMP_ATTRIBUTE] = {
-                    type: constants.TIMESTAMP_TYPE_NGSI2,
-                    value: moment()
-                };
-            }
-
-            logger.debug(
-                logContext,
-                'Creating initial entity in the Context Broker:\n %s',
-                JSON.stringify(options, null, 4)
-            );
-
-            request(options, createInitialEntityHandlerNgsi2(deviceData, newDevice, callback));
-        }
-		*/
-
-        /**
-         * Creates the initial entity representing the device in the Context Broker using NGSIv1.
-         * This is important mainly to allow the rest of the updateContext operations to be performed
-         * using an UPDATE action instead of an APPEND one.
-         *
-         * @param {Object} deviceData       Object containing all the deviceData needed to send the registration.
-         * @param {Object} newDevice        Device object that will be stored in the database.
-         */
-        /*
-        function createInitialEntityNgsi1(deviceData, newDevice, callback) {
-            var options = {
-                url: config.contextBroker.url + '/v1/updateContext',
-                method: 'POST',
-                json: {
-                    contextElements: [
-                        {
-                            type: deviceData.type,
-                            isPattern: 'false',
-                            id: String(deviceData.name),
-                            attributes: []
-                        }
-                    ],
-                    updateAction: 'APPEND'
-                },
-                headers: {
-                    'fiware-service': deviceData.service,
-                    'fiware-servicepath': deviceData.subservice
-                }
-            };
-
-            function formatAttributes(originalVector) {
-                var attributeList = [];
-
-                if (originalVector && originalVector.length) {
-                    for (var i = 0; i < originalVector.length; i++) {
-                        // (#628) check if attribute has entity_name:
-                        // In that case attribute should not be appear in current entity
-                        if (!originalVector[i].entity_name) {
-                            attributeList.push({
-                                name: originalVector[i].name,
-                                type: originalVector[i].type,
-                                value: null
-                            });
-                        }
-                    }
-                }
-
-                return attributeList;
-            }
-
-            function formatCommands(originalVector) {
-                var attributeList = [];
-
-                if (originalVector && originalVector.length) {
-                    for (var i = 0; i < originalVector.length; i++) {
-                        attributeList.push({
-                            name: originalVector[i].name + constants.COMMAND_STATUS_SUFIX,
-                            type: constants.COMMAND_STATUS,
-                            value: 'UNKNOWN'
-                        });
-                        attributeList.push({
-                            name: originalVector[i].name + constants.COMMAND_RESULT_SUFIX,
-                            type: constants.COMMAND_RESULT,
-                            value: ' '
-                        });
-                    }
-                }
-
-                return attributeList;
-            }
-
-            options.json.contextElements[0].attributes = [].concat(
-                formatAttributes(deviceData.active),
-                deviceData.staticAttributes,
-                formatCommands(deviceData.commands)
-            );
-
-            if (config.timestamp && !utils.isTimestamped(options.json)) {
-                options.json.contextElements[0].attributes.push({
-                    name: constants.TIMESTAMP_ATTRIBUTE,
-                    type: constants.TIMESTAMP_TYPE,
-                    value: ' '
-                });
-            }
-
-            logger.debug(
-                logContext,
-                'Creating initial entity in the Context Broker:\n %s',
-                JSON.stringify(options, null, 4)
-            );
-
-            request(options, createInitialEntityHandlerNgsi1(deviceData, newDevice, callback));
-        }
-        */
-        var handlerCalled = false;
+        iotAgentLibWrapper.setProvisioningHandler(provisioningHandler);
+        iotAgentLibWrapper.setRemoveDeviceHandler(removeDeviceHandler);
     }
 };
