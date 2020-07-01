@@ -1,7 +1,12 @@
-node_modules/
-package-lock.json
-root/.npm/cache/* && \
-docs/
+node_modules
+root/.npm/cache/* &&
+docs
+docker
 docker-compose
+AGECONF
+CARCONF
+
+docker-compose.yml
 Dockerfile
 README.md
+.*

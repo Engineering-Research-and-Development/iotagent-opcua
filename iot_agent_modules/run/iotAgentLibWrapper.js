@@ -9,7 +9,6 @@ var deviceService = require('../../node_modules/iotagent-node-lib/lib/services/d
 var alarms = require('../../node_modules/iotagent-node-lib/lib/services/common/alarmManagement');
 var commands = require('../../node_modules/iotagent-node-lib/lib/services/commands/commandService');
 var constants = require('../../node_modules/iotagent-node-lib/lib/constants');
-const { multiCore } = require('iotagent-node-lib/config');
 
 var not_found_context = 0;
 

@@ -1490,7 +1490,15 @@ module.exports = {
                                     context.polling = false;
                                     if (!uniqueSubscription) initSubscriptionBroker(context, mapping);
                                 });
-                                if (uniqueSubscription) initUniqueSubscriptionBroker(context, context.deviceMappings);
+                                if (uniqueSubscription) {
+                                    var context = {};
+                                    context.id = device.id;
+                                    context.type = device.type;
+                                    context.service = device.service;
+                                    context.subservice = device.subservice;
+                                    context.polling = false;
+                                    initUniqueSubscriptionBroker(context, deviceMappings);
+                                }
 
                                 devices[device.id] = [];
                                 devices[device.id].push(device);

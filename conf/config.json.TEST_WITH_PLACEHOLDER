@@ -1,6 +1,6 @@
 {
     "logLevel": "INFO",
-    "multiCore": false,
+    "multiCore" : false,
     "contextBroker": {
         "host": "TEST_MACHINE_IP",
         "port": 1026,
