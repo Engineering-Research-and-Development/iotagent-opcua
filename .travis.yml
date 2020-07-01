@@ -16,6 +16,9 @@ jobs:
       node_js:
         - 10
 
+      before_install:
+        - npm update -q
+        
       install:
         - ./tests/load_test_configuration.sh
         - npm install
