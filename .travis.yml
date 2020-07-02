@@ -11,13 +11,10 @@ services:
 jobs:
   include:
     - stage: test
-      name: "Unit Tests: Node 10"
+      name: "Unit Tests: Node 12"
 
       node_js:
-        - 10
-
-      before_install:
-        - npm update -q
+        - 12
         
       install:
         - ./tests/load_test_configuration.sh
