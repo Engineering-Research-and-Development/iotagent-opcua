@@ -410,7 +410,7 @@ describe('The agent is monitoring active attributes...', function() {
             }
         }
 
-        resetReconnectionFlag();
+        //resetReconnectionFlag();
 
         /*
         // TODO: fix this
