@@ -164,7 +164,7 @@ The following third-party libraries are used under license
     Investigación y Desarrollo
 
 The full list of third-party libraries licenses can be found
-[here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_dependencies.html)
+[here](https://htmlpreview.github.io/?https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_dependencies.html)
 
 ### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
 
