@@ -28,8 +28,8 @@ library's GitHub repository.
 This project is part of [FIWARE](https://www.fiware.org/). For more information check the
 [FIWARE Catalogue entry for the IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
-| :books: [Documentation](https://iotagent-opcua.rtfd.io) | :whale: [Docker Hub](https://hub.docker.com/r/iotagent4fiware/iotagent-opcua) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) |:dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
-| ------------------------------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| :books: [Documentation](https://iotagent-opcua.rtfd.io) | :whale: [Docker Hub](https://hub.docker.com/r/iotagent4fiware/iotagent-opcua) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 
 
 ## Contents
@@ -64,16 +64,17 @@ Currently two options are available to install the Agent:
 ### Docker - Recommended
 
 We suggest using a **Docker-first** approach in order to avoid issues related to your environment configuration.
-Moreover, using this approach you will be provided with all the needed components: OCB, Mongo instances and a sample
-OPC UA server.
+Moreover, using this approach you will be provided with all the needed components: OCB, Mongo instances and a sample OPC
+UA server.
 
-A step-by-step tutorial is available [here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_tutorial.md)
+A step-by-step tutorial is available
+[here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_tutorial.md)
 
 ### npm
 
 Before launching the Agent you must install Orion Context Broker and a OPC UA Server. After that you must tell the Agent
-how to interact with these components by using config.properties file.
-Once configuration is complete you can execute these commands to run the Agent.
+how to interact with these components by using config.properties file. Once configuration is complete you can execute
+these commands to run the Agent.
 
 ```console
 $ npm install
@@ -161,6 +162,9 @@ The following third-party libraries are used under license
 1.  [node-opcua](http://node-opcua.github.io/) - **MIT** - © 2014-2018 Etienne Rossignon
 2.  [iotagent-node-lib](https://github.com/telefonicaid/iotagent-node-lib) - **AGPL** © 2014-2018 Telefonica
     Investigación y Desarrollo
+
+The full list of third-party libraries licenses can be found
+[here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/opc_ua_agent_dependencies.html)
 
 ### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
 
