@@ -166,14 +166,7 @@ module.exports = {
                     var t1 = getTick();
                     var span = t1 - t;
                     t = t1;
-                    var keepAliveString =
-                        'keepalive ' +
-                        span / 1000 +
-                        ' ' +
-                        'sec' +
-                        ' pending request on server = ' +
-                        subscription.publishEngine.nbPendingPublishRequests +
-                        '';
+                    var keepAliveString = 'keepalive ' + span / 1000 + ' ' + 'sec' + ' pending request on server = ' + subscription.publishEngine.nbPendingPublishRequests + '';
                     logger.debug(logContext, keepAliveString.gray);
                 })
                 .on('terminated', function(err) {
@@ -377,14 +370,7 @@ module.exports = {
                     var t1 = getTick();
                     var span = t1 - t;
                     t = t1;
-                    var keepAliveString =
-                        'keepalive ' +
-                        span / 1000 +
-                        ' ' +
-                        'sec' +
-                        ' pending request on server = ' +
-                        subscription.publishEngine.nbPendingPublishRequests +
-                        '';
+                    var keepAliveString = 'keepalive ' + span / 1000 + ' ' + 'sec' + ' pending request on server = ' + subscription.publishEngine.nbPendingPublishRequests + '';
                     logger.debug(logContext, keepAliveString.gray);
                 })
                 .on('terminated', function(err) {
@@ -492,27 +478,11 @@ module.exports = {
                                     // iotAgentLib.update(device.id, device.type, '', attributes, device, function(err) {
                                     iotAgentLibWrapper.update(device, attributes, mapping, function(err) {
                                         if (err) {
-                                            logger.error(
-                                                logContext,
-                                                'error updating ' +
-                                                    mapping.ocb_id +
-                                                    ' on ' +
-                                                    device.name +
-                                                    ' value=' +
-                                                    variableValue +
-                                                    ''
-                                            );
+                                            logger.error(logContext, 'error updating ' + mapping.ocb_id + ' on ' + device.name + ' value=' + variableValue + '');
                                             logger.info(logContext, JSON.stringify(err));
                                         } else {
                                             logger.info(
-                                                logContext,
-                                                'successfully updated ' +
-                                                    mapping.ocb_id +
-                                                    ' on ' +
-                                                    device.name +
-                                                    ' value=' +
-                                                    variableValue
-                                            );
+                                                logContext,'successfully updated ' + mapping.ocb_id + ' on ' + device.name + ' value=' + variableValue);
                                         }
                                     });
                                 }
@@ -1150,6 +1120,7 @@ module.exports = {
                 // contextSubscription is taken into account only during command execution
                 // Until then, the Agent declares to be in charge for the commands with a determined name
                 // This means that implementing the API the storaging of these information (opcua_id in particular) is needed
+
                 contextSubscriptions.forEach(function(contextSubscription) {
                     if (contextSubscription.id === id) {
                         contextSubscription.mappings.forEach(function(mapping) {
@@ -1189,48 +1160,24 @@ module.exports = {
                                                     // NODE1
                                                     // logger.info(logContext, JSON.stringify(err).red.bold);
                                                     logger.info(logContext, JSON.stringify(err));
-                                                    eUv.executeUpdateValues(
-                                                        device,
-                                                        id,
-                                                        type,
-                                                        service,
-                                                        subservice,
-                                                        attributes,
-                                                        'ERROR',
-                                                        'generic error',
-                                                        callback
-                                                    );
+                                                    eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'ERROR', 'generic error', callback);
                                                 } else {
-                                                    if (results[0].statusCode.name === opcua.StatusCodes.Bad.name) {
-                                                        eUv.executeUpdateValues(
-                                                            device,
-                                                            id,
-                                                            type,
-                                                            service,
-                                                            subservice,
-                                                            attributes,
-                                                            'ERROR',
-                                                            results[0].outputArguments[0].value,
-                                                            callback
-                                                        );
-                                                    } else {
+                                                    if(results[0].statusCode.name === opcua.StatusCodes.Good.name){
                                                         if (results[0].outputArguments[0] !== undefined) {
                                                             if (Array.isArray(results[0].outputArguments[0].value)) {
-                                                                results[0].outputArguments[0].value =
-                                                                    results[0].outputArguments[0].value[0];
+                                                                results[0].outputArguments[0].value =results[0].outputArguments[0].value[0];
                                                             }
-                                                            eUv.executeUpdateValues(
-                                                                device,
-                                                                id,
-                                                                type,
-                                                                service,
-                                                                subservice,
-                                                                attributes,
-                                                                'OK',
-                                                                results[0].outputArguments[0].value,
-                                                                callback
-                                                            );
+                                                            eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'OK', results[0].outputArguments[0].value, callback);
                                                         }
+                                                    }
+                                                    else if (results[0].statusCode.name === opcua.StatusCodes.Bad.name) {
+                                                        eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'BAD_ERROR', results[0].outputArguments[0].value, callback);
+                                                    }
+                                                    else if (results[0].statusCode.name === opcua.StatusCodes.Uncertain.name) {
+                                                        eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'UNCERTAIN_ERROR', results[0].outputArguments[0].value, callback);
+                                                    }
+                                                    else{
+                                                        eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'GENERIC_ERROR', results[0].outputArguments[0].value, callback);
                                                     }
                                                 }
                                             });
@@ -1522,25 +1469,11 @@ module.exports = {
             var namespaceIndex = null;
             var namespaceNumericIdentifier = null;
 
-            if (
-                device.active != undefined &&
-                device.active != null &&
-                device.active.length != null &&
-                device.active.length > 0
-            ) {
+            if (device.active != undefined && device.active != null && device.active.length != null && device.active.length > 0) {
                 namespaceIndex = device.active[0].object_id;
-            } else if (
-                device.lazy != undefined &&
-                device.lazy != null &&
-                device.lazy.length != null &&
-                device.lazy.length > 0
-            ) {
+            } else if (device.lazy != undefined && device.lazy != null && device.lazy.length != null && device.lazy.length > 0) {
                 namespaceIndex = device.lazy[0].object_id;
-            } else if (
-                device.commands != undefined &&
-                device.commands != null &&
-                device.commands.length != null &&
-                device.commands.length > 0
+            } else if (device.commands != undefined && device.commands != null && device.commands.length != null && device.commands.length > 0
             ) {
                 namespaceIndex = device.commands[0].object_id;
             } else {

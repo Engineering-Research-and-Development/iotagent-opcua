@@ -56,6 +56,9 @@
         "type": "Number"
     }],
     "commands" : [{
+      "name" : "Error",
+      "type" : "command"
+    }, {
       "name" : "Stop",
       "type" : "command"
     }, {
@@ -88,6 +91,11 @@
   "subservice" : "/demo",
   "polling" : false,
   "mappings" : [{
+    "ocb_id" : "Error",
+    "opcua_id" : "ns=3;s=Error",
+    "object_id" : null,
+    "inputArguments" : [ ]
+  },{
     "ocb_id" : "Acceleration",
     "opcua_id" : "ns=3;s=Acceleration",
     "object_id" : null,
@@ -132,7 +140,17 @@
 "contextSubscriptions" : [ {
   "id" : "age01_Car",
   "type" : "Device",
-  "mappings" : [ {
+  "mappings" : [
+  {
+    "ocb_id" : "Error",
+    "opcua_id" : "ns=3;s=Error",
+    "object_id" : "ns=3;i=1000",
+    "inputArguments" : [ {
+      "dataType" : 12,
+      "type" : "Error Type"
+    } ]
+  },
+  {
     "ocb_id": "Speed",
     "opcua_id": "ns=3;s=Speed",
     "object_id": "ns=3;i=1000",
