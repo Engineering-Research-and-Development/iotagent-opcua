@@ -2,7 +2,7 @@
   "name": "opcua-iotagent",
   "license": "AGPL-3.0-only",
   "description": "OPC-UA IoT Agent to interface with NGSI Context Broker",
-  "version": "1.3.7",
+  "version": "1.3.8",
   "homepage": "https://github.com/Engineering-Research-and-Development/iotagent-opcua",
   "keywords": [
     "fiware",
