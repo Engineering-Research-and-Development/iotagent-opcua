@@ -75,7 +75,7 @@ module.exports = {
         logger.info(logContext, '----------------------------------------------------');
 
         opcuaSecurityPolicy = opcua.SecurityPolicy[securityPolicy];
-
+        
         if (securityMode === opcua.MessageSecurityMode.Invalid) {
             throw new Error('Invalid Security mode,  should be ' + opcua.MessageSecurityMode.enums.join(' '));
         }
@@ -528,6 +528,7 @@ module.exports = {
                         //    iotAgentLib.setNotificationHandler(notificationHandler);
                         // }
                         logger.info(logContext, 'Agent is running with multiCore property set to: ' + config.multiCore);
+                        logger.info(logContext, 'Agent is running with relaxTemplateValidation property set to: ' + config.relaxTemplateValidation );
                         callback();
                     });
                 },
@@ -1307,12 +1308,6 @@ module.exports = {
          * Utility function. TODO: move it into a separate file
          * For OPCUA nodeid chars not in template
          */
-        function parsePayloadProperties(jsonAttribute) {
-            jsonAttribute = jsonAttribute.replace(/:/g, ';');
-            jsonAttribute = jsonAttribute.replace(/\*/g, '=');
-
-            return jsonAttribute;
-        }
 
         // Check if the specified node exists in the server address space
         function doesOPCUANodeExist(opcuaNodeId, callback2) {
@@ -1385,9 +1380,6 @@ module.exports = {
             if (device.active != undefined) {
                 device.active.forEach(function(attribute, index) {
                     var mapping = {};
-
-                    // Replacing prohibited chars
-                    attribute.object_id = parsePayloadProperties(attribute.object_id);
 
                     // Ignoring OPCUA items that are not available on OPCUA server side
 
@@ -1496,8 +1488,6 @@ module.exports = {
                             var commandsArrayInitialLength = device.commands.length;
 
                             device.commands.forEach(function(command, index) {
-                                // Replacing prohibited chars
-                                command.object_id = parsePayloadProperties(command.object_id);
 
                                 // TODO: Is it possible to generalize doesOPCUANodeExist ?
                                 doesOPCUANodeExist(command.object_id, function(err, results) {
@@ -1572,8 +1562,6 @@ module.exports = {
 
                             device.lazy.forEach(function(lazy, index) {
                                 var mapping = {};
-
-                                lazy.object_id = parsePayloadProperties(lazy.object_id);
 
                                 doesOPCUANodeExist(lazy.object_id, function(err, results) {
                                     if (!err) {
