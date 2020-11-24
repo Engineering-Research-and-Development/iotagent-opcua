@@ -3,12 +3,13 @@
 In this section you find all what you need to know about linking the OPC UA IoTAgent to an external OPC UA Server.
 
 ## Step 1 - Configure the Agent
-First of all, you have to inform the Agent of where it can find the other components. IP addresses, hostnames, ports 
-and all the other required properties must be specified within ```AGECONF/config.properties``` file.
+
+First of all, you have to inform the Agent of where it can find the other components. IP addresses, hostnames, ports and
+all the other required properties must be specified within `AGECONF/config.properties` file.
 
 ![edit config.properties](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/images/OPC%20UA%20agent%20flow%20chart_1.png?raw=true)
 
-This is how ```config.properties``` looks like:
+This is how `config.properties` looks like:
 
 ```text
 ## SOUTHBOUND CONFIGURATION (OPC UA)
@@ -97,7 +98,9 @@ configuration=api
 ## CHECK TIMER POLLING DEVICES
 checkTimer=2000
 ```
-As you can see the file is organized in sections, below we include, for each section, the most relevant properties you should consider:
+
+As you can see the file is organized in sections, below we include, for each section, the most relevant properties you
+should consider:
 
 ```yaml
 # Southbound configuration
@@ -128,14 +131,18 @@ namespaceNumericIdentifier=1000
 # See OPC UA Documentation for further information
 ```
 
-If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that symbolic names to actual IP addresses in the next section. 
+If you are using the dockerized version, you do not have to change the hostnames/port pairs, we will see how to map that
+symbolic names to actual IP addresses in the next section.
 
 ## Step 2 - Map IP addresses
-When using an external OPC UA Server the ```docker-compose-external-server.yml``` file must be used. Unlike ```docker-compose.yml``` file (testbed) the CarServer section has clearly been removed.
 
-Now, the Agent (and the built-in mapping tool) needs to know the address of the OPC UA Server. You have to map the OPC UA Server address against two hostnames.
+When using an external OPC UA Server the `docker-compose-external-server.yml` file must be used. Unlike
+`docker-compose.yml` file (testbed) the CarServer section has clearly been removed.
 
-Open the ```docker-compose-external-server.yml``` file:
+Now, the Agent (and the built-in mapping tool) needs to know the address of the OPC UA Server. You have to map the OPC
+UA Server address against two hostnames.
+
+Open the `docker-compose-external-server.yml` file:
 
 ```yaml
 services:
@@ -147,24 +154,29 @@ services:
     ...
 ```
 
-The first line of ```extra_hosts``` section is used by the Agent during the communication with the OPC UA Server. The second one is needed when the OPC UA Server answers to the mapping tool returning its hostname.
+The first line of `extra_hosts` section is used by the Agent during the communication with the OPC UA Server. The second
+one is needed when the OPC UA Server answers to the mapping tool returning its hostname.
 
 ## Step 3 - Preparing the Agent for start up
 
-- Erase the default empty ```config.json``` (this will be created by the mapping tool)
-- Comment the "configuration=api" line inside ```config.properties``` file
+-   Erase the default empty `config.json` (this will be created by the mapping tool)
+-   Comment the "configuration=api" line inside `config.properties` file
 
 ## Step 4 - Run the Agent
+
 ```bash
 docker-compose down -v
 ```
+
 Assuming the OPC UA Server is running, execute:
+
 ```bash
 docker-compose -f docker-compose-external-server.yml up -d
 ```
-At Agent start up time the mapping tool will be invoked and OPC UA variables will be configured as active attributes whereas all OPC UA methods will be configured as commands.
-It is possible modify configuration output (config.json file in same path) manually in order to drop some
-attributes/command, add lazy attributes and enable the command polling.
+
+At Agent start up time the mapping tool will be invoked and OPC UA variables will be configured as active attributes
+whereas all OPC UA methods will be configured as commands. It is possible modify configuration output (config.json file
+in same path) manually in order to drop some attributes/command, add lazy attributes and enable the command polling.
 
 This schema depicts what happens after executing the above command
 
@@ -313,37 +325,39 @@ In order to clarify, see the following example:
     ]
 }
 ```
+
 ## Security
 
-According to the OPC UA Security Model the OPC UA IotAgent, acting as an OPC UA Client, can specify a "Security Policy" and a "Security Mode". Nevertheless, these requests must find a match with the OPC UA Server policies.
+According to the OPC UA Security Model the OPC UA IotAgent, acting as an OPC UA Client, can specify a "Security Policy"
+and a "Security Mode". Nevertheless, these requests must find a match with the OPC UA Server policies.
 
-You can specify the Security Policy/Mode pair through the ```config.properties``` file, and in particular by modifying this section:
+You can specify the Security Policy/Mode pair through the `config.properties` file, and in particular by modifying this
+section:
 
 ```yaml
 ## SERVER CERT E AUTH
-securityMode=None
-securityPolicy=None
-userName=
-password=
+securityMode=None securityPolicy=None userName= password=
 ```
-Allowed values for ```securityPolicy``` are:
 
-- None
-- Basic128
-- Basic192
-- Basic192Rsa15
-- Basic256Rsa15
-- Basic256Sha256
-- Aes128_Sha256_RsaOaep
-- PubSub_Aes128_CTR
-- PubSub_Aes256_CTR
-- Basic128Rsa15
-- Basic256
+Allowed values for `securityPolicy` are:
 
-Allowed values for ```securityMode``` are:
-- None
-- Sign
-- SignAndEncrypt
+-   None
+-   Basic128
+-   Basic192
+-   Basic192Rsa15
+-   Basic256Rsa15
+-   Basic256Sha256
+-   Aes128_Sha256_RsaOaep
+-   PubSub_Aes128_CTR
+-   PubSub_Aes256_CTR
+-   Basic128Rsa15
+-   Basic256
 
-In the ```docker-compose.yml``` you find a ```certificates``` volume inside the ```iotage``` section.
-The ```certificates``` folder contains two files ```client_certificate.pem``` and ```client_private_key.pem```: overwrite them with yours.
+Allowed values for `securityMode` are:
+
+-   None
+-   Sign
+-   SignAndEncrypt
+
+In the `docker-compose.yml` you find a `certificates` volume inside the `iotage` section. The `certificates` folder
+contains two files `client_certificate.pem` and `client_private_key.pem`: overwrite them with yours.
