@@ -1,12 +1,13 @@
 # Copyright 2020 Engineering Ingegneria Informatica S.p.A.
 
-ARG  NODE_VERSION=10.19.0-stretch
-FROM node:${NODE_VERSION}
+ARG  NODE_VERSION=10.19.0
+FROM node:${NODE_VERSION}-stretch
 
 ARG GITHUB_ACCOUNT=Engineering-Research-and-Development
 ARG GITHUB_REPOSITORY=iotagent-opcua
 ARG DOWNLOAD=latest
 ARG SOURCE_BRANCH=master
+ARG NODE_VERSION
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
