@@ -91,7 +91,7 @@ jobs:
           ./tests/load_test_configuration.sh
           ./replace_local_ip.sh
           docker-compose -f ./tests/docker-compose.yml up -d
-      - name: "Unit Tests with Node.js ${{ matrix.node-version }}"
+      - name: "Unit Tests with Node.js 12.x"
         run: |
           npm install
           npm run coverage

@@ -64,7 +64,7 @@ RUN \
   curl -s -L https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}"/archive/"${RELEASE}".zip > source.zip && \
   unzip source.zip -x "*/test/**" "*/rpm/**" "*/ghpages/**" "*/docs/**" "*/.*" && \
   rm source.zip && \
-  mv "${GITHUB_REPOSITORY}-${RELEASE_CONCAT}" /opt/iotaul && \
+  mv "${GITHUB_REPOSITORY}-${RELEASE_CONCAT}" /opt/iotagent-opcua && \
   # Remove unzip and clean apt cache
   apt-get clean && \
   apt-get remove -y unzip && \
