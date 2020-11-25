@@ -61,9 +61,6 @@ RUN \
     echo "INFO: Building Release: ${RELEASE}"; \
   fi && \
   RELEASE_CONCAT=$(echo "${RELEASE}" | tr / -); \
-  # Ensure that unzip is installed, and download the sources
-  apt-get update && \
-  apt-get install -y  --no-install-recommends unzip && \
   curl -s -L https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}"/archive/"${RELEASE}".zip > source.zip && \
   unzip source.zip -x "*/test/**" "*/rpm/**" "*/ghpages/**" "*/docs/**" "*/.*" && \
   rm source.zip && \
