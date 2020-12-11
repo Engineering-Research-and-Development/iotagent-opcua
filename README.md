@@ -127,6 +127,11 @@ Further information about configuration properties can be found [here](docs/howt
 For checking current status of the Agent, send a request to /status service
 (`http://{agent-ip-address}:api-port/status`)
 
+### Configure Secure connection with an OPC UA Server
+
+Documentation about OPC UA Client Secure connection can be found [here](docs/opc_ua_secure_connection_configuration.md)
+
+
 ### How to get access to the advanced API and Documentation topics
 
 Documentation about the OPC UA Administration API can be found [here](https://opcuaiotagent.docs.apiary.io)

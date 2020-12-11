@@ -74,9 +74,10 @@ module.exports = {
         logContext.op = 'Index.Initialize';
         logger.info(logContext, '----------------------------------------------------');
 
+        opcuaSecurityMode = opcua.MessageSecurityMode[securityMode];
         opcuaSecurityPolicy = opcua.SecurityPolicy[securityPolicy];
-        
-        if (securityMode === opcua.MessageSecurityMode.Invalid) {
+
+        if (opcuaSecurityMode === opcua.MessageSecurityMode.Invalid) {
             throw new Error('Invalid Security mode,  should be ' + opcua.MessageSecurityMode.enums.join(' '));
         }
 
@@ -536,18 +537,10 @@ module.exports = {
                 // ------------------------------------------
                 // initialize client connection to the OPCUA Server
                 function(callback) {
-                    if (securityMode != 'None' && securityMode != 'Invalid') {
-                        // certificate and private key needed
-                        certificateFile = './certificates/client_certificate.pem';
-                        privateKeyFile = './certificates/client_private_key.pem';
-                    } else {
-                        certificateFile = null;
-                        privateKeyFile = null;
-                    }
 
                     var options = {
                         endpoint_must_exist: false,
-                        securityMode: securityMode,
+                        securityMode: opcuaSecurityMode,
                         securityPolicy: opcuaSecurityPolicy,
                         defaultSecureTokenLifetime: 400000,
                         keepSessionAlive: true,
@@ -556,17 +549,22 @@ module.exports = {
                             maxRetry: 10,
                             initialDelay: 2000,
                             maxDelay: 10 * 1000
-                        },
-                        certificateFile: certificateFile,
-                        privateKeyFile: privateKeyFile
+                        }
                     };
 
-                    logger.info(
-                        logContext,
-                        'Options = ',
-                        options.securityMode.toString(),
-                        options.securityPolicy.toString()
-                    );
+                    var certificateFile = "./certificates/client_certificate.pem";
+                    var privateKeyFile = "./certificates/client_private_key.pem";
+
+                    if (securityMode != "None" && securityPolicy != "None" && fs.existsSync(certificateFile) && fs.existsSync(privateKeyFile)) {
+                        // certificate and private key needed
+                        var resolvedCertificateFilePath = path.resolve(certificateFile).replace(/\\/g, '/');
+                        var resolvedPrivateKeyFilePath = path.resolve(privateKeyFile).replace(/\\/g, '/');
+                        options["certificateFile"] = resolvedCertificateFilePath;
+                        options["privateKeyFile"] = resolvedPrivateKeyFilePath;
+                    }
+
+                    logger.info(logContext, 'Options = ' + JSON.stringify(options));
+
 
                     // OPCUA-IoTAgent acts as OPCUA Client
                     client = opcua.OPCUAClient.create(options);
