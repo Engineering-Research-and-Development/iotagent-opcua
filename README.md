@@ -5,7 +5,7 @@
 [![Docker badge](https://img.shields.io/docker/pulls/iotagent4fiware/iotagent-opcua.svg)](https://hub.docker.com/r/iotagent4fiware/iotagent-opcua/)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)<br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
-[![Build badge](https://img.shields.io/travis/com/Engineering-Research-and-Development/iotagent-opcua.svg)](https://travis-ci.com/Engineering-Research-and-Development/iotagent-opcua/)
+[![CI](https://github.com/Engineering-Research-and-Development/iotagent-opcua/workflows/CI/badge.svg)](https://github.com/Engineering-Research-and-Development/iotagent-opcua/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/Engineering-Research-and-Development/iotagent-opcua/badge.svg?branch=master)](https://coveralls.io/github/Engineering-Research-and-Development/iotagent-opcua?branch=master)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/full.svg)
 [![Join the chat at https://gitter.im/iotagent-opcua/community](https://badges.gitter.im/iotagent-opcua/community.svg)](https://gitter.im/iotagent-opcua/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)

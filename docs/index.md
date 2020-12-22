@@ -10,6 +10,8 @@ FIWARE Orion Context Broker.
 
 # Getting Started
 
-As first step we suggest you to follow the instructions available in the [Tutorial](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial/index.html) section. 
+As first step we suggest you to follow the instructions available in the
+[Tutorial](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial/index.html) section.
 
-In this way you will soon be able to install and run a testbed containing the OPC UA IoTAgent. Then read the "What's next" section to know how the IoTAgent can be used with your own OPC UA Server
+In this way you will soon be able to install and run a testbed containing the OPC UA IoTAgent. Then read the "What's
+next" section to know how the IoTAgent can be used with your own OPC UA Server
