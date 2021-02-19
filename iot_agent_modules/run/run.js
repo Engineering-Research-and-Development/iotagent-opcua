@@ -565,7 +565,6 @@ module.exports = {
 
                     logger.info(logContext, 'Options = ' + JSON.stringify(options));
 
-
                     // OPCUA-IoTAgent acts as OPCUA Client
                     client = opcua.OPCUAClient.create(options);
 
@@ -677,7 +676,6 @@ module.exports = {
 
                     // loading services
                     // loadDevices();
-
                     contexts.forEach(function(context) {
                         // TODO: as some lazy attributes are loaded, the IotAgent works and the registrations
                         // are inserted into OCB. But which component is adding the registrations?
@@ -1307,6 +1305,13 @@ module.exports = {
          * For OPCUA nodeid chars not in template
          */
 
+        function parsePayloadProperties(jsonAttribute) {
+            jsonAttribute = jsonAttribute.replace(/:/g, ';');
+            jsonAttribute = jsonAttribute.replace(/\*/g, '=');
+
+            return jsonAttribute;
+        }
+
         // Check if the specified node exists in the server address space
         function doesOPCUANodeExist(opcuaNodeId, callback2) {
             if (!the_session) {
@@ -1380,6 +1385,10 @@ module.exports = {
                     var mapping = {};
 
                     // Ignoring OPCUA items that are not available on OPCUA server side
+
+                    // Replacing prohibited chars
+                    if (!config.relaxTemplateValidation)
+                        attribute.object_id = parsePayloadProperties(attribute.object_id);
 
                     doesOPCUANodeExist(attribute.object_id, function(err, results) {
                         if (!err) {
@@ -1488,6 +1497,11 @@ module.exports = {
                             device.commands.forEach(function(command, index) {
 
                                 // TODO: Is it possible to generalize doesOPCUANodeExist ?
+                                
+                                // Replacing prohibited chars
+                                if(!config.relaxTemplateValidation)
+                                    command.object_id = parsePayloadProperties(command.object_id);
+
                                 doesOPCUANodeExist(command.object_id, function(err, results) {
                                     if (!err) {
                                         let result = results[0];
@@ -1560,6 +1574,9 @@ module.exports = {
 
                             device.lazy.forEach(function(lazy, index) {
                                 var mapping = {};
+
+                                if(!config.relaxTemplateValidation)
+                                    lazy.object_id = parsePayloadProperties(lazy.object_id);
 
                                 doesOPCUANodeExist(lazy.object_id, function(err, results) {
                                     if (!err) {

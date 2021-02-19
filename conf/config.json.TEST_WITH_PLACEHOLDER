@@ -1,6 +1,7 @@
 {
     "logLevel": "INFO",
     "multiCore" : false,
+    "relaxTemplateValidation":true,
     "contextBroker": {
         "host": "TEST_MACHINE_IP",
         "port": 1026,
