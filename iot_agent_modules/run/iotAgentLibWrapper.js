@@ -60,5 +60,12 @@ module.exports = {
             if (err) callback(err);
             else callback();
         });
+    },
+    start(newConfig, callback) {
+        iotAgentLib.activate(newConfig, function(err) {
+            logger.info(logContext, 'Agent is running with multiCore property set to: ' + newConfig.multiCore);
+            logger.info(logContext, 'Agent is running with relaxTemplateValidation property set to: ' + newConfig.relaxTemplateValidation );
+            callback();
+        });
     }
 };

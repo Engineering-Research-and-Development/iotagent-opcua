@@ -11,6 +11,7 @@ var request = require('request');
 var treeify = require('treeify');
 var util = require('util');
 var iotAgentLibWrapper = require('./iotAgentLibWrapper');
+var iotAgentLib = require('iotagent-node-lib');
 
 var logger = require('logops');
 logger.format = logger.formatters.pipe;
@@ -518,20 +519,17 @@ module.exports = {
                      */
                     //config["multiCore"] = true;
 
-                    iotAgentLibWrapper.activate(config, function(err) {
-                        if (err) {
-                            logger.error(logContext, 'There was an error activating the Agent: ' + err.message);
+                    iotAgentLib.startServer(config, iotAgentLibWrapper, function (error) {
+                        if (error) {
+                            logger.error(logContext, 'Error starting OPC-UA IoT Agent: [%s] Exiting process',
+                                JSON.stringify(error));
                             rSfN.removeSuffixFromName.exit(1);
+                        } else {
+                            logger.info(logContext, 'OPC-UA IoT Agent started');
                         }
-                        // We are not using the notificationHandler (see the lines just above async.series start to activate the handler)
-                        // else {
-                        //    logger.info(logContext, 'NotificationHandler attached to ContextBroker');
-                        //    iotAgentLib.setNotificationHandler(notificationHandler);
-                        // }
-                        logger.info(logContext, 'Agent is running with multiCore property set to: ' + config.multiCore);
-                        logger.info(logContext, 'Agent is running with relaxTemplateValidation property set to: ' + config.relaxTemplateValidation );
                         callback();
                     });
+
                 },
 
                 // ------------------------------------------

@@ -1,6 +1,6 @@
 # Copyright 2020 Engineering Ingegneria Informatica S.p.A.
 
-ARG  NODE_VERSION=10.19.0
+ARG  NODE_VERSION=12
 FROM node:${NODE_VERSION}-stretch
 
 ARG GITHUB_ACCOUNT=Engineering-Research-and-Development
