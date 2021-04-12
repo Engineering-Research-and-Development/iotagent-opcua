@@ -29,7 +29,13 @@ module.exports = {
         iotAgentLib.setRemoveDeviceHandler(removeDeviceHandler);
     },
 
-    activate: function(config, callback) {
+    startServer: function(config, callback){
+        iotAgentLib.startServer(config, this, function(err) {
+            if (err) callback(err);
+            else callback();
+        });
+    },
+    start: function(config, callback){
         iotAgentLib.activate(config, function(err) {
             if (err) callback(err);
             else callback();

@@ -516,11 +516,9 @@ module.exports = {
                     /*
                      * Customize configuration of IoTAgentLib
                      */
-                    //config["multiCore"] = true;
-
-                    iotAgentLibWrapper.activate(config, function(err) {
+                    iotAgentLibWrapper.startServer(config, function(err) {
                         if (err) {
-                            logger.error(logContext, 'There was an error activating the Agent: ' + err.message);
+                            logger.error(logContext, 'Error starting OPC-UA IoT Agent: [%s] Exiting process', JSON.stringify(error));
                             rSfN.removeSuffixFromName.exit(1);
                         }
                         // We are not using the notificationHandler (see the lines just above async.series start to activate the handler)
