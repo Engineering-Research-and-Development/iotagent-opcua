@@ -16,7 +16,7 @@ ENV GITHUB_ACCOUNT=${GITHUB_ACCOUNT}
 ENV GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
 ENV DOWNLOAD=${DOWNLOAD}
 
-MAINTAINER Engineering Ingegneria Informatica spa - Research and Development Lab
+LABEL maintainer="Engineering Ingegneria Informatica spa - Research and Development Lab"
 
 #
 # The following RUN command retrieves the source code from GitHub.

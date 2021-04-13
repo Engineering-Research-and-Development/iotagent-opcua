@@ -3,7 +3,7 @@
 ARG  NODE_VERSION=12
 FROM node:${NODE_VERSION}
 
-MAINTAINER Engineering Ingegneria Informatica spa - Research and Development Lab
+LABEL maintainer="Engineering Ingegneria Informatica spa - Research and Development Lab"
 
 COPY . /opt/iotagent-opcua
 
