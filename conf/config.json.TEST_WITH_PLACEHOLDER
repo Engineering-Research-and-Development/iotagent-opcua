@@ -5,7 +5,7 @@
     "contextBroker": {
         "host": "TEST_MACHINE_IP",
         "port": 1026,
-        "url": "http://TEST_MACHINE_IP:1026"
+        "url": "http://TEST_MACHINE_IP:1026",
         "ngsiVersion":"ld",
         "jsonLdContext":"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
         "fallbackTenant":"opcua_car"

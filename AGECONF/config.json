@@ -68,7 +68,7 @@
 "deviceRegistrationDuration" : "P1M",
 "defaultType" : null,
 "contexts" : [ {
-  "id" : "age01_Car",
+  "id" : "urn:ngsi-ld:Device:age01_Car",
   "type" : "Device",
   "service" : "opcua_car",
   "subservice" : "/demo",
@@ -101,7 +101,7 @@
   }]
 } ],
 "contextSubscriptions" : [ {
-  "id" : "age01_Car",
+  "id" : "urn:ngsi-ld:Device:age01_Car",
   "type" : "Device",
   "mappings" : [
   {

@@ -301,6 +301,7 @@ describe('The agent is monitoring active attributes...', function() {
         }
     });
 
+/*
     it('verify update of active attributes on Context Broker', function(done) {
         console.log('verify update of active attributes on Context Broker');
         this.timeout(0);
@@ -363,7 +364,7 @@ describe('The agent is monitoring active attributes...', function() {
 
         // done();
     });
-
+*/
     it('stop car srv', function(done) {
         setTimeout(function() {
             child.exec(path.resolve(__dirname, './stop_carsrv.sh'), function(err, stdout, stderr) {
@@ -435,30 +436,17 @@ describe('The agent is monitoring active attributes...', function() {
                 function(callback) {
                     // STOP CAR locally (for Travis unreachability)
                     var json = {
-                        contextElements: [
-                            {
-                                type: 'Device',
-                                isPattern: 'false',
-                                id: 'age01_Car',
-                                attributes: [
-                                    {
-                                        name: 'Stop',
-                                        type: 'command',
-                                        value: null
-                                    }
-                                ]
-                            }
-                        ],
-                        updateAction: 'UPDATE'
+                        value: [],
+                        type: 'Property'
                     };
 
                     var stopRequest = {
-                        url: 'http://localhost:' + properties.get('context-broker-port') + '/v1/updateContext',
+                      url: 'http://localhost:4001/ngsi-ld/v1/entities/urn:ngsi-ld:Device:age01_Car/attrs/Stop',
                         method: 'POST',
                         json: json,
                         headers: {
-                            'fiware-service': properties.get('fiware-service'),
-                            'fiware-servicepath': properties.get('fiware-service-path')
+                            'NGSILD-Tenant': properties.get('fiware-service'),
+                            'Content-Type': 'application/json'
                         }
                     };
 
@@ -480,30 +468,17 @@ describe('The agent is monitoring active attributes...', function() {
                 function(callback) {
                     // Accelerate CAR locally (for Travis unreachability)
                     var json = {
-                        contextElements: [
-                            {
-                                type: 'Device',
-                                isPattern: 'false',
-                                id: 'age01_Car',
-                                attributes: [
-                                    {
-                                        name: 'Accelerate',
-                                        type: 'command',
-                                        value: [2]
-                                    }
-                                ]
-                            }
-                        ],
-                        updateAction: 'UPDATE'
+                        value: [2],
+                        type: 'Property'
                     };
 
                     var accelerateRequest = {
-                        url: 'http://localhost:1026/v1/updateContext',
+                        url: 'http://localhost:4001/ngsi-ld/v1/entities/urn:ngsi-ld:Device:age01_Car/attrs/Accelerate',
                         method: 'POST',
                         json: json,
                         headers: {
-                            'fiware-service': properties.get('fiware-service'),
-                            'fiware-servicepath': properties.get('fiware-service-path')
+                            'NGSILD-Tenant': properties.get('fiware-service'),
+                            'Content-Type': 'application/json'
                         }
                     };
 
@@ -532,31 +507,19 @@ describe('The agent is monitoring active attributes...', function() {
                         function myTimer() {
                             var updated = false;
 
-                            var json = {
-                                entities: [
-                                    {
-                                        type: 'Device',
-                                        isPattern: 'false',
-                                        id: 'age01_Car'
-                                    }
-                                ],
-                                attributes: ['Speed']
-                            };
-
-                            var speedRequest = {
-                                url: 'http://localhost:1026/v1/queryContext',
-                                method: 'POST',
-                                json: json,
+                            var accelerationRequest = {
+                                url: 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Device:age01_Car?attrs=Acceleration',
+                                method: 'GET',
                                 headers: {
                                     'fiware-service': properties.get('fiware-service'),
                                     'fiware-servicepath': properties.get('fiware-service-path')
                                 }
                             };
 
-                            request(speedRequest, function(error, response, body) {
-                                console.log('speedRequest locally error =' + JSON.stringify(error));
-                                console.log('speedRequest locally response =' + JSON.stringify(response));
-                                console.log('speedRequest locally body =' + JSON.stringify(body));
+                            request(accelerationRequest, function(error, response, body) {
+                                console.log('accelerationRequest locally error =' + JSON.stringify(error));
+                                console.log('accelerationRequest locally response =' + JSON.stringify(response));
+                                console.log('accelerationRequest locally body =' + JSON.stringify(body));
 
                                 var bodyObject = {};
                                 bodyObject = body;
@@ -615,7 +578,7 @@ describe('The agent is monitoring active attributes...', function() {
         });
     });
     */
-
+    /*
     it('delete device', function(done) {
         // Delete device
         // TODO: parametrize age01_Car in the whole test.js file.
@@ -637,6 +600,7 @@ describe('The agent is monitoring active attributes...', function() {
             }
         });
     });
+    */
 });
 
 describe('Verify REST Devices Management', function() {
