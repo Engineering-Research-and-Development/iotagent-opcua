@@ -1,33 +1,36 @@
-FROM node:12
+# Copyright 2020 Engineering Ingegneria Informatica S.p.A.
 
-# Create app directory
-WORKDIR /usr/src/app
+ARG  NODE_VERSION=12
+FROM node:${NODE_VERSION}
 
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
+MAINTAINER Engineering Ingegneria Informatica spa - Research and Development Lab
 
-RUN  \
+COPY . /opt/iotagent-opcua
+
+WORKDIR /opt/iotagent-opcua
+
+RUN \
   apt-get update && \
   apt-get install -y git netcat openjdk-8-jdk-headless && \
   npm install pm2@3.2.2 -g && \
   echo "INFO: npm install --production..." && \
   npm install --production && \
-  # If you are building your code for production
-  npm ci --only=production \
   # Clean apt cache
   apt-get clean && \
   apt-get remove -y git && \
   apt-get -y autoremove && \
   chown node:node -R .
 
-# Bundle app source
-COPY . .
+USER node
 
 ENV NODE_ENV=production
 
+VOLUME /opt/iotagent-opcua/conf
+VOLUME /opt/iotagent-opcua/certificates
+
+# Expose 4001 for NORTH PORT
 EXPOSE 4001
+# Expose 8080 for REST SERVICES
 EXPOSE 8080
 
 CMD [ "node", "index.js" ]

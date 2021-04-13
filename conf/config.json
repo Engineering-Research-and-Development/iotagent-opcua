@@ -1,6 +1,6 @@
 {
 "logLevel" : "INFO",
-"multiCore" : true,
+"multiCore" : false,
 "relaxTemplateValidation":true,
 "contextBroker" : {
   "host" : "orion",

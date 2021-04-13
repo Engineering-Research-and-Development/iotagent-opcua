@@ -3,7 +3,7 @@ version: "3"
 services:
   iotcarsrv:
     hostname: iotcarsrv
-    image: iotagent4fiware/opcuacarsrv:1.3.4
+    image: iotagent4fiware/opcuacarsrv:latest
     volumes:
       - ./CARCONF/car_config.json:/opt/opc-ua-car-server/Car/Car1/config/car_config.json
     networks:
@@ -27,7 +27,7 @@ services:
     volumes:
       - ./AGECONF:/opt/iotagent-opcua/conf
       - ./certificates:/opt/iotagent-opcua/certificates
-    command: /usr/bin/tail -f /var/log/lastlog
+    command: npm start
     environment:
       - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
       - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
@@ -59,8 +59,7 @@ services:
       - "1026:1026"
     depends_on:
       - orion_mongo
-    #command: -dbhost mongo
-    entrypoint: /usr/bin/contextBroker -fg -multiservice -ngsiv1Autocast -statCounters -dbhost orion_mongo -logForHumans -logLevel DEBUG -t 255
+    command: -statCounters -dbhost orion_mongo -logForHumans -logLevel INFO -t 255
 
   orion_mongo:
     hostname: orion_mongo
