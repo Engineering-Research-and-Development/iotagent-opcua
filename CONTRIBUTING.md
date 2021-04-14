@@ -1,8 +1,8 @@
-To get started, <a href="https://www.clahub.com/agreements/Engineering-Research-and-Development/iotagent-opcua">sign the Contributor License Agreement</a>. 
+To get started, <a href="https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/opc-ua-agent-individual-cla.pdf">sign the Contributor License Agreement</a>.
 
 # Contributor License Agreement
 
-Thank you for your interest in [OPC UA Agent](https://github.com/Engineering-Research-and-Development/iotagent-opcua).<br/> 
+Thank you for your interest in [OPC UA Agent](https://github.com/Engineering-Research-and-Development/iotagent-opcua).<br/>
 In order to clarify both the intellectual property license, granted with Contributions from any person, and the contribution management guidelines, outlined in order to achieve a project systematic growth, the OPC UA Agent Project must have a Contributor License Agreement (or Agreement) that has been accepted by each Contributor, indicating his/her agreement to terms and conditions of this Contributor License Agreement.
 
 This Agreement is for your protection as a Contributor as well as the protection of ENGINEERING Ingegneria Informatica S.p.A., which keeps the copyright of OPC UA Agent software and documentation. This does not change your rights to use your own Contributions for any other purpose.
@@ -37,6 +37,8 @@ ENGINEERING can exclude a Contributor from the Contributors list, by its exclusi
 The Contributor owns and has the rights to contribute all source code and related material, intended to be compiled or integrated with the source code for OPC UA Agent software and documentation which the Contributor has ever delivered, and the Project has accepted, for incorporation into the technology, made available under the OPC UA Agent Project.
 
 The Contributor grants to comply with the applicable laws and regulations, the OPC UA Agent license terms of use and the guiding principles concerning any use of copyrighted materials.
+
+This project is released with [Contributor Code of Conduct](./CODE_OF_CONDUCT.md). By participating in this project, you agree to abide by its terms.
 
 ## Copyright assignment by Contributor
 Subject to the terms and conditions of this Agreement, the Contributor grants to ENGINEERING Ingegneria Informatica S.p.A. a perpetual, worldwide, no-charge, royalty-free, irrevocable, non-exclusive copyright license to use the Contribution and every derivative work, according to OPC UA Agent License.
