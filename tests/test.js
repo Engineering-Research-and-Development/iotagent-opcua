@@ -314,7 +314,7 @@ describe('The agent is monitoring active attributes...', function() {
                 properties.get('context-broker-host') +
                 ':' +
                 properties.get('context-broker-port') +
-                '/ngsi-ls/v1/entities/' +
+                '/ngsi-ld/v1/entities/' +
                 properties.get('entity-id') +
                 '?attrs=Engine_Temperature',
             method: 'GET',
