@@ -51,6 +51,9 @@ module.exports = {
         // var PropertiesReader = require('properties-reader');
         // var properties = PropertiesReader('./conf/config.properties');
         // fully qualified name
+
+        logger.setLevel(properties.get("log-level"));
+
         var endpointUrl = properties.get('endpoint');
         var securityMode = properties.get('securityMode');
         var securityPolicy = properties.get('securityPolicy');
@@ -87,6 +90,7 @@ module.exports = {
         var timeout = parseInt(argv.timeout) * 1000 || -1; // 604800*1000; //default 20000
         // var doBrowse = !!argv.browse;
 
+        logger.info(logContext, 'logLevel            = ', logger.getLevel());
         logger.info(logContext, 'endpointUrl         = ', endpointUrl);
         logger.info(logContext, 'securityMode        = ', securityMode.toString());
         logger.info(logContext, 'securityPolicy      = ', opcuaSecurityPolicy.toString());
