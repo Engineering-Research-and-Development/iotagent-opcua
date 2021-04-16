@@ -57,9 +57,7 @@ services:
       - https_proxy=$https_proxy
       - no_proxy=$no_proxy
     networks:
-      ocbnet:
-        aliases:
-          - mongo
+      - ocbnet
     volumes:
       - orion_mongo_data:/data/db
       - orion_mongo_conf:/data/configdb

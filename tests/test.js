@@ -470,8 +470,12 @@ describe('The agent is monitoring active attributes...', function() {
                             console.log('stopRequest locally error =' + JSON.stringify(error));
                             console.log('stopRequest locally response =' + JSON.stringify(response));
                             console.log('stopRequest locally body =' + JSON.stringify(body));
-                            if (body.errorCode != undefined) {
-                                setTimeout(sendRequest, 2000);
+                            if (body) {
+                                if (body.errorCode != undefined) {
+                                    setTimeout(sendRequest, 2000);
+                                } else {
+                                    callback();
+                                }
                             } else {
                                 callback();
                             }
@@ -521,8 +525,12 @@ describe('The agent is monitoring active attributes...', function() {
                             console.log('accelerateRequest locally response =' + JSON.stringify(response));
                             console.log('accelerateRequest locally body =' + JSON.stringify(body));
 
-                            if (body.errorCode != undefined) {
-                                setTimeout(sendRequest, 2000);
+                            if (body) {
+                                if (body.errorCode != undefined) {
+                                    setTimeout(sendRequest, 2000);
+                                } else {
+                                    callback();
+                                }
                             } else {
                                 callback();
                             }
