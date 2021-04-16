@@ -1,8 +1,8 @@
 { 
     "devices": [
         {
-            "device_id": "urn:ngsi-ld:Device:age01_Car",
-            "entity_name": "urn:ngsi-ld:Device:age01_Car",
+            "device_id": "age01_Car",
+            "entity_name": "age01_Car",
             "entity_type": "Device",
             "attributes": [
                 {

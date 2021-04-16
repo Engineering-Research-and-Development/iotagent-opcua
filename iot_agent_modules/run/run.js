@@ -52,7 +52,7 @@ module.exports = {
         // var properties = PropertiesReader('./conf/config.properties');
         // fully qualified name
 
-        logger.setLevel(properties.get("log-level"));
+        logger.setLevel(properties.get('log-level'));
 
         var endpointUrl = properties.get('endpoint');
         var securityMode = properties.get('securityMode');
@@ -171,7 +171,14 @@ module.exports = {
                     var t1 = getTick();
                     var span = t1 - t;
                     t = t1;
-                    var keepAliveString = 'keepalive ' + span / 1000 + ' ' + 'sec' + ' pending request on server = ' + subscription.publishEngine.nbPendingPublishRequests + '';
+                    var keepAliveString =
+                        'keepalive ' +
+                        span / 1000 +
+                        ' ' +
+                        'sec' +
+                        ' pending request on server = ' +
+                        subscription.publishEngine.nbPendingPublishRequests +
+                        '';
                     logger.debug(logContext, keepAliveString.gray);
                 })
                 .on('terminated', function(err) {
@@ -375,7 +382,14 @@ module.exports = {
                     var t1 = getTick();
                     var span = t1 - t;
                     t = t1;
-                    var keepAliveString = 'keepalive ' + span / 1000 + ' ' + 'sec' + ' pending request on server = ' + subscription.publishEngine.nbPendingPublishRequests + '';
+                    var keepAliveString =
+                        'keepalive ' +
+                        span / 1000 +
+                        ' ' +
+                        'sec' +
+                        ' pending request on server = ' +
+                        subscription.publishEngine.nbPendingPublishRequests +
+                        '';
                     logger.debug(logContext, keepAliveString.gray);
                 })
                 .on('terminated', function(err) {
@@ -483,11 +497,27 @@ module.exports = {
                                     // iotAgentLib.update(device.id, device.type, '', attributes, device, function(err) {
                                     iotAgentLibWrapper.update(device, attributes, mapping, function(err) {
                                         if (err) {
-                                            logger.error(logContext, 'error updating ' + mapping.ocb_id + ' on ' + device.name + ' value=' + variableValue + '');
+                                            logger.error(
+                                                logContext,
+                                                'error updating ' +
+                                                    mapping.ocb_id +
+                                                    ' on ' +
+                                                    device.name +
+                                                    ' value=' +
+                                                    variableValue +
+                                                    ''
+                                            );
                                             logger.info(logContext, JSON.stringify(err));
                                         } else {
                                             logger.info(
-                                                logContext,'successfully updated ' + mapping.ocb_id + ' on ' + device.name + ' value=' + variableValue);
+                                                logContext,
+                                                'successfully updated ' +
+                                                    mapping.ocb_id +
+                                                    ' on ' +
+                                                    device.name +
+                                                    ' value=' +
+                                                    variableValue
+                                            );
                                         }
                                     });
                                 }
@@ -522,7 +552,11 @@ module.exports = {
                      */
                     iotAgentLibWrapper.startServer(config, function(err) {
                         if (err) {
-                            logger.error(logContext, 'Error starting OPC-UA IoT Agent: [%s] Exiting process', JSON.stringify(error));
+                            logger.error(
+                                logContext,
+                                'Error starting OPC-UA IoT Agent: [%s] Exiting process',
+                                JSON.stringify(error)
+                            );
                             rSfN.removeSuffixFromName.exit(1);
                         }
                         // We are not using the notificationHandler (see the lines just above async.series start to activate the handler)
@@ -531,7 +565,11 @@ module.exports = {
                         //    iotAgentLib.setNotificationHandler(notificationHandler);
                         // }
                         logger.info(logContext, 'Agent is running with multiCore property set to: ' + config.multiCore);
-                        logger.info(logContext, 'Agent is running with relaxTemplateValidation property set to: ' + config.relaxTemplateValidation );
+                        logger.info(
+                            logContext,
+                            'Agent is running with relaxTemplateValidation property set to: ' +
+                                config.relaxTemplateValidation
+                        );
                         callback();
                     });
                 },
@@ -539,7 +577,6 @@ module.exports = {
                 // ------------------------------------------
                 // initialize client connection to the OPCUA Server
                 function(callback) {
-
                     var options = {
                         endpoint_must_exist: false,
                         securityMode: opcuaSecurityMode,
@@ -554,15 +591,20 @@ module.exports = {
                         }
                     };
 
-                    var certificateFile = "./certificates/client_certificate.pem";
-                    var privateKeyFile = "./certificates/client_private_key.pem";
+                    var certificateFile = './certificates/client_certificate.pem';
+                    var privateKeyFile = './certificates/client_private_key.pem';
 
-                    if (securityMode != "None" && securityPolicy != "None" && fs.existsSync(certificateFile) && fs.existsSync(privateKeyFile)) {
+                    if (
+                        securityMode != 'None' &&
+                        securityPolicy != 'None' &&
+                        fs.existsSync(certificateFile) &&
+                        fs.existsSync(privateKeyFile)
+                    ) {
                         // certificate and private key needed
                         var resolvedCertificateFilePath = path.resolve(certificateFile).replace(/\\/g, '/');
                         var resolvedPrivateKeyFilePath = path.resolve(privateKeyFile).replace(/\\/g, '/');
-                        options["certificateFile"] = resolvedCertificateFilePath;
-                        options["privateKeyFile"] = resolvedPrivateKeyFilePath;
+                        options['certificateFile'] = resolvedCertificateFilePath;
+                        options['privateKeyFile'] = resolvedPrivateKeyFilePath;
                     }
 
                     logger.info(logContext, 'Options = ' + JSON.stringify(options));
@@ -1159,24 +1201,76 @@ module.exports = {
                                                     // NODE1
                                                     // logger.info(logContext, JSON.stringify(err).red.bold);
                                                     logger.info(logContext, JSON.stringify(err));
-                                                    eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'ERROR', 'generic error', callback);
+                                                    eUv.executeUpdateValues(
+                                                        device,
+                                                        id,
+                                                        type,
+                                                        service,
+                                                        subservice,
+                                                        attributes,
+                                                        'ERROR',
+                                                        'generic error',
+                                                        callback
+                                                    );
                                                 } else {
-                                                    if(results[0].statusCode.name === opcua.StatusCodes.Good.name){
+                                                    if (results[0].statusCode.name === opcua.StatusCodes.Good.name) {
                                                         if (results[0].outputArguments[0] !== undefined) {
                                                             if (Array.isArray(results[0].outputArguments[0].value)) {
-                                                                results[0].outputArguments[0].value =results[0].outputArguments[0].value[0];
+                                                                results[0].outputArguments[0].value =
+                                                                    results[0].outputArguments[0].value[0];
                                                             }
-                                                            eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'OK', results[0].outputArguments[0].value, callback);
+                                                            eUv.executeUpdateValues(
+                                                                device,
+                                                                id,
+                                                                type,
+                                                                service,
+                                                                subservice,
+                                                                attributes,
+                                                                'OK',
+                                                                results[0].outputArguments[0].value,
+                                                                callback
+                                                            );
                                                         }
-                                                    }
-                                                    else if (results[0].statusCode.name === opcua.StatusCodes.Bad.name) {
-                                                        eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'BAD_ERROR', results[0].outputArguments[0].value, callback);
-                                                    }
-                                                    else if (results[0].statusCode.name === opcua.StatusCodes.Uncertain.name) {
-                                                        eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'UNCERTAIN_ERROR', results[0].outputArguments[0].value, callback);
-                                                    }
-                                                    else{
-                                                        eUv.executeUpdateValues(device, id, type, service, subservice, attributes, 'GENERIC_ERROR', results[0].outputArguments[0].value, callback);
+                                                    } else if (
+                                                        results[0].statusCode.name === opcua.StatusCodes.Bad.name
+                                                    ) {
+                                                        eUv.executeUpdateValues(
+                                                            device,
+                                                            id,
+                                                            type,
+                                                            service,
+                                                            subservice,
+                                                            attributes,
+                                                            'BAD_ERROR',
+                                                            results[0].outputArguments[0].value,
+                                                            callback
+                                                        );
+                                                    } else if (
+                                                        results[0].statusCode.name === opcua.StatusCodes.Uncertain.name
+                                                    ) {
+                                                        eUv.executeUpdateValues(
+                                                            device,
+                                                            id,
+                                                            type,
+                                                            service,
+                                                            subservice,
+                                                            attributes,
+                                                            'UNCERTAIN_ERROR',
+                                                            results[0].outputArguments[0].value,
+                                                            callback
+                                                        );
+                                                    } else {
+                                                        eUv.executeUpdateValues(
+                                                            device,
+                                                            id,
+                                                            type,
+                                                            service,
+                                                            subservice,
+                                                            attributes,
+                                                            'GENERIC_ERROR',
+                                                            results[0].outputArguments[0].value,
+                                                            callback
+                                                        );
                                                     }
                                                 }
                                             });
@@ -1470,11 +1564,25 @@ module.exports = {
             var namespaceIndex = null;
             var namespaceNumericIdentifier = null;
 
-            if (device.active != undefined && device.active != null && device.active.length != null && device.active.length > 0) {
+            if (
+                device.active != undefined &&
+                device.active != null &&
+                device.active.length != null &&
+                device.active.length > 0
+            ) {
                 namespaceIndex = device.active[0].object_id;
-            } else if (device.lazy != undefined && device.lazy != null && device.lazy.length != null && device.lazy.length > 0) {
+            } else if (
+                device.lazy != undefined &&
+                device.lazy != null &&
+                device.lazy.length != null &&
+                device.lazy.length > 0
+            ) {
                 namespaceIndex = device.lazy[0].object_id;
-            } else if (device.commands != undefined && device.commands != null && device.commands.length != null && device.commands.length > 0
+            } else if (
+                device.commands != undefined &&
+                device.commands != null &&
+                device.commands.length != null &&
+                device.commands.length > 0
             ) {
                 namespaceIndex = device.commands[0].object_id;
             } else {
@@ -1487,8 +1595,13 @@ module.exports = {
             // TODO: Remove after solving translateBrowserPath issue
             namespaceIndex = properties.get('namespaceIndex');
             namespaceNumericIdentifier = properties.get('namespaceNumericIdentifier');
-
-            var browsePath = opcua.makeBrowsePath('RootFolder', '/Objects/' + namespaceIndex + ':' + deviceBrowseName);
+            var browsePath =
+                config.contextBroker.ngsiVersion == 'ld'
+                    ? opcua.makeBrowsePath(
+                          'RootFolder',
+                          '/Objects/' + namespaceIndex + ':' + deviceBrowseName.replace(/:/g, '_')
+                      )
+                    : opcua.makeBrowsePath('RootFolder', '/Objects/' + namespaceIndex + ':' + deviceBrowseName);
             async.series(
                 [
                     function(callback) {
@@ -1497,11 +1610,10 @@ module.exports = {
                             var commandsArrayInitialLength = device.commands.length;
 
                             device.commands.forEach(function(command, index) {
-
                                 // TODO: Is it possible to generalize doesOPCUANodeExist ?
-                                
+
                                 // Replacing prohibited chars
-                                if(!config.relaxTemplateValidation)
+                                if (!config.relaxTemplateValidation)
                                     command.object_id = parsePayloadProperties(command.object_id);
 
                                 doesOPCUANodeExist(command.object_id, function(err, results) {
@@ -1577,7 +1689,7 @@ module.exports = {
                             device.lazy.forEach(function(lazy, index) {
                                 var mapping = {};
 
-                                if(!config.relaxTemplateValidation)
+                                if (!config.relaxTemplateValidation)
                                     lazy.object_id = parsePayloadProperties(lazy.object_id);
 
                                 doesOPCUANodeExist(lazy.object_id, function(err, results) {

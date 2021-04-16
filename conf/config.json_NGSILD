@@ -5,9 +5,9 @@
 	"contextBroker": {
 		"host": "orion",
 		"port": 1026,
-		"ngsiVersion":"v1",
-        "service" : "opcua_car",
-        "subservice" : "/demo"
+		"ngsiVersion": "ld",
+		"jsonLdContext": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+		"fallbackTenant": "opcua_car"
 	},
 	"server": {
 		"port": 4001,
@@ -68,7 +68,7 @@
 	"deviceRegistrationDuration": "P1M",
 	"defaultType": null,
 	"contexts": [{
-		"id": "age01_Car",
+		"id": "urn:ngsi-ld:Device:age01_Car",
 		"type": "Device",
 		"service": "opcua_car",
 		"subservice": "/demo",
@@ -101,7 +101,7 @@
 		}]
 	}],
 	"contextSubscriptions": [{
-		"id": "age01_Car",
+		"id": "urn:ngsi-ld:Device:age01_Car",
 		"type": "Device",
 		"mappings": [{
 			"ocb_id": "Error",
