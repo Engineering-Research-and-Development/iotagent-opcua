@@ -538,7 +538,8 @@ describe('The agent is monitoring active attributes...', function() {
                     }
 
                     sendRequest();
-                },
+                }
+                /*
                 function(callback) {
                     // Declares test done when the value retrieved from the agent is != null
                     var myVar = null;
@@ -574,7 +575,7 @@ describe('The agent is monitoring active attributes...', function() {
                                 }
                             };
 
-                            /*
+
                             request(speedRequest, function(error, response, body) {
                                 console.log('speedRequest locally error =' + JSON.stringify(error));
                                 console.log('speedRequest locally response =' + JSON.stringify(response));
@@ -601,12 +602,12 @@ describe('The agent is monitoring active attributes...', function() {
                                     loggerTest.info(logContextTest, text.rainbow);
                                 }
                             });
-                            */
+
                         }
 
                         myVar = setInterval(myTimer, 2000);
                     }, 10000);
-                }
+                }*/
             ],
             function(err, results) {
                 done();
