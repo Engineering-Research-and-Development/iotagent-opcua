@@ -451,7 +451,12 @@ describe('The agent is monitoring active attributes...', function() {
                         updateAction: 'UPDATE'
                     };
                     var stopRequest = {
-                        url: 'http://localhost:' + properties.get('context-broker-port') + '/v1/updateContext',
+                        url:
+                            'http://' +
+                            properties.get('context-broker-host') +
+                            ':' +
+                            properties.get('context-broker-port') +
+                            '/v1/updateContext',
                         method: 'POST',
                         json: json,
                         headers: {
@@ -496,7 +501,12 @@ describe('The agent is monitoring active attributes...', function() {
                     };
 
                     var accelerateRequest = {
-                        url: 'http://localhost:1026/v1/updateContext',
+                        url:
+                            'http://' +
+                            properties.get('context-broker-host') +
+                            ':' +
+                            properties.get('context-broker-port') +
+                            '/v1/updateContext',
                         method: 'POST',
                         json: json,
                         headers: {
@@ -542,7 +552,12 @@ describe('The agent is monitoring active attributes...', function() {
                             };
 
                             var speedRequest = {
-                                url: 'http://localhost:1026/v1/queryContext',
+                                url:
+                                    'http://' +
+                                    properties.get('context-broker-host') +
+                                    ':' +
+                                    properties.get('context-broker-port') +
+                                    '/v1/updateContext',
                                 method: 'POST',
                                 json: json,
                                 headers: {
