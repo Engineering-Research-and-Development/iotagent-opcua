@@ -5,3 +5,4 @@ GITIGNORE
 testCommands/NOTES
 BUILD-INSTRUCTIONS
 Dockerfile
+package-lock.json

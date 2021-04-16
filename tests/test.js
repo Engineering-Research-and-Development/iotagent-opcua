@@ -166,6 +166,149 @@ describe('The agent is monitoring active attributes...', function() {
     );
     */
 
+    // it('opcua-agent start', function(done) {
+    //     // Set Up
+    //     global.logContext = {
+    //         comp: 'iotAgent-OPCUA',
+    //         op: 'Index',
+    //         srv: '',
+    //         subsrv: ''
+    //     };
+
+    //     try {
+    //         // node-opcue dependencies
+    //         require('requirish')._(module);
+    //         var check_prop = require('../iot_agent_modules/check_properties');
+    //         if (check_prop.checkproperties().length != 0) {
+    //             console.log('WARNING!!!');
+    //             console.log('CHECK YOUR config.properties FILE,  THE FOLLOWING PARAMETERS ARE NULL:');
+    //             for (var null_params in check_prop.checkproperties()) {
+    //                 console.log(check_prop.checkproperties()[null_params]);
+    //             }
+    //             process.exit(1);
+    //         }
+
+    //         var server = require('../iot_agent_modules/services/server');
+    //         var run = require('../iot_agent_modules/run/run');
+    //         var fs = require('fs');
+
+    //         // custom simple logger
+    //         var logger = require('logops');
+    //         var PropertiesReader = require('properties-reader');
+
+    //         loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...');
+
+    //         // var iotAgentConfig = require('../conf/config.json');
+    //         // var iotAgentProp = require('./config.properties');
+
+    //         var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
+    //         properties.set("uniqueSubscription",true);
+    //         global.properties = properties;
+    //         var endpointUrl = properties.get('endpoint');
+    //         var userName = properties.get('userName');
+    //         var password = properties.get('password');
+
+    //         if (endpointUrl == null) {
+    //             loggerTest.info(logContext, '/AGE/config-test.properties: endpoint not found...');
+    //             process.exit(1);
+    //         }
+
+    //         var doAuto = false;
+    //         var configPath = path.resolve(__dirname, '../conf/config.json');
+
+    //         if (fs.existsSync(configPath)) {
+    //             var config = require(configPath);
+
+    //             if (hostIP != null) {
+    //                 var port = config.providerUrl.split(':')[2];
+    //                 config.providerUrl = hostIP + ':' + port;
+    //             }
+    //             global.config = config;
+    //         } else {
+    //             doAuto = true;
+    //         }
+
+    //         if (doAuto) {
+    //             logContext.op = 'Index.MappingTool';
+    //             loggerTest.info(logContext, '----------------    MAPPING TOOL    ----------------');
+
+    //             var loadingBar;
+    //             loadingBar = setInterval(function() {
+    //                 process.stdout.write('.');
+    //             }, 3000);
+
+    //             var exec = require('child_process').exec;
+    //             try {
+    //                 if (userName != 0 && password != 0) {
+    //                     var cmdjava =
+    //                         'java -jar ' +
+    //                         require(path.resolve(__dirname, '../mapping_tool.jar')) +
+    //                         ' -e ' +
+    //                         endpointUrl +
+    //                         ' -f ' +
+    //                         require(path.resolve(__dirname, '../conf/config.properties')) +
+    //                         ' -u ' +
+    //                         userName +
+    //                         ' -p ' +
+    //                         password;
+    //                 } else {
+    //                     var cmdjava =
+    //                         'java -jar ' +
+    //                         path.resolve(__dirname, '../mapping_tool.jar') +
+    //                         ' -e ' +
+    //                         endpointUrl +
+    //                         ' -f ' +
+    //                         path.resolve(__dirname, '../conf/config.properties');
+    //                 }
+    //                 var child = exec(cmdjava, function(err, stdout, stderr) {
+    //                     clearInterval(loadingBar);
+    //                     if (err) {
+    //                         logger.error(
+    //                             logContext,
+    //                             'There is a problem with automatic configuration. Loading old configuration (if exists)...' +
+    //                                 err
+    //                         );
+    //                     } else {
+    //                         logger.info(
+    //                             logContext,
+    //                             'Automatic configuration successfully created. Loading new configuration...'
+    //                         );
+    //                         var config = require(configPath);
+    //                     }
+
+    //                     run.run();
+    //                     server.start();
+    //                     done();
+    //                     process.exit(0);
+    //                 });
+    //             } catch (ex) {
+    //                 clearInterval(loadingBar);
+    //                 logger.info(
+    //                     logContext,
+    //                     'There is a problem with automatic configuration. Loading old configuration (if exists)...' + ex
+    //                 );
+    //             }
+    //             module.exports = child;
+    //         } else {
+    //             run.run();
+    //             server.start();
+    //             done();
+    //         }
+    //     } catch (ex) {
+    //         var logger = require('logops');
+    //         logger.error(ex);
+    //         logger.error(logContext, 'Generic error: closing application...');
+    //         process.exit(1);
+    //     }
+    // });
+
+    // it('opcua-agent stop', function(done) {
+    //     var server = require('../iot_agent_modules/services/server');
+    //     var run = require('../iot_agent_modules/run/run');
+    //     server.close();
+    //     done();
+    // });
+
     it('opcua-agent start', function(done) {
         // Set Up
         global.logContext = {
@@ -202,6 +345,7 @@ describe('The agent is monitoring active attributes...', function() {
             // var iotAgentProp = require('./config.properties');
 
             var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
+            properties.set('uniqueSubscription', false);
             global.properties = properties;
             var endpointUrl = properties.get('endpoint');
             var userName = properties.get('userName');
@@ -393,7 +537,7 @@ describe('The agent is monitoring active attributes...', function() {
                 console.log(stdout);
                 console.log('STDERR: ');
                 console.log(stderr);
-		done();
+                done();
             });
         }, 5000);
 
@@ -615,7 +759,12 @@ describe('The agent is monitoring active attributes...', function() {
         // TODO: parametrize age01_Car in the whole test.js file.
 
         var deviceDeleteRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices/urn:ngsi-ld:Device:age01_Car',
+            url:
+                'http://' +
+                'localhost' +
+                ':' +
+                properties.get('server-port') +
+                '/iot/devices/urn:ngsi-ld:Device:age01_Car',
             headers: {
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path')
