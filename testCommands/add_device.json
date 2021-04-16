@@ -1,8 +1,8 @@
-{ 
+{
     "devices": [
         {
-            "device_id": "age01_Car",
-            "entity_name": "age01_Car",
+            "device_id": "age02_Car",
+            "entity_name": "age02_Car",
             "entity_type": "Device",
             "attributes": [
                 {
