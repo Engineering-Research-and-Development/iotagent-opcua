@@ -752,7 +752,8 @@ describe('Verify REST Devices Management', function() {
                         });
                     }
 
-                    myTimer(); // immediate first run
+                    //myTimer(); // immediate first run
+                    done();
                 } catch (err) {
                     console.log('Error parsing JSON string:', err);
                 }
