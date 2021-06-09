@@ -12,7 +12,7 @@ extra_css:
     "https://www.fiware.org/style/fiware_readthedocs.css",
     "https://www.fiware.org/style/fiware_readthedocs_iot.css",
   ]
-google_analytics: ["UA-118589264-1", "opcua-agent.readthedocs.io"]
+google_analytics: ["UA-198714643-1", "opcua-agent.readthedocs.io"]
 pages:
   - "Home - Getting Started": "index.md"
   - "Tutorial": "opc_ua_agent_tutorial.md"
