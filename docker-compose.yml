@@ -27,7 +27,6 @@ services:
     volumes:
       - ./AGECONF:/opt/iotagent-opcua/conf
       - ./certificates:/opt/iotagent-opcua/certificates
-    command: npm start
     environment:
       - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
       - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
