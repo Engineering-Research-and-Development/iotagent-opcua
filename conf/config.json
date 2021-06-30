@@ -5,9 +5,8 @@
 	"contextBroker": {
 		"host": "orion",
 		"port": 1026,
-		"ngsiVersion":"v1",
-        "service" : "opcua_car",
-        "subservice" : "/demo"
+		"service" : "opcua_car",
+		"subservice" : "/demo"
 	},
 	"server": {
 		"port": 4001,
