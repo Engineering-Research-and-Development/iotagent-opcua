@@ -20,11 +20,9 @@ loggerTest.format = loggerTest.formatters.pipe;
 var child = require('child_process');
 var hostIP = null;
 
-/*
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
-*/
 
 describe('The agent is monitoring active attributes...', function() {
     /*
@@ -557,7 +555,7 @@ describe('The agent is monitoring active attributes...', function() {
                                     {
                                         name: 'Accelerate',
                                         type: 'command',
-                                        value: [2]
+                                        value: ['1']
                                     }
                                 ]
                             }
@@ -822,6 +820,64 @@ describe('Verify REST Devices Management', function() {
 
             // done();
         });
+    });
+});
+
+describe('Verify Northbound flow', function() {
+    it('verify commands execution as context provider', function(done) {
+        this.timeout(0);
+        console.log('verify commands execution as context provider');
+        // Run test
+
+        // STOP CAR
+        var json = {};
+        json.value = ['1'];
+        json.type = 'command';
+
+        var stopRequest = {
+            url:
+                'http://' +
+                'localhost' +
+                ':' +
+                config.contextBroker.port +
+                '/v2/entities/' +
+                properties.get('entity-id') +
+                '/attrs/Accelerate?type=Device',
+            method: 'PUT',
+            json: json,
+            headers: {
+                'content-type': 'application/json',
+                'fiware-service': config.service,
+                'fiware-servicepath': config.subservice
+            }
+        };
+
+        var speedRequest = {
+            url:
+                'http://' +
+                'localhost' +
+                ':' +
+                config.contextBroker.port +
+                '/v2/entities/' +
+                properties.get('entity-id') +
+                '/attrs/Speed',
+            method: 'GET',
+            headers: {
+                'fiware-service': config.service,
+                'fiware-servicepath': config.subservice
+            }
+        };
+
+        async function timedTest() {
+            var bodyObject = null;
+
+            await sleep(10000);
+
+            request(speedRequest, function(error, response, body) {
+                done();
+            });
+        }
+        timedTest();
     });
 });
 

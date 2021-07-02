@@ -93,6 +93,6 @@ jobs:
           npm install
           npm run coverage
       - name: Push to Coveralls
-        uses: coverallsapp/github-action@test_coverage
+        uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
