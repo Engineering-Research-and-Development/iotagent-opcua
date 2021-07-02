@@ -5,7 +5,6 @@
   "contextBroker" : {
     "host" : "TEST_MACHINE_IP",
     "port" : 1026,
-    "ngsiVersion":"v1",
     "service" : "opcua_car",
     "subservice" : "/demo"
   },
@@ -144,4 +143,3 @@
     } ]
   } ]
 }
-  

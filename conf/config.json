@@ -1,12 +1,14 @@
 {
-	"logLevel": "INFO",
+	"logLevel": "DEBUG",
 	"multiCore": false,
 	"relaxTemplateValidation": true,
 	"contextBroker": {
 		"host": "orion",
 		"port": 1026,
-		"service" : "opcua_car",
-		"subservice" : "/demo"
+		"ngsiVersion": "ld",
+		"jsonLdContext": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+		"service": "opcua_car",
+		"subservice": "/demo"
 	},
 	"server": {
 		"port": 4001,
@@ -16,7 +18,7 @@
 		"type": "memory"
 	},
 	"mongodb": {
-		"host": "iotmongo",
+		"host": "iot_mongo",
 		"port": "27017",
 		"db": "iotagent",
 		"retries": 5,
@@ -67,7 +69,7 @@
 	"deviceRegistrationDuration": "P1M",
 	"defaultType": null,
 	"contexts": [{
-		"id": "age01_Car",
+		"id": "urn:ngsi-ld:Device:age01_Car",
 		"type": "Device",
 		"service": "opcua_car",
 		"subservice": "/demo",
@@ -100,7 +102,7 @@
 		}]
 	}],
 	"contextSubscriptions": [{
-		"id": "age01_Car",
+		"id": "urn:ngsi-ld:Device:age01_Car",
 		"type": "Device",
 		"mappings": [{
 			"ocb_id": "Error",

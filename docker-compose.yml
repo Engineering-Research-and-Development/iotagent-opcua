@@ -32,8 +32,8 @@ services:
       - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
       - IOTA_MONGO_HOST=iot_mongo # The host name of MongoDB
       - IOTA_MONGO_DB=iotagent_opcua # The name of the database used in mongoDB
-      - IOTA_CB_NGSI_VERSION=v2 # use "ld" for NGSI-LD
-      #- IOTA_JSON_LD_CONTEXT=https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld uncomment for NGSI-LD
+      - IOTA_CB_NGSI_VERSION=ld #comment if you mind using NGSIv2
+      - IOTA_JSON_LD_CONTEXT=https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld #comment if you mind using NGSIv2
       - IOTA_FALLBACK_TENANT=opcua_car
       - IOTA_RELAX_TEMPLATE_VALIDATION=true
 
@@ -50,7 +50,7 @@ services:
 
   orion:
     hostname: orion
-    image: fiware/orion:latest
+    image: fiware/orion-ld:0.7.0 #replace with orion:latest if you mind using NGSIv2
     networks:
       - hostnet
       - ocbnet
@@ -58,7 +58,7 @@ services:
       - "1026:1026"
     depends_on:
       - orion_mongo
-    command: -statCounters -dbhost orion_mongo -logForHumans -logLevel DEBUG -t 255
+    command: -statCounters -dbhost orion_mongo -logLevel INFO -forwarding
 
   orion_mongo:
     hostname: orion_mongo
