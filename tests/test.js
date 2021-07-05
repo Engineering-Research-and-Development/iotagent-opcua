@@ -736,7 +736,7 @@ describe('Verify REST Devices Management', function() {
                         });
                     }
 
-                    postDevice(); // immediate first run
+                    //postDevice(); // immediate first run
                     //done();
                 } catch (err) {
                     console.log('Error parsing JSON string:', err);
