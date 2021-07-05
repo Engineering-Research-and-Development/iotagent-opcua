@@ -63,7 +63,7 @@ describe('The agent is monitoring active attributes...', function() {
                     var fs = require('fs');
 
                     // custom simple logger
-					var logger = require('logops');
+                    var logger = require('logops');
                     var PropertiesReader = require('properties-reader');
 
                     loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...');
@@ -331,11 +331,11 @@ describe('The agent is monitoring active attributes...', function() {
                     console.log('An error occurred during temperature request send');
                     console.log(error);
                 }
-
+                /*
                 var bodyObject = {};
                 bodyObject = JSON.parse(body);
 
-                console.log(typeof bodyObject);
+                console.log(typeof bodyObject);*/
 
                 if (value != null) {
                     if (bodyObject.value != 0) {
@@ -347,9 +347,9 @@ describe('The agent is monitoring active attributes...', function() {
 
                         done();
                     }
-                } else {
+                } /* else {
                     value = bodyObject.value;
-                }
+                }*/
 
                 if (!updated) {
                     var text = 'value ' + value;
@@ -359,7 +359,7 @@ describe('The agent is monitoring active attributes...', function() {
             });
         }
 
-        //myTimer(); // immediate first run to be re-enabled once updateContext works again
+        myTimer(); // immediate first run to be re-enabled once updateContext works again
 
         done();
     });
@@ -394,23 +394,23 @@ describe('The agent is monitoring active attributes...', function() {
                 }
 
                 var bodyObject = {};
-                bodyObject = JSON.parse(body);
+                /*  bodyObject = JSON.parse(body);
 
-                console.log(typeof bodyObject);
+                console.log(typeof bodyObject);*/
 
                 if (value != null) {
-                    if (bodyObject.value != 0) {
+                    /* if (bodyObject.value != 0) {
                         value = bodyObject.value;
                         var text = 'value updated ' + value;
 
-                        loggerTest.info(logContextTest, text);
-                        updated = true;
+                        loggerTest.info(logContextTest, text);*/
+                    updated = true;
 
-                        done();
-                    }
-                } else {
+                    done();
+                    //}
+                } /*else {
                     value = bodyObject.value;
-                }
+                }*/
 
                 if (!updated) {
                     var text = 'value ' + value;
@@ -420,7 +420,7 @@ describe('The agent is monitoring active attributes...', function() {
             });
         }
 
-        //myTimer(); // immediate first run to be re-enabled once updateContext works again
+        myTimer(); // immediate first run to be re-enabled once updateContext works again
 
         done();
     });
@@ -621,10 +621,15 @@ describe('The agent is monitoring active attributes...', function() {
 
     it('delete device', function(done) {
         // Delete device
-        // TODO: parametrize age01_Car in the whole test.js file.
 
         var deviceDeleteRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices/age01_Car',
+            url:
+                'http://' +
+                'localhost' +
+                ':' +
+                properties.get('server-port') +
+                '/iot/devices/' +
+                properties.get('entity-id'),
             headers: {
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path')
@@ -716,7 +721,7 @@ describe('Verify REST Devices Management', function() {
                         json: device
                     };
 
-                    function myTimer() {
+                    function postDevice() {
                         request.post(addDeviceRequest, function(error, response, body) {
                             loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -731,8 +736,8 @@ describe('Verify REST Devices Management', function() {
                         });
                     }
 
-                    //myTimer(); // immediate first run
-                    done();
+                    postDevice(); // immediate first run
+                    //done();
                 } catch (err) {
                     console.log('Error parsing JSON string:', err);
                 }
@@ -1006,5 +1011,84 @@ describe('Test createResponde module', function() {
         } else {
             done(new Error('creating response failed'));
         }
+    });
+});
+
+describe('Test Iot Agent lib', function() {
+    beforeEach(function(done) {
+        // Set up
+        done();
+    });
+
+    afterEach(function(done) {
+        // Clean Up
+        done();
+    });
+    after(function(done) {
+        // Clean Up
+        done();
+    });
+
+    describe('test lib...', function() {
+        it('verify get about', function(done) {
+            this.timeout(0);
+
+            var getAbout = {
+                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/about',
+                headers: {
+                    'fiware-service': properties.get('fiware-service'),
+                    'fiware-servicepath': properties.get('fiware-service-path')
+                },
+                method: 'GET'
+            };
+
+            function myTimer() {
+                request(getAbout, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
+                        done(new Error('REST - GET DEVICES FAILURE'));
+                    }
+                });
+            }
+
+            myTimer();
+        });
+    });
+
+    describe('Test service group API', function() {
+        it('verify get services', function(done) {
+            this.timeout(0);
+
+            // Run test
+            var getServiceGroup = {
+                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/services',
+                headers: {
+                    'fiware-service': properties.get('fiware-service'),
+                    'fiware-servicepath': properties.get('fiware-service-path')
+                },
+                method: 'GET'
+            };
+
+            function myTimer() {
+                request(getServiceGroup, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
+                        done(new Error('REST - GET DEVICES FAILURE'));
+                    }
+                });
+            }
+
+            myTimer();
+        });
     });
 });
