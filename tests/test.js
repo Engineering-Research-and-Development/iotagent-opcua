@@ -470,18 +470,6 @@ describe('The agent is monitoring active attributes...', function() {
         }
 
         //resetReconnectionFlag();
-
-        /*
-        // TODO: fix this
-        //var childProcess = child.spawn(path.resolve(__dirname, '../tests/print.sh'), {stdio: [process.stdout, "ignore", process.stderr]});
-        childProcess.on('exit', function (code) {
-            if(code == 0) {
-                done();
-            } else {
-                done(new Error("backoff hunter exit code: ", code));
-            }
-        });
-        */
     });
 
     // METHOD NOT WORKING ON ORION-LD
@@ -598,75 +586,6 @@ describe('The agent is monitoring active attributes...', function() {
 
                     sendRequest();
                 }
-                /*
-                function(callback) {
-                    // Declares test done when the value retrieved from the agent is != null
-                    var myVar = null;
-                    var value = null;
-
-                    setTimeout(function() {
-                        function myTimer() {
-                            var updated = false;
-
-                            var json = {
-                                entities: [
-                                    {
-                                        type: 'Device',
-                                        isPattern: 'false',
-                                        id: 'age01_Car'
-                                    }
-                                ],
-                                attributes: ['Speed']
-                            };
-
-                            var speedRequest = {
-                                url:
-                                    'http://' +
-                                    properties.get('context-broker-host') +
-                                    ':' +
-                                    properties.get('context-broker-port') +
-                                    '/v1/updateContext',
-                                method: 'POST',
-                                json: json,
-                                headers: {
-                                    'fiware-service': properties.get('fiware-service'),
-                                    'fiware-servicepath': properties.get('fiware-service-path')
-                                }
-                            };
-
-
-                            request(speedRequest, function(error, response, body) {
-                                console.log('speedRequest locally error =' + JSON.stringify(error));
-                                console.log('speedRequest locally response =' + JSON.stringify(response));
-                                console.log('speedRequest locally body =' + JSON.stringify(body));
-
-                                var bodyObject = {};
-                                bodyObject = body;
-                                bodyObjectValue = bodyObject.contextResponses[0].contextElement.attributes[0].value;
-
-                                if (value != null) {
-                                    if (value != bodyObjectValue) {
-                                        value = bodyObjectValue;
-                                        var text = 'value updated ' + value;
-                                        loggerTest.info(logContextTest, text.rainbow);
-                                        updated = true;
-                                        clearInterval(myVar);
-                                        callback();
-                                    }
-                                } else {
-                                    value = bodyObjectValue;
-                                }
-                                if (!updated) {
-                                    var text = 'value ' + value;
-                                    loggerTest.info(logContextTest, text.rainbow);
-                                }
-                            });
-
-                        }
-
-                        myVar = setInterval(myTimer, 2000);
-                    }, 10000);
-                }*/
             ],
             function(err, results) {
                 done();
@@ -674,21 +593,20 @@ describe('The agent is monitoring active attributes...', function() {
         );
     });
 
-    /*
     it('verify reconnection mechanisms (OPC UA side)', function(done) {
         var composeFilePath = path.resolve(__dirname, '../tests/docker-compose.yml');
         var stopCar = 'docker-compose -f ' + composeFilePath + ' stop iotcarsrv';
         child.exec(stopCar, function(err, stdout, stderr) {
-            if(err) {
-                console.log("An error occurred during carsrv stopping ...");
+            if (err) {
+                console.log('An error occurred during carsrv stopping ...');
                 console.log(err);
             }
 
             setTimeout(function() {
                 var startCar = 'docker-compose -f ' + composeFilePath + ' up -d iotcarsrv';
                 child.exec(startCar, function(err, stdout, stderr) {
-                    if(err) {
-                        console.log("An error occurred during carsrv starting ...");
+                    if (err) {
+                        console.log('An error occurred during carsrv starting ...');
                         console.log(err);
                     }
 
@@ -697,7 +615,6 @@ describe('The agent is monitoring active attributes...', function() {
             }, 5000);
         });
     });
-    */
 
     it('delete device', function(done) {
         // Delete device
