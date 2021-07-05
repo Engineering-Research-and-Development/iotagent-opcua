@@ -970,12 +970,4 @@ describe('Test findType module', function() {
             done(new Error('wrong behaviour for undefined device'));
         }
     });
-
-    it('verify functionalities of findType module (undefined name)', function(done) {
-        if (fT.findType(undefined, config.types.Device) == null) {
-            done();
-        } else {
-            done(new Error('wrong behaviour for undefined name'));
-        }
-    });
 });
