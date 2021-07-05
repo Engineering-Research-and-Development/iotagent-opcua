@@ -1067,7 +1067,7 @@ describe('Test Iot Agent lib', function() {
                 });
             }
 
-            myTimer();
+            //myTimer();
         });
     });
 });
