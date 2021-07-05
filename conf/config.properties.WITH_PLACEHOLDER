@@ -40,7 +40,7 @@ publishingEnabled=true
 priority=10
 
 #SubscriptionsStrategy
-uniqueSubscription=true
+uniqueSubscription=false
 
 #MONITORING PARAMETERS
 samplingInterval=1

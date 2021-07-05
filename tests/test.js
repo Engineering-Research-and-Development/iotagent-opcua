@@ -7,6 +7,10 @@ var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.proper
 var testProperties = PropertiesReader(path.resolve(__dirname, './test-file-paths.properties'));
 var fs = require('fs');
 var fT = require('../iot_agent_modules/run/findType');
+var mG = require('../iot_agent_modules/run/mongoGroup');
+var rSfN = require('../iot_agent_modules/run/removeSuffixFromName');
+var cR = require('../iot_agent_modules/run/createResponse');
+var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
 
 // Set Up
 global.logContextTest = {
@@ -953,8 +957,6 @@ describe('Verify ADMIN API services', function() {
 });
 
 describe('Test findType module', function() {
-    var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
-
     it('verify functionalities of findType module', function(done) {
         if (fT.findType('Engine_Temperature', config.types.Device).toString() == 'Number') {
             done();
@@ -968,6 +970,33 @@ describe('Test findType module', function() {
             done();
         } else {
             done(new Error('wrong behaviour for undefined device'));
+        }
+    });
+});
+
+describe('Build mongoGroup module', function() {
+    it('builg group', function(done) {
+        mG.mongoGroup(config);
+        done();
+    });
+});
+
+describe('test removeSuffixFromName module', function() {
+    it('removing SuffixFromName', function(done) {
+        if (rSfN.removeSuffixFromName('testR', 'R').toString() == 'test') {
+            done();
+        } else {
+            done(new Error('removing SuffixFromName failed'));
+        }
+    });
+});
+
+describe('Test createResponde module', function() {
+    it('creating response', function(done) {
+        if (cR.createResponse('test', 'string', config.types.Device.active, '1,2,3,4,5', [1, 2, 3, 4, 5]) != null) {
+            done();
+        } else {
+            done(new Error('creating response failed'));
         }
     });
 });
