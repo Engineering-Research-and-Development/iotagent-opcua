@@ -625,7 +625,7 @@ describe('The agent is monitoring active attributes...', function() {
         });
     });
 });
-
+/*
 describe('Verify REST Devices Management', function() {
     beforeEach(function(done) {
         // Set up
@@ -725,7 +725,7 @@ describe('Verify REST Devices Management', function() {
             // done();
         });
     });
-});
+});*/
 
 describe('Verify Northbound flow', function() {
     it('verify commands execution as context provider', function(done) {
