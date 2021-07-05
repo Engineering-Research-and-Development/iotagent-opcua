@@ -1,0 +1,3 @@
+[run]
+ omit =
+ */iot_agent_modules/findType.js/*
