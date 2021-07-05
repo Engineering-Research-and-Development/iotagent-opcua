@@ -203,7 +203,7 @@ describe('The agent is monitoring active attributes...', function() {
             // var iotAgentProp = require('./config.properties');
 
             var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
-            properties.set('uniqueSubscription', false);
+            properties.set('uniqueSubscription', true);
             global.properties = properties;
             var endpointUrl = properties.get('endpoint');
             var userName = properties.get('userName');
@@ -984,6 +984,14 @@ describe('Build mongoGroup module', function() {
 describe('test removeSuffixFromName module', function() {
     it('removing SuffixFromName', function(done) {
         if (rSfN.removeSuffixFromName('testR', 'R').toString() == 'test') {
+            done();
+        } else {
+            done(new Error('removing SuffixFromName failed'));
+        }
+    });
+
+    it('no SuffixFromName', function(done) {
+        if (rSfN.removeSuffixFromName('test', 'B').toString() == 'test') {
             done();
         } else {
             done(new Error('removing SuffixFromName failed'));
