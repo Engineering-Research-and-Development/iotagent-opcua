@@ -3,7 +3,7 @@ var async = require('async');
 
 var PropertiesReader = require('properties-reader');
 var path = require('path');
-var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
+var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER'));
 var testProperties = PropertiesReader(path.resolve(__dirname, './test-file-paths.properties'));
 var fs = require('fs');
 var fT = require('../iot_agent_modules/run/findType');
