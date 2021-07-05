@@ -3,14 +3,14 @@ var async = require('async');
 
 var PropertiesReader = require('properties-reader');
 var path = require('path');
-var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
+var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER'));
 var testProperties = PropertiesReader(path.resolve(__dirname, './test-file-paths.properties'));
 var fs = require('fs');
 var fT = require('../iot_agent_modules/run/findType');
 var mG = require('../iot_agent_modules/run/mongoGroup');
 var rSfN = require('../iot_agent_modules/run/removeSuffixFromName');
 var cR = require('../iot_agent_modules/run/createResponse');
-var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
+var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json.TEST_WITH_PLACEHOLDER'), 'utf8'));
 
 // Set Up
 global.logContextTest = {
@@ -625,7 +625,7 @@ describe('The agent is monitoring active attributes...', function() {
         });
     });
 });
-/*
+
 describe('Verify REST Devices Management', function() {
     beforeEach(function(done) {
         // Set up
@@ -716,7 +716,7 @@ describe('Verify REST Devices Management', function() {
                     }
 
                     //myTimer(); // immediate first run
-                    // done();
+                    done();
                 } catch (err) {
                     console.log('Error parsing JSON string:', err);
                 }
@@ -725,19 +725,17 @@ describe('Verify REST Devices Management', function() {
             // done();
         });
     });
-});*/
+});
 
-describe('Verify Northbound flow', function() {
+/*describe('Verify Northbound flow', function() {
     it('verify commands execution as context provider', function(done) {
         this.timeout(0);
         console.log('verify commands execution as context provider');
         // Run test
-
         // STOP CAR
         var json = {};
         json.value = ['1'];
         json.type = 'command';
-
         var stopRequest = {
             url:
                 'http://' +
@@ -755,7 +753,6 @@ describe('Verify Northbound flow', function() {
                 'fiware-servicepath': config.subservice
             }
         };
-
         var speedRequest = {
             url:
                 'http://' +
@@ -771,19 +768,16 @@ describe('Verify Northbound flow', function() {
                 'fiware-servicepath': config.subservice
             }
         };
-
         async function timedTest() {
             var bodyObject = null;
-
             await sleep(10000);
-
             request(speedRequest, function(error, response, body) {
                 done();
             });
         }
         timedTest();
     });
-});
+});*/
 
 describe('Verify ADMIN API services', function() {
     describe('The agent is active...', function() {
@@ -1067,7 +1061,7 @@ describe('Test Iot Agent lib', function() {
                 });
             }
 
-            //myTimer();
+            myTimer();
         });
     });
 });
