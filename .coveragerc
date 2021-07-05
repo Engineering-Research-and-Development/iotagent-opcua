@@ -1,0 +1,5 @@
+[report]
+show_missing = True
+omit =
+    iot_agent_modules/run/disconnect.js
+    iot_agent_modules/run/executeUpdateValues.js
