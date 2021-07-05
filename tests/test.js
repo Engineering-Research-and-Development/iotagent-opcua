@@ -6,8 +6,7 @@ var path = require('path');
 var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
 var testProperties = PropertiesReader(path.resolve(__dirname, './test-file-paths.properties'));
 var fs = require('fs');
-
-// var config = require(path.resolve(__dirname, '../conf/config.json'));
+var fT = require('../iot_agent_modules/run/findType');
 
 // Set Up
 global.logContextTest = {
@@ -950,5 +949,33 @@ describe('Verify ADMIN API services', function() {
 
             // done();
         });
+    });
+});
+
+describe('Test findType module', function() {
+    var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
+
+    it('verify functionalities of findType module', function(done) {
+        if (fT.findType('Engine_Temperature', config.types.Device).toString() == 'Number') {
+            done();
+        } else {
+            done(new Error('missing type'));
+        }
+    });
+
+    it('verify functionalities of findType module (undefined device)', function(done) {
+        if (fT.findType('Engine_Temperature', undefined) == null) {
+            done();
+        } else {
+            done(new Error('wrong behaviour for undefined device'));
+        }
+    });
+
+    it('verify functionalities of findType module (undefined name)', function(done) {
+        if (fT.findType(undefined, config.types.Device) == null) {
+            done();
+        } else {
+            done(new Error('wrong behaviour for undefined name'));
+        }
     });
 });
