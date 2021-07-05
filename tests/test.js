@@ -3,14 +3,14 @@ var async = require('async');
 
 var PropertiesReader = require('properties-reader');
 var path = require('path');
-var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER'));
+var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
 var testProperties = PropertiesReader(path.resolve(__dirname, './test-file-paths.properties'));
 var fs = require('fs');
 var fT = require('../iot_agent_modules/run/findType');
 var mG = require('../iot_agent_modules/run/mongoGroup');
 var rSfN = require('../iot_agent_modules/run/removeSuffixFromName');
 var cR = require('../iot_agent_modules/run/createResponse');
-var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json.TEST_WITH_PLACEHOLDER'), 'utf8'));
+var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
 
 // Set Up
 global.logContextTest = {
@@ -727,7 +727,7 @@ describe('Verify REST Devices Management', function() {
     });
 });
 
-/*describe('Verify Northbound flow', function() {
+describe('Verify Northbound flow', function() {
     it('verify commands execution as context provider', function(done) {
         this.timeout(0);
         console.log('verify commands execution as context provider');
@@ -783,7 +783,7 @@ describe('Verify REST Devices Management', function() {
         }
         timedTest();
     });
-});*/
+});
 
 describe('Verify ADMIN API services', function() {
     describe('The agent is active...', function() {
