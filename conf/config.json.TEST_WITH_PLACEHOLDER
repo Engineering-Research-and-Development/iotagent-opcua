@@ -1,12 +1,12 @@
 {
-    "logLevel": "INFO",
-    "multiCore" : false,
-    "relaxTemplateValidation":true,
+    "logLevel": "DEBUG",
+    "multiCore": false,
+    "relaxTemplateValidation": true,
     "contextBroker": {
         "host": "TEST_MACHINE_IP",
         "port": 1026,
-        "url": "http://TEST_MACHINE_IP:1026",
-        "fallbackTenant":"opcua_car"
+        "service": "opcua_car",
+        "subservice": "/demo"
     },
     "server": {
         "port": 4001,
@@ -28,52 +28,44 @@
             "subservice": "/demo",
             "active": [
                 {
-                    "name": "MissingContextSubElementForThis",
-                    "type": "Number",
-                    "object_id": "MissingContextSubElementForThis"
-                },
-                {
                     "name": "EngineBrake",
-                    "type": "Number",
-                    "object_id": "EngineBrake"
-                },
-                {
-                    "name": "Speed",
-                    "type": "Number",
-                    "object_id": "Speed"
+                    "type": "Number"
                 },
                 {
                     "name": "Acceleration",
-                    "type": "Number",
-                    "object_id": "Acceleration"
+                    "type": "Number"
                 },
                 {
                     "name": "EngineStopped",
-                    "type": "Boolean",
-                    "object_id": "EngineStopped"
+                    "type": "Boolean"
                 },
                 {
                     "name": "Engine_Temperature",
-                    "type": "Number",
-                    "object_id": "Engine_Temperature"
+                    "type": "Number"
                 },
                 {
                     "name": "Engine_Oxigen",
-                    "type": "Number",
-                    "object_id": "Engine_Oxigen"
+                    "type": "Number"
                 }
             ],
-            "lazy": [],
+            "lazy": [
+                {
+                    "name": "Speed",
+                    "type": "Number"
+                }
+            ],
             "commands": [
                 {
+                    "name": "Error",
+                    "type": "command"
+                },
+                {
                     "name": "Stop",
-                    "type": "command",
-                    "object_id": "Stop"
+                    "type": "command"
                 },
                 {
                     "name": "Accelerate",
-                    "type": "command",
-                    "object_id": "Accelerate"
+                    "type": "command"
                 }
             ]
         }
@@ -95,14 +87,8 @@
             "polling": false,
             "mappings": [
                 {
-                    "ocb_id": "EngineBrake",
-                    "opcua_id": "ns=3;s=EngineBrake",
-                    "object_id": null,
-                    "inputArguments": []
-                },
-                {
-                    "ocb_id": "Speed",
-                    "opcua_id": "ns=3;s=Speed",
+                    "ocb_id": "Error",
+                    "opcua_id": "ns=3;s=Error",
                     "object_id": null,
                     "inputArguments": []
                 },
@@ -139,6 +125,23 @@
             "type": "Device",
             "mappings": [
                 {
+                    "ocb_id": "Error",
+                    "opcua_id": "ns=3;s=Error",
+                    "object_id": "ns=3;i=1000",
+                    "inputArguments": [
+                        {
+                            "dataType": 12,
+                            "type": "Error Type"
+                        }
+                    ]
+                },
+                {
+                    "ocb_id": "Speed",
+                    "opcua_id": "ns=3;s=Speed",
+                    "object_id": "ns=3;i=1000",
+                    "inputArguments": []
+                },
+                {
                     "ocb_id": "Stop",
                     "opcua_id": "ns=3;s=Stop",
                     "object_id": "ns=3;i=1000",
@@ -151,9 +154,7 @@
                     "inputArguments": [
                         {
                             "dataType": 6,
-                            "type": "Intensity",
-                            "value": 2,
-                            "arrayType": 0
+                            "type": "Intensity"
                         }
                     ]
                 }
