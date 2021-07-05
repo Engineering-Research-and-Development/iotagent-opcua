@@ -10,7 +10,7 @@ var fT = require('../iot_agent_modules/run/findType');
 var mG = require('../iot_agent_modules/run/mongoGroup');
 var rSfN = require('../iot_agent_modules/run/removeSuffixFromName');
 var cR = require('../iot_agent_modules/run/createResponse');
-var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
+var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json.TEST_WITH_PLACEHOLDER'), 'utf8'));
 
 // Set Up
 global.logContextTest = {
@@ -343,7 +343,7 @@ describe('The agent is monitoring active attributes...', function() {
             });
         }
 
-        myTimer(); // immediate first run to be re-enabled once updateContext works again
+        //myTimer(); // immediate first run to be re-enabled once updateContext works again
 
         done();
     });
@@ -741,9 +741,9 @@ describe('Verify Northbound flow', function() {
         var stopRequest = {
             url:
                 'http://' +
-                'localhost' +
+                properties.get('context-broker-host') +
                 ':' +
-                config.contextBroker.port +
+                properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
                 '/attrs/Accelerate?type=Device',
@@ -759,9 +759,9 @@ describe('Verify Northbound flow', function() {
         var speedRequest = {
             url:
                 'http://' +
-                'localhost' +
+                properties.get('context-broker-host') +
                 ':' +
-                config.contextBroker.port +
+                properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
                 '/attrs/Speed',
