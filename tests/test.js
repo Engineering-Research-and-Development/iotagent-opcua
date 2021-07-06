@@ -458,63 +458,64 @@ describe('The agent is monitoring active attributes...', function() {
         });
     });
 
-    it('verify get of lazy attributes on Context Broker', function(done) {
-        console.log('verify update of active attributes on Context Broker');
-        this.timeout(0);
-        // Run test
-        var value = null;
-        var speedRequest = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('context-broker-port') +
-                '/v2/entities/' +
-                properties.get('entity-id') +
-                '/attrs/Speed',
-            method: 'GET',
-            headers: {
-                'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path')
-            }
-        };
-
-        function myTimer() {
-            var updated = false;
-            request(speedRequest, function(error, response, body) {
-                if (error) {
-                    console.log('An error occurred during speed request send');
-                    console.log(error);
+    describe('Test get of lazy attributes on Context Broker', function() {
+        it('verify get of lazy attributes on Context Broker', function(done) {
+            console.log('verify update of active attributes on Context Broker');
+            this.timeout(0);
+            // Run test
+            var value = null;
+            var speedRequest = {
+                url:
+                    'http://' +
+                    properties.get('context-broker-host') +
+                    ':' +
+                    properties.get('context-broker-port') +
+                    '/v2/entities/' +
+                    properties.get('entity-id') +
+                    '/attrs/Speed',
+                method: 'GET',
+                headers: {
+                    'fiware-service': properties.get('fiware-service'),
+                    'fiware-servicepath': properties.get('fiware-service-path')
                 }
+            };
 
-                var bodyObject = {};
-                bodyObject = JSON.parse(body);
-
-                console.log(typeof bodyObject);
-
-                if (value != null) {
-                    if (bodyObject.value != 0) {
-                        value = bodyObject.value;
-                        var text = 'value updated ' + value;
-
-                        loggerTest.info(logContextTest, text);
-                        updated = true;
-
-                        done();
+            function myTimer() {
+                var updated = false;
+                request(speedRequest, function(error, response, body) {
+                    if (error) {
+                        console.log('An error occurred during speed request send');
+                        console.log(error);
                     }
-                } else {
-                    value = bodyObject.value;
-                    done();
-                }
 
-                if (!updated) {
-                    var text = 'value ' + value;
-                    loggerTest.info(logContextTest, text);
-                    setTimeout(myTimer, 2000);
-                }
-            });
-        }
-        myTimer();
+                    var bodyObject = {};
+                    bodyObject = JSON.parse(body);
+
+                    console.log(typeof bodyObject);
+
+                    if (value != null) {
+                        if (bodyObject.value != 0) {
+                            value = bodyObject.value;
+                            var text = 'value updated ' + value;
+
+                            loggerTest.info(logContextTest, text);
+                            updated = true;
+
+                            done();
+                        }
+                    } else {
+                        value = bodyObject.value;
+                    }
+
+                    if (!updated) {
+                        var text = 'value ' + value;
+                        loggerTest.info(logContextTest, text);
+                        setTimeout(myTimer, 2000);
+                    }
+                });
+            }
+            myTimer();
+        });
     });
 
     it('stop car srv', function(done) {
