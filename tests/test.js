@@ -795,13 +795,13 @@ describe('Verify REST Devices Management', function() {
                     }
 
                     myTimer(); // immediate first run
-                    done();
+                    // done();
                 } catch (err) {
                     console.log('Error parsing JSON string:', err);
                 }
             });
 
-            done();
+            //    done();
         });
     });
 });
