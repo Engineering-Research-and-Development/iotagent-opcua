@@ -345,7 +345,7 @@ describe('The agent is monitoring active attributes...', function() {
 
         myTimer(); // immediate first run to be re-enabled once updateContext works again
 
-        done();
+        //done();
     });
 
     describe('Test Iot Agent lib', function() {
