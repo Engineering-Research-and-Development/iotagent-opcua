@@ -59,7 +59,7 @@ describe('The agent is monitoring active attributes...', function() {
                     var run = require('../iot_agent_modules/run/run');
                     var fs = require('fs');
                     // custom simple logger
-					var logger = require('logops');
+                    var logger = require('logops');
                     var PropertiesReader = require('properties-reader');
                     loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...');
                     // var iotAgentConfig = require('../conf/config.json');
@@ -346,6 +346,85 @@ describe('The agent is monitoring active attributes...', function() {
         //myTimer(); // immediate first run to be re-enabled once updateContext works again
 
         done();
+    });
+
+    describe('Test Iot Agent lib', function() {
+        beforeEach(function(done) {
+            // Set up
+            done();
+        });
+
+        afterEach(function(done) {
+            // Clean Up
+            done();
+        });
+        after(function(done) {
+            // Clean Up
+            done();
+        });
+
+        describe('test lib...', function() {
+            it('verify get about', function(done) {
+                this.timeout(0);
+
+                var getAbout = {
+                    url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/about',
+                    headers: {
+                        'fiware-service': properties.get('fiware-service'),
+                        'fiware-servicepath': properties.get('fiware-service-path')
+                    },
+                    method: 'GET'
+                };
+
+                function myTimer() {
+                    request(getAbout, function(error, response, body) {
+                        loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                        if (error == null) {
+                            loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
+                            done();
+                        } else {
+                            loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
+                            done(new Error('REST - GET DEVICES FAILURE'));
+                        }
+                    });
+                }
+
+                myTimer();
+            });
+        });
+
+        describe('Test service group API', function() {
+            it('verify get services', function(done) {
+                this.timeout(0);
+
+                // Run test
+                var getServiceGroup = {
+                    url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/services',
+                    headers: {
+                        'fiware-service': properties.get('fiware-service'),
+                        'fiware-servicepath': properties.get('fiware-service-path')
+                    },
+                    method: 'GET'
+                };
+
+                function myTimer() {
+                    request(getServiceGroup, function(error, response, body) {
+                        loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                        if (error == null) {
+                            loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
+                            done();
+                        } else {
+                            loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
+                            done(new Error('REST - GET DEVICES FAILURE'));
+                        }
+                    });
+                }
+
+                myTimer();
+            });
+        });
     });
 
     it('verify get of lazy attributes on Context Broker', function(done) {
@@ -984,84 +1063,5 @@ describe('Test createResponde module', function() {
         } else {
             done(new Error('creating response failed'));
         }
-    });
-});
-
-describe('Test Iot Agent lib', function() {
-    beforeEach(function(done) {
-        // Set up
-        done();
-    });
-
-    afterEach(function(done) {
-        // Clean Up
-        done();
-    });
-    after(function(done) {
-        // Clean Up
-        done();
-    });
-
-    describe('test lib...', function() {
-        it('verify get about', function(done) {
-            this.timeout(0);
-
-            var getAbout = {
-                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/about',
-                headers: {
-                    'fiware-service': properties.get('fiware-service'),
-                    'fiware-servicepath': properties.get('fiware-service-path')
-                },
-                method: 'GET'
-            };
-
-            function myTimer() {
-                request(getAbout, function(error, response, body) {
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
-                        done(new Error('REST - GET DEVICES FAILURE'));
-                    }
-                });
-            }
-
-            myTimer();
-        });
-    });
-
-    describe('Test service group API', function() {
-        it('verify get services', function(done) {
-            this.timeout(0);
-
-            // Run test
-            var getServiceGroup = {
-                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/services',
-                headers: {
-                    'fiware-service': properties.get('fiware-service'),
-                    'fiware-servicepath': properties.get('fiware-service-path')
-                },
-                method: 'GET'
-            };
-
-            function myTimer() {
-                request(getServiceGroup, function(error, response, body) {
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
-                        done(new Error('REST - GET DEVICES FAILURE'));
-                    }
-                });
-            }
-
-            myTimer();
-        });
     });
 });
