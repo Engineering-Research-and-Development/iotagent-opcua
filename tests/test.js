@@ -794,14 +794,14 @@ describe('Verify REST Devices Management', function() {
                         });
                     }
 
-                    //myTimer(); // immediate first run
+                    myTimer(); // immediate first run
                     done();
                 } catch (err) {
                     console.log('Error parsing JSON string:', err);
                 }
             });
 
-            // done();
+            done();
         });
     });
 });
@@ -885,10 +885,7 @@ describe('Verify ADMIN API services', function() {
                     }
                 });
             }
-
-            myTimer(); // immediate first run
-
-            // done();
+            myTimer();
         });
 
         it('verify status service', function(done) {
@@ -916,10 +913,7 @@ describe('Verify ADMIN API services', function() {
                     }
                 });
             }
-
-            myTimer(); // immediate first run
-
-            // done();
+            myTimer();
         });
 
         it('verify config service', function(done) {
@@ -947,10 +941,7 @@ describe('Verify ADMIN API services', function() {
                     }
                 });
             }
-
-            myTimer(); // immediate first run
-
-            // done();
+            myTimer();
         });
 
         it('verify commandsList service', function(done) {
@@ -977,15 +968,11 @@ describe('Verify ADMIN API services', function() {
                     }
                 });
             }
-
-            myTimer(); // immediate first run
-
-            // done();
+            myTimer();
         });
 
         it('verify config post service', function(done) {
             this.timeout(0);
-            // Run test
 
             var jsonRequest = {
                 url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
@@ -1006,9 +993,7 @@ describe('Verify ADMIN API services', function() {
                 });
             }
 
-            myTimer(); // immediate first run
-
-            // done();
+            myTimer();
         });
     });
 });
