@@ -802,7 +802,7 @@ describe('Verify REST Devices Management', function() {
     });
 });
 
-/*describe('Verify Northbound flow', function() {
+describe('Verify Northbound flow', function() {
     it('verify commands execution as context provider', function(done) {
         this.timeout(0);
         console.log('verify commands execution as context provider');
@@ -828,6 +828,26 @@ describe('Verify REST Devices Management', function() {
                 'fiware-servicepath': config.subservice
             }
         };
+
+        function myTimer() {
+            request.post(stopRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - stop command');
+
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - stop command');
+                    done(new Error('REST - stop command'));
+                }
+            });
+        }
+        myTimer();
+    });
+
+    it('verify speed', function(done) {
+        this.timeout(0);
         var speedRequest = {
             url:
                 'http://' +
@@ -843,16 +863,24 @@ describe('Verify REST Devices Management', function() {
                 'fiware-servicepath': config.subservice
             }
         };
-        async function timedTest() {
-            var bodyObject = null;
-            await sleep(10000);
-            request(speedRequest, function(error, response, body) {
-                done();
+
+        function myTimer() {
+            request.post(speedRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - speed check');
+
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - speed check');
+                    done(new Error('REST - speed check'));
+                }
             });
         }
-        timedTest();
+        myTimer();
     });
-});*/
+});
 
 describe('Verify ADMIN API services', function() {
     describe('The agent is active...', function() {
