@@ -801,7 +801,7 @@ describe('Verify REST Devices Management', function() {
                 }
             });
 
-            //    done();
+            done();
         });
     });
 });
