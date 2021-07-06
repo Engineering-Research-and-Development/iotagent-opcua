@@ -806,7 +806,7 @@ describe('Verify REST Devices Management', function() {
     });
 });
 
-/*describe('Verify Northbound flow', function() {
+describe('Verify Northbound flow', function() {
     it('verify commands execution as context provider', function(done) {
         this.timeout(0);
         console.log('verify commands execution as context provider');
@@ -856,7 +856,7 @@ describe('Verify REST Devices Management', function() {
         }
         timedTest();
     });
-});*/
+});
 
 describe('Verify ADMIN API services', function() {
     describe('The agent is active...', function() {
