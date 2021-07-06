@@ -567,125 +567,73 @@ describe('The agent is monitoring active attributes...', function() {
         }
     });
 
-    // METHOD NOT WORKING ON ORION-LD
     it('verify commands execution as context provider', function(done) {
         this.timeout(0);
-        console.log('verify commands execution as context provider');
-        async.series(
-            [
-                function(callback) {
-                    // STOP CAR locally (for Travis unreachability)
-                    var json = {
-                        contextElements: [
-                            {
-                                type: 'Device',
-                                isPattern: 'false',
-                                id: 'age01_Car',
-                                attributes: [
-                                    {
-                                        name: 'Stop',
-                                        type: 'command',
-                                        value: null
-                                    }
-                                ]
-                            }
-                        ],
-                        updateAction: 'UPDATE'
-                    };
-                    var stopRequest = {
-                        url:
-                            'http://' +
-                            properties.get('context-broker-host') +
-                            ':' +
-                            properties.get('context-broker-port') +
-                            '/v1/updateContext',
-                        method: 'POST',
-                        json: json,
-                        headers: {
-                            'fiware-service': properties.get('fiware-service'),
-                            'fiware-servicepath': properties.get('fiware-service-path')
-                        }
-                    };
 
-                    function sendRequest() {
-                        request(stopRequest, function(error, response, body) {
-                            console.log('stopRequest locally error =' + JSON.stringify(error));
-                            console.log('stopRequest locally response =' + JSON.stringify(response));
-                            console.log('stopRequest locally body =' + JSON.stringify(body));
-                            if (body) {
-                                if (body.errorCode != undefined) {
-                                    setTimeout(sendRequest, 2000);
-                                } else {
-                                    callback();
-                                }
-                            } else {
-                                callback();
-                            }
-                        });
-                    }
+        var commandsRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v1/updateContext',
+            method: 'POST',
+            json:
+                '{"contextElements":[{"type":"Device","isPattern":"false","id":"age01_Car","attributes":[{"name":"Stop","type":"command","value":null}]}],"updateAction":"UPDATE"}',
 
-                    sendRequest();
-                },
-                function(callback) {
-                    // Accelerate CAR locally (for Travis unreachability)
-                    var json = {
-                        contextElements: [
-                            {
-                                type: 'Device',
-                                isPattern: 'false',
-                                id: 'age01_Car',
-                                attributes: [
-                                    {
-                                        name: 'Accelerate',
-                                        type: 'command',
-                                        value: ['1']
-                                    }
-                                ]
-                            }
-                        ],
-                        updateAction: 'UPDATE'
-                    };
-
-                    var accelerateRequest = {
-                        url:
-                            'http://' +
-                            properties.get('context-broker-host') +
-                            ':' +
-                            properties.get('context-broker-port') +
-                            '/v1/updateContext',
-                        method: 'POST',
-                        json: json,
-                        headers: {
-                            'fiware-service': properties.get('fiware-service'),
-                            'fiware-servicepath': properties.get('fiware-service-path')
-                        }
-                    };
-
-                    function sendRequest() {
-                        request(accelerateRequest, function(error, response, body) {
-                            console.log('accelerateRequest locally error =' + JSON.stringify(error));
-                            console.log('accelerateRequest locally response =' + JSON.stringify(response));
-                            console.log('accelerateRequest locally body =' + JSON.stringify(body));
-
-                            if (body) {
-                                if (body.errorCode != undefined) {
-                                    setTimeout(sendRequest, 2000);
-                                } else {
-                                    callback();
-                                }
-                            } else {
-                                callback();
-                            }
-                        });
-                    }
-
-                    sendRequest();
-                }
-            ],
-            function(err, results) {
-                done();
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
             }
-        );
+        };
+        function myTimer() {
+            request(commandsRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'commandsRequest SUCCESSFULLY POSTED');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'commandsRequest FAILURE POSTED');
+                    done(new Error(error));
+                }
+            });
+        }
+
+        myTimer();
+    });
+
+    it('verify accelerateRequest as context provider', function(done) {
+        this.timeout(0);
+
+        var accelerateRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v1/updateContext',
+            method: 'POST',
+            json:
+                '{"contextElements":[{"type":"Device","isPattern":"false","id":"age01_Car","attributes":[{"name":"Accelerate","type":"command","value":["1"]}]}],"updateAction":"UPDATE"}',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            }
+        };
+        function myTimer() {
+            request(accelerateRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'accelerateRequest SUCCESSFULLY POSTED');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'accelerateRequest FAILURE POSTED');
+                    done(new Error(error));
+                }
+            });
+        }
+
+        myTimer();
     });
 
     it('verify reconnection mechanisms (OPC UA side)', function(done) {
