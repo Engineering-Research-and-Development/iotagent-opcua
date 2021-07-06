@@ -1,5 +1,5 @@
 {
-    "logLevel": "DEBUG",
+    "logLevel": "INFO",
     "multiCore": false,
     "relaxTemplateValidation": true,
     "contextBroker": {
