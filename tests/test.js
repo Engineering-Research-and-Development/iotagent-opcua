@@ -342,10 +342,7 @@ describe('The agent is monitoring active attributes...', function() {
                 }
             });
         }
-
-        myTimer(); // immediate first run to be re-enabled once updateContext works again
-
-        //done();
+        myTimer();
     });
 
     describe('Test Iot Agent lib', function() {
@@ -482,10 +479,7 @@ describe('The agent is monitoring active attributes...', function() {
                 }
             });
         }
-
-        //myTimer(); // immediate first run to be re-enabled once updateContext works again
-
-        done();
+        myTimer();
     });
 
     it('stop car srv', function(done) {
@@ -748,9 +742,7 @@ describe('Verify REST Devices Management', function() {
                 });
             }
 
-            myTimer(); // immediate first run
-
-            // done();
+            myTimer();
         });
 
         // The new device contains missing active attributes, existent active
@@ -785,7 +777,7 @@ describe('Verify REST Devices Management', function() {
                     }
                 });
             }
-            myTimer(); // immediate first run
+            myTimer();
         });
     });
 });
