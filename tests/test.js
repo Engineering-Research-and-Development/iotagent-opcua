@@ -513,10 +513,7 @@ describe('The agent is monitoring active attributes...', function() {
                 }
             });
         }
-
-        myTimer(); // immediate first run to be re-enabled once updateContext works again
-
-        done();
+        myTimer();
     });
 
     it('stop car srv', function(done) {
