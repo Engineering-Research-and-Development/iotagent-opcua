@@ -797,7 +797,7 @@ describe('Verify REST Devices Management', function() {
                     console.log('Error parsing JSON string:', err);
                 }
             });
-            done();
+            //done();
         });
     });
 });
