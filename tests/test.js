@@ -504,6 +504,7 @@ describe('The agent is monitoring active attributes...', function() {
                     }
                 } else {
                     value = bodyObject.value;
+                    done();
                 }
 
                 if (!updated) {
