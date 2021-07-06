@@ -287,6 +287,40 @@ describe('The agent is monitoring active attributes...', function() {
         }
     });
 
+    it('verify config post subscription', function(done) {
+        this.timeout(0);
+
+        var subscriptionRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v2/subscriptions',
+            method: 'POST',
+            json:
+                '{"description":"testsubscription","subject":{"entities":[{"id":"age01_Car","type":"Device"}],"condition":{"attrs":["Engine_Temperature"]}},"notification":{"http":{"url":"http://"+ properties.get(\'context-broker-host\') +\':\'+ properties.get(\'context-broker-port\') +"/accumulate"},"attrs":["Speed"]},"expires":"2040-01-01T14:00:00.00Z"}',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            }
+        };
+        function myTimer() {
+            request(subscriptionRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'subscriptionRequest SUCCESSFULLY POSTED');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'subscriptionRequest FAILURE POSTED');
+                    done(new Error(error));
+                }
+            });
+        }
+
+        myTimer();
+    });
+
     it('verify update of active attributes on Context Broker', function(done) {
         console.log('verify update of active attributes on Context Broker');
         this.timeout(0);
@@ -342,10 +376,7 @@ describe('The agent is monitoring active attributes...', function() {
                 }
             });
         }
-
-        myTimer(); // immediate first run to be re-enabled once updateContext works again
-
-        //done();
+        myTimer();
     });
 
     describe('Test Iot Agent lib', function() {
@@ -534,8 +565,6 @@ describe('The agent is monitoring active attributes...', function() {
                 console.error(err);
             }
         }
-
-        //resetReconnectionFlag();
     });
 
     // METHOD NOT WORKING ON ORION-LD
@@ -747,10 +776,7 @@ describe('Verify REST Devices Management', function() {
                     }
                 });
             }
-
-            myTimer(); // immediate first run
-
-            // done();
+            myTimer();
         });
 
         // The new device contains missing active attributes, existent active
@@ -797,7 +823,6 @@ describe('Verify REST Devices Management', function() {
                     console.log('Error parsing JSON string:', err);
                 }
             });
-            //done();
         });
     });
 });
