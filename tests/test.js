@@ -766,8 +766,6 @@ describe('Verify REST Devices Management', function() {
                 }
 
                 try {
-                    const device = JSON.parse(jsonString);
-
                     var addDeviceRequest = {
                         url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
                         headers: {
@@ -776,7 +774,8 @@ describe('Verify REST Devices Management', function() {
                             'content-type': 'application/json'
                         },
                         method: 'POST',
-                        json: device
+                        json:
+                            '{"devices":[{"device_id":"age05_Car","entity_name":"age05_Car","entity_type":"Device","attributes":[{"object_id":"ns=3;s=EngineBrake","name":"EngineBrake","type":"Number"},{"object_id":"ns=3;s=Acceleration","name":"Acceleration","type":"Number"},{"object_id":"ns=3;s=EngineStopped","name":"EngineStopped","type":"Boolean"},{"object_id":"ns=3;s=Temperature","name":"Temperature","type":"Number"},{"object_id":"ns=3;s=Oxigen","name":"Oxigen","type":"Number"}],"lazy":[{"object_id":"ns=3;s=Speed","name":"Speed","type":"Number"}],"commands":[]}]}'
                     };
 
                     function myTimer() {
@@ -793,14 +792,11 @@ describe('Verify REST Devices Management', function() {
                             }
                         });
                     }
-
-                    myTimer(); // immediate first run
-                    // done();
+                    myTimer();
                 } catch (err) {
                     console.log('Error parsing JSON string:', err);
                 }
             });
-
             done();
         });
     });
