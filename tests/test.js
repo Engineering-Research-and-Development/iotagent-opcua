@@ -755,7 +755,7 @@ describe('Verify Northbound flow', function() {
 
     it('verify speed', function(done) {
         this.timeout(0);
-        var speedRequest = {
+        var speedRequest2 = {
             url:
                 'http://' +
                 properties.get('context-broker-host') +
@@ -772,7 +772,7 @@ describe('Verify Northbound flow', function() {
         };
 
         function myTimer() {
-            request.post(speedRequest, function(error, response, body) {
+            request.post(speedRequest2, function(error, response, body) {
                 console.log('speedRequest');
                 console.log('error:', error);
                 console.log('body', body);
