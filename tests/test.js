@@ -6,6 +6,11 @@ var path = require('path');
 var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
 var testProperties = PropertiesReader(path.resolve(__dirname, './test-file-paths.properties'));
 var fs = require('fs');
+var fT = require('../iot_agent_modules/run/findType');
+var mG = require('../iot_agent_modules/run/mongoGroup');
+var rSfN = require('../iot_agent_modules/run/removeSuffixFromName');
+var cR = require('../iot_agent_modules/run/createResponse');
+var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
 
 // var config = require(path.resolve(__dirname, '../conf/config.json'));
 
@@ -58,7 +63,7 @@ describe('The agent is monitoring active attributes...', function() {
                     var run = require('../iot_agent_modules/run/run');
                     var fs = require('fs');
                     // custom simple logger
-					var logger = require('logops');
+                    var logger = require('logops');
                     var PropertiesReader = require('properties-reader');
                     loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...');
                     // var iotAgentConfig = require('../conf/config.json');
@@ -659,48 +664,49 @@ describe('Verify REST Devices Management', function() {
             this.timeout(0);
             // Run test
 
-            fs.readFile(testProperties.get('add-device-1'), 'utf8', (err, jsonString) => {
-                if (err) {
-                    console.log('Error reading file from disk:', err);
-                    return;
+            var addDeviceRequest = {
+                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
+                headers: {
+                    'fiware-service': properties.get('fiware-service'),
+                    'fiware-servicepath': properties.get('fiware-service-path'),
+                    'content-type': 'application/json'
+                },
+                method: 'POST',
+                json: {
+                    devices: [
+                        {
+                            device_id: 'age05_Car',
+                            entity_name: 'age05_Car',
+                            entity_type: 'Device',
+                            attributes: [
+                                { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
+                                { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
+                                { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
+                                { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
+                                { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
+                            ],
+                            lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
+                            commands: []
+                        }
+                    ]
                 }
+            };
 
-                try {
-                    const device = JSON.parse(jsonString);
+            function myTimer() {
+                request.post(addDeviceRequest, function(error, response, body) {
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-                    var addDeviceRequest = {
-                        url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
-                        headers: {
-                            'fiware-service': properties.get('fiware-service'),
-                            'fiware-servicepath': properties.get('fiware-service-path'),
-                            'content-type': 'application/json'
-                        },
-                        method: 'POST',
-                        json: device
-                    };
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
 
-                    function myTimer() {
-                        request.post(addDeviceRequest, function(error, response, body) {
-                            loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                            if (error == null) {
-                                loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
-
-                                done();
-                            } else {
-                                loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
-                                done(new Error('REST - ADD DEVICE FAILURE'));
-                            }
-                        });
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
+                        done(new Error('REST - ADD DEVICE FAILURE'));
                     }
-
-                    myTimer(); // immediate first run
-                } catch (err) {
-                    console.log('Error parsing JSON string:', err);
-                }
-            });
-
-            // done();
+                });
+            }
+            myTimer(); // immediate first run
         });
     });
 });
@@ -857,5 +863,58 @@ describe('Verify ADMIN API services', function() {
 
             // done();
         });
+    });
+});
+
+describe('Test findType module', function() {
+    it('verify functionalities of findType module', function(done) {
+        if (fT.findType('Engine_Temperature', config.types.Device).toString() == 'Number') {
+            done();
+        } else {
+            done(new Error('missing type'));
+        }
+    });
+
+    it('verify functionalities of findType module (undefined device)', function(done) {
+        if (fT.findType('Engine_Temperature', undefined) == null) {
+            done();
+        } else {
+            done(new Error('wrong behaviour for undefined device'));
+        }
+    });
+});
+
+describe('Build mongoGroup module', function() {
+    it('builg group', function(done) {
+        mG.mongoGroup(config);
+        done();
+    });
+});
+
+describe('test removeSuffixFromName module', function() {
+    it('removing SuffixFromName', function(done) {
+        if (rSfN.removeSuffixFromName('testR', 'R').toString() == 'test') {
+            done();
+        } else {
+            done(new Error('removing SuffixFromName failed'));
+        }
+    });
+
+    it('no SuffixFromName', function(done) {
+        if (rSfN.removeSuffixFromName('test', 'B').toString() == 'test') {
+            done();
+        } else {
+            done(new Error('removing SuffixFromName failed'));
+        }
+    });
+});
+
+describe('Test createResponde module', function() {
+    it('creating response', function(done) {
+        if (cR.createResponse('test', 'string', config.types.Device.active, '1,2,3,4,5', [1, 2, 3, 4, 5]) != null) {
+            done();
+        } else {
+            done(new Error('creating response failed'));
+        }
     });
 });
