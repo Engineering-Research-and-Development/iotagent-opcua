@@ -331,9 +331,11 @@ describe('The agent is monitoring active attributes...', function() {
 
                         loggerTest.info(logContextTest, text);
                         updated = true;
+                        done();
                     }
                 } else {
                     value = bodyObject.value;
+                    done();
                 }
                 if (!updated) {
                     var text = 'value ' + value;
@@ -343,7 +345,6 @@ describe('The agent is monitoring active attributes...', function() {
             });
         }
         myTimer();
-        done();
     });
 
     describe('Test Iot Agent lib', function() {
@@ -484,6 +485,7 @@ describe('The agent is monitoring active attributes...', function() {
         }
 
         myTimer();
+        done;
     });
 
     it('verify accelerateRequest as context provider', function(done) {
@@ -545,7 +547,7 @@ describe('The agent is monitoring active attributes...', function() {
         this.timeout(0);
         // Run test
         var value = null;
-        var speedRequest = {
+        var speedRequest2 = {
             url:
                 'http://' +
                 properties.get('context-broker-host') +
@@ -563,7 +565,7 @@ describe('The agent is monitoring active attributes...', function() {
 
         function myTimer() {
             var updated = false;
-            request(speedRequest, function(error, response, body) {
+            request(speedRequest2, function(error, response, body) {
                 console.log('speedRequest');
                 console.log('error:', error);
                 console.log('body', body);
@@ -591,7 +593,6 @@ describe('The agent is monitoring active attributes...', function() {
                     value = bodyObject.value;
                     done();
                 }
-
                 if (!updated) {
                     var text = 'value ' + value;
                     loggerTest.info(logContextTest, text);
@@ -599,9 +600,7 @@ describe('The agent is monitoring active attributes...', function() {
                 }
             });
         }
-
         //myTimer(); // immediate first run to be re-enabled once updateContext works again
-
         done();
     });
 });
@@ -989,58 +988,6 @@ describe('Test createResponde module', function() {
     });
 });
 
-describe('Add Device', function() {
-    it('verify the addition of a new device', function(done) {
-        this.timeout(0);
-        // Run test
-        var addDeviceRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
-            headers: {
-                'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path'),
-                'content-type': 'application/json'
-            },
-            method: 'POST',
-            json: {
-                devices: [
-                    {
-                        device_id: 'age05_Car',
-                        entity_name: 'age05_Car',
-                        entity_type: 'Device',
-                        attributes: [
-                            { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
-                            { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
-                            { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
-                            { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
-                            { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
-                        ],
-                        lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
-                        commands: []
-                    }
-                ]
-            }
-        };
-
-        function myTimer() {
-            request.post(addDeviceRequest, function(error, response, body) {
-                console.log('addDeviceRequest');
-                console.log('error:', error);
-                console.log('body', body);
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                if (error == null) {
-                    loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
-                    done();
-                } else {
-                    loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
-                    done();
-                }
-            });
-        }
-        myTimer();
-    });
-});
-
 describe('stop and start car server + delete device', function() {
     it('stop car srv', function(done) {
         setTimeout(function() {
@@ -1092,7 +1039,6 @@ describe('stop and start car server + delete device', function() {
                         console.log('An error occurred during carsrv starting ...');
                         console.log(err);
                     }
-
                     done();
                 });
             }, 5000);

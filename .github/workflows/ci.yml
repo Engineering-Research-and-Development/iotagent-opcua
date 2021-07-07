@@ -54,7 +54,7 @@ jobs:
       matrix:
         node-version:
           - 12.x
-          - 14.x
+          #- 14.x
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
@@ -71,6 +71,8 @@ jobs:
         run: |
           npm install
           npm test
+      - name: "Stop Services"
+        run: docker-compose -f ./tests/docker-compose.yml down -v
 
   code-coverage:
     name: Coveralls Code Coverage
@@ -96,3 +98,5 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Stop Services"
+        run: docker-compose -f ./tests/docker-compose.yml down -v
