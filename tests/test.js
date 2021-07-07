@@ -345,19 +345,20 @@ describe('The agent is monitoring active attributes...', function() {
                                 var text = 'value updated ' + value;
                                 loggerTest.info(logContextTest, text);
                                 updated = true;
+                                done();
                             }
                         } else {
                             value = bodyObject.value;
+                            done();
                         }
                         if (!updated) {
                             var text = 'value ' + value;
                             loggerTest.info(logContextTest, text);
-                            setTimeout(myTimer, 2000);
+                            //setTimeout(myTimer, 2000);
                         }
                     });
                 }
                 myTimer();
-                done();
             });
         });
 
@@ -477,7 +478,7 @@ describe('The agent is monitoring active attributes...', function() {
                     done();
                 } else {
                     loggerTest.info(logContextTest, 'commandsRequest FAILURE POSTED');
-                    done(new Error(error));
+                    done(new Error('commandsRequest'));
                 }
             });
         }
@@ -530,7 +531,7 @@ describe('The agent is monitoring active attributes...', function() {
                     done();
                 } else {
                     loggerTest.info(logContextTest, 'accelerateRequest FAILURE POSTED');
-                    done(new Error(error));
+                    done(new Error('accelerateRequest'));
                 }
             });
         }
@@ -593,14 +594,11 @@ describe('The agent is monitoring active attributes...', function() {
                 if (!updated) {
                     var text = 'value ' + value;
                     loggerTest.info(logContextTest, text);
-                    setTimeout(myTimer, 2000);
+                    // setTimeout(myTimer, 2000);
                 }
             });
         }
-
-        //myTimer(); // immediate first run to be re-enabled once updateContext works again
-
-        done();
+        myTimer(); // immediate first run to be re-enabled once updateContext works again
     });
 });
 
@@ -649,7 +647,7 @@ describe('Add Device', function() {
                     done();
                 } else {
                     loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
-                    done();
+                    done(new Error('addDeviceRequest'));
                 }
             });
         }

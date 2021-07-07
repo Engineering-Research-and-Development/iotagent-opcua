@@ -3,7 +3,7 @@
     "multiCore": false,
     "relaxTemplateValidation": true,
     "contextBroker": {
-        "host": "TEST_MACHINE_IP",
+        "host": "localhost",
         "port": 1026,
         "service": "opcua_car",
         "subservice": "/demo"
@@ -16,7 +16,7 @@
         "type": "memory"
     },
     "mongodb": {
-        "host": "TEST_MACHINE_IP",
+        "host": "localhost",
         "port": "27017",
         "db": "iotagent",
         "retries": 5,
@@ -73,7 +73,7 @@
     "browseServerOptions": null,
     "service": "opcua_car",
     "subservice": "/demo",
-    "providerUrl": "http://TEST_MACHINE_IP:4001",
+    "providerUrl": "http://localhost:4001",
     "pollingExpiration": "200000",
     "pollingDaemonFrequency": "20000",
     "deviceRegistrationDuration": "P1M",
