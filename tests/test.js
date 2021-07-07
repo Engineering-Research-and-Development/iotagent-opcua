@@ -585,98 +585,55 @@ describe('The agent is monitoring active attributes...', function() {
 
         done();
     });
+});
 
-    it('stop car srv', function(done) {
-        setTimeout(function() {
-            child.exec(path.resolve(__dirname, './stop_carsrv.sh'), function(err, stdout, stderr) {
-                if (err) {
-                    console.log('An error occurred during car server stop ...');
-                    console.log(err);
-                }
-                console.log('car stop script log');
-                console.log('STDOUT: ');
-                console.log(stdout);
-                console.log('STDERR: ');
-                console.log(stderr);
-                done();
-            });
-        }, 5000);
-    });
-
-    it('start car srv', function(done) {
-        setTimeout(function() {
-            child.exec(path.resolve(__dirname, './start_carsrv.sh'), function(err, stdout, stderr) {
-                if (err) {
-                    console.log('An error occurred during car server restart ...');
-                    console.log(err);
-                }
-                console.log('car start script log');
-                console.log('STDOUT: ');
-                console.log(stdout);
-                console.log('STDERR: ');
-                console.log(stderr);
-                done();
-            });
-        }, 5000);
-
-        function resetReconnectionFlag() {
-            var flagPath = path.resolve(__dirname, './connectionRestablishedFlag');
-            try {
-                if (fs.existsSync(flagPath)) {
-                    fs.unlinkSync(flagPath);
-                    done();
-                } else {
-                    setTimeout(resetReconnectionFlag, 1000);
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        }
-    });
-
-    it('verify reconnection mechanisms (OPC UA side)', function(done) {
-        var composeFilePath = path.resolve(__dirname, '../tests/docker-compose.yml');
-        var stopCar = 'docker-compose -f ' + composeFilePath + ' stop iotcarsrv';
-        child.exec(stopCar, function(err, stdout, stderr) {
-            if (err) {
-                console.log('An error occurred during carsrv stopping ...');
-                console.log(err);
-            }
-
-            setTimeout(function() {
-                var startCar = 'docker-compose -f ' + composeFilePath + ' up -d iotcarsrv';
-                child.exec(startCar, function(err, stdout, stderr) {
-                    if (err) {
-                        console.log('An error occurred during carsrv starting ...');
-                        console.log(err);
-                    }
-
-                    done();
-                });
-            }, 5000);
-        });
-    });
-
-    it('delete device', function(done) {
-        // Delete device
-        // TODO: parametrize age01_Car in the whole test.js file.
-
-        var deviceDeleteRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices/age01_Car',
+describe('Add Device', function() {
+    it('verify the addition of a new device', function(done) {
+        this.timeout(0);
+        // Run test
+        var addDeviceRequest = {
+            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
             headers: {
                 'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path')
+                'fiware-servicepath': properties.get('fiware-service-path'),
+                'content-type': 'application/json'
             },
-            method: 'DELETE'
+            method: 'POST',
+            json: {
+                devices: [
+                    {
+                        device_id: 'age05_Car',
+                        entity_name: 'age05_Car',
+                        entity_type: 'Device',
+                        attributes: [
+                            { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
+                            { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
+                            { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
+                            { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
+                            { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
+                        ],
+                        lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
+                        commands: []
+                    }
+                ]
+            }
         };
 
-        request(deviceDeleteRequest, function(error, response, body) {
-            if (error == null) {
-                done();
-            } else {
-                done(new Error(error));
-            }
-        });
+        function myTimer() {
+            request.post(addDeviceRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
+
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
+                    done();
+                }
+            });
+        }
+        myTimer();
     });
 });
 
@@ -808,142 +765,139 @@ describe('Verify Northbound flow', function() {
 });
 
 describe('Verify ADMIN API services', function() {
-    describe('The agent is active...', function() {
-        it('verify version service', function(done) {
-            this.timeout(0);
-            // Run test
+    it('verify version service', function(done) {
+        this.timeout(0);
+        // Run test
 
-            var value = null;
+        var value = null;
 
-            var versionRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
-                method: 'GET'
-            };
-            function myTimer() {
-                var updated = false;
+        var versionRequest = {
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
+            method: 'GET'
+        };
+        function myTimer() {
+            var updated = false;
 
-                request(versionRequest, function(error, response, body) {
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+            request(versionRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'VERSION SERVICE SUCCESSFULLY READ');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'VERSION SERVICE FAILURE READ');
-                        done(new Error(error));
-                    }
-                });
-            }
-            myTimer();
-        });
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'VERSION SERVICE SUCCESSFULLY READ');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'VERSION SERVICE FAILURE READ');
+                    done(new Error(error));
+                }
+            });
+        }
+        myTimer();
+    });
 
-        it('verify status service', function(done) {
-            this.timeout(0);
-            // Run test
+    it('verify status service', function(done) {
+        this.timeout(0);
+        // Run test
 
-            var value = null;
+        var value = null;
 
-            var statusRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/status',
-                method: 'GET'
-            };
-            function myTimer() {
-                var updated = false;
+        var statusRequest = {
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/status',
+            method: 'GET'
+        };
+        function myTimer() {
+            var updated = false;
 
-                request(statusRequest, function(error, response, body) {
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+            request(statusRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'STATUS SERVICE FAILURE READ');
-                        done(new Error(error));
-                    }
-                });
-            }
-            myTimer();
-        });
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'STATUS SERVICE FAILURE READ');
+                    done(new Error(error));
+                }
+            });
+        }
+        myTimer();
+    });
 
-        it('verify config service', function(done) {
-            this.timeout(0);
-            // Run test
+    it('verify config service', function(done) {
+        this.timeout(0);
+        // Run test
 
-            var value = null;
+        var value = null;
 
-            var configRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/config',
-                method: 'GET'
-            };
-            function myTimer() {
-                var updated = false;
+        var configRequest = {
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/config',
+            method: 'GET'
+        };
+        function myTimer() {
+            var updated = false;
 
-                request(configRequest, function(error, response, body) {
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+            request(configRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'CONFIG SERVICE SUCCESSFULLY READ');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'CONFIG SERVICE FAILURE READ');
-                        done(new Error(error));
-                    }
-                });
-            }
-            myTimer();
-        });
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'CONFIG SERVICE SUCCESSFULLY READ');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'CONFIG SERVICE FAILURE READ');
+                    done(new Error(error));
+                }
+            });
+        }
+        myTimer();
+    });
 
-        it('verify commandsList service', function(done) {
-            this.timeout(0);
-            // Run test
+    it('verify commandsList service', function(done) {
+        this.timeout(0);
+        // Run test
 
-            var value = null;
+        var value = null;
 
-            var commandsListRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
-                method: 'GET'
-            };
+        var commandsListRequest = {
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
+            method: 'GET'
+        };
 
-            function myTimer() {
-                request(commandsListRequest, function(error, response, body) {
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+        function myTimer() {
+            request(commandsListRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE SUCCESSFULLY READ');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE FAILURE READ');
-                        done(new Error(error));
-                    }
-                });
-            }
-            myTimer();
-        });
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE SUCCESSFULLY READ');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE FAILURE READ');
+                    done(new Error(error));
+                }
+            });
+        }
+        myTimer();
+    });
 
-        it('verify config post service', function(done) {
-            this.timeout(0);
+    it('verify config post service', function(done) {
+        this.timeout(0);
 
-            var jsonRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
-                method: 'POST',
-                json: true,
-                body: config
-            };
-            function myTimer() {
-                request(jsonRequest, function(error, response, body) {
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'CONFIG JSON SERVICE FAILURE POSTED');
-                        done(new Error(error));
-                    }
-                });
-            }
-
-            myTimer();
-        });
+        var jsonRequest = {
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
+            method: 'POST',
+            json: true,
+            body: config
+        };
+        function myTimer() {
+            request(jsonRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'CONFIG JSON SERVICE FAILURE POSTED');
+                    done(new Error(error));
+                }
+            });
+        }
+        myTimer();
     });
 });
 
@@ -1047,5 +1001,86 @@ describe('Add Device', function() {
             });
         }
         myTimer();
+    });
+});
+
+describe('stop and start car server + delete device', function() {
+    it('stop car srv', function(done) {
+        setTimeout(function() {
+            child.exec(path.resolve(__dirname, './stop_carsrv.sh'), function(err, stdout, stderr) {
+                if (err) {
+                    console.log('An error occurred during car server stop ...');
+                    console.log(err);
+                }
+                console.log('car stop script log');
+                console.log('STDOUT: ');
+                console.log(stdout);
+                console.log('STDERR: ');
+                console.log(stderr);
+                done();
+            });
+        }, 5000);
+    });
+
+    it('start car srv', function(done) {
+        setTimeout(function() {
+            child.exec(path.resolve(__dirname, './start_carsrv.sh'), function(err, stdout, stderr) {
+                if (err) {
+                    console.log('An error occurred during car server restart ...');
+                    console.log(err);
+                }
+                console.log('car start script log');
+                console.log('STDOUT: ');
+                console.log(stdout);
+                console.log('STDERR: ');
+                console.log(stderr);
+                done();
+            });
+        }, 5000);
+    });
+
+    it('verify reconnection mechanisms (OPC UA side)', function(done) {
+        var composeFilePath = path.resolve(__dirname, '../tests/docker-compose.yml');
+        var stopCar = 'docker-compose -f ' + composeFilePath + ' stop iotcarsrv';
+        child.exec(stopCar, function(err, stdout, stderr) {
+            if (err) {
+                console.log('An error occurred during carsrv stopping ...');
+                console.log(err);
+            }
+
+            setTimeout(function() {
+                var startCar = 'docker-compose -f ' + composeFilePath + ' up -d iotcarsrv';
+                child.exec(startCar, function(err, stdout, stderr) {
+                    if (err) {
+                        console.log('An error occurred during carsrv starting ...');
+                        console.log(err);
+                    }
+
+                    done();
+                });
+            }, 5000);
+        });
+    });
+
+    it('delete device', function(done) {
+        // Delete device
+        // TODO: parametrize age01_Car in the whole test.js file.
+
+        var deviceDeleteRequest = {
+            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices/age01_Car',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            },
+            method: 'DELETE'
+        };
+
+        request(deviceDeleteRequest, function(error, response, body) {
+            if (error == null) {
+                done();
+            } else {
+                done(new Error(error));
+            }
+        });
     });
 });
