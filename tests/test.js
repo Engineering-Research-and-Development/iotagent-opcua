@@ -454,6 +454,7 @@ describe('The agent is monitoring active attributes...', function() {
             },
 
             headers: {
+                'content-type': 'application/json',
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path')
             }
@@ -503,6 +504,7 @@ describe('The agent is monitoring active attributes...', function() {
                 updateAction: 'UPDATE'
             },
             headers: {
+                'content-type': 'application/json',
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path')
             }
