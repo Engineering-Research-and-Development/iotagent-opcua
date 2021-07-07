@@ -313,7 +313,6 @@ describe('The agent is monitoring active attributes...', function() {
             request(temperatureRequest, function(error, response, body) {
                 console.log('temperatureRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 if (error) {
                     console.log('An error occurred during temperature request send');
@@ -379,7 +378,6 @@ describe('The agent is monitoring active attributes...', function() {
                     request(getAbout, function(error, response, body) {
                         console.log('getAbout');
                         console.log('error:', error);
-                        console.log('response:', response);
                         console.log('body', body);
                         loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -415,7 +413,6 @@ describe('The agent is monitoring active attributes...', function() {
                     request(getServiceGroup, function(error, response, body) {
                         console.log('getServiceGroup');
                         console.log('error:', error);
-                        console.log('response:', response);
                         console.log('body', body);
                         loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -473,7 +470,6 @@ describe('The agent is monitoring active attributes...', function() {
             request(commandsRequest, function(error, response, body) {
                 console.log('commandsRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
                 if (error == null) {
@@ -527,7 +523,6 @@ describe('The agent is monitoring active attributes...', function() {
             request(accelerateRequest, function(error, response, body) {
                 console.log('accelerateRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
                 if (error == null) {
@@ -569,7 +564,6 @@ describe('The agent is monitoring active attributes...', function() {
             request(speedRequest, function(error, response, body) {
                 console.log('speedRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 if (error) {
                     console.log('An error occurred during speed request send');
@@ -646,7 +640,6 @@ describe('Add Device', function() {
             request.post(addDeviceRequest, function(error, response, body) {
                 console.log('addDeviceRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -697,7 +690,6 @@ describe('Verify REST Devices Management', function() {
                 request(getDeviceRequest, function(error, response, body) {
                     console.log('getDeviceRequest');
                     console.log('error:', error);
-                    console.log('response:', response);
                     console.log('body', body);
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -746,7 +738,6 @@ describe('Verify Northbound flow', function() {
             request.post(stopRequest, function(error, response, body) {
                 console.log('stopRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -785,7 +776,6 @@ describe('Verify Northbound flow', function() {
             request.post(speedRequest, function(error, response, body) {
                 console.log('speedRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -903,7 +893,6 @@ describe('Verify ADMIN API services', function() {
             request(commandsListRequest, function(error, response, body) {
                 console.log('commandsListRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -1033,7 +1022,6 @@ describe('Add Device', function() {
             request.post(addDeviceRequest, function(error, response, body) {
                 console.log('addDeviceRequest');
                 console.log('error:', error);
-                console.log('response:', response);
                 console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
@@ -1124,7 +1112,6 @@ describe('stop and start car server + delete device', function() {
         request(deviceDeleteRequest, function(error, response, body) {
             console.log('deviceDeleteRequest');
             console.log('error:', error);
-            console.log('response:', response);
             console.log('body', body);
             if (error == null) {
                 done();
