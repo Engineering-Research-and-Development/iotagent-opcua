@@ -311,6 +311,10 @@ describe('The agent is monitoring active attributes...', function() {
         function myTimer() {
             var updated = false;
             request(temperatureRequest, function(error, response, body) {
+                console.log('temperatureRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 if (error) {
                     console.log('An error occurred during temperature request send');
                     console.log(error);
@@ -373,6 +377,10 @@ describe('The agent is monitoring active attributes...', function() {
 
                 function myTimer() {
                     request(getAbout, function(error, response, body) {
+                        console.log('getAbout');
+                        console.log('error:', error);
+                        console.log('response:', response);
+                        console.log('body', body);
                         loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                         if (error == null) {
@@ -405,6 +413,10 @@ describe('The agent is monitoring active attributes...', function() {
 
                 function myTimer() {
                     request(getServiceGroup, function(error, response, body) {
+                        console.log('getServiceGroup');
+                        console.log('error:', error);
+                        console.log('response:', response);
+                        console.log('body', body);
                         loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                         if (error == null) {
@@ -459,6 +471,10 @@ describe('The agent is monitoring active attributes...', function() {
         };
         function myTimer() {
             request(commandsRequest, function(error, response, body) {
+                console.log('commandsRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'commandsRequest SUCCESSFULLY POSTED');
@@ -509,6 +525,10 @@ describe('The agent is monitoring active attributes...', function() {
         };
         function myTimer() {
             request(accelerateRequest, function(error, response, body) {
+                console.log('accelerateRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'accelerateRequest SUCCESSFULLY POSTED');
@@ -547,6 +567,10 @@ describe('The agent is monitoring active attributes...', function() {
         function myTimer() {
             var updated = false;
             request(speedRequest, function(error, response, body) {
+                console.log('speedRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 if (error) {
                     console.log('An error occurred during speed request send');
                     console.log(error);
@@ -620,6 +644,10 @@ describe('Add Device', function() {
 
         function myTimer() {
             request.post(addDeviceRequest, function(error, response, body) {
+                console.log('addDeviceRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -667,6 +695,10 @@ describe('Verify REST Devices Management', function() {
 
             function myTimer() {
                 request(getDeviceRequest, function(error, response, body) {
+                    console.log('getDeviceRequest');
+                    console.log('error:', error);
+                    console.log('response:', response);
+                    console.log('body', body);
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
@@ -712,6 +744,10 @@ describe('Verify Northbound flow', function() {
 
         function myTimer() {
             request.post(stopRequest, function(error, response, body) {
+                console.log('stopRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -747,6 +783,10 @@ describe('Verify Northbound flow', function() {
 
         function myTimer() {
             request.post(speedRequest, function(error, response, body) {
+                console.log('speedRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -861,6 +901,10 @@ describe('Verify ADMIN API services', function() {
 
         function myTimer() {
             request(commandsListRequest, function(error, response, body) {
+                console.log('commandsListRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -987,6 +1031,10 @@ describe('Add Device', function() {
 
         function myTimer() {
             request.post(addDeviceRequest, function(error, response, body) {
+                console.log('addDeviceRequest');
+                console.log('error:', error);
+                console.log('response:', response);
+                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -1074,6 +1122,10 @@ describe('stop and start car server + delete device', function() {
         };
 
         request(deviceDeleteRequest, function(error, response, body) {
+            console.log('deviceDeleteRequest');
+            console.log('error:', error);
+            console.log('response:', response);
+            console.log('body', body);
             if (error == null) {
                 done();
             } else {
