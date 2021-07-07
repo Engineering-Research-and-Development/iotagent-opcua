@@ -328,14 +328,10 @@ describe('The agent is monitoring active attributes...', function() {
 
                         loggerTest.info(logContextTest, text);
                         updated = true;
-
-                        done();
                     }
                 } else {
                     value = bodyObject.value;
-                    done();
                 }
-
                 if (!updated) {
                     var text = 'value ' + value;
                     loggerTest.info(logContextTest, text);
@@ -344,6 +340,7 @@ describe('The agent is monitoring active attributes...', function() {
             });
         }
         myTimer();
+        done();
     });
 
     describe('Test Iot Agent lib', function() {
