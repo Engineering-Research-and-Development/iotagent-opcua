@@ -343,14 +343,11 @@ describe('The agent is monitoring active attributes...', function() {
                             if (bodyObject.value != 0) {
                                 value = bodyObject.value;
                                 var text = 'value updated ' + value;
-
                                 loggerTest.info(logContextTest, text);
                                 updated = true;
-                                done();
                             }
                         } else {
                             value = bodyObject.value;
-                            done();
                         }
                         if (!updated) {
                             var text = 'value ' + value;
@@ -360,6 +357,7 @@ describe('The agent is monitoring active attributes...', function() {
                     });
                 }
                 myTimer();
+                done();
             });
         });
 
