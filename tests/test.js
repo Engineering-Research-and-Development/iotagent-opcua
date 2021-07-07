@@ -724,68 +724,6 @@ describe('Verify REST Devices Management', function() {
             }
             myTimer();
         });
-
-        // The new device contains missing active attributes, existent active
-        // and lazy attributes
-        it('verify the addition of a new device', function(done) {
-            this.timeout(0);
-            // Run test
-
-            fs.readFile(testProperties.get('add-device-1'), 'utf8', (err, jsonString) => {
-                if (err) {
-                    console.log('Error reading file from disk:', err);
-                    return;
-                }
-
-                try {
-                    var addDeviceRequest = {
-                        url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
-                        headers: {
-                            'fiware-service': properties.get('fiware-service'),
-                            'fiware-servicepath': properties.get('fiware-service-path'),
-                            'content-type': 'application/json'
-                        },
-                        method: 'POST',
-                        json: {
-                            devices: [
-                                {
-                                    device_id: 'age05_Car',
-                                    entity_name: 'age05_Car',
-                                    entity_type: 'Device',
-                                    attributes: [
-                                        { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
-                                        { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
-                                        { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
-                                        { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
-                                        { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
-                                    ],
-                                    lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
-                                    commands: []
-                                }
-                            ]
-                        }
-                    };
-
-                    function myTimer() {
-                        request.post(addDeviceRequest, function(error, response, body) {
-                            loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                            if (error == null) {
-                                loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
-
-                                done();
-                            } else {
-                                loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
-                                done(new Error('REST - ADD DEVICE FAILURE'));
-                            }
-                        });
-                    }
-                    myTimer();
-                } catch (err) {
-                    console.log('Error parsing JSON string:', err);
-                }
-            });
-        });
     });
 });
 
@@ -1059,5 +997,55 @@ describe('Test createResponde module', function() {
         } else {
             done(new Error('creating response failed'));
         }
+    });
+});
+
+describe('Add Device', function() {
+    it('verify the addition of a new device', function(done) {
+        this.timeout(0);
+        // Run test
+        var addDeviceRequest = {
+            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path'),
+                'content-type': 'application/json'
+            },
+            method: 'POST',
+            json: {
+                devices: [
+                    {
+                        device_id: 'age05_Car',
+                        entity_name: 'age05_Car',
+                        entity_type: 'Device',
+                        attributes: [
+                            { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
+                            { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
+                            { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
+                            { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
+                            { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
+                        ],
+                        lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
+                        commands: []
+                    }
+                ]
+            }
+        };
+
+        function myTimer() {
+            request.post(addDeviceRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
+
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
+                    done();
+                }
+            });
+        }
+        myTimer();
     });
 });
