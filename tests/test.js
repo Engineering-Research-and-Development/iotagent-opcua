@@ -578,8 +578,23 @@ describe('The agent is monitoring active attributes...', function() {
                 properties.get('context-broker-port') +
                 '/v1/updateContext',
             method: 'POST',
-            json:
-                '{"contextElements":[{"type":"Device","isPattern":"false","id":"age01_Car","attributes":[{"name":"Stop","type":"command","value":null}]}],"updateAction":"UPDATE"}',
+            json: {
+                contextElements: [
+                    {
+                        type: 'Device',
+                        isPattern: 'false',
+                        id: 'age01_Car',
+                        attributes: [
+                            {
+                                name: 'Stop',
+                                type: 'command',
+                                value: null
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'UPDATE'
+            },
 
             headers: {
                 'fiware-service': properties.get('fiware-service'),
@@ -613,8 +628,23 @@ describe('The agent is monitoring active attributes...', function() {
                 properties.get('context-broker-port') +
                 '/v1/updateContext',
             method: 'POST',
-            json:
-                '{"contextElements":[{"type":"Device","isPattern":"false","id":"age01_Car","attributes":[{"name":"Accelerate","type":"command","value":["1"]}]}],"updateAction":"UPDATE"}',
+            json: {
+                contextElements: [
+                    {
+                        type: 'Device',
+                        isPattern: 'false',
+                        id: 'age01_Car',
+                        attributes: [
+                            {
+                                name: 'Accelerate',
+                                type: 'command',
+                                value: ['1']
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'UPDATE'
+            },
             headers: {
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path')
