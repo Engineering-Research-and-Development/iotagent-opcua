@@ -287,40 +287,6 @@ describe('The agent is monitoring active attributes...', function() {
         }
     });
 
-    it('verify config post subscription', function(done) {
-        this.timeout(0);
-
-        var subscriptionRequest = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('context-broker-port') +
-                '/v2/subscriptions',
-            method: 'POST',
-            json:
-                '{"description":"testsubscription","subject":{"entities":[{"id":"age01_Car","type":"Device"}],"condition":{"attrs":["Engine_Temperature"]}},"notification":{"http":{"url":"http://"+ properties.get(\'context-broker-host\') +\':\'+ properties.get(\'context-broker-port\') +"/accumulate"},"attrs":["Speed"]},"expires":"2040-01-01T14:00:00.00Z"}',
-            headers: {
-                'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path')
-            }
-        };
-        function myTimer() {
-            request(subscriptionRequest, function(error, response, body) {
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-                if (error == null) {
-                    loggerTest.info(logContextTest, 'subscriptionRequest SUCCESSFULLY POSTED');
-                    done();
-                } else {
-                    loggerTest.info(logContextTest, 'subscriptionRequest FAILURE POSTED');
-                    done(new Error(error));
-                }
-            });
-        }
-
-        myTimer();
-    });
-
     it('verify update of active attributes on Context Broker', function(done) {
         console.log('verify update of active attributes on Context Broker');
         this.timeout(0);
@@ -458,6 +424,105 @@ describe('The agent is monitoring active attributes...', function() {
         });
     });
 
+    it('verify commands execution as context provider', function(done) {
+        this.timeout(0);
+
+        var commandsRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v1/updateContext',
+            method: 'POST',
+            json: {
+                contextElements: [
+                    {
+                        type: 'Device',
+                        isPattern: 'false',
+                        id: 'age01_Car',
+                        attributes: [
+                            {
+                                name: 'Stop',
+                                type: 'command',
+                                value: null
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'UPDATE'
+            },
+
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            }
+        };
+        function myTimer() {
+            request(commandsRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'commandsRequest SUCCESSFULLY POSTED');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'commandsRequest FAILURE POSTED');
+                    done(new Error(error));
+                }
+            });
+        }
+
+        myTimer();
+    });
+
+    it('verify accelerateRequest as context provider', function(done) {
+        this.timeout(0);
+
+        var accelerateRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v1/updateContext',
+            method: 'POST',
+            json: {
+                contextElements: [
+                    {
+                        type: 'Device',
+                        isPattern: 'false',
+                        id: 'age01_Car',
+                        attributes: [
+                            {
+                                name: 'Accelerate',
+                                type: 'command',
+                                value: ['1']
+                            }
+                        ]
+                    }
+                ],
+                updateAction: 'UPDATE'
+            },
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            }
+        };
+        function myTimer() {
+            request(accelerateRequest, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'accelerateRequest SUCCESSFULLY POSTED');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'accelerateRequest FAILURE POSTED');
+                    done(new Error(error));
+                }
+            });
+        }
+
+        myTimer();
+    });
+
     it('verify get of lazy attributes on Context Broker', function(done) {
         console.log('verify update of active attributes on Context Broker');
         this.timeout(0);
@@ -565,105 +630,6 @@ describe('The agent is monitoring active attributes...', function() {
                 console.error(err);
             }
         }
-    });
-
-    it('verify commands execution as context provider', function(done) {
-        this.timeout(0);
-
-        var commandsRequest = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('context-broker-port') +
-                '/v1/updateContext',
-            method: 'POST',
-            json: {
-                contextElements: [
-                    {
-                        type: 'Device',
-                        isPattern: 'false',
-                        id: 'age01_Car',
-                        attributes: [
-                            {
-                                name: 'Stop',
-                                type: 'command',
-                                value: null
-                            }
-                        ]
-                    }
-                ],
-                updateAction: 'UPDATE'
-            },
-
-            headers: {
-                'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path')
-            }
-        };
-        function myTimer() {
-            request(commandsRequest, function(error, response, body) {
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-                if (error == null) {
-                    loggerTest.info(logContextTest, 'commandsRequest SUCCESSFULLY POSTED');
-                    done();
-                } else {
-                    loggerTest.info(logContextTest, 'commandsRequest FAILURE POSTED');
-                    done(new Error(error));
-                }
-            });
-        }
-
-        myTimer();
-    });
-
-    it('verify accelerateRequest as context provider', function(done) {
-        this.timeout(0);
-
-        var accelerateRequest = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('context-broker-port') +
-                '/v1/updateContext',
-            method: 'POST',
-            json: {
-                contextElements: [
-                    {
-                        type: 'Device',
-                        isPattern: 'false',
-                        id: 'age01_Car',
-                        attributes: [
-                            {
-                                name: 'Accelerate',
-                                type: 'command',
-                                value: ['1']
-                            }
-                        ]
-                    }
-                ],
-                updateAction: 'UPDATE'
-            },
-            headers: {
-                'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path')
-            }
-        };
-        function myTimer() {
-            request(accelerateRequest, function(error, response, body) {
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-                if (error == null) {
-                    loggerTest.info(logContextTest, 'accelerateRequest SUCCESSFULLY POSTED');
-                    done();
-                } else {
-                    loggerTest.info(logContextTest, 'accelerateRequest FAILURE POSTED');
-                    done(new Error(error));
-                }
-            });
-        }
-
-        myTimer();
     });
 
     it('verify reconnection mechanisms (OPC UA side)', function(done) {
