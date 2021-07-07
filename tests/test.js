@@ -467,7 +467,7 @@ describe('The agent is monitoring active attributes...', function() {
             }
         };
         function myTimer() {
-            request(commandsRequest, function(error, response, body) {
+            request.post(commandsRequest, function(error, response, body) {
                 console.log('commandsRequest');
                 console.log('error:', error);
                 console.log('body', body);
@@ -520,7 +520,7 @@ describe('The agent is monitoring active attributes...', function() {
             }
         };
         function myTimer() {
-            request(accelerateRequest, function(error, response, body) {
+            request.post(accelerateRequest, function(error, response, body) {
                 console.log('accelerateRequest');
                 console.log('error:', error);
                 console.log('body', body);
@@ -710,13 +710,9 @@ describe('Verify REST Devices Management', function() {
 describe('Verify Northbound flow', function() {
     it('verify commands execution as context provider', function(done) {
         this.timeout(0);
-        console.log('verify commands execution as context provider');
         // Run test
-        // STOP CAR
-        var json = {};
-        json.value = ['1'];
-        json.type = 'command';
-        var stopRequest = {
+
+        var accelerateCar = {
             url:
                 'http://' +
                 properties.get('context-broker-host') +
@@ -726,7 +722,10 @@ describe('Verify Northbound flow', function() {
                 properties.get('entity-id') +
                 '/attrs/Accelerate?type=Device',
             method: 'PUT',
-            json: json,
+            json: {
+                value: ['1'],
+                type: 'command'
+            },
             headers: {
                 'content-type': 'application/json',
                 'fiware-service': config.service,
@@ -735,19 +734,19 @@ describe('Verify Northbound flow', function() {
         };
 
         function myTimer() {
-            request.post(stopRequest, function(error, response, body) {
+            request.put(accelerateCar, function(error, response, body) {
                 console.log('stopRequest');
                 console.log('error:', error);
                 console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
-                    loggerTest.info(logContextTest, 'REST - stop command');
+                    loggerTest.info(logContextTest, 'REST - accelerateCar command');
 
                     done();
                 } else {
-                    loggerTest.info(logContextTest, 'REST - stop command');
-                    done(new Error('REST - stop command'));
+                    loggerTest.info(logContextTest, 'REST - accelerateCar command');
+                    done(new Error('REST - accelerateCar command'));
                 }
             });
         }
