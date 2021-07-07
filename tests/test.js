@@ -366,12 +366,7 @@ describe('The agent is monitoring active attributes...', function() {
                 this.timeout(0);
 
                 var getAbout = {
-                    url:
-                        'http://' +
-                        properties.get('context-broker-host') +
-                        ':' +
-                        properties.get('server-port') +
-                        '/iot/about',
+                    url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/about',
                     headers: {
                         'fiware-service': properties.get('fiware-service'),
                         'fiware-servicepath': properties.get('fiware-service-path')
@@ -379,7 +374,7 @@ describe('The agent is monitoring active attributes...', function() {
                     method: 'GET'
                 };
 
-                function getAboutmyTimer() {
+                function myTimer() {
                     request(getAbout, function(error, response, body) {
                         console.log('getAbout');
                         console.log('error:', error);
@@ -396,7 +391,7 @@ describe('The agent is monitoring active attributes...', function() {
                     });
                 }
 
-                getAboutmyTimer();
+                myTimer();
             });
         });
 
@@ -406,12 +401,7 @@ describe('The agent is monitoring active attributes...', function() {
 
                 // Run test
                 var getServiceGroup = {
-                    url:
-                        'http://' +
-                        properties.get('context-broker-host') +
-                        ':' +
-                        properties.get('server-port') +
-                        '/iot/services',
+                    url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/services',
                     headers: {
                         'fiware-service': properties.get('fiware-service'),
                         'fiware-servicepath': properties.get('fiware-service-path')
@@ -419,7 +409,7 @@ describe('The agent is monitoring active attributes...', function() {
                     method: 'GET'
                 };
 
-                function getServiceGroupmyTimer() {
+                function myTimer() {
                     request(getServiceGroup, function(error, response, body) {
                         console.log('getServiceGroup');
                         console.log('error:', error);
@@ -435,7 +425,8 @@ describe('The agent is monitoring active attributes...', function() {
                         }
                     });
                 }
-                getServiceGroupmyTimer();
+
+                myTimer();
             });
         });
     });
@@ -476,7 +467,7 @@ describe('The agent is monitoring active attributes...', function() {
                 'fiware-servicepath': properties.get('fiware-service-path')
             }
         };
-        function commandsRequestmyTimer() {
+        function myTimer() {
             request(commandsRequest, function(error, response, body) {
                 console.log('commandsRequest');
                 console.log('error:', error);
@@ -491,7 +482,8 @@ describe('The agent is monitoring active attributes...', function() {
                 }
             });
         }
-        commandsRequestmyTimer();
+
+        myTimer();
     });
 
     it('verify accelerateRequest as context provider', function(done) {
@@ -529,7 +521,7 @@ describe('The agent is monitoring active attributes...', function() {
                 'fiware-servicepath': properties.get('fiware-service-path')
             }
         };
-        function accelerateRequestmyTimer() {
+        function myTimer() {
             request(accelerateRequest, function(error, response, body) {
                 console.log('accelerateRequest');
                 console.log('error:', error);
@@ -545,7 +537,7 @@ describe('The agent is monitoring active attributes...', function() {
             });
         }
 
-        accelerateRequestmyTimer();
+        myTimer();
     });
 
     it('verify get of lazy attributes on Context Broker', function(done) {
@@ -569,7 +561,7 @@ describe('The agent is monitoring active attributes...', function() {
             }
         };
 
-        function speedRequestmyTimer() {
+        function myTimer() {
             var updated = false;
             request(speedRequest, function(error, response, body) {
                 console.log('speedRequest');
@@ -608,7 +600,7 @@ describe('The agent is monitoring active attributes...', function() {
             });
         }
 
-        //speedRequestmyTimer(); // immediate first run to be re-enabled once updateContext works again
+        //myTimer(); // immediate first run to be re-enabled once updateContext works again
 
         done();
     });
@@ -619,12 +611,7 @@ describe('Add Device', function() {
         this.timeout(0);
         // Run test
         var addDeviceRequest = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('server-port') +
-                '/iot/devices',
+            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
             headers: {
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path'),
@@ -651,7 +638,7 @@ describe('Add Device', function() {
             }
         };
 
-        function addDeviceRequestmyTimer() {
+        function myTimer() {
             request.post(addDeviceRequest, function(error, response, body) {
                 console.log('addDeviceRequest');
                 console.log('error:', error);
@@ -668,7 +655,7 @@ describe('Add Device', function() {
                 }
             });
         }
-        addDeviceRequestmyTimer();
+        myTimer();
     });
 });
 
@@ -693,12 +680,7 @@ describe('Verify REST Devices Management', function() {
 
             // Run test
             var getDeviceRequest = {
-                url:
-                    'http://' +
-                    properties.get('context-broker-host') +
-                    ':' +
-                    properties.get('server-port') +
-                    '/iot/devices',
+                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
                 headers: {
                     'fiware-service': properties.get('fiware-service'),
                     'fiware-servicepath': properties.get('fiware-service-path')
@@ -706,7 +688,7 @@ describe('Verify REST Devices Management', function() {
                 method: 'GET'
             };
 
-            function getDeviceRequestmyTimer() {
+            function myTimer() {
                 request(getDeviceRequest, function(error, response, body) {
                     console.log('getDeviceRequest');
                     console.log('error:', error);
@@ -722,7 +704,7 @@ describe('Verify REST Devices Management', function() {
                     }
                 });
             }
-            getDeviceRequestmyTimer();
+            myTimer();
         });
     });
 });
@@ -755,7 +737,7 @@ describe('Verify Northbound flow', function() {
             }
         };
 
-        function stopRequestmyTimer() {
+        function myTimer() {
             request.post(stopRequest, function(error, response, body) {
                 console.log('stopRequest');
                 console.log('error:', error);
@@ -772,12 +754,12 @@ describe('Verify Northbound flow', function() {
                 }
             });
         }
-        stopRequestmyTimer();
+        myTimer();
     });
 
     it('verify speed', function(done) {
         this.timeout(0);
-        var speedRequest2 = {
+        var speedRequest = {
             url:
                 'http://' +
                 properties.get('context-broker-host') +
@@ -793,8 +775,8 @@ describe('Verify Northbound flow', function() {
             }
         };
 
-        function speedRequest2myTimer() {
-            request.post(speedRequest2, function(error, response, body) {
+        function myTimer() {
+            request.post(speedRequest, function(error, response, body) {
                 console.log('speedRequest');
                 console.log('error:', error);
                 console.log('body', body);
@@ -810,7 +792,7 @@ describe('Verify Northbound flow', function() {
                 }
             });
         }
-        speedRequest2myTimer();
+        myTimer();
     });
 });
 
@@ -822,10 +804,10 @@ describe('Verify ADMIN API services', function() {
         var value = null;
 
         var versionRequest = {
-            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/version',
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
             method: 'GET'
         };
-        function versionRequestmyTimer() {
+        function myTimer() {
             var updated = false;
 
             request(versionRequest, function(error, response, body) {
@@ -840,7 +822,7 @@ describe('Verify ADMIN API services', function() {
                 }
             });
         }
-        versionRequestmyTimer();
+        myTimer();
     });
 
     it('verify status service', function(done) {
@@ -850,10 +832,10 @@ describe('Verify ADMIN API services', function() {
         var value = null;
 
         var statusRequest = {
-            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/status',
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/status',
             method: 'GET'
         };
-        function statusRequestmyTimer() {
+        function myTimer() {
             var updated = false;
 
             request(statusRequest, function(error, response, body) {
@@ -868,7 +850,7 @@ describe('Verify ADMIN API services', function() {
                 }
             });
         }
-        statusRequestmyTimer();
+        myTimer();
     });
 
     it('verify config service', function(done) {
@@ -878,10 +860,10 @@ describe('Verify ADMIN API services', function() {
         var value = null;
 
         var configRequest = {
-            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/config',
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/config',
             method: 'GET'
         };
-        function configRequestmyTimer() {
+        function myTimer() {
             var updated = false;
 
             request(configRequest, function(error, response, body) {
@@ -896,7 +878,7 @@ describe('Verify ADMIN API services', function() {
                 }
             });
         }
-        configRequestmyTimer();
+        myTimer();
     });
 
     it('verify commandsList service', function(done) {
@@ -906,11 +888,11 @@ describe('Verify ADMIN API services', function() {
         var value = null;
 
         var commandsListRequest = {
-            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/commandsList',
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
             method: 'GET'
         };
 
-        function commandsListRequestmyTimer() {
+        function myTimer() {
             request(commandsListRequest, function(error, response, body) {
                 console.log('commandsListRequest');
                 console.log('error:', error);
@@ -926,19 +908,19 @@ describe('Verify ADMIN API services', function() {
                 }
             });
         }
-        commandsListRequestmyTimer();
+        myTimer();
     });
 
     it('verify config post service', function(done) {
         this.timeout(0);
 
         var jsonRequest = {
-            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/json',
+            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
             method: 'POST',
             json: true,
             body: config
         };
-        function jsonRequestmyTimer() {
+        function myTimer() {
             request(jsonRequest, function(error, response, body) {
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
                 if (error == null) {
@@ -950,7 +932,7 @@ describe('Verify ADMIN API services', function() {
                 }
             });
         }
-        jsonRequestmyTimer();
+        myTimer();
     });
 });
 
@@ -1070,12 +1052,7 @@ describe('stop and start car server + delete device', function() {
         // TODO: parametrize age01_Car in the whole test.js file.
 
         var deviceDeleteRequest = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('server-port') +
-                '/iot/devices/age01_Car',
+            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices/age01_Car',
             headers: {
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path')
