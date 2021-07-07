@@ -744,8 +744,24 @@ describe('Verify REST Devices Management', function() {
                             'content-type': 'application/json'
                         },
                         method: 'POST',
-                        json:
-                            '{"devices":[{"device_id":"age05_Car","entity_name":"age05_Car","entity_type":"Device","attributes":[{"object_id":"ns=3;s=EngineBrake","name":"EngineBrake","type":"Number"},{"object_id":"ns=3;s=Acceleration","name":"Acceleration","type":"Number"},{"object_id":"ns=3;s=EngineStopped","name":"EngineStopped","type":"Boolean"},{"object_id":"ns=3;s=Temperature","name":"Temperature","type":"Number"},{"object_id":"ns=3;s=Oxigen","name":"Oxigen","type":"Number"}],"lazy":[{"object_id":"ns=3;s=Speed","name":"Speed","type":"Number"}],"commands":[]}]}'
+                        json: {
+                            devices: [
+                                {
+                                    device_id: 'age05_Car',
+                                    entity_name: 'age05_Car',
+                                    entity_type: 'Device',
+                                    attributes: [
+                                        { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
+                                        { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
+                                        { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
+                                        { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
+                                        { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
+                                    ],
+                                    lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
+                                    commands: []
+                                }
+                            ]
+                        }
                     };
 
                     function myTimer() {
