@@ -333,6 +333,7 @@ describe('The agent is monitoring active attributes...', function() {
                     }
                 } else {
                     value = bodyObject.value;
+                    done();
                 }
 
                 if (!updated) {
@@ -571,6 +572,7 @@ describe('The agent is monitoring active attributes...', function() {
                     }
                 } else {
                     value = bodyObject.value;
+                    done();
                 }
 
                 if (!updated) {
@@ -992,7 +994,6 @@ describe('Add Device', function() {
 
                 if (error == null) {
                     loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
-
                     done();
                 } else {
                     loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
