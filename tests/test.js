@@ -186,7 +186,7 @@ describe('The agent is monitoring active attributes...', function() {
             // var iotAgentConfig = require('../conf/config.json');
             // var iotAgentProp = require('./config.properties');
 
-            var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
+            var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER'));
             properties.set('uniqueSubscription', true);
             global.properties = properties;
             var endpointUrl = properties.get('endpoint');
@@ -231,7 +231,7 @@ describe('The agent is monitoring active attributes...', function() {
                             ' -e ' +
                             endpointUrl +
                             ' -f ' +
-                            require(path.resolve(__dirname, '../conf/config.properties')) +
+                            require(path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER')) +
                             ' -u ' +
                             userName +
                             ' -p ' +
@@ -243,7 +243,7 @@ describe('The agent is monitoring active attributes...', function() {
                             ' -e ' +
                             endpointUrl +
                             ' -f ' +
-                            path.resolve(__dirname, '../conf/config.properties');
+                            path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER');
                     }
                     var child = exec(cmdjava, function(err, stdout, stderr) {
                         clearInterval(loadingBar);
@@ -331,9 +331,11 @@ describe('The agent is monitoring active attributes...', function() {
 
                         loggerTest.info(logContextTest, text);
                         updated = true;
+                        done();
                     }
                 } else {
                     value = bodyObject.value;
+                    done();
                 }
                 if (!updated) {
                     var text = 'value ' + value;
@@ -343,7 +345,6 @@ describe('The agent is monitoring active attributes...', function() {
             });
         }
         myTimer();
-        done();
     });
 
     describe('Test Iot Agent lib', function() {
