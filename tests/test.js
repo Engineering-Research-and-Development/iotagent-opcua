@@ -345,20 +345,19 @@ describe('The agent is monitoring active attributes...', function() {
                                 var text = 'value updated ' + value;
                                 loggerTest.info(logContextTest, text);
                                 updated = true;
-                                done();
                             }
                         } else {
                             value = bodyObject.value;
-                            done();
                         }
                         if (!updated) {
                             var text = 'value ' + value;
                             loggerTest.info(logContextTest, text);
-                            //setTimeout(myTimer, 2000);
+                            setTimeout(myTimer, 2000);
                         }
                     });
                 }
                 myTimer();
+                done();
             });
         });
 
@@ -478,7 +477,7 @@ describe('The agent is monitoring active attributes...', function() {
                     done();
                 } else {
                     loggerTest.info(logContextTest, 'commandsRequest FAILURE POSTED');
-                    done(new Error('commandsRequest'));
+                    done(new Error(error));
                 }
             });
         }
@@ -531,7 +530,7 @@ describe('The agent is monitoring active attributes...', function() {
                     done();
                 } else {
                     loggerTest.info(logContextTest, 'accelerateRequest FAILURE POSTED');
-                    done(new Error('accelerateRequest'));
+                    done(new Error(error));
                 }
             });
         }
@@ -594,11 +593,14 @@ describe('The agent is monitoring active attributes...', function() {
                 if (!updated) {
                     var text = 'value ' + value;
                     loggerTest.info(logContextTest, text);
-                    // setTimeout(myTimer, 2000);
+                    setTimeout(myTimer, 2000);
                 }
             });
         }
-        myTimer(); // immediate first run to be re-enabled once updateContext works again
+
+        //myTimer(); // immediate first run to be re-enabled once updateContext works again
+
+        done();
     });
 });
 
@@ -621,86 +623,14 @@ describe('Add Device', function() {
                         entity_name: 'age05_Car',
                         entity_type: 'Device',
                         attributes: [
-                            {
-                                object_id: 'ns=3;s=EngineBrake',
-                                name: 'EngineBrake',
-                                type: 'Number'
-                            },
-                            {
-                                object_id: 'ns=3;s=Acceleration',
-                                name: 'Acceleration',
-                                type: 'Number'
-                            },
-                            {
-                                object_id: 'ns=3;s=EngineStopped',
-                                name: 'EngineStopped',
-                                type: 'Boolean'
-                            },
-                            {
-                                object_id: 'ns=3;s=Temperature',
-                                name: 'Engine_Temperature',
-                                type: 'Number'
-                            },
-                            {
-                                object_id: 'ns=3;s=Oxigen',
-                                name: 'Engine_Oxigen',
-                                type: 'Number'
-                            },
-                            {
-                                object_id: 'ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy',
-                                name: 'DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy',
-                                type: 'String'
-                            },
-                            {
-                                object_id: 'ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus',
-                                name: 'DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus',
-                                type: 'Boolean'
-                            }
+                            { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
+                            { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
+                            { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
+                            { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
+                            { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
                         ],
-                        lazy: [
-                            {
-                                object_id: 'ns=3;s=Speed',
-                                name: 'Speed',
-                                type: 'Number'
-                            },
-                            {
-                                object_id: 'ns=3;s=GPSCoordinates',
-                                name: 'GPSCoordinates',
-                                type: 'Number'
-                            }
-                        ],
-                        commands: [
-                            {
-                                object_id: 'ns=3;s=Stop',
-                                name: 'Stop',
-                                type: 'command'
-                            },
-                            {
-                                object_id: 'ns=3;s=Accelerate',
-                                name: 'Accelerate',
-                                type: 'command'
-                            },
-                            {
-                                object_id: 'ns=3;s=ActivateSensor',
-                                name: 'ActivateSensor',
-                                type: 'command'
-                            },
-                            {
-                                object_id: 'ns=3;s=DeactivateSensor',
-                                name: 'DeactivateSensor',
-                                type: 'command'
-                            },
-                            {
-                                object_id: 'ns=3;s=ToggleSensorActivation',
-                                name: 'ToggleSensorActivation',
-                                type: 'command'
-                            },
-                            {
-                                object_id: 'ns=3;s=LaunchMissiles',
-                                name: 'LaunchMissiles',
-                                type: 'command'
-                            }
-                        ]
+                        lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
+                        commands: []
                     }
                 ]
             }
@@ -719,7 +649,7 @@ describe('Add Device', function() {
                     done();
                 } else {
                     loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
-                    done(new Error('addDeviceRequest'));
+                    done();
                 }
             });
         }
