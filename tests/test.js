@@ -187,7 +187,7 @@ describe('The agent is monitoring active attributes...', function() {
             // var iotAgentProp = require('./config.properties');
 
             var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER'));
-            properties.set('uniqueSubscription', true);
+            //properties.set('uniqueSubscription', true);
             global.properties = properties;
             var endpointUrl = properties.get('endpoint');
             var userName = properties.get('userName');
@@ -199,7 +199,7 @@ describe('The agent is monitoring active attributes...', function() {
             }
 
             var doAuto = false;
-            var configPath = path.resolve(__dirname, '../conf/config.json');
+            var configPath = path.resolve(__dirname, '../conf/config.json.TEST_WITH_PLACEHOLDER');
 
             if (fs.existsSync(configPath)) {
                 var config = require(configPath);
