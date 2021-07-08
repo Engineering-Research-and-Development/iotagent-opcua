@@ -199,7 +199,7 @@ describe('The agent is monitoring active attributes...', function() {
             }
 
             var doAuto = false;
-            var configPath = path.resolve(__dirname, '../conf/config.json.TEST_WITH_PLACEHOLDER');
+            var configPath = path.resolve(__dirname, '../conf/config.json');
 
             if (fs.existsSync(configPath)) {
                 var config = require(configPath);
