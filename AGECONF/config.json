@@ -1,5 +1,5 @@
 {
-	"logLevel": "DEBUG",
+	"logLevel": "INFO",
 	"multiCore": false,
 	"relaxTemplateValidation": true,
 	"contextBroker": {
@@ -71,6 +71,8 @@
 	"contexts": [{
 		"id": "urn:ngsi-ld:Device:age01_Car",
 		"type": "Device",
+		"ngsiVersion": "ld",
+		"jsonLdContext": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
 		"service": "opcua_car",
 		"subservice": "/demo",
 		"polling": false,
@@ -104,6 +106,8 @@
 	"contextSubscriptions": [{
 		"id": "urn:ngsi-ld:Device:age01_Car",
 		"type": "Device",
+		"ngsiVersion": "ld",
+		"jsonLdContext": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
 		"mappings": [{
 			"ocb_id": "Error",
 			"opcua_id": "ns=3;s=Error",
