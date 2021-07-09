@@ -1,15 +1,17 @@
 {
     "logLevel": "INFO",
-    "multiCore": false,
-    "relaxTemplateValidation": true,
+    "multiCore" : false,
+    "relaxTemplateValidation":true,
     "contextBroker": {
         "host": "TEST_MACHINE_IP",
         "port": 1026,
-        "service": "opcua_car",
-        "subservice": "/demo"
+        "url": "http://TEST_MACHINE_IP:1026",
+        "ngsiVersion":"ld",
+        "jsonLdContext":"https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
+        "fallbackTenant":"opcua_car"
     },
     "server": {
-        "port": 4001,
+        "port": 4003,
         "baseRoot": "/"
     },
     "deviceRegistry": {
@@ -28,44 +30,52 @@
             "subservice": "/demo",
             "active": [
                 {
+                    "name": "MissingContextSubElementForThis",
+                    "type": "Number",
+                    "object_id": "MissingContextSubElementForThis"
+                },
+                {
                     "name": "EngineBrake",
-                    "type": "Number"
+                    "type": "Number",
+                    "object_id": "EngineBrake"
+                },
+                {
+                    "name": "Speed",
+                    "type": "Number",
+                    "object_id": "Speed"
                 },
                 {
                     "name": "Acceleration",
-                    "type": "Number"
+                    "type": "Number",
+                    "object_id": "Acceleration"
                 },
                 {
                     "name": "EngineStopped",
-                    "type": "Boolean"
+                    "type": "Boolean",
+                    "object_id": "EngineStopped"
                 },
                 {
                     "name": "Engine_Temperature",
-                    "type": "Number"
+                    "type": "Number",
+                    "object_id": "Engine_Temperature"
                 },
                 {
                     "name": "Engine_Oxigen",
-                    "type": "Number"
+                    "type": "Number",
+                    "object_id": "Engine_Oxigen"
                 }
             ],
-            "lazy": [
-                {
-                    "name": "Speed",
-                    "type": "Number"
-                }
-            ],
+            "lazy": [],
             "commands": [
                 {
-                    "name": "Error",
-                    "type": "command"
-                },
-                {
                     "name": "Stop",
-                    "type": "command"
+                    "type": "command",
+                    "object_id": "Stop"
                 },
                 {
                     "name": "Accelerate",
-                    "type": "command"
+                    "type": "command",
+                    "object_id": "Accelerate"
                 }
             ]
         }
@@ -73,22 +83,28 @@
     "browseServerOptions": null,
     "service": "opcua_car",
     "subservice": "/demo",
-    "providerUrl": "http://TEST_MACHINE_IP:4001",
+    "providerUrl": "http://TEST_MACHINE_IP:4003",
     "pollingExpiration": "200000",
     "pollingDaemonFrequency": "20000",
     "deviceRegistrationDuration": "P1M",
     "defaultType": null,
     "contexts": [
         {
-            "id": "age01_Car",
+            "id": "urn:ngsi-ld:Device:age01_Car",
             "type": "Device",
             "service": "opcua_car",
             "subservice": "/demo",
             "polling": false,
             "mappings": [
                 {
-                    "ocb_id": "Error",
-                    "opcua_id": "ns=3;s=Error",
+                    "ocb_id": "EngineBrake",
+                    "opcua_id": "ns=3;s=EngineBrake",
+                    "object_id": null,
+                    "inputArguments": []
+                },
+                {
+                    "ocb_id": "Speed",
+                    "opcua_id": "ns=3;s=Speed",
                     "object_id": null,
                     "inputArguments": []
                 },
@@ -121,26 +137,9 @@
     ],
     "contextSubscriptions": [
         {
-            "id": "age01_Car",
+            "id": "urn:ngsi-ld:Device:age01_Car",
             "type": "Device",
             "mappings": [
-                {
-                    "ocb_id": "Error",
-                    "opcua_id": "ns=3;s=Error",
-                    "object_id": "ns=3;i=1000",
-                    "inputArguments": [
-                        {
-                            "dataType": 12,
-                            "type": "Error Type"
-                        }
-                    ]
-                },
-                {
-                    "ocb_id": "Speed",
-                    "opcua_id": "ns=3;s=Speed",
-                    "object_id": "ns=3;i=1000",
-                    "inputArguments": []
-                },
                 {
                     "ocb_id": "Stop",
                     "opcua_id": "ns=3;s=Stop",
@@ -154,7 +153,9 @@
                     "inputArguments": [
                         {
                             "dataType": 6,
-                            "type": "Intensity"
+                            "type": "Intensity",
+                            "value": 2,
+                            "arrayType": 0
                         }
                     ]
                 }

@@ -24,7 +24,7 @@
     "url": "https://github.com/Engineering-Research-and-Development/iotagent-opcua/issues"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=8.0.0"
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",

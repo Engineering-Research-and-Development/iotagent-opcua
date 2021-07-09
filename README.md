@@ -131,6 +131,7 @@ For checking current status of the Agent, send a request to /status service
 
 Documentation about OPC UA Client Secure connection can be found [here](docs/opc_ua_secure_connection_configuration.md)
 
+
 ### How to get access to the advanced API and Documentation topics
 
 Documentation about the OPC UA Administration API can be found [here](https://opcuaiotagent.docs.apiary.io)
@@ -159,12 +160,12 @@ The **IoT Agent for OPC UA** project is part of [FIWARE](https://fiware.org/) an
 
 The IoT Agent for OPC UA is licensed under [Affero General Public License (GPL) version 3](./LICENSE).
 
-© 2021 Engineering Ingegneria Informatica S.p.A.
+© 2020 Engineering Ingegneria Informatica S.p.A.
 
 The following third-party libraries are used under license
 
-1.  [node-opcua](http://node-opcua.github.io/) - **MIT** - © 2014-2021 Etienne Rossignon
-2.  [iotagent-node-lib](https://github.com/telefonicaid/iotagent-node-lib) - **AGPL** © 2014-2021 Telefonica
+1.  [node-opcua](http://node-opcua.github.io/) - **MIT** - © 2014-2018 Etienne Rossignon
+2.  [iotagent-node-lib](https://github.com/telefonicaid/iotagent-node-lib) - **AGPL** © 2014-2018 Telefonica
     Investigación y Desarrollo
 
 The full list of third-party libraries licenses can be found

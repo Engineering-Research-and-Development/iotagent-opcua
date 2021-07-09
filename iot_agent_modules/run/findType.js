@@ -9,6 +9,7 @@ module.exports = {
                 return device.active[i].type;
             }
         }
+        console.log('ritorno null???');
         return null;
     }
 };

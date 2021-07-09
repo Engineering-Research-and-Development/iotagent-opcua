@@ -6,7 +6,7 @@ namespaceNumericIdentifier=1000
 context-broker-host=TEST_MACHINE_IP
 context-broker-port=1026
 server-base-root=/
-server-port=4001
+server-port=4003
 device-registry-type=memory
 mongodb-host=TEST_MACHINE_IP
 mongodb-port=27017
@@ -15,11 +15,11 @@ mongodb-retries=5
 mongodb-retry-time=5
 fiware-service=opcua_car
 fiware-service-path=/demo
-provider-url=http://TEST_MACHINE_IP:4001
+provider-url=http://TEST_MACHINE_IP:4003
 device-registration-duration=P1M
 #endpoint=opc.tcp://TEST_MACHINE_IP:4334/UA/EnergyMESServer
 endpoint=opc.tcp://TEST_MACHINE_IP:5001/UA/CarServer
-log-level=INFO
+log-level=DEBUG
 #DATATYPE MAPPING OPCUA --> NGSI
 OPC-datatype-Number=Number
 OPC-datatype-Decimal128=Number
@@ -38,9 +38,6 @@ requestedMaxKeepAliveCount=10
 maxNotificationsPerPublish=100
 publishingEnabled=true
 priority=10
-
-#SubscriptionsStrategy
-uniqueSubscription=false
 
 #MONITORING PARAMETERS
 samplingInterval=1
