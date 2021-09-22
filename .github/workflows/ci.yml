@@ -2,10 +2,10 @@ name: CI
 "on":
   push:
     branches:
-      - master
+      - improve_tst_coverage
   pull_request:
     branches:
-      - master
+      - improve_tst_coverage
 jobs:
   lint-dockerfile:
     name: Lint Dockerfile
