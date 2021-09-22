@@ -186,7 +186,7 @@ describe('The agent is monitoring active attributes...', function() {
             // var iotAgentConfig = require('../conf/config.json');
             // var iotAgentProp = require('./config.properties');
 
-            var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER'));
+            var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
             properties.set('uniqueSubscription', true);
             global.properties = properties;
             var endpointUrl = properties.get('endpoint');
@@ -231,7 +231,7 @@ describe('The agent is monitoring active attributes...', function() {
                             ' -e ' +
                             endpointUrl +
                             ' -f ' +
-                            require(path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER')) +
+                            require(path.resolve(__dirname, '../conf/config.properties')) +
                             ' -u ' +
                             userName +
                             ' -p ' +
@@ -243,7 +243,7 @@ describe('The agent is monitoring active attributes...', function() {
                             ' -e ' +
                             endpointUrl +
                             ' -f ' +
-                            path.resolve(__dirname, '../conf/config.properties.WITH_PLACEHOLDER');
+                            path.resolve(__dirname, '../conf/config.properties');
                     }
                     var child = exec(cmdjava, function(err, stdout, stderr) {
                         clearInterval(loadingBar);
