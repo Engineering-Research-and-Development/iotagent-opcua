@@ -1,15 +1,12 @@
 ## SOUTHBOUND CONFIGURATION (OPC UA)
 namespace-ignore=2,7
 endpoint=opc.tcp://TEST_MACHINE_IP:5001/UA/CarServer
-				
-							   
 
 ## NORTHBOUND CONFIGURATION (ORION CONTEXT BROKER)
 context-broker-host=TEST_MACHINE_IP
 context-broker-port=1026
 fiware-service=opcua_car
 fiware-service-path=/demo
-
 
 ## AGENT CONFIGURATION
 server-base-root=/
@@ -29,13 +26,7 @@ mongodb-host=iotmongo
 mongodb-port=27017
 mongodb-db=iotagent
 mongodb-retries=5
-mongodb-retry-time=5
-
-						 
-										
-								
-														   
-													
+mongodb-retry-time=5											
 			  
 ## DATATYPE MAPPING OPCUA --> NGSI
 OPC-datatype-Number=Number
@@ -90,10 +81,8 @@ pollingExpiration=200000
 
 ## AGENT ID
 agent-id=age01_
-entity-id=age01_Car # used only during tests
-
-				   
-							   
+entity-id=age01_Car
+		   
 ## CONFIGURATION
 configuration=#api
 
