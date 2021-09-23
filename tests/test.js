@@ -309,7 +309,9 @@ describe('The agent is monitoring active attributes...', function() {
                 var value = null;
                 var temperatureRequest = {
                     url:
-                        'http://localhost:' +
+                        'http://' +
+                        properties.get('context-broker-host') +
+                        ':' +
                         properties.get('context-broker-port') +
                         '/v2/entities/' +
                         properties.get('entity-id') +
@@ -433,7 +435,12 @@ describe('The agent is monitoring active attributes...', function() {
         this.timeout(0);
 
         var commandsRequest = {
-            url: 'http://localhost:' + properties.get('context-broker-port') + '/v1/updateContext',
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v1/updateContext',
             method: 'POST',
             json: {
                 contextElements: [
@@ -482,7 +489,12 @@ describe('The agent is monitoring active attributes...', function() {
         this.timeout(0);
 
         var accelerateRequest = {
-            url: 'http://localhost:' + properties.get('context-broker-port') + '/v1/updateContext',
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v1/updateContext',
             method: 'POST',
             json: {
                 contextElements: [
@@ -533,7 +545,9 @@ describe('The agent is monitoring active attributes...', function() {
         var value = null;
         var speedRequest = {
             url:
-                'http://localhost:' +
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
                 properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
@@ -700,7 +714,9 @@ describe('Verify Northbound flow', function() {
 
         var accelerateCar = {
             url:
-                'http://localhost:' +
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
                 properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
@@ -741,7 +757,9 @@ describe('Verify Northbound flow', function() {
         this.timeout(0);
         var speedRequest2 = {
             url:
-                'http://localhost:' +
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
                 properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
