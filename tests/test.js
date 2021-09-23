@@ -309,7 +309,9 @@ describe('The agent is monitoring active attributes...', function() {
                 var value = null;
                 var temperatureRequest = {
                     url:
-                        'http://localhost:' +
+                        'http://' +
+                        properties.get('context-broker-host') +
+                        ':' +
                         properties.get('context-broker-port') +
                         '/v2/entities/' +
                         properties.get('entity-id') +
