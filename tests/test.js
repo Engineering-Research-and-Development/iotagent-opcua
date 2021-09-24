@@ -187,7 +187,9 @@ describe('Test Iot Agent lib', function() {
             var value = null;
             var temperatureRequest = {
                 url:
-                    'http://localhost:' +
+                    'http://' +
+                    properties.get('context-broker-host') +
+                    ':' +
                     properties.get('context-broker-port') +
                     '/v2/entities/' +
                     properties.get('entity-id') +
@@ -203,8 +205,6 @@ describe('Test Iot Agent lib', function() {
                 var updated = false;
                 request(temperatureRequest, function(error, response, body) {
                     console.log('temperatureRequest');
-                    console.log('error:', error);
-                    console.log('body', body);
                     if (error) {
                         console.log('An error occurred during temperature request send');
                         console.log(error);
@@ -242,7 +242,12 @@ describe('Test Iot Agent lib', function() {
             this.timeout(0);
 
             var getAbout = {
-                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/about',
+                url:
+                    'http://' +
+                    properties.get('context-broker-host') +
+                    ':' +
+                    properties.get('server-port') +
+                    '/iot/about',
                 headers: {
                     'fiware-service': properties.get('fiware-service'),
                     'fiware-servicepath': properties.get('fiware-service-path')
@@ -253,8 +258,6 @@ describe('Test Iot Agent lib', function() {
             function myTimer() {
                 request(getAbout, function(error, response, body) {
                     console.log('getAbout');
-                    console.log('error:', error);
-                    console.log('body', body);
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
@@ -277,7 +280,12 @@ describe('Test Iot Agent lib', function() {
 
             // Run test
             var getServiceGroup = {
-                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/services',
+                url:
+                    'http://' +
+                    properties.get('context-broker-host') +
+                    ':' +
+                    properties.get('server-port') +
+                    '/iot/services',
                 headers: {
                     'fiware-service': properties.get('fiware-service'),
                     'fiware-servicepath': properties.get('fiware-service-path')
@@ -288,8 +296,6 @@ describe('Test Iot Agent lib', function() {
             function myTimer() {
                 request(getServiceGroup, function(error, response, body) {
                     console.log('getServiceGroup');
-                    console.log('error:', error);
-                    console.log('body', body);
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
@@ -310,7 +316,12 @@ describe('Test Iot Agent lib', function() {
         this.timeout(0);
 
         var commandsRequest = {
-            url: 'http://localhost:' + properties.get('context-broker-port') + '/v1/updateContext',
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v1/updateContext',
             method: 'POST',
             json: {
                 contextElements: [
@@ -339,8 +350,6 @@ describe('Test Iot Agent lib', function() {
         function myTimer() {
             request.post(commandsRequest, function(error, response, body) {
                 console.log('commandsRequest');
-                console.log('error:', error);
-                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'commandsRequest SUCCESSFULLY POSTED');
@@ -359,7 +368,12 @@ describe('Test Iot Agent lib', function() {
         this.timeout(0);
 
         var accelerateRequest = {
-            url: 'http://localhost:' + properties.get('context-broker-port') + '/v1/updateContext',
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v1/updateContext',
             method: 'POST',
             json: {
                 contextElements: [
@@ -387,8 +401,6 @@ describe('Test Iot Agent lib', function() {
         function myTimer() {
             request.post(accelerateRequest, function(error, response, body) {
                 console.log('accelerateRequest');
-                console.log('error:', error);
-                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'accelerateRequest SUCCESSFULLY POSTED');
@@ -410,7 +422,9 @@ describe('Test Iot Agent lib', function() {
         var value = null;
         var speedRequest = {
             url:
-                'http://localhost:' +
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
                 properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
@@ -426,8 +440,6 @@ describe('Test Iot Agent lib', function() {
             var updated = false;
             request(speedRequest, function(error, response, body) {
                 console.log('speedRequest');
-                console.log('error:', error);
-                console.log('body', body);
                 if (error) {
                     console.log('An error occurred during speed request send');
                     console.log(error);
@@ -472,7 +484,12 @@ describe('Add Device', function() {
         this.timeout(0);
         // Run test
         var addDeviceRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('server-port') +
+                '/iot/devices',
             headers: {
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path'),
@@ -502,8 +519,6 @@ describe('Add Device', function() {
         function myTimer() {
             request.post(addDeviceRequest, function(error, response, body) {
                 console.log('addDeviceRequest');
-                console.log('error:', error);
-                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -541,7 +556,12 @@ describe('Verify REST Devices Management', function() {
 
             // Run test
             var getDeviceRequest = {
-                url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices',
+                url:
+                    'http://' +
+                    properties.get('context-broker-host') +
+                    ':' +
+                    properties.get('server-port') +
+                    '/iot/devices',
                 headers: {
                     'fiware-service': properties.get('fiware-service'),
                     'fiware-servicepath': properties.get('fiware-service-path')
@@ -552,8 +572,6 @@ describe('Verify REST Devices Management', function() {
             function myTimer() {
                 request(getDeviceRequest, function(error, response, body) {
                     console.log('getDeviceRequest');
-                    console.log('error:', error);
-                    console.log('body', body);
                     loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                     if (error == null) {
@@ -577,7 +595,9 @@ describe('Verify Northbound flow', function() {
 
         var accelerateCar = {
             url:
-                'http://localhost:' +
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
                 properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
@@ -597,8 +617,6 @@ describe('Verify Northbound flow', function() {
         function myTimer() {
             request.put(accelerateCar, function(error, response, body) {
                 console.log('stopRequest');
-                console.log('error:', error);
-                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -618,7 +636,9 @@ describe('Verify Northbound flow', function() {
         this.timeout(0);
         var speedRequest2 = {
             url:
-                'http://localhost:' +
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
                 properties.get('context-broker-port') +
                 '/v2/entities/' +
                 properties.get('entity-id') +
@@ -633,8 +653,6 @@ describe('Verify Northbound flow', function() {
         function myTimer() {
             request.get(speedRequest2, function(error, response, body) {
                 console.log('speedRequest');
-                console.log('error:', error);
-                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -659,7 +677,7 @@ describe('Verify ADMIN API services', function() {
         var value = null;
 
         var versionRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/version',
+            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/version',
             method: 'GET'
         };
         function myTimer() {
@@ -687,7 +705,7 @@ describe('Verify ADMIN API services', function() {
         var value = null;
 
         var statusRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/status',
+            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/status',
             method: 'GET'
         };
         function myTimer() {
@@ -715,7 +733,7 @@ describe('Verify ADMIN API services', function() {
         var value = null;
 
         var configRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/config',
+            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/config',
             method: 'GET'
         };
         function myTimer() {
@@ -743,15 +761,13 @@ describe('Verify ADMIN API services', function() {
         var value = null;
 
         var commandsListRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/commandsList',
+            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/commandsList',
             method: 'GET'
         };
 
         function myTimer() {
             request(commandsListRequest, function(error, response, body) {
                 console.log('commandsListRequest');
-                console.log('error:', error);
-                console.log('body', body);
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
@@ -770,7 +786,7 @@ describe('Verify ADMIN API services', function() {
         this.timeout(0);
 
         var jsonRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('api-port') + '/json',
+            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/json',
             method: 'POST',
             json: true,
             body: config
@@ -907,7 +923,12 @@ describe('stop and start car server + delete device', function() {
         // TODO: parametrize age01_Car in the whole test.js file.
 
         var deviceDeleteRequest = {
-            url: 'http://' + 'localhost' + ':' + properties.get('server-port') + '/iot/devices/age01_Car',
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('server-port') +
+                '/iot/devices/age01_Car',
             headers: {
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path')
@@ -917,8 +938,6 @@ describe('stop and start car server + delete device', function() {
 
         request(deviceDeleteRequest, function(error, response, body) {
             console.log('deviceDeleteRequest');
-            console.log('error:', error);
-            console.log('body', body);
             if (error == null) {
                 done();
             } else {
