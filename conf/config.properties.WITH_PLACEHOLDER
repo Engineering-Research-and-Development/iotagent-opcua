@@ -22,7 +22,7 @@ namespaceIndex=3
 namespaceNumericIdentifier=1000
 
 # MONGO-DB CONFIGURATION (required if device-registry-type=mongodb)
-mongodb-host=iotmongo
+mongodb-host=TEST_MACHINE_IP
 mongodb-port=27017
 mongodb-db=iotagent
 mongodb-retries=5
