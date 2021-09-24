@@ -15,7 +15,9 @@ var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.
 // Set Up
 global.logContextTest = {
     comp: 'iotAgent-OPCUA',
-    op: 'Test'
+    op: 'Test',
+    srv: '',
+    subsrv: ''
 };
 
 var loggerTest = require('logops');
@@ -32,7 +34,7 @@ describe('The agent is monitoring active attributes...', function() {
         // Set Up
         global.logContext = {
             comp: 'iotAgent-OPCUA',
-            op: 'Index',
+            op: 'Test',
             srv: '',
             subsrv: ''
         };
@@ -40,51 +42,40 @@ describe('The agent is monitoring active attributes...', function() {
         try {
             // node-opcue dependencies
             require('requirish')._(module);
-            var check_prop = require('../iot_agent_modules/check_properties');
+            const check_prop = require('../iot_agent_modules/check_properties');
             if (check_prop.checkproperties().length != 0) {
                 console.log('WARNING!!!');
                 console.log('CHECK YOUR config.properties FILE,  THE FOLLOWING PARAMETERS ARE NULL:');
-                for (var null_params in check_prop.checkproperties()) {
+                for (const null_params in check_prop.checkproperties()) {
                     console.log(check_prop.checkproperties()[null_params]);
                 }
                 process.exit(1);
             }
 
-            var server = require('../iot_agent_modules/services/server');
-            var run = require('../iot_agent_modules/run/run');
-            var fs = require('fs');
-
+            const server = require('../iot_agent_modules/services/server');
+            const run = require('../iot_agent_modules/run/run');
+            const fs = require('fs');
             // custom simple logger
             var logger = require('logops');
-            var PropertiesReader = require('properties-reader');
+            logger.format = logger.formatters.pipe;
 
-            loggerTest.info(logContextTest, 'INITIALIZING TESTING ENVIRONMENT...');
-
-            // var iotAgentConfig = require('../conf/config.json');
-            // var iotAgentProp = require('./config.properties');
-
-            var properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
-            properties.set('uniqueSubscription', true);
+            const PropertiesReader = require('properties-reader');
+            const properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
             global.properties = properties;
-            var endpointUrl = properties.get('endpoint');
-            var userName = properties.get('userName');
-            var password = properties.get('password');
+            const endpointUrl = properties.get('endpoint');
+            const userName = properties.get('userName');
+            const password = properties.get('password');
 
             if (endpointUrl == null) {
-                loggerTest.info(logContext, '/AGE/config-test.properties: endpoint not found...');
+                logger.info(logContext, '../conf/config.properties: endpoint not found...'.red);
                 process.exit(1);
             }
 
-            var doAuto = false;
-            var configPath = path.resolve(__dirname, '../conf/config.json');
+            let doAuto = false;
 
-            if (fs.existsSync(configPath)) {
-                var config = require(configPath);
+            if (fs.existsSync(path.resolve(__dirname, '../conf/config.json'))) {
+                const config = require(path.resolve(__dirname, '../conf/config.json'));
 
-                if (hostIP != null) {
-                    var port = config.providerUrl.split(':')[2];
-                    config.providerUrl = hostIP + ':' + port;
-                }
                 global.config = config;
             } else {
                 doAuto = true;
@@ -92,56 +83,65 @@ describe('The agent is monitoring active attributes...', function() {
 
             if (doAuto) {
                 logContext.op = 'Index.MappingTool';
-                loggerTest.info(logContext, '----------------    MAPPING TOOL    ----------------');
+                logger.info(logContext, '----------------    MAPPING TOOL    ----------------');
 
-                var loadingBar;
+                let loadingBar;
                 loadingBar = setInterval(function() {
                     process.stdout.write('.');
                 }, 3000);
 
-                var exec = require('child_process').exec;
+                const spawn = require('child_process').spawn;
+                var args = [];
                 try {
                     if (userName != 0 && password != 0) {
-                        var cmdjava =
-                            'java -jar ' +
-                            require(path.resolve(__dirname, '../mapping_tool.jar')) +
-                            ' -e ' +
-                            endpointUrl +
-                            ' -f ' +
-                            require(path.resolve(__dirname, '../conf/config.properties')) +
-                            ' -u ' +
-                            userName +
-                            ' -p ' +
-                            password;
+                        args = [
+                            '-jar',
+                            'mapping_tool.jar',
+                            '-e',
+                            endpointUrl,
+                            '-f',
+                            path.resolve(__dirname, '../conf/config.properties'),
+                            '-u',
+                            userName,
+                            '-p',
+                            password
+                        ];
                     } else {
-                        var cmdjava =
-                            'java -jar ' +
-                            path.resolve(__dirname, '../mapping_tool.jar') +
-                            ' -e ' +
-                            endpointUrl +
-                            ' -f ' +
-                            path.resolve(__dirname, '../conf/config.properties');
+                        args = [
+                            '-jar',
+                            'mapping_tool.jar',
+                            '-e',
+                            endpointUrl,
+                            '-f',
+                            path.resolve(__dirname, '../conf/config.properties')
+                        ];
                     }
-                    var child = exec(cmdjava, function(err, stdout, stderr) {
-                        clearInterval(loadingBar);
-                        if (err) {
+
+                    var child = spawn('java', args);
+
+                    child.stdout.on('data', function(data) {
+                        console.log('[MAPPING TOOL]: ' + data);
+                    });
+
+                    child.on('exit', function(code) {
+                        console.log('child process exited with code ' + code);
+                        if (code != 0) {
                             logger.error(
                                 logContext,
                                 'There is a problem with automatic configuration. Loading old configuration (if exists)...' +
-                                    err
+                                    code
                             );
                         } else {
                             logger.info(
                                 logContext,
                                 'Automatic configuration successfully created. Loading new configuration...'
                             );
-                            var config = require(configPath);
-                        }
+                            const config = require(path.resolve(__dirname, '../conf/config.json'));
+                            global.config = config;
 
-                        run.run();
-                        server.start();
-                        done();
-                        process.exit(0);
+                            run.run();
+                            server.start();
+                        }
                     });
                 } catch (ex) {
                     clearInterval(loadingBar);
@@ -616,7 +616,7 @@ describe('Verify Northbound flow', function() {
 
         function myTimer() {
             request.put(accelerateCar, function(error, response, body) {
-                console.log('stopRequest');
+                console.log('accelerateRequest');
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
