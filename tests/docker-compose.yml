@@ -9,31 +9,9 @@ services:
     ports:
       - "5001:5001"
 
-  iotage:
-    hostname: iotage
-    image: iotagent4fiware/iotagent-opcua:latest
-    networks:
-      - hostnet
-    ports:
-      - "4001:4001"
-    depends_on:
-      - iotcarsrv
-      - mongo-db
-      - orion
-    volumes:
-      - ../AGECONF:/opt/iotagent-opcua/conf
-      - ../certificates:/opt/iotagent-opcua/certificates
-    environment:
-      - IOTA_REGISTRY_TYPE=mongodb
-      - IOTA_LOG_LEVEL=DEBUG
-      - IOTA_MONGO_HOST=mongo-db
-      - IOTA_MONGO_DB=iotagent
-      - IOTA_FALLBACK_TENANT=opcua_car
-      - IOTA_RELAX_TEMPLATE_VALIDATION=true
-
-  mongo-db:
+  mongodb:
     image: mongo:4.2
-    hostname: mongo-db
+    hostname: mongodb
     ports:
       - "27017:27017"
     networks:
