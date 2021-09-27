@@ -28,7 +28,7 @@ var hostIP = null;
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
-/*
+
 describe('The agent is monitoring active attributes...', function() {
     it('opcua-agent start', function(done) {
         // Set Up
@@ -163,7 +163,7 @@ describe('The agent is monitoring active attributes...', function() {
             process.exit(1);
         }
     });
-});*/
+});
 
 describe('Test Iot Agent lib', function() {
     beforeEach(function(done) {
@@ -668,7 +668,7 @@ describe('Verify Northbound flow', function() {
         myTimer();
     });
 });
-/*
+
 describe('Verify ADMIN API services', function() {
     it('verify version service', function(done) {
         this.timeout(0);
@@ -805,7 +805,7 @@ describe('Verify ADMIN API services', function() {
         }
         myTimer();
     });
-});*/
+});
 
 describe('Test findType module', function() {
     it('verify functionalities of findType module', function(done) {

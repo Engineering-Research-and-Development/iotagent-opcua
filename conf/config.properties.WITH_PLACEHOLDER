@@ -14,15 +14,15 @@ server-port=4001
 provider-url=http://TEST_MACHINE_IP:4001
 
 device-registration-duration=P1M
-device-registry-type=memory
+device-registry-type=mongodb
 
-log-level=INFO
+log-level=DEBUG
 
 namespaceIndex=3
 namespaceNumericIdentifier=1000
 
 # MONGO-DB CONFIGURATION (required if device-registry-type=mongodb)
-mongodb-host=TEST_MACHINE_IP
+mongodb-host=mongo-db
 mongodb-port=27017
 mongodb-db=iotagent
 mongodb-retries=5
@@ -84,7 +84,7 @@ agent-id=age01_
 entity-id=age01_Car
 		   
 ## CONFIGURATION
-configuration=#api
+configuration=api
 
 ## CHECK TIMER POLLING DEVICES
 checkTimer=2000

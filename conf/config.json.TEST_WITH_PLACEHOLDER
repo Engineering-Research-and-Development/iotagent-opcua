@@ -13,7 +13,7 @@
         "baseRoot": "/"
     },
     "deviceRegistry": {
-        "type": "memory"
+        "type": "mongodb"
     },
     "mongodb": {
         "host": "TEST_MACHINE_IP",
