@@ -25,7 +25,7 @@ services:
     hostname: orion
     container_name: fiware-orion
     depends_on:
-      - mongo-db
+      - mongodb
     networks:
       - hostnet
     ports:
