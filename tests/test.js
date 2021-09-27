@@ -38,7 +38,6 @@ describe('The agent is monitoring active attributes...', function() {
             srv: '',
             subsrv: ''
         };
-
         try {
             // node-opcue dependencies
             require('requirish')._(module);
@@ -51,45 +50,36 @@ describe('The agent is monitoring active attributes...', function() {
                 }
                 process.exit(1);
             }
-
             const server = require('../iot_agent_modules/services/server');
             const run = require('../iot_agent_modules/run/run');
             const fs = require('fs');
             // custom simple logger
             var logger = require('logops');
             logger.format = logger.formatters.pipe;
-
             const PropertiesReader = require('properties-reader');
             const properties = PropertiesReader(path.resolve(__dirname, '../conf/config.properties'));
             global.properties = properties;
             const endpointUrl = properties.get('endpoint');
             const userName = properties.get('userName');
             const password = properties.get('password');
-
             if (endpointUrl == null) {
                 logger.info(logContext, '../conf/config.properties: endpoint not found...'.red);
                 process.exit(1);
             }
-
             let doAuto = false;
-
             if (fs.existsSync(path.resolve(__dirname, '../conf/config.json'))) {
                 const config = require(path.resolve(__dirname, '../conf/config.json'));
-
                 global.config = config;
             } else {
                 doAuto = true;
             }
-
             if (doAuto) {
                 logContext.op = 'Index.MappingTool';
                 logger.info(logContext, '----------------    MAPPING TOOL    ----------------');
-
                 let loadingBar;
                 loadingBar = setInterval(function() {
                     process.stdout.write('.');
                 }, 3000);
-
                 const spawn = require('child_process').spawn;
                 var args = [];
                 try {
@@ -116,13 +106,10 @@ describe('The agent is monitoring active attributes...', function() {
                             path.resolve(__dirname, '../conf/config.properties')
                         ];
                     }
-
                     var child = spawn('java', args);
-
                     child.stdout.on('data', function(data) {
                         console.log('[MAPPING TOOL]: ' + data);
                     });
-
                     child.on('exit', function(code) {
                         console.log('child process exited with code ' + code);
                         if (code != 0) {
@@ -138,7 +125,6 @@ describe('The agent is monitoring active attributes...', function() {
                             );
                             const config = require(path.resolve(__dirname, '../conf/config.json'));
                             global.config = config;
-
                             run.run();
                             server.start();
                         }
@@ -668,24 +654,20 @@ describe('Verify Northbound flow', function() {
         myTimer();
     });
 });
-
+/*
 describe('Verify ADMIN API services', function() {
     it('verify version service', function(done) {
         this.timeout(0);
         // Run test
-
         var value = null;
-
         var versionRequest = {
             url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/version',
             method: 'GET'
         };
         function myTimer() {
             var updated = false;
-
             request(versionRequest, function(error, response, body) {
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
                 if (error == null) {
                     loggerTest.info(logContextTest, 'VERSION SERVICE SUCCESSFULLY READ');
                     done();
@@ -697,23 +679,18 @@ describe('Verify ADMIN API services', function() {
         }
         myTimer();
     });
-
     it('verify status service', function(done) {
         this.timeout(0);
         // Run test
-
         var value = null;
-
         var statusRequest = {
             url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/status',
             method: 'GET'
         };
         function myTimer() {
             var updated = false;
-
             request(statusRequest, function(error, response, body) {
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
                 if (error == null) {
                     loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ');
                     done();
@@ -725,23 +702,18 @@ describe('Verify ADMIN API services', function() {
         }
         myTimer();
     });
-
     it('verify config service', function(done) {
         this.timeout(0);
         // Run test
-
         var value = null;
-
         var configRequest = {
             url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/config',
             method: 'GET'
         };
         function myTimer() {
             var updated = false;
-
             request(configRequest, function(error, response, body) {
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
                 if (error == null) {
                     loggerTest.info(logContextTest, 'CONFIG SERVICE SUCCESSFULLY READ');
                     done();
@@ -753,23 +725,18 @@ describe('Verify ADMIN API services', function() {
         }
         myTimer();
     });
-
     it('verify commandsList service', function(done) {
         this.timeout(0);
         // Run test
-
         var value = null;
-
         var commandsListRequest = {
             url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/commandsList',
             method: 'GET'
         };
-
         function myTimer() {
             request(commandsListRequest, function(error, response, body) {
                 console.log('commandsListRequest');
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
                 if (error == null) {
                     loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE SUCCESSFULLY READ');
                     done();
@@ -781,10 +748,8 @@ describe('Verify ADMIN API services', function() {
         }
         myTimer();
     });
-
     it('verify config post service', function(done) {
         this.timeout(0);
-
         var jsonRequest = {
             url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('api-port') + '/json',
             method: 'POST',
@@ -805,7 +770,7 @@ describe('Verify ADMIN API services', function() {
         }
         myTimer();
     });
-});
+});*/
 
 describe('Test findType module', function() {
     it('verify functionalities of findType module', function(done) {

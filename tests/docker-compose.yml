@@ -9,9 +9,9 @@ services:
     ports:
       - "5001:5001"
 
-  mongodb:
+  mongo-db:
     image: mongo:4.2
-    hostname: mongodb
+    hostname: mongo-db
     ports:
       - "27017:27017"
     networks:
@@ -25,12 +25,12 @@ services:
     hostname: orion
     container_name: fiware-orion
     depends_on:
-      - mongodb
+      - mongo-db
     networks:
       - hostnet
     ports:
       - "1026:1026"
-    command: -dbhost mongo-db -logLevel INFO
+    command: -dbhost mongo-db -logLevel DEBUG
 
 networks:
   hostnet:
