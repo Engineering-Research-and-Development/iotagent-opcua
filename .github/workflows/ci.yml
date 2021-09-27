@@ -51,30 +51,30 @@ jobs:
   #         npm install
   #         npm run lint
 
-  unit-test:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version:
-          - 12.x
-          - 14.x
-    steps:
-      - name: Git checkout
-        uses: actions/checkout@v2
-      - name: "Install Node.js ${{ matrix.node-version }}"
-        uses: actions/setup-node@v1
-        with:
-          node-version: "${{ matrix.node-version }}"
-      - name: "Start Services"
-        run: |
-          ./tests/load_test_configuration.sh
-          ./replace_local_ip.sh
-          docker-compose -f ./tests/docker-compose.yml up -d
-      - name: "Unit Tests with Node.js ${{ matrix.node-version }}"
-        run: |
-          npm install
-          npm test
+  #unit-test:
+  #  name: Unit Tests
+  # runs-on: ubuntu-latest
+  #  strategy:
+  #    matrix:
+  #      node-version:
+  #        - 12.x
+  #        - 14.x
+  #  steps:
+  #    - name: Git checkout
+  #      uses: actions/checkout@v2
+  #    - name: "Install Node.js ${{ matrix.node-version }}"
+  #      uses: actions/setup-node@v1
+  #      with:
+  #        node-version: "${{ matrix.node-version }}"
+  #    - name: "Start Services"
+  #      run: |
+  #        ./tests/load_test_configuration.sh
+  #        ./replace_local_ip.sh
+  #        docker-compose -f ./tests/docker-compose.yml up -d
+  #    - name: "Unit Tests with Node.js ${{ matrix.node-version }}"
+  #      run: |
+  #        npm install
+  #        npm test
   code-coverage:
     name: Coveralls Code Coverage
     runs-on: ubuntu-latest
@@ -96,6 +96,6 @@ jobs:
           npm install
           npm run coverage
       - name: Push to Coveralls
-        uses: coverallsapp/github-action@improve_tst_coverage
+        uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
