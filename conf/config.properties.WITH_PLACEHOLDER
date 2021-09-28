@@ -9,14 +9,14 @@ fiware-service=opcua_car
 fiware-service-path=/demo
 
 ## AGENT CONFIGURATION
-server-base-root=/
+server-base-root=
 server-port=4001
 provider-url=http://TEST_MACHINE_IP:4001
 
 device-registration-duration=P1M
 device-registry-type=mongodb
 
-log-level=DEBUG
+log-level=INFO
 
 namespaceIndex=3
 namespaceNumericIdentifier=1000
@@ -24,7 +24,7 @@ namespaceNumericIdentifier=1000
 # MONGO-DB CONFIGURATION (required if device-registry-type=mongodb)
 mongodb-host=TEST_MACHINE_IP
 mongodb-port=27017
-mongodb-db=iotagent
+mongodb-db=iotagent_opcua
 mongodb-retries=5
 mongodb-retry-time=5											
 			  
@@ -84,7 +84,7 @@ agent-id=age01_
 entity-id=age01_Car
 		   
 ## CONFIGURATION
-configuration=api
+configuration=#api
 
 ## CHECK TIMER POLLING DEVICES
 checkTimer=2000

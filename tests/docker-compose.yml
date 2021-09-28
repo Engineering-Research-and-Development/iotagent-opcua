@@ -16,7 +16,6 @@ services:
       - "27017:27017"
     networks:
       - hostnet
-    command: --bind_ip_all
     volumes:
       - mongo-db:/data
 

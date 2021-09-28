@@ -1,5 +1,5 @@
 {
-    "logLevel": "DEBUG",
+    "logLevel": "INFO",
     "multiCore": false,
     "relaxTemplateValidation": true,
     "contextBroker": {
@@ -18,7 +18,7 @@
     "mongodb": {
         "host": "TEST_MACHINE_IP",
         "port": "27017",
-        "db": "iotagent",
+        "db": "iotagent_opcua",
         "retries": 5,
         "retryTime": 5
     },
