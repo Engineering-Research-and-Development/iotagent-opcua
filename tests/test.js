@@ -638,7 +638,7 @@ describe('Verify Northbound flow', function() {
         myTimer();
     });
 });
-/*
+
 describe('Verify ADMIN API services', function() {
     it('verify version service', function(done) {
         this.timeout(0);
@@ -754,7 +754,7 @@ describe('Verify ADMIN API services', function() {
         }
         myTimer();
     });
-});*/
+});
 
 describe('Test findType module', function() {
     it('verify functionalities of findType module', function(done) {
