@@ -12,14 +12,6 @@ var rSfN = require('../iot_agent_modules/run/removeSuffixFromName');
 var cR = require('../iot_agent_modules/run/createResponse');
 var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
 
-// Set Up
-global.logContextTest = {
-    comp: 'iotAgent-OPCUA',
-    op: 'Test',
-    srv: '',
-    subsrv: ''
-};
-
 var loggerTest = require('logops');
 loggerTest.format = loggerTest.formatters.pipe;
 var child = require('child_process');
@@ -442,9 +434,7 @@ describe('Test Iot Agent lib', function() {
                 }
             });
         }
-
-        //myTimer(); // immediate first run to be re-enabled once updateContext works again
-
+        myTimer(); // immediate first run to be re-enabled once updateContext works again
         done();
     });
 });
@@ -506,20 +496,6 @@ describe('Add Device', function() {
 });
 
 describe('Verify REST Devices Management', function() {
-    beforeEach(function(done) {
-        // Set up
-        done();
-    });
-
-    afterEach(function(done) {
-        // Clean Up
-        done();
-    });
-    after(function(done) {
-        // Clean Up
-        done();
-    });
-
     describe('The agent is active...', function() {
         it('verify get devices', function(done) {
             this.timeout(0);
