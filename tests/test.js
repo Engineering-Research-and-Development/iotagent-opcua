@@ -25,12 +25,10 @@ loggerTest.format = loggerTest.formatters.pipe;
 var child = require('child_process');
 var hostIP = null;
 
-function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
-/*
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 describe('The agent is monitoring active attributes...', function() {
-    it('opcua-agent start', function(done) {
+    it('opcua-agent start', async function startAge() {
         // Set Up
         global.logContext = {
             comp: 'iotAgent-OPCUA',
@@ -140,7 +138,7 @@ describe('The agent is monitoring active attributes...', function() {
             } else {
                 run.run();
                 server.start();
-                done();
+                await wait(20000);
             }
         } catch (ex) {
             var logger = require('logops');
@@ -149,23 +147,9 @@ describe('The agent is monitoring active attributes...', function() {
             process.exit(1);
         }
     });
-});*/
+});
 
 describe('Test Iot Agent lib', function() {
-    beforeEach(function(done) {
-        // Set up
-        done();
-    });
-
-    afterEach(function(done) {
-        // Clean Up
-        done();
-    });
-    after(function(done) {
-        // Clean Up
-        done();
-    });
-
     describe('get temp ', function() {
         it('verify get temp', function(done) {
             this.timeout(0);

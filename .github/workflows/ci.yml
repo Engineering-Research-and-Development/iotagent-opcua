@@ -71,15 +71,10 @@ jobs:
           ./tests/load_test_configuration.sh
           ./replace_local_ip.sh
           docker-compose -f ./tests/docker-compose.yml up -d
-      - name: "run agent"
+      - name: "Unit Tests with Node.js ${{ matrix.node-version }}"
         run: |
           npm install
-          node ./index.js &
-      - name: Wait for agent starting
-        run: sleep 30
-      - name: "Unit Tests with Node.js ${{ matrix.node-version }}"
-        run: npm test
-
+          npm test
   code-coverage:
     name: Coveralls Code Coverage
     runs-on: ubuntu-latest
@@ -96,15 +91,10 @@ jobs:
           ./tests/load_test_configuration.sh
           ./replace_local_ip.sh
           docker-compose -f ./tests/docker-compose.yml up -d
-      - name: "run agent"
+      - name: "Unit Tests with Node.js 12.x"
         run: |
           npm install
-          node ./index.js &
-      - name: Wait for agent starting
-        run: sleep 30
-      - name: "Unit Tests with Node.js 12.x"
-        run: npm run coverage
-
+          npm run coverage
       - name: Push to Coveralls
         uses: coverallsapp/github-action@master
         with:
