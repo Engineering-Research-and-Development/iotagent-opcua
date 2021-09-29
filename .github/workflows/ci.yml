@@ -74,7 +74,7 @@ jobs:
       - name: "Unit Tests with Node.js ${{ matrix.node-version }}"
         run: |
           npm install
-          node ./index.js
+          node ./index.js &
           npm test
   code-coverage:
     name: Coveralls Code Coverage
@@ -95,7 +95,7 @@ jobs:
       - name: "Unit Tests with Node.js 12.x"
         run: |
           npm install
-          node ./index.js
+          node ./index.js &
           npm run coverage
       - name: Push to Coveralls
         uses: coverallsapp/github-action@master
