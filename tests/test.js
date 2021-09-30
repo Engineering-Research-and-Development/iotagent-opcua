@@ -12,6 +12,13 @@ var rSfN = require('../iot_agent_modules/run/removeSuffixFromName');
 var cR = require('../iot_agent_modules/run/createResponse');
 var config = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../conf/config.json'), 'utf8'));
 
+var loggerTest = require('logops');
+loggerTest.format = loggerTest.formatters.pipe;
+var child = require('child_process');
+var hostIP = null;
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 // Set Up
 global.logContextTest = {
     comp: 'iotAgent-OPCUA',
@@ -19,13 +26,6 @@ global.logContextTest = {
     srv: '',
     subsrv: ''
 };
-
-var loggerTest = require('logops');
-loggerTest.format = loggerTest.formatters.pipe;
-var child = require('child_process');
-var hostIP = null;
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 describe('The agent is monitoring active attributes...', function() {
     it('opcua-agent start', async function startAge() {
@@ -36,6 +36,7 @@ describe('The agent is monitoring active attributes...', function() {
             srv: '',
             subsrv: ''
         };
+
         try {
             // node-opcue dependencies
             require('requirish')._(module);
@@ -149,140 +150,215 @@ describe('The agent is monitoring active attributes...', function() {
     });
 });
 
-describe('Test Iot Agent lib', function() {
-    describe('get temp ', function() {
-        it('verify get temp', function(done) {
-            this.timeout(0);
-            // Run test
-            var value = null;
-            var temperatureRequest = {
-                url:
-                    'http://' +
-                    properties.get('context-broker-host') +
-                    ':' +
-                    properties.get('context-broker-port') +
-                    '/v2/entities/' +
-                    properties.get('entity-id') +
-                    '/attrs/Engine_Temperature',
-                method: 'GET',
-                headers: {
-                    'fiware-service': properties.get('fiware-service'),
-                    'fiware-servicepath': properties.get('fiware-service-path')
+describe('Get temp ', function() {
+    it('/attrs/Engine_Temperature', function(done) {
+        this.timeout(0);
+        // Run test
+        var value = null;
+        var temperatureRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v2/entities/' +
+                properties.get('entity-id') +
+                '/attrs/Engine_Temperature',
+            method: 'GET',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            }
+        };
+
+        function myTimer() {
+            var updated = false;
+            request(temperatureRequest, function(error, response, body) {
+                console.log('temperatureRequest');
+                if (error) {
+                    console.log('An error occurred during temperature request send');
+                    console.log(error);
                 }
-            };
 
-            function myTimer() {
-                var updated = false;
-                request(temperatureRequest, function(error, response, body) {
-                    console.log('temperatureRequest');
-                    if (error) {
-                        console.log('An error occurred during temperature request send');
-                        console.log(error);
-                    }
+                var bodyObject = {};
+                bodyObject = JSON.parse(body);
 
-                    var bodyObject = {};
-                    bodyObject = JSON.parse(body);
+                console.log(typeof bodyObject);
 
-                    console.log(typeof bodyObject);
-
-                    if (value != null) {
-                        if (bodyObject.value != 0) {
-                            value = bodyObject.value;
-                            var text = 'value updated ' + value;
-                            loggerTest.info(logContextTest, text);
-                            updated = true;
-                        }
-                    } else {
+                if (value != null) {
+                    if (bodyObject.value != 0) {
                         value = bodyObject.value;
-                    }
-                    if (!updated) {
-                        var text = 'value ' + value;
+                        var text = 'value updated ' + value;
                         loggerTest.info(logContextTest, text);
-                        setTimeout(myTimer, 2000);
+                        updated = true;
                     }
-                });
-            }
-            myTimer();
-            done();
-        });
+                } else {
+                    value = bodyObject.value;
+                }
+                if (!updated) {
+                    var text = 'value ' + value;
+                    loggerTest.info(logContextTest, text);
+                    setTimeout(myTimer, 2000);
+                }
+            });
+        }
+        myTimer();
+        done();
     });
+});
 
-    describe('test lib...', function() {
-        it('verify get about', function(done) {
-            this.timeout(0);
+describe('Get about', function() {
+    it('/iot/about', function(done) {
+        this.timeout(0);
 
-            var getAbout = {
-                url:
-                    'http://' +
-                    properties.get('context-broker-host') +
-                    ':' +
-                    properties.get('server-port') +
-                    '/iot/about',
-                headers: {
-                    'fiware-service': properties.get('fiware-service'),
-                    'fiware-servicepath': properties.get('fiware-service-path')
-                },
-                method: 'GET'
-            };
+        var getAbout = {
+            url: 'http://' + properties.get('context-broker-host') + ':' + properties.get('server-port') + '/iot/about',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            },
+            method: 'GET'
+        };
 
-            function myTimer() {
-                request(getAbout, function(error, response, body) {
-                    console.log('getAbout');
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+        function myTimer() {
+            request(getAbout, function(error, response, body) {
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
-                        done(new Error('REST - GET DEVICES FAILURE'));
-                    }
-                });
-            }
-
-            myTimer();
-        });
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
+                    done(new Error('REST - GET DEVICES FAILURE'));
+                }
+            });
+        }
+        myTimer();
     });
+});
 
-    describe('Test service group API', function() {
-        it('verify get services', function(done) {
-            this.timeout(0);
+describe('Do Accelerate', function() {
+    it('/attrs/Accelerate?type=Device', function(done) {
+        this.timeout(0);
+        // Run test
 
-            // Run test
-            var getServiceGroup = {
-                url:
-                    'http://' +
-                    properties.get('context-broker-host') +
-                    ':' +
-                    properties.get('server-port') +
-                    '/iot/services',
-                headers: {
-                    'fiware-service': properties.get('fiware-service'),
-                    'fiware-servicepath': properties.get('fiware-service-path')
-                },
-                method: 'GET'
-            };
-
-            function myTimer() {
-                request(getServiceGroup, function(error, response, body) {
-                    console.log('getServiceGroup');
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
-                        done(new Error('REST - GET DEVICES FAILURE'));
-                    }
-                });
+        var accelerateCar = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v2/entities/' +
+                properties.get('entity-id') +
+                '/attrs/Accelerate?type=Device',
+            method: 'PUT',
+            json: {
+                value: ['1'],
+                type: 'command'
+            },
+            headers: {
+                'content-type': 'application/json',
+                'fiware-service': config.service,
+                'fiware-servicepath': config.subservice
             }
+        };
 
-            myTimer();
-        });
+        function myTimer() {
+            request.put(accelerateCar, function(error, response, body) {
+                console.log('accelerateRequest');
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - accelerateCar command');
+
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - accelerateCar command');
+                    done(new Error('REST - accelerateCar command'));
+                }
+            });
+        }
+        myTimer();
     });
+});
 
-    it('verify commands execution as context provider', function(done) {
+describe('Get Speed', function() {
+    it('/attrs/Speed', function(done) {
+        this.timeout(0);
+        var speedRequest2 = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v2/entities/' +
+                properties.get('entity-id') +
+                '/attrs/Speed',
+            method: 'GET',
+            headers: {
+                'fiware-service': config.service,
+                'fiware-servicepath': config.subservice
+            }
+        };
+
+        function myTimer() {
+            request.get(speedRequest2, function(error, response, body) {
+                console.log('speedRequest');
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - speed check');
+
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - speed check');
+                    done(new Error('REST - speed check'));
+                }
+            });
+        }
+        myTimer();
+    });
+});
+
+describe('Get Services', function() {
+    it('/iot/services', function(done) {
+        this.timeout(0);
+
+        // Run test
+        var getServiceGroup = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('server-port') +
+                '/iot/services',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            },
+            method: 'GET'
+        };
+
+        function myTimer() {
+            request(getServiceGroup, function(error, response, body) {
+                console.log('getServiceGroup');
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
+                    done(new Error('REST - GET DEVICES FAILURE'));
+                }
+            });
+        }
+        myTimer();
+    });
+});
+
+describe('Command Stop updateContext', function() {
+    it('/v1/updateContext', function(done) {
         this.timeout(0);
 
         var commandsRequest = {
@@ -333,7 +409,9 @@ describe('Test Iot Agent lib', function() {
 
         myTimer();
     });
+});
 
+describe('Command Accelerate updateContext', function() {
     it('verify accelerateRequest as context provider', function(done) {
         this.timeout(0);
 
@@ -384,8 +462,10 @@ describe('Test Iot Agent lib', function() {
 
         myTimer();
     });
+});
 
-    it('verify get of lazy attributes on Context Broker', function(done) {
+describe('Get Speed', function() {
+    it('/attrs/Speed', function(done) {
         console.log('verify update of active attributes on Context Broker');
         this.timeout(0);
         // Run test
@@ -449,11 +529,12 @@ describe('Test Iot Agent lib', function() {
     });
 });
 
-describe('Add Device', function() {
-    it('verify the addition of a new device', function(done) {
+describe('Get Devices', function() {
+    it('/iot/devices', function(done) {
         this.timeout(0);
+
         // Run test
-        var addDeviceRequest = {
+        var getDeviceRequest = {
             url:
                 'http://' +
                 properties.get('context-broker-host') +
@@ -462,42 +543,22 @@ describe('Add Device', function() {
                 '/iot/devices',
             headers: {
                 'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path'),
-                'content-type': 'application/json'
+                'fiware-servicepath': properties.get('fiware-service-path')
             },
-            method: 'POST',
-            json: {
-                devices: [
-                    {
-                        device_id: 'age05_Car',
-                        entity_name: 'age05_Car',
-                        entity_type: 'Device',
-                        attributes: [
-                            { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
-                            { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
-                            { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
-                            { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
-                            { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
-                        ],
-                        lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
-                        commands: []
-                    }
-                ]
-            }
+            method: 'GET'
         };
 
         function myTimer() {
-            request.post(addDeviceRequest, function(error, response, body) {
-                console.log('addDeviceRequest');
+            request(getDeviceRequest, function(error, response, body) {
+                console.log('getDeviceRequest');
                 loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
                 if (error == null) {
-                    loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
-
+                    loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
                     done();
                 } else {
-                    loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
-                    done();
+                    loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
+                    done(new Error('REST - GET DEVICES FAILURE'));
                 }
             });
         }
@@ -505,137 +566,84 @@ describe('Add Device', function() {
     });
 });
 
-describe('Verify REST Devices Management', function() {
-    beforeEach(function(done) {
-        // Set up
-        done();
+describe('Test findType module', function() {
+    it('verify functionalities of findType module', function(done) {
+        if (fT.findType('Engine_Temperature', config.types.Device).toString() == 'Number') {
+            done();
+        } else {
+            done(new Error('missing type'));
+        }
     });
 
-    afterEach(function(done) {
-        // Clean Up
+    it('verify functionalities of findType module (undefined device)', function(done) {
+        if (fT.findType('Engine_Temperature', undefined) == null) {
+            done();
+        } else {
+            done(new Error('wrong behaviour for undefined device'));
+        }
+    });
+});
+
+describe('Build mongoGroup module', function() {
+    it('builg group', function(done) {
+        mG.mongoGroup(config);
         done();
     });
-    after(function(done) {
-        // Clean Up
-        done();
+});
+
+describe('test removeSuffixFromName module', function() {
+    it('removing SuffixFromName', function(done) {
+        if (rSfN.removeSuffixFromName('testR', 'R').toString() == 'test') {
+            done();
+        } else {
+            done(new Error('removing SuffixFromName failed'));
+        }
     });
 
-    describe('The agent is active...', function() {
-        it('verify get devices', function(done) {
-            this.timeout(0);
+    it('no SuffixFromName', function(done) {
+        if (rSfN.removeSuffixFromName('test', 'B').toString() == 'test') {
+            done();
+        } else {
+            done(new Error('removing SuffixFromName failed'));
+        }
+    });
+});
 
-            // Run test
-            var getDeviceRequest = {
-                url:
-                    'http://' +
-                    properties.get('context-broker-host') +
-                    ':' +
-                    properties.get('server-port') +
-                    '/iot/devices',
-                headers: {
-                    'fiware-service': properties.get('fiware-service'),
-                    'fiware-servicepath': properties.get('fiware-service-path')
-                },
-                method: 'GET'
-            };
+describe('Test createResponde module', function() {
+    it('creating response', function(done) {
+        if (cR.createResponse('test', 'string', config.types.Device.active, '1,2,3,4,5', [1, 2, 3, 4, 5]) != null) {
+            done();
+        } else {
+            done(new Error('creating response failed'));
+        }
+    });
+});
 
-            function myTimer() {
-                request(getDeviceRequest, function(error, response, body) {
-                    console.log('getDeviceRequest');
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+describe('Delete Device', function() {
+    it('/iot/devices/age01_Car', function(done) {
+        var deviceDeleteRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('server-port') +
+                '/iot/devices/age01_Car',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            },
+            method: 'DELETE'
+        };
 
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
-                        done(new Error('REST - GET DEVICES FAILURE'));
-                    }
-                });
+        request(deviceDeleteRequest, function(error, response, body) {
+            console.log('deviceDeleteRequest');
+            if (error == null) {
+                loggerTest.info(logContextTest, 'Device Deleted');
+                done();
+            } else {
+                done(new Error(error));
             }
-            myTimer();
         });
-    });
-});
-
-describe('Verify Northbound flow', function() {
-    it('verify commands execution as context provider', function(done) {
-        this.timeout(0);
-        // Run test
-
-        var accelerateCar = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('context-broker-port') +
-                '/v2/entities/' +
-                properties.get('entity-id') +
-                '/attrs/Accelerate?type=Device',
-            method: 'PUT',
-            json: {
-                value: ['1'],
-                type: 'command'
-            },
-            headers: {
-                'content-type': 'application/json',
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        };
-
-        function myTimer() {
-            request.put(accelerateCar, function(error, response, body) {
-                console.log('accelerateRequest');
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                if (error == null) {
-                    loggerTest.info(logContextTest, 'REST - accelerateCar command');
-
-                    done();
-                } else {
-                    loggerTest.info(logContextTest, 'REST - accelerateCar command');
-                    done(new Error('REST - accelerateCar command'));
-                }
-            });
-        }
-        myTimer();
-    });
-
-    it('verify speed', function(done) {
-        this.timeout(0);
-        var speedRequest2 = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('context-broker-port') +
-                '/v2/entities/' +
-                properties.get('entity-id') +
-                '/attrs/Speed',
-            method: 'GET',
-            headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        };
-
-        function myTimer() {
-            request.get(speedRequest2, function(error, response, body) {
-                console.log('speedRequest');
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                if (error == null) {
-                    loggerTest.info(logContextTest, 'REST - speed check');
-
-                    done();
-                } else {
-                    loggerTest.info(logContextTest, 'REST - speed check');
-                    done(new Error('REST - speed check'));
-                }
-            });
-        }
-        myTimer();
     });
 });
 
@@ -755,64 +763,68 @@ describe('Verify ADMIN API services', function() {
         myTimer();
     });
 });
+/*
+describe('Add Device', function () {
+    it('/iot/devices', function (done) {
+        this.timeout(0);
+        // Run test
+        var addDeviceRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('server-port') +
+                '/iot/devices',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path'),
+                'content-type': 'application/json'
+            },
+            method: 'POST',
+            json: {
+                devices: [
+                    {
+                        device_id: 'age05_Car',
+                        entity_name: 'age05_Car',
+                        entity_type: 'Device',
+                        attributes: [
+                            { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
+                            { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
+                            { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
+                            { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
+                            { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
+                        ],
+                        lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
+                        commands: []
+                    }
+                ]
+            }
+        };
 
-describe('Test findType module', function() {
-    it('verify functionalities of findType module', function(done) {
-        if (fT.findType('Engine_Temperature', config.types.Device).toString() == 'Number') {
-            done();
-        } else {
-            done(new Error('missing type'));
-        }
-    });
+        function myTimer() {
+            request.post(addDeviceRequest, function (error, response, body) {
+                console.log('addDeviceRequest');
+                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
 
-    it('verify functionalities of findType module (undefined device)', function(done) {
-        if (fT.findType('Engine_Temperature', undefined) == null) {
-            done();
-        } else {
-            done(new Error('wrong behaviour for undefined device'));
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
+
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - ADD DEVICE FAILURE');
+                    done();
+                }
+            });
         }
+        myTimer();
     });
 });
-
-describe('Build mongoGroup module', function() {
-    it('builg group', function(done) {
-        mG.mongoGroup(config);
-        done();
-    });
-});
-
-describe('test removeSuffixFromName module', function() {
-    it('removing SuffixFromName', function(done) {
-        if (rSfN.removeSuffixFromName('testR', 'R').toString() == 'test') {
-            done();
-        } else {
-            done(new Error('removing SuffixFromName failed'));
-        }
-    });
-
-    it('no SuffixFromName', function(done) {
-        if (rSfN.removeSuffixFromName('test', 'B').toString() == 'test') {
-            done();
-        } else {
-            done(new Error('removing SuffixFromName failed'));
-        }
-    });
-});
-
-describe('Test createResponde module', function() {
-    it('creating response', function(done) {
-        if (cR.createResponse('test', 'string', config.types.Device.active, '1,2,3,4,5', [1, 2, 3, 4, 5]) != null) {
-            done();
-        } else {
-            done(new Error('creating response failed'));
-        }
-    });
-});
-
-describe('stop and start car server + delete device', function() {
-    it('stop car srv', function(done) {
-        setTimeout(function() {
-            child.exec(path.resolve(__dirname, './stop_carsrv.sh'), function(err, stdout, stderr) {
+*/
+/*
+describe('stop and start car server + delete device', function () {
+    it('stop car srv', function (done) {
+        setTimeout(function () {
+            child.exec(path.resolve(__dirname, './stop_carsrv.sh'), function (err, stdout, stderr) {
                 if (err) {
                     console.log('An error occurred during car server stop ...');
                     console.log(err);
@@ -827,9 +839,9 @@ describe('stop and start car server + delete device', function() {
         }, 5000);
     });
 
-    it('start car srv', function(done) {
-        setTimeout(function() {
-            child.exec(path.resolve(__dirname, './start_carsrv.sh'), function(err, stdout, stderr) {
+    it('start car srv', function (done) {
+        setTimeout(function () {
+            child.exec(path.resolve(__dirname, './start_carsrv.sh'), function (err, stdout, stderr) {
                 if (err) {
                     console.log('An error occurred during car server restart ...');
                     console.log(err);
@@ -844,18 +856,18 @@ describe('stop and start car server + delete device', function() {
         }, 5000);
     });
 
-    it('verify reconnection mechanisms (OPC UA side)', function(done) {
+    it('verify reconnection mechanisms (OPC UA side)', function (done) {
         var composeFilePath = path.resolve(__dirname, '../tests/docker-compose.yml');
         var stopCar = 'docker-compose -f ' + composeFilePath + ' stop iotcarsrv';
-        child.exec(stopCar, function(err, stdout, stderr) {
+        child.exec(stopCar, function (err, stdout, stderr) {
             if (err) {
                 console.log('An error occurred during carsrv stopping ...');
                 console.log(err);
             }
 
-            setTimeout(function() {
+            setTimeout(function () {
                 var startCar = 'docker-compose -f ' + composeFilePath + ' up -d iotcarsrv';
-                child.exec(startCar, function(err, stdout, stderr) {
+                child.exec(startCar, function (err, stdout, stderr) {
                     if (err) {
                         console.log('An error occurred during carsrv starting ...');
                         console.log(err);
@@ -866,32 +878,4 @@ describe('stop and start car server + delete device', function() {
             }, 5000);
         });
     });
-
-    it('delete device', function(done) {
-        // Delete device
-        // TODO: parametrize age01_Car in the whole test.js file.
-
-        var deviceDeleteRequest = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('server-port') +
-                '/iot/devices/age01_Car',
-            headers: {
-                'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path')
-            },
-            method: 'DELETE'
-        };
-
-        request(deviceDeleteRequest, function(error, response, body) {
-            console.log('deviceDeleteRequest');
-            if (error == null) {
-                done();
-            } else {
-                done(new Error(error));
-            }
-        });
-    });
-});
+});*/
