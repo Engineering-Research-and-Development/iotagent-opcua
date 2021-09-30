@@ -619,30 +619,61 @@ describe('Test createResponde module', function() {
     });
 });
 
-describe('Delete Device', function() {
-    it('/iot/devices/age01_Car', function(done) {
-        var deviceDeleteRequest = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('server-port') +
-                '/iot/devices/age01_Car',
-            headers: {
-                'fiware-service': properties.get('fiware-service'),
-                'fiware-servicepath': properties.get('fiware-service-path')
-            },
-            method: 'DELETE'
-        };
-
-        request(deviceDeleteRequest, function(error, response, body) {
-            console.log('deviceDeleteRequest');
-            if (error == null) {
-                loggerTest.info(logContextTest, 'Device Deleted');
+describe('stop and start car server + delete device', function() {
+    it('stop car srv', function(done) {
+        setTimeout(function() {
+            child.exec(path.resolve(__dirname, './stop_carsrv.sh'), function(err, stdout, stderr) {
+                if (err) {
+                    console.log('An error occurred during car server stop ...');
+                    console.log(err);
+                }
+                console.log('car stop script log');
+                console.log('STDOUT: ');
+                console.log(stdout);
+                console.log('STDERR: ');
+                console.log(stderr);
                 done();
-            } else {
-                done(new Error(error));
+            });
+        }, 5000);
+    });
+
+    it('start car srv', function(done) {
+        setTimeout(function() {
+            child.exec(path.resolve(__dirname, './start_carsrv.sh'), function(err, stdout, stderr) {
+                if (err) {
+                    console.log('An error occurred during car server restart ...');
+                    console.log(err);
+                }
+                console.log('car start script log');
+                console.log('STDOUT: ');
+                console.log(stdout);
+                console.log('STDERR: ');
+                console.log(stderr);
+                done();
+            });
+        }, 5000);
+    });
+
+    it('verify reconnection mechanisms (OPC UA side)', function(done) {
+        var composeFilePath = path.resolve(__dirname, '../tests/docker-compose.yml');
+        var stopCar = 'docker-compose -f ' + composeFilePath + ' stop iotcarsrv';
+        child.exec(stopCar, function(err, stdout, stderr) {
+            if (err) {
+                console.log('An error occurred during carsrv stopping ...');
+                console.log(err);
             }
+
+            setTimeout(function() {
+                var startCar = 'docker-compose -f ' + composeFilePath + ' up -d iotcarsrv';
+                child.exec(startCar, function(err, stdout, stderr) {
+                    if (err) {
+                        console.log('An error occurred during carsrv starting ...');
+                        console.log(err);
+                    }
+
+                    done();
+                });
+            }, 5000);
         });
     });
 });
@@ -763,6 +794,34 @@ describe('Verify ADMIN API services', function() {
         myTimer();
     });
 });
+
+describe('Delete Device', function() {
+    it('/iot/devices/age01_Car', function(done) {
+        var deviceDeleteRequest = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('server-port') +
+                '/iot/devices/age01_Car',
+            headers: {
+                'fiware-service': properties.get('fiware-service'),
+                'fiware-servicepath': properties.get('fiware-service-path')
+            },
+            method: 'DELETE'
+        };
+
+        request(deviceDeleteRequest, function(error, response, body) {
+            console.log('deviceDeleteRequest');
+            if (error == null) {
+                loggerTest.info(logContextTest, 'Device Deleted');
+                done();
+            } else {
+                done(new Error(error));
+            }
+        });
+    });
+});
 /*
 describe('Add Device', function () {
     it('/iot/devices', function (done) {
@@ -820,62 +879,3 @@ describe('Add Device', function () {
     });
 });
 */
-/*
-describe('stop and start car server + delete device', function () {
-    it('stop car srv', function (done) {
-        setTimeout(function () {
-            child.exec(path.resolve(__dirname, './stop_carsrv.sh'), function (err, stdout, stderr) {
-                if (err) {
-                    console.log('An error occurred during car server stop ...');
-                    console.log(err);
-                }
-                console.log('car stop script log');
-                console.log('STDOUT: ');
-                console.log(stdout);
-                console.log('STDERR: ');
-                console.log(stderr);
-                done();
-            });
-        }, 5000);
-    });
-
-    it('start car srv', function (done) {
-        setTimeout(function () {
-            child.exec(path.resolve(__dirname, './start_carsrv.sh'), function (err, stdout, stderr) {
-                if (err) {
-                    console.log('An error occurred during car server restart ...');
-                    console.log(err);
-                }
-                console.log('car start script log');
-                console.log('STDOUT: ');
-                console.log(stdout);
-                console.log('STDERR: ');
-                console.log(stderr);
-                done();
-            });
-        }, 5000);
-    });
-
-    it('verify reconnection mechanisms (OPC UA side)', function (done) {
-        var composeFilePath = path.resolve(__dirname, '../tests/docker-compose.yml');
-        var stopCar = 'docker-compose -f ' + composeFilePath + ' stop iotcarsrv';
-        child.exec(stopCar, function (err, stdout, stderr) {
-            if (err) {
-                console.log('An error occurred during carsrv stopping ...');
-                console.log(err);
-            }
-
-            setTimeout(function () {
-                var startCar = 'docker-compose -f ' + composeFilePath + ' up -d iotcarsrv';
-                child.exec(startCar, function (err, stdout, stderr) {
-                    if (err) {
-                        console.log('An error occurred during carsrv starting ...');
-                        console.log(err);
-                    }
-
-                    done();
-                });
-            }, 5000);
-        });
-    });
-});*/
