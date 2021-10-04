@@ -469,18 +469,90 @@ describe('Add Device', function() {
             json: {
                 devices: [
                     {
-                        device_id: 'age05_Car',
-                        entity_name: 'age05_Car',
+                        device_id: 'age03_Car',
+                        entity_name: 'age03_Car',
                         entity_type: 'Device',
                         attributes: [
-                            { object_id: 'ns=3;s=EngineBrake', name: 'EngineBrake', type: 'Number' },
-                            { object_id: 'ns=3;s=Acceleration', name: 'Acceleration', type: 'Number' },
-                            { object_id: 'ns=3;s=EngineStopped', name: 'EngineStopped', type: 'Boolean' },
-                            { object_id: 'ns=3;s=Temperature', name: 'Temperature', type: 'Number' },
-                            { object_id: 'ns=3;s=Oxigen', name: 'Oxigen', type: 'Number' }
+                            {
+                                object_id: 'ns=3;s=EngineBrake',
+                                name: 'EngineBrake',
+                                type: 'Number'
+                            },
+                            {
+                                object_id: 'ns=3;s=Acceleration',
+                                name: 'Acceleration',
+                                type: 'Number'
+                            },
+                            {
+                                object_id: 'ns=3;s=EngineStopped',
+                                name: 'EngineStopped',
+                                type: 'Boolean'
+                            },
+                            {
+                                object_id: 'ns=3;s=Temperature',
+                                name: 'Engine_Temperature',
+                                type: 'Number'
+                            },
+                            {
+                                object_id: 'ns=3;s=Oxigen',
+                                name: 'Engine_Oxigen',
+                                type: 'Number'
+                            },
+                            {
+                                object_id: 'ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy',
+                                name: 'DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy',
+                                type: 'String'
+                            },
+                            {
+                                object_id: 'ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus',
+                                name: 'DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus',
+                                type: 'Boolean'
+                            }
                         ],
-                        lazy: [{ object_id: 'ns=3;s=Speed', name: 'Speed', type: 'Number' }],
-                        commands: []
+                        lazy: [
+                            {
+                                object_id: 'ns=3;s=Speed',
+                                name: 'Speed',
+                                type: 'Number'
+                            },
+                            {
+                                object_id: 'ns=3;s=GPSCoordinates',
+                                name: 'GPSCoordinates',
+                                type: 'Number'
+                            }
+                        ],
+                        commands: [
+                            {
+                                object_id: 'ns=3;s=Stop',
+                                name: 'Stop',
+                                type: 'command'
+                            },
+                            {
+                                object_id: 'ns=3;s=Accelerate',
+                                name: 'Accelerate',
+                                type: 'command'
+                            },
+                            {
+                                object_id: 'ns=3;s=ActivateSensor',
+                                name: 'ActivateSensor',
+                                type: 'command'
+                            },
+                            {
+                                object_id: 'ns=3;s=DeactivateSensor',
+                                name: 'DeactivateSensor',
+                                type: 'command'
+                            },
+                            {
+                                object_id: 'ns=3;s=ToggleSensorActivation',
+                                name: 'ToggleSensorActivation',
+                                type: 'command'
+                            },
+                            {
+                                object_id: 'ns=3;s=LaunchMissiles',
+                                name: 'LaunchMissiles',
+                                type: 'command'
+                            }
+                        ]
                     }
                 ]
             }
@@ -549,43 +621,6 @@ describe('Verify REST Devices Management', function() {
                         done();
                     } else {
                         loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE');
-                        done(new Error('REST - GET DEVICES FAILURE'));
-                    }
-                });
-            }
-            myTimer();
-        });
-    });
-
-    describe('The agent is active...', function() {
-        it('Get devices age01_Ca', function(done) {
-            this.timeout(0);
-
-            // Run test
-            var getDeviceRequestAge01_Car = {
-                url:
-                    'http://' +
-                    properties.get('context-broker-host') +
-                    ':' +
-                    properties.get('server-port') +
-                    '/iot/devices/age01_Car',
-                headers: {
-                    'fiware-service': properties.get('fiware-service'),
-                    'fiware-servicepath': properties.get('fiware-service-path')
-                },
-                method: 'GET'
-            };
-
-            function myTimer() {
-                request(getDeviceRequestAge01_Car, function(error, response, body) {
-                    console.log('getDeviceRequestAge01_Car');
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
-
-                    if (error == null) {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS Age01_Car');
-                        done();
-                    } else {
-                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE Age01_Car');
                         done(new Error('REST - GET DEVICES FAILURE'));
                     }
                 });
