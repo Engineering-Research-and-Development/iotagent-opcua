@@ -556,6 +556,43 @@ describe('Verify REST Devices Management', function() {
             myTimer();
         });
     });
+
+    describe('The agent is active...', function() {
+        it('Get devices age01_Ca', function(done) {
+            this.timeout(0);
+
+            // Run test
+            var getDeviceRequestAge01_Car = {
+                url:
+                    'http://' +
+                    properties.get('context-broker-host') +
+                    ':' +
+                    properties.get('server-port') +
+                    '/iot/devices/age01_Car',
+                headers: {
+                    'fiware-service': properties.get('fiware-service'),
+                    'fiware-servicepath': properties.get('fiware-service-path')
+                },
+                method: 'GET'
+            };
+
+            function myTimer() {
+                request(getDeviceRequestAge01_Car, function(error, response, body) {
+                    console.log('getDeviceRequestAge01_Car');
+                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+
+                    if (error == null) {
+                        loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS Age01_Car');
+                        done();
+                    } else {
+                        loggerTest.info(logContextTest, 'REST - GET DEVICES FAILURE Age01_Car');
+                        done(new Error('REST - GET DEVICES FAILURE'));
+                    }
+                });
+            }
+            myTimer();
+        });
+    });
 });
 
 describe('Verify Northbound flow', function() {
