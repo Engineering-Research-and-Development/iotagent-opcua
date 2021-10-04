@@ -949,7 +949,7 @@ describe('stop and start car server + delete device', function() {
                 properties.get('context-broker-host') +
                 ':' +
                 properties.get('server-port') +
-                '/iot/devices/age01_Car',
+                '/iot/devices/age03_Car',
             headers: {
                 'fiware-service': properties.get('fiware-service'),
                 'fiware-servicepath': properties.get('fiware-service-path')
@@ -957,8 +957,9 @@ describe('stop and start car server + delete device', function() {
             method: 'DELETE'
         };
 
-        request(deviceDeleteRequest, function(error, response, body) {
+        request.delete(deviceDeleteRequest, function(error, response, body) {
             console.log('deviceDeleteRequest');
+            loggerTest.info(logContextTest, 'RESPONSE delete=' + JSON.stringify(response));
             if (error == null) {
                 done();
             } else {
