@@ -84,7 +84,7 @@
             "type": "Device",
             "service": "opcua_car",
             "subservice": "/demo",
-            "polling": true,
+            "polling": false,
             "mappings": [
                 {
                     "ocb_id": "Error",

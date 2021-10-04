@@ -73,7 +73,7 @@ api-port=8080
 							
 
 ## POLL COMMANDS SETTINGS
-polling=true
+polling=false
 polling-commands-timer=1000
 pollingDaemonFrequency=20000
 pollingExpiration=200000
