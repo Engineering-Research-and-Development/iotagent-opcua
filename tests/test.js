@@ -448,6 +448,43 @@ describe('Test Iot Agent lib', function() {
     });
 });
 
+describe('Get Speed', function() {
+    it('verify speed', function(done) {
+        this.timeout(0);
+        var speedRequest2 = {
+            url:
+                'http://' +
+                properties.get('context-broker-host') +
+                ':' +
+                properties.get('context-broker-port') +
+                '/v2/entities/' +
+                properties.get('entity-id') +
+                '/attrs/Speed',
+            method: 'GET',
+            headers: {
+                'fiware-service': config.service,
+                'fiware-servicepath': config.subservice
+            }
+        };
+
+        function myTimer() {
+            request.get(speedRequest2, function(error, response, body) {
+                console.log('speedRequest');
+                loggerTest.info(logContextTest, 'RESPONSE speedRequest2=' + JSON.stringify(response));
+
+                if (error == null) {
+                    loggerTest.info(logContextTest, 'REST - speed check');
+                    done();
+                } else {
+                    loggerTest.info(logContextTest, 'REST - speed check');
+                    done(new Error('REST - speed check'));
+                }
+            });
+        }
+        myTimer();
+    });
+});
+
 describe('Add Device', function() {
     it('verify the addition of a new device', function(done) {
         this.timeout(0);
@@ -667,43 +704,6 @@ describe('Verify Northbound flow', function() {
                 } else {
                     loggerTest.info(logContextTest, 'REST - accelerateCar command');
                     done(new Error('REST - accelerateCar command'));
-                }
-            });
-        }
-        myTimer();
-    });
-});
-
-describe('Get Speed', function() {
-    it('verify speed', function(done) {
-        this.timeout(0);
-        var speedRequest2 = {
-            url:
-                'http://' +
-                properties.get('context-broker-host') +
-                ':' +
-                properties.get('context-broker-port') +
-                '/v2/entities/' +
-                properties.get('entity-id') +
-                '/attrs/Speed',
-            method: 'GET',
-            headers: {
-                'fiware-service': config.service,
-                'fiware-servicepath': config.subservice
-            }
-        };
-
-        function myTimer() {
-            request.get(speedRequest2, function(error, response, body) {
-                console.log('speedRequest');
-                loggerTest.info(logContextTest, 'RESPONSE speedRequest2=' + JSON.stringify(response));
-
-                if (error == null) {
-                    loggerTest.info(logContextTest, 'REST - speed check');
-                    done();
-                } else {
-                    loggerTest.info(logContextTest, 'REST - speed check');
-                    done(new Error('REST - speed check'));
                 }
             });
         }
