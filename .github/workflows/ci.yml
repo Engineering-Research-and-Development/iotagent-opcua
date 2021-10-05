@@ -2,10 +2,10 @@ name: CI
 "on":
   push:
     branches:
-      - improve_tst_coverage
+      - master
   pull_request:
     branches:
-      - improve_tst_coverage
+      - master
 jobs:
   lint-dockerfile:
     name: Lint Dockerfile
@@ -58,7 +58,7 @@ jobs:
       matrix:
         node-version:
           - 12.x
-    #      - 14.x
+          - 14.x
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
