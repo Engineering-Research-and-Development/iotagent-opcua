@@ -672,7 +672,9 @@ describe('Verify Northbound flow', function() {
         }
         myTimer();
     });
+});
 
+describe('Get Speed', function() {
     it('verify speed', function(done) {
         this.timeout(0);
         var speedRequest2 = {
