@@ -1,75 +1,38 @@
-version: "3"
-#secrets:
-#   age_idm_auth:
-#      file: age_idm_auth.txt
+version: "3.2"
 
 services:
   iotcarsrv:
     hostname: iotcarsrv
     image: iotagent4fiware/opcuacarsrv:latest
-    environment:
-      - http_proxy=$http_proxy
-      - https_proxy=$https_proxy
-      - no_proxy=$no_proxy
     networks:
       - hostnet
     ports:
       - "5001:5001"
 
-  iotmongo:
-    hostname: iotmongo
+  mongo-db:
     image: mongo:4.2
-    environment:
-      - http_proxy=$http_proxy
-      - https_proxy=$https_proxy
-      - no_proxy=$no_proxy
-    networks:
-      - iotnet
+    hostname: mongo-db
     ports:
       - "27017:27017"
-    volumes:
-      - iot_mongo_data:/data/db
-      - iot_mongo_conf:/data/configdb
-
-  ################ OCB ################
-
-  orion:
-    hostname: orion
-    image: fiware/orion:latest
-    environment:
-      - http_proxy=$http_proxy
-      - https_proxy=$https_proxy
-      - no_proxy=$no_proxy
     networks:
       - hostnet
-      - ocbnet
+    volumes:
+      - mongo-db:/data
+
+  orion:
+    image: fiware/orion:latest
+    hostname: orion
+    container_name: fiware-orion
+    depends_on:
+      - mongo-db
+    networks:
+      - hostnet
     ports:
       - "1026:1026"
-    depends_on:
-      - orion_mongo
-    command: -statCounters -dbhost orion_mongo -logLevel INFO
-
-  orion_mongo:
-    hostname: orion_mongo
-    image: mongo:4.2
-    environment:
-      - http_proxy=$http_proxy
-      - https_proxy=$https_proxy
-      - no_proxy=$no_proxy
-    networks:
-      - ocbnet
-    volumes:
-      - orion_mongo_data:/data/db
-      - orion_mongo_conf:/data/configdb
-    command: --nojournal
-
-volumes:
-  iot_mongo_data:
-  iot_mongo_conf:
-  orion_mongo_data:
-  orion_mongo_conf:
+    command: -dbhost mongo-db -logLevel DEBUG
 
 networks:
   hostnet:
-  iotnet:
-  ocbnet:
+
+volumes:
+  mongo-db:
