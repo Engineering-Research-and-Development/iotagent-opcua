@@ -58,7 +58,7 @@ services:
       - "1026:1026"
     depends_on:
       - orion_mongo
-    command: -statCounters -dbhost orion_mongo -logLevel INFO -forwarding
+    command: -statCounters -dbhost orion_mongo -logLevel INFO -forwarding # remove -forwarding if using NGSIv2
 
   orion_mongo:
     hostname: orion_mongo
