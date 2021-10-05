@@ -175,6 +175,7 @@ describe('Test Iot Agent lib', function() {
                 var updated = false;
                 request(temperatureRequest, function(error, response, body) {
                     console.log('temperatureRequest');
+                    loggerTest.info(logContextTest, 'RESPONSE temperatureRequest=' + JSON.stringify(response));
                     if (error) {
                         console.log('An error occurred during temperature request send');
                         console.log(error);
@@ -228,7 +229,7 @@ describe('Test Iot Agent lib', function() {
             function myTimer() {
                 request(getAbout, function(error, response, body) {
                     console.log('getAbout');
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                    loggerTest.info(logContextTest, 'RESPONSE getAbout=' + JSON.stringify(response));
 
                     if (error == null) {
                         loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
@@ -266,7 +267,7 @@ describe('Test Iot Agent lib', function() {
             function myTimer() {
                 request(getServiceGroup, function(error, response, body) {
                     console.log('getServiceGroup');
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                    loggerTest.info(logContextTest, 'RESPONSE getServiceGroup=' + JSON.stringify(response));
 
                     if (error == null) {
                         loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
@@ -320,7 +321,7 @@ describe('Test Iot Agent lib', function() {
         function myTimer() {
             request.post(commandsRequest, function(error, response, body) {
                 console.log('commandsRequest');
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE commandsRequest=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'commandsRequest SUCCESSFULLY POSTED');
                     done();
@@ -371,7 +372,7 @@ describe('Test Iot Agent lib', function() {
         function myTimer() {
             request.post(accelerateRequest, function(error, response, body) {
                 console.log('accelerateRequest');
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE accelerateRequest=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'accelerateRequest SUCCESSFULLY POSTED');
                     done();
@@ -410,6 +411,7 @@ describe('Test Iot Agent lib', function() {
             var updated = false;
             request(speedRequest, function(error, response, body) {
                 console.log('speedRequest');
+                loggerTest.info(logContextTest, 'RESPONSE speedRequest=' + JSON.stringify(response));
                 if (error) {
                     console.log('An error occurred during speed request send');
                     console.log(error);
@@ -427,7 +429,6 @@ describe('Test Iot Agent lib', function() {
 
                         loggerTest.info(logContextTest, text);
                         updated = true;
-
                         //done();
                     }
                 } else {
@@ -442,9 +443,7 @@ describe('Test Iot Agent lib', function() {
                 }
             });
         }
-
-        //myTimer(); // immediate first run to be re-enabled once updateContext works again
-
+        myTimer(); // immediate first run to be re-enabled once updateContext works again
         done();
     });
 });
@@ -561,7 +560,7 @@ describe('Add Device', function() {
         function myTimer() {
             request.post(addDeviceRequest, function(error, response, body) {
                 console.log('addDeviceRequest');
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE= addDeviceRequest' + JSON.stringify(response));
 
                 if (error == null) {
                     loggerTest.info(logContextTest, 'REST - ADD DEVICE SUCCESS');
@@ -614,7 +613,7 @@ describe('Verify REST Devices Management', function() {
             function myTimer() {
                 request(getDeviceRequest, function(error, response, body) {
                     console.log('getDeviceRequest');
-                    loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                    loggerTest.info(logContextTest, 'RESPONSE getDeviceRequest=' + JSON.stringify(response));
 
                     if (error == null) {
                         loggerTest.info(logContextTest, 'REST - GET DEVICES SUCCESS');
@@ -659,7 +658,7 @@ describe('Verify Northbound flow', function() {
         function myTimer() {
             request.put(accelerateCar, function(error, response, body) {
                 console.log('accelerateRequest');
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE accelerateCar=' + JSON.stringify(response));
 
                 if (error == null) {
                     loggerTest.info(logContextTest, 'REST - accelerateCar command');
@@ -695,11 +694,10 @@ describe('Verify Northbound flow', function() {
         function myTimer() {
             request.get(speedRequest2, function(error, response, body) {
                 console.log('speedRequest');
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE speedRequest2=' + JSON.stringify(response));
 
                 if (error == null) {
                     loggerTest.info(logContextTest, 'REST - speed check');
-
                     done();
                 } else {
                     loggerTest.info(logContextTest, 'REST - speed check');
@@ -746,7 +744,7 @@ describe('Verify ADMIN API services', function() {
         function myTimer() {
             var updated = false;
             request(statusRequest, function(error, response, body) {
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE statusRequest=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'STATUS SERVICE SUCCESSFULLY READ');
                     done();
@@ -769,7 +767,7 @@ describe('Verify ADMIN API services', function() {
         function myTimer() {
             var updated = false;
             request(configRequest, function(error, response, body) {
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE configRequest=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'CONFIG SERVICE SUCCESSFULLY READ');
                     done();
@@ -792,7 +790,7 @@ describe('Verify ADMIN API services', function() {
         function myTimer() {
             request(commandsListRequest, function(error, response, body) {
                 console.log('commandsListRequest');
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE commandsListRequest=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'COMMANDS LIST SERVICE SUCCESSFULLY READ');
                     done();
@@ -814,7 +812,7 @@ describe('Verify ADMIN API services', function() {
         };
         function myTimer() {
             request(jsonRequest, function(error, response, body) {
-                loggerTest.info(logContextTest, 'RESPONSE=' + JSON.stringify(response));
+                loggerTest.info(logContextTest, 'RESPONSE jsonRequest=' + JSON.stringify(response));
                 if (error == null) {
                     loggerTest.info(logContextTest, 'CONFIG JSON SERVICE SUCCESSFULLY POSTED');
                     done();
