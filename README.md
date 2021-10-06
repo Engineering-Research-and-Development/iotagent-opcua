@@ -72,9 +72,10 @@ A step-by-step tutorial is available
 
 ### npm
 
-Before launching the Agent you must install Orion Context Broker and a OPC UA Server. After that you must tell the Agent
-how to interact with these components by using config.properties file. Once configuration is complete you can execute
-these commands to run the Agent.
+Before launching the Agent you must install Orion Context Broker (Be aware to choose the correct version, please use
+_orion_ if it's needed to test the Agent with NGSIv2 otherwise use _orion-ld_ in case of NGSI-ld test.) and a OPC UA
+Server. After that you must tell the Agent how to interact with these components by using config.properties file. Once
+configuration is complete you can execute these commands to run the Agent.
 
 ```console
 $ npm install

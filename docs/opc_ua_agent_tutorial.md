@@ -81,7 +81,8 @@ available in AGECONF folder.
 #### Orion Context Broker
 
 Orion Context Broker can be external, however to have a black box for testing, it will be included in docker compose in
-order to have a self-supporting environment.
+order to have a self-supporting environment. Be aware to choose the correct version, please use _orion_ if it's needed
+to test the Agent with NGSIv2 otherwise use _orion-ld_ in case of NGSI-ld test.
 
 ## Step-by-step Tutorial
 
@@ -159,13 +160,14 @@ curl http://localhost:4001/iot/devices \
      -H "fiware-service: opcua_car" \
      -H "fiware-servicepath: /demo" \
      -H "Content-Type: application/json" \
-     -d @add_device.json
+     -d @add_device_NGSIxxx.json
 ```
 
-Where `add_device.json` is the one you find inside `iotagent-opcua/testCommands` folder
+Where `add_device_NGSIxx.json` will be `add_device_NGSIv2.json` in case NGSIv2 or `add_device_NGSI-ld.json` in case
+NGSI-ld are the ones you find inside `iotagent-opcua/testCommands` folder
 
-`add_device.json` sample payload contains several attributes even of different type. Some of them are missing on the OPC
-UA Server-side but have been included to prove that the Agent is able to manage such situations.
+`add_device_NGSIxx.json` sample payload contains several attributes even of different type. Some of them are missing on
+the OPC UA Server-side but have been included to prove that the Agent is able to manage such situations.
 
 #### Step 5 - Get devices
 
@@ -211,6 +213,8 @@ Looking at these logs is useful to spot possible errors
 In order to send the Accelerate command (method in OPC UA jargon), the request has to be sent to Orion that forwards the
 request to the OPC UA Agent:
 
+For NGSIv2:
+
 ```bash
 curl -X PUT \
   'http://localhost:1026/v2/entities/age01_Car/attrs/Accelerate?type=Device' \
@@ -220,6 +224,18 @@ curl -X PUT \
   -d '{
   "value": [2],
   "type": "command"
+}'
+```
+
+For NGSI-ld:
+
+```bash
+curl --location --request PATCH 'http://localhost:1026/ngsi-ld/v1/entities/urn:ngsi-ld:Device:age01_Car/attrs/Accelerate' \
+--header 'fiware-service: opcua_car' \
+--header 'fiware-servicepath: /demo' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "value": "1"
 }'
 ```
 
