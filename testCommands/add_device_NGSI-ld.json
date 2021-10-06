@@ -1,0 +1,70 @@
+{
+	"devices": [{
+		"device_id": "urn:ngsi-ld:Device:age02_Car",
+		"entity_name": "urn:ngsi-ld:Device:age02_Car",
+		"entity_type": "Device",
+		"attributes": [{
+			"object_id": "ns=3;s=EngineBrake",
+			"name": "EngineBrake",
+			"type": "Number"
+		}, {
+			"object_id": "ns=3;s=Acceleration",
+			"name": "Acceleration",
+			"type": "Number"
+		}, {
+			"object_id": "ns=3;s=EngineStopped",
+			"name": "EngineStopped",
+			"type": "Boolean"
+		}, {
+			"object_id": "ns=3;s=Temperature",
+			"name": "Engine_Temperature",
+			"type": "Number"
+		}, {
+			"object_id": "ns=3;s=Oxigen",
+			"name": "Engine_Oxigen",
+			"type": "Number"
+		}, {
+			"object_id": "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy",
+			"name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusy",
+			"type": "String"
+		}, {
+			"object_id": "ns=3;s=DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
+			"name": "DataBlocksGlobal_3_dbRfidCntr_3_ID1_3_xBusyStatus",
+			"type": "Boolean"
+		}],
+		"lazy": [{
+			"object_id": "ns=3;s=Speed",
+			"name": "Speed",
+			"type": "Number"
+		}, {
+			"object_id": "ns=3;s=GPSCoordinates",
+			"name": "GPSCoordinates",
+			"type": "Number"
+		}],
+		"commands": [{
+			"object_id": "ns=3;s=Stop",
+			"name": "Stop",
+			"type": "command"
+		}, {
+			"object_id": "ns=3;s=Accelerate",
+			"name": "Accelerate",
+			"type": "command"
+		}, {
+			"object_id": "ns=3;s=ActivateSensor",
+			"name": "ActivateSensor",
+			"type": "command"
+		}, {
+			"object_id": "ns=3;s=DeactivateSensor",
+			"name": "DeactivateSensor",
+			"type": "command"
+		}, {
+			"object_id": "ns=3;s=ToggleSensorActivation",
+			"name": "ToggleSensorActivation",
+			"type": "command"
+		}, {
+			"object_id": "ns=3;s=LaunchMissiles",
+			"name": "LaunchMissiles",
+			"type": "command"
+		}]
+	}]
+}
