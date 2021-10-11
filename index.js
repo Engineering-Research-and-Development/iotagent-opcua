@@ -20,14 +20,15 @@ try {
 
     const server = require('./iot_agent_modules/services/server');
     const run = require('./iot_agent_modules/run/run');
+    const mappingTool = require('./mappingTool/mappingTool');
     const fs = require('fs');
+    const path = require('path');
     // custom simple logger
     var logger = require('logops');
     logger.format = logger.formatters.pipe;
 
     const PropertiesReader = require('properties-reader');
     const properties = PropertiesReader('./conf/config.properties');
-    global.properties = properties;
     const endpointUrl = properties.get('endpoint');
     const userName = properties.get('userName');
     const password = properties.get('password');
@@ -37,71 +38,20 @@ try {
         process.exit(1);
     }
 
-    let doAuto = false;
-
     if (fs.existsSync('./conf/config.json')) {
         const config = require('./conf/config.json');
-
         global.config = config;
+        run.run();
+        server.start();
     } else {
-        doAuto = true;
-    }
-
-    if (doAuto) {
         logContext.op = 'Index.MappingTool';
         logger.info(logContext, '----------------    MAPPING TOOL    ----------------');
 
-        let loadingBar;
-        loadingBar = setInterval(function() {
+        let loadingBar = setInterval(function() {
             process.stdout.write('.');
         }, 3000);
 
-        const spawn = require('child_process').spawn;
-        var args = [];
-        try {
-            if (userName != 0 && password != 0) {
-                args = ['-jar', 'mapping_tool.jar', '-e', endpointUrl, '-f', 'conf/config.properties', '-u', userName, '-p', password];
-            } else {
-                args = ['-jar', 'mapping_tool.jar', '-e', endpointUrl, '-f', 'conf/config.properties'];
-            }
-
-            var child = spawn('java', args);
-
-            child.stdout.on('data', function (data) {
-              console.log('[MAPPING TOOL]: ' + data);
-            });
-            
-            child.on('exit', function (code) {
-                console.log('child process exited with code ' + code);
-                if(code != 0) {
-                    logger.error(
-                        logContext,
-                        'There is a problem with automatic configuration. Loading old configuration (if exists)...' +
-                            code
-                    );
-                } else {
-                    logger.info(
-                        logContext,
-                        'Automatic configuration successfully created. Loading new configuration...'
-                    );
-                    const config = require('./conf/config.json');
-                    global.config = config;
-
-                    run.run();
-                    server.start();
-                }
-            });
-        } catch (ex) {
-            clearInterval(loadingBar);
-            logger.info(
-                logContext,
-                'There is a problem with automatic configuration. Loading old configuration (if exists)...' + ex
-            );
-        }
-        module.exports = child;
-    } else {
-        run.run();
-        server.start();
+        mappingTool.mappingTool(userName, password, endpointUrl, path.resolve(__dirname, '.conf/config.properties'));
     }
 } catch (ex) {
     var logger = require('logops');
