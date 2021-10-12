@@ -22,7 +22,6 @@ try {
     const run = require('./iot_agent_modules/run/run');
     const mappingTool = require('./mappingTool/mappingTool');
     const fs = require('fs');
-    const path = require('path');
     // custom simple logger
     var logger = require('logops');
     logger.format = logger.formatters.pipe;
@@ -51,7 +50,7 @@ try {
             process.stdout.write('.');
         }, 3000);
 
-        mappingTool.mappingTool(userName, password, endpointUrl, path.resolve(__dirname, '.conf/config.properties'));
+        mappingTool.mappingTool(userName, password, endpointUrl, properties);
     }
 } catch (ex) {
     var logger = require('logops');
