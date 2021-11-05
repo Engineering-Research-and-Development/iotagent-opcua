@@ -46,6 +46,7 @@
     "iotagent-node-lib": "^2.17.0",
     "logops": "^1.0.0",
     "node-opcua": "^2.31.0",
+    "node-opcua-client-crawler": "^2.50.0",
     "npm": "^7.21.0",
     "properties-reader": "2.2.0",
     "request": "^2.82.0",
