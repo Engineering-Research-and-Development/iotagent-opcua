@@ -1,3 +1,5 @@
+const { config } = require('yargs');
+
 module.exports = {
     mappingTool: function(userName, password, endpoint, properties) {
         var logger = require('logops');
@@ -5,6 +7,9 @@ module.exports = {
         const fs = require('fs');
         var path = require('path');
         var nodesCrawler = require('./nodesCrawler');
+        var propertiesJson = require('./properties');
+
+        var configJson = {};
 
         var mySession = null;
         var options = {
@@ -44,6 +49,8 @@ module.exports = {
 
         async function mappingToolrun() {
             try {
+                configJson = await propertiesJson.properties(properties, configJson);
+
                 // step 1 : connect to
                 await myClient.connect(endpoint);
                 console.log('connected !');
@@ -56,47 +63,43 @@ module.exports = {
                 const browseResult = await mySession.browse('RootFolder');
 
                 console.log('references of RootFolder :');
+                var config;
                 for (const reference of browseResult.references) {
                     console.log('crawling   -> ', reference.browseName.toString(), reference.nodeId.toString());
-
                     const crawler = new opcua.NodeCrawler(mySession);
-
                     const data = await crawler.read(reference.nodeId.toString());
-
-                    nodesCrawler.nodesCrawler(data);
+                    config = await nodesCrawler.nodesCrawler(
+                        mySession,
+                        data,
+                        crawler,
+                        properties.get('namespace-ignore')
+                    );
+                    if (config != '{}') {
+                        console.log('configJson.types');
+                        console.log(configJson.types);
+                        configJson.types = config;
+                        console.log('JSON.stringify(config)');
+                        console.log(JSON.stringify(config));
+                    }
                 }
 
-                /* 
-              // step 4 : read a variable with readVariableValue
-                  const dataValue2 = await mySession.readVariableValue("ns=3;s=Speed");
-                  console.log(" value = " , dataValue2.toString());
-          
-              // step 4' : read a variable with read
-                  const maxAge = 0;
-                  const nodeToRead = {
-                    nodeId: "ns=3;s=Speed",
-                    attributeId: opcua.AttributeIds.Value
-                  };
-                  const dataValue =  await mySession.read(nodeToRead, maxAge);
-                  console.log(" value " , dataValue.toString());*/
-
-                // step 6: finding the nodeId of a node by Browse name
-                /*   const browsePath = opcua.makeBrowsePath("RootFolder", "/Objects/Server.ServerStatus.BuildInfo.ProductName");
-              
-                  const result = await mySession.translateBrowsePath(browsePath);
-                  const productNameNodeId = result.targets[0].targetId;
-                  console.log(" Product Name nodeId = ", productNameNodeId.toString());*/
+                console.log('config.json --> \n', JSON.stringify(configJson));
 
                 // close session
                 await mySession.close();
 
                 // disconnecting
                 await myClient.disconnect();
-                console.log('done !');
+                console.log('disconnected !');
             } catch (err) {
                 console.log('An error has occured : ', err);
             }
         }
         mappingToolrun();
+
+        /*fs.writeFile('./conf/config.json', JSON.stringify(configJson) , function (err) {
+            if (err) return console.log(err);
+            
+          });*/
     }
 };
