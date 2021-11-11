@@ -1,23 +1,25 @@
 module.exports = {
-    nodesCrawler: async function(mySession, data, crawler, ignoreNs, configJson) {
+    nodesCrawler: async function(mySession, data, crawler, properties, configJson) {
         var nodeIDParser = require('./nodeIDParser');
+        var ignoreNs = properties.get('namespace-ignore');
 
         //console.log(await crawler.read("i=86"));
 
         /*const leaf = await crawler.read();
     console.log(data);*/
-        var types = {};
+
         switch (data.browseName.toLowerCase()) {
             case 'objects':
+                var obj = {};
                 for (i in data.organizes) {
                     const ignoreNodeId = nodeIDParser.nodeIDParser(data.organizes[i].nodeId, ignoreNs);
                     if (!ignoreNodeId) {
-                        types[data.organizes[i].browseName] = {};
                         const browseSubLev2 = await crawler.read(data.organizes[i].nodeId);
-                        console.log('aimm');
                         console.log(data.organizes[i]);
                         if (browseSubLev2.hasOwnProperty('hasComponent')) {
-                            console.log('mmiahasComponent');
+                            var active = [];
+                            var lazy = [];
+                            var commands = [];
                             for (k in browseSubLev2.hasComponent) {
                                 const ignoreNodeIdSubLev2 = nodeIDParser.nodeIDParser(
                                     browseSubLev2.hasComponent[k].nodeId,
@@ -28,6 +30,15 @@ module.exports = {
                                     console.log(browseSubLev2.hasComponent[k]);
                                 }
                             }
+
+                            obj[data.organizes[i].browseName] = {
+                                service: properties.get('fiware-service'),
+                                subservice: properties.get('fiware-service-path'),
+                                active: active,
+                                lazy: lazy,
+                                commands: commands
+                            };
+                            configJson.types = obj;
                         }
                     }
                 }
@@ -46,6 +57,6 @@ module.exports = {
                 console.log(`Nothing to be browsed`);
         }
 
-        return types;
+        return configJson;
     }
 };

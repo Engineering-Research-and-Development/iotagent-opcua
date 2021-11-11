@@ -63,27 +63,13 @@ module.exports = {
                 const browseResult = await mySession.browse('RootFolder');
 
                 console.log('references of RootFolder :');
-                var config;
+
                 for (const reference of browseResult.references) {
                     console.log('crawling   -> ', reference.browseName.toString(), reference.nodeId.toString());
                     const crawler = new opcua.NodeCrawler(mySession);
                     const data = await crawler.read(reference.nodeId.toString());
-                    config = await nodesCrawler.nodesCrawler(
-                        mySession,
-                        data,
-                        crawler,
-                        properties.get('namespace-ignore')
-                    );
-                    if (config != '{}') {
-                        console.log('configJson.types');
-                        console.log(configJson.types);
-                        configJson.types = config;
-                        console.log('JSON.stringify(config)');
-                        console.log(JSON.stringify(config));
-                    }
+                    configJson = await nodesCrawler.nodesCrawler(mySession, data, crawler, properties, configJson);
                 }
-
-                console.log('config.json --> \n', JSON.stringify(configJson));
 
                 // close session
                 await mySession.close();
@@ -91,6 +77,8 @@ module.exports = {
                 // disconnecting
                 await myClient.disconnect();
                 console.log('disconnected !');
+
+                console.log('config.json --> \n', JSON.stringify(configJson));
             } catch (err) {
                 console.log('An error has occured : ', err);
             }
