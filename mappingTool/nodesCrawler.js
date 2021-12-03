@@ -3,11 +3,6 @@ module.exports = {
         var dataTypes = require('./dataTypes');
         var objectFolder = require('./objectFolder');
 
-        //console.log(await crawler.read("i=86"));
-
-        /*const leaf = await crawler.read();
-        console.log(data);*/
-
         switch (data.browseName.toLowerCase()) {
             case 'objects':
                 console.log('Browsing Objects Folder');

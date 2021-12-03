@@ -78,16 +78,15 @@ module.exports = {
                 await myClient.disconnect();
                 console.log('disconnected !');
 
-                console.log('config.json --> \n', JSON.stringify(configJson));
+                //console.log('config.json --> \n', JSON.stringify(configJson));
+
+                fs.writeFile('./conf/config.json', JSON.stringify(configJson), function(err) {
+                    if (err) return console.log(err);
+                });
             } catch (err) {
                 console.log('An error has occured : ', err);
             }
         }
         mappingToolrun();
-
-        /*fs.writeFile('./conf/config.json', JSON.stringify(configJson) , function (err) {
-            if (err) return console.log(err);
-            
-          });*/
     }
 };

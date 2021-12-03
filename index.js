@@ -28,6 +28,7 @@ try {
 
     const PropertiesReader = require('properties-reader');
     const properties = PropertiesReader('./conf/config.properties');
+    global.properties = properties;
     const endpointUrl = properties.get('endpoint');
     const userName = properties.get('userName');
     const password = properties.get('password');
