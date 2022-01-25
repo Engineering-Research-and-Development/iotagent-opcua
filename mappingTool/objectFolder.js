@@ -63,6 +63,7 @@ module.exports = {
                                 comp['type'] =
                                     data.organizes[i].hasComponent[k].hasComponent[l].dataValue.value.dataType;
                                 active.push(comp);
+                                comp = {};
 
                                 mappingContext['ocb_id'] =
                                     data.organizes[i].hasComponent[k].browseName +
@@ -77,6 +78,7 @@ module.exports = {
                             mappingContextSub = {};
 
                             comp['name'] = data.organizes[i].hasComponent[k].browseName;
+
                             comp['type'] = 'command';
                             commands.push(comp);
 
@@ -91,8 +93,15 @@ module.exports = {
                                     if (
                                         data.organizes[i].hasComponent[k].hasProperty[ia].browseName == 'InputArguments'
                                     ) {
-                                        inputArg['dataType'] = '';
-                                        inputArg['type'] = '';
+                                        inputArg['dataType'] = data.organizes[i].hasComponent[k].hasProperty[
+                                            ia
+                                        ].dataValue.value.value[0].dataType
+                                            .split(';')[1]
+                                            .split('=')[1];
+                                        inputArg['type'] =
+                                            data.organizes[i].hasComponent[k].hasProperty[
+                                                ia
+                                            ].dataValue.value.value[0].name;
                                         mappingContextSub.inputArguments.push(inputArg);
                                     }
                                 }

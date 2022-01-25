@@ -12,7 +12,6 @@ module.exports = {
             case 'types':
                 console.log('Browsing Types Folder');
                 const dTypes = await dataTypes.dataTypes(data);
-                console.log(dTypes);
                 break;
 
             case 'views':
