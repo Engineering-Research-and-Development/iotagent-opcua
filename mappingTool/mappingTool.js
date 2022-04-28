@@ -66,9 +66,11 @@ module.exports = {
 
                 for (const reference of browseResult.references) {
                     console.log('crawling   -> ', reference.browseName.toString(), reference.nodeId.toString());
-                    const crawler = new opcua.NodeCrawler(mySession);
-                    const data = await crawler.read(reference.nodeId.toString());
-                    configJson = await nodesCrawler.nodesCrawler(mySession, data, crawler, properties, configJson);
+                    if (reference.browseName.toString() == 'Objects') {
+                        const crawler = new opcua.NodeCrawler(mySession);
+                        const data = await crawler.read(reference.nodeId.toString());
+                        configJson = await nodesCrawler.nodesCrawler(mySession, data, crawler, properties, configJson);
+                    }
                 }
 
                 // close session
