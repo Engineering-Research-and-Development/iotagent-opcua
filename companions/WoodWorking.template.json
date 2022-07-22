@@ -1,0 +1,482 @@
+{
+	"id": "WwMachine",
+	"type": "WoodWorkingMachine",
+	"Machines": [{
+		"Identification": {
+			"LocationPlant": {
+				"ocb_id": "LocationPlant",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.LocationPlant"
+			},
+			"LocationGPS": {
+				"ocb_id": "LocationGPS",
+				"ocb_type" : "GeoProperty",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.LocationGPS"
+			},
+			"CustomerCompanyName": {
+				"ocb_id": "CustomerCompanyName",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.CustomerCompanyName"
+			},
+			"ProductInstanceUri": {
+				"ocb_id": "ProductInstanceUri",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.ProductInstanceUri"
+			},
+			"Manufacturer": {
+				"ocb_id": "Manufacturer",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.Manufacturer"
+			},
+			"ManufacturerUri": {
+				"ocb_id": "ManufacturerUri",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.ManufacturerUri"
+			},
+			"Model": {
+				"ocb_id": "ManufacturerUri",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.ManufacturerUri"
+			},
+			"ProductCode": {
+				"ocb_id": "ProductCode",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.ProductCode"
+			},
+			"HardwareRevision": {
+				"ocb_id": "HardwareRevision",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.HardwareRevision"
+			},
+			"SoftwareRevision": {
+				"ocb_id": "SoftwareRevision",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.SoftwareRevision"
+			},
+			"DeviceClass": {
+				"ocb_id": "DeviceClass",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.DeviceClass"
+			},
+			"SerialNumber": {
+				"ocb_id": "SerialNumber",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.SerialNumber"
+			},
+			"YearOfConstruction": {
+				"ocb_id": "YearOfConstruction",
+				"ocb_type" : "Number",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.YearOfConstruction"
+			},
+			"MonthOfConstruction": {
+				"ocb_id": "MonthOfConstruction",
+				"ocb_type" : "Number",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.MonthOfConstruction"
+			},
+			"InitialOperationDate": {
+				"ocb_id": "InitialOperationDate",
+				"ocb_type" : "DateTime",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.InitialOperationDate"
+			},
+			"AssetId": {
+				"ocb_id": "AssetId",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.AssetId"
+			},
+			"ComponentName": {
+				"ocb_id": "ComponentName",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.ComponentName"
+			},
+			"Location": {
+				"ocb_id": "Location",
+				"ocb_type" : "Text",
+				"ocb_behaviour": "Passive",
+				"opcua_id": "ns=5;s=Rover.Identification.Location"
+			}
+		},
+		"State": {
+			"Machine": {
+				"Overview": {
+					"CurrentState": {
+						"ocb_id": "CurrentState",
+						"ocb_type" : "Text",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Overview.CurrentState"
+					},
+					"CurrentMode": {
+						"ocb_id": "CurrentState",
+						"ocb_type" : "Text",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Overview.CurrentMode"
+					}
+				},
+				"Flags": {
+					"MachineOn": {
+						"ocb_id": "MachineOn",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.MachineOn"
+					},
+					"MachineInitialized": {
+						"ocb_id": "MachineInitialized",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.MachineInitialized"
+					},
+					"PowerPresent": {
+						"ocb_id": "PowerPresent",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.PowerPresent"
+					},
+					"AirPresent": {
+						"ocb_id": "AirPresent",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.AirPresent"
+					},
+					"DustChipSuction": {
+						"ocb_id": "DustChipSuction",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.DustChipSuction"
+					},
+					"Emergency": {
+						"ocb_id": "Emergency",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Emergency"
+					},
+					"Safety": {
+						"ocb_id": "Safety",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Safety"
+					},
+					"Calibrated": {
+						"ocb_id": "Calibrated",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Calibrated"
+					},
+					"Remote": {
+						"ocb_id": "Remote",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Remote"
+					},
+					"WorkpiecePresent": {
+						"ocb_id": "WorkpiecePresent",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.WorkpiecePresent"
+					},
+					"Moving": {
+						"ocb_id": "Moving",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Moving"
+					},
+					"Error": {
+						"ocb_id": "Error",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Error"
+					},
+					"Alarm": {
+						"ocb_id": "Alarm",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Alarm"
+					},
+					"Warning": {
+						"ocb_id": "Warning",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Warning"
+					},
+					"Hold": {
+						"ocb_id": "Hold",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Hold"
+					},
+					"RecipeInRun": {
+						"ocb_id": "RecipeInRun",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.RecipeInRun"
+					},
+					"RecipeInSetup": {
+						"ocb_id": "RecipeInSetup",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.RecipeInSetup"
+					},
+					"RecipeInHold": {
+						"ocb_id": "RecipeInHold",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.RecipeInHold"
+					},
+					"ManualActivityRequired": {
+						"ocb_id": "ManualActivityRequired",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.ManualActivityRequired"
+					},
+					"LoadingEnabled": {
+						"ocb_id": "LoadingEnabled",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.LoadingEnabled"
+					},
+					"WaitUnload": {
+						"ocb_id": "WaitUnload",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.WaitUnload"
+					},
+					"WaitLoad": {
+						"ocb_id": "WaitLoad",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.WaitLoad"
+					},
+					"EnergySaving": {
+						"ocb_id": "EnergySaving",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.EnergySaving"
+					},
+					"ExternalEmergency": {
+						"ocb_id": "ExternalEmergency",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.ExternalEmergency"
+					},
+					"MaintenanceRequired": {
+						"ocb_id": "MaintenanceRequired",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.MaintenanceRequired"
+					},
+					"FeedRuns": {
+						"ocb_id": "FeedRuns",
+						"ocb_type" : "Boolean",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.FeedRuns"
+					}
+				},
+				"Values": {
+					"AxisOverride": {
+						"ocb_id": "AxisOverride",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AxisOverride"
+					},
+					"SpindleOverride": {
+						"ocb_id": "SpindleOverride",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.SpindleOverride"
+					},
+					"FeedSpeed": {
+						"ocb_id": "FeedSpeed",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.FeedSpeed"
+					},
+					"ActualCycle": {
+						"ocb_id": "ActualCycle",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.ActualCycle"
+					},
+					"AbsoluteMachineOffTime": {
+						"ocb_id": "AbsoluteMachineOffTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteMachineOffTime"
+					},
+					"AbsoluteStandbyTime": {
+						"ocb_id": "AbsoluteStandbyTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteStandbyTime"
+					},
+					"RelativeStandbyTime": {
+						"ocb_id": "RelativeStandbyTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeStandbyTime"
+					},
+					"AbsoluteReadyTime": {
+						"ocb_id": "AbsoluteReadyTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteReadyTime"
+					},
+					"RelativeReadyTime": {
+						"ocb_id": "RelativeReadyTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeReadyTime"
+					},
+					"AbsoluteWorkingTime": {
+						"ocb_id": "AbsoluteWorkingTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteWorkingTime"
+					},
+					"RelativeWorkingTime": {
+						"ocb_id": "RelativeWorkingTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeWorkingTime"
+					},
+					"AbsoluteErrorTime": {
+						"ocb_id": "AbsoluteErrorTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteErrorTime"
+					},
+					"RelativeErrorTime": {
+						"ocb_id": "RelativeErrorTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeErrorTime"
+					},
+					"AbsoluteMachineOnTime": {
+						"ocb_id": "AbsoluteMachineOnTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteMachineOnTime"
+					},
+					"RelativeMachineOnTime": {
+						"ocb_id": "RelativeMachineOnTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeMachineOnTime"
+					},
+					"AbsoluteProductionTime": {
+						"ocb_id": "AbsoluteProductionTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteProductionTime"
+					},
+					"RelativeProductionTime": {
+						"ocb_id": "RelativeProductionTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeProductionTime"
+					},
+					"AbsoluteProductionWithoutWorkpieceTime": {
+						"ocb_id": "AbsoluteProductionWithoutWorkpieceTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteProductionWithoutWorkpieceTime"
+					},
+					"RelativeProductionWithoutWorkpieceTime": {
+						"ocb_id": "RelativeProductionWithoutWorkpieceTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeProductionWithoutWorkpieceTime"
+					},
+					"AbsoluteProductionWaitWorkpieceTime": {
+						"ocb_id": "AbsoluteProductionWaitWorkpieceTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteProductionWaitWorkpieceTime"
+					},
+					"RelativeProductionWaitWorkpieceTime": {
+						"ocb_id": "RelativeProductionWaitWorkpieceTime",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeProductionWaitWorkpieceTime"
+					},
+					"AbsoluteRunsGood": {
+						"ocb_id": "AbsoluteRunsGood",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteRunsGood"
+					},
+					"RelativeRunsGood": {
+						"ocb_id": "RelativeRunsGood",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeRunsGood"
+					},
+					"AbsoluteRunsAborted": {
+						"ocb_id": "AbsoluteRunsAborted",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteRunsAborted"
+					},
+					"RelativeRunsAborted": {
+						"ocb_id": "RelativeRunsAborted",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeRunsAborted"
+					},
+					"AbsoluteLength": {
+						"ocb_id": "AbsoluteLength",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsoluteLength"
+					},
+					"RelativeLength": {
+						"ocb_id": "RelativeLength",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativeLength"
+					},
+					"AbsolutePiecesIn": {
+						"ocb_id": "AbsolutePiecesIn",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsolutePiecesIn"
+					},
+					"RelativePiecesIn": {
+						"ocb_id": "RelativePiecesIn",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativePiecesIn"
+					},
+					"AbsolutePiecesOut": {
+						"ocb_id": "AbsolutePiecesOut",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.AbsolutePiecesOut"
+					},
+					"RelativePiecesOut": {
+						"ocb_id": "RelativePiecesOut",
+						"ocb_type" : "Number",
+						"ocb_behaviour": "Active",
+						"opcua_id": "ns=5;s=Rover.State.Machine.Values.RelativePiecesOut"
+					}
+				}
+			}
+		},
+		"Events": [],
+		"ManufacturerSpecific": {}
+	}]
+}

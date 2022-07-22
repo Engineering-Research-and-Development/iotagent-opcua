@@ -46,12 +46,19 @@ try {
     } else {
         logContext.op = 'Index.MappingTool';
         logger.info(logContext, '----------------    MAPPING TOOL    ----------------');
-
-        let loadingBar = setInterval(function() {
-            process.stdout.write('.');
-        }, 3000);
-
         mappingTool.mappingTool(userName, password, endpointUrl, properties);
+
+        const checkTime = 5000;
+        const timerId = setInterval(() => {
+            const isExists = fs.existsSync('./conf/config.json', 'utf8');
+            if (isExists) {
+                const config = require('./conf/config.json');
+                global.config = config;
+                run.run();
+                server.start();
+                clearInterval(timerId);
+            }
+        }, checkTime);
     }
 } catch (ex) {
     var logger = require('logops');

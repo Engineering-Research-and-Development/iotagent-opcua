@@ -1,3 +1,5 @@
+const { exit } = require('yargs');
+
 module.exports = {
     objectFolder: async function(data, configJson, crawler, properties) {
         var ignoreNs = properties.get('namespace-ignore');
@@ -5,124 +7,157 @@ module.exports = {
 
         var obj = {};
         var context = {};
-        var contextSubscription = {};
+        var contexts = [];
+        var contextSubscriptions = {};
+        var contextSubscriptionsMapping = [];
+        var active = [];
+        var lazy = [];
+        var commands = [];
 
-        for (i in data.organizes) {
-            const ignoreNodeId = nodeIDParser.nodeIDParser(data.organizes[i].nodeId, ignoreNs);
+        for (l in data.organizes) {
+            //const data = await crawler.read(reference.nodeId.toString());
+            //const browseSubLev2 = await crawler.read("ns=3;s=PLC");
+            //console.log(data.organizes[l].nodeId)
+            let name = '';
+            if (
+                data.organizes[l].hasOwnProperty('hasComponent') ||
+                data.organizes[l].hasOwnProperty('organizes') ||
+                data.organizes[l].hasOwnProperty('hasProperty')
+            ) {
+                //console.log(data.organizes[i].nodeId.toString());
+                recursiveNodeCrawling(data.organizes[l].nodeId, name);
+            }
+        }
+
+        async function recursiveNodeCrawling(nodeId, name) {
+            const browseSubLev = await crawler.read(nodeId);
+            const ignoreNodeId = await nodeIDParser.nodeIDParser(browseSubLev.nodeId, ignoreNs);
+            var command = {};
+            var activeAttr = {};
+            var contextMapping = {};
+            var contextSubscription = {};
+
             if (!ignoreNodeId) {
-                context['id'] = properties.get('agent-id') + data.organizes[i].browseName;
-                context['type'] = data.organizes[i].browseName;
-                context['service'] = properties.get('fiware-service');
-                context['subservice'] = properties.get('fiware-service-path');
-                context['polling'] = properties.get('polling');
-                context['mappings'] = [];
-                contextSubscription['id'] = properties.get('agent-id') + data.organizes[i].browseName;
-                contextSubscription['type'] = data.organizes[i].browseName;
-                contextSubscription['mappings'] = [];
-                const browseSubLev2 = await crawler.read(data.organizes[i].nodeId);
+                if (!browseSubLev.hasOwnProperty('dataValue') && !browseSubLev.hasOwnProperty('hasComponent')) {
+                    //console.log("Method " + browseSubLev.browseName)
+                    command = {
+                        name: name + '_' + browseSubLev.browseName,
+                        type: 'command'
+                    };
 
-                if (browseSubLev2.hasOwnProperty('hasComponent')) {
-                    var active = [];
-                    var lazy = [];
-                    var commands = [];
+                    contextSubscription = {
+                        ocb_id: name + '_' + browseSubLev.browseName,
+                        opcua_id: browseSubLev.nodeId,
+                        object_id: 'ns=3;i=1000',
+                        inputArguments: []
+                    };
 
-                    for (k in browseSubLev2.hasComponent) {
-                        const ignoreNodeIdSubLev2 = nodeIDParser.nodeIDParser(
-                            browseSubLev2.hasComponent[k].nodeId,
-                            ignoreNs
-                        );
-
-                        var comp = {};
-                        var mappingContext = {};
-                        var mappingContextSub = {};
-
-                        if (
-                            !ignoreNodeIdSubLev2 &&
-                            data.organizes[i].hasComponent[k].typeDefinition == 'BaseDataVariableType'
-                        ) {
-                            comp['name'] = data.organizes[i].hasComponent[k].browseName;
-                            comp['type'] = data.organizes[i].hasComponent[k].dataValue.value.dataType;
-                            active.push(comp);
-
-                            mappingContext['ocb_id'] = data.organizes[i].hasComponent[k].browseName;
-                            mappingContext['opcua_id'] = data.organizes[i].hasComponent[k].nodeId;
-                            mappingContext['object_id'] = null;
-                            mappingContext['inputArguments'] = [];
-                            context.mappings.push(mappingContext);
-                        } else if (
-                            !ignoreNodeIdSubLev2 &&
-                            data.organizes[i].hasComponent[k].typeDefinition == 'BaseObjectType'
-                        ) {
-                            comp = {};
-                            mappingContext = {};
-                            for (l in data.organizes[i].hasComponent[k].hasComponent) {
-                                comp['name'] =
-                                    data.organizes[i].hasComponent[k].browseName +
-                                    ':' +
-                                    data.organizes[i].hasComponent[k].hasComponent[l].browseName;
-                                comp['type'] =
-                                    data.organizes[i].hasComponent[k].hasComponent[l].dataValue.value.dataType;
-                                active.push(comp);
-                                comp = {};
-
-                                mappingContext['ocb_id'] =
-                                    data.organizes[i].hasComponent[k].browseName +
-                                    ':' +
-                                    data.organizes[i].hasComponent[k].hasComponent[l].browseName;
-                                mappingContext['opcua_id'] = data.organizes[i].hasComponent[k].hasComponent[l].nodeId;
-                                mappingContext['object_id'] = null;
-                                mappingContext['inputArguments'] = [];
-                                context.mappings.push(mappingContext);
+                    var inputArguments = [];
+                    if (browseSubLev.hasOwnProperty('hasProperty')) {
+                        for (m in browseSubLev.hasProperty) {
+                            var input = {};
+                            if (browseSubLev.hasOwnProperty('hasProperty')) {
+                                //console.log("Method input " + browseSubLev.hasProperty[m].nodeId, "_" + browseSubLev.browseName);
+                                input = {
+                                    dataType: browseSubLev.hasProperty[m].dataValue.value.value[0].dataType
+                                        .split(';')[1]
+                                        .split('=')[1],
+                                    type: browseSubLev.hasProperty[m].dataValue.value.value[0].name
+                                };
                             }
-                        } else {
-                            mappingContextSub = {};
-
-                            comp['name'] = data.organizes[i].hasComponent[k].browseName;
-
-                            comp['type'] = 'command';
-                            commands.push(comp);
-
-                            mappingContextSub['ocb_id'] = data.organizes[i].hasComponent[k].browseName;
-                            mappingContextSub['opcua_id'] = data.organizes[i].hasComponent[k].nodeId;
-                            mappingContextSub['object_id'] = data.organizes[i].nodeId;
-                            mappingContextSub['inputArguments'] = [];
-
-                            if (data.organizes[i].hasComponent[k].hasOwnProperty('hasProperty')) {
-                                var inputArg = {};
-                                for (ia in data.organizes[i].hasComponent[k].hasProperty) {
-                                    if (
-                                        data.organizes[i].hasComponent[k].hasProperty[ia].browseName == 'InputArguments'
-                                    ) {
-                                        inputArg['dataType'] = data.organizes[i].hasComponent[k].hasProperty[
-                                            ia
-                                        ].dataValue.value.value[0].dataType
-                                            .split(';')[1]
-                                            .split('=')[1];
-                                        inputArg['type'] =
-                                            data.organizes[i].hasComponent[k].hasProperty[
-                                                ia
-                                            ].dataValue.value.value[0].name;
-                                        mappingContextSub.inputArguments.push(inputArg);
-                                    }
+                            inputArguments.push(input);
+                        }
+                        contextSubscription.inputArguments = inputArguments;
+                    }
+                    contextSubscriptionsMapping.push(contextSubscription);
+                    commands.push(command);
+                } else {
+                    if (
+                        browseSubLev.hasOwnProperty('hasComponent') ||
+                        browseSubLev.hasOwnProperty('organizes') ||
+                        browseSubLev.hasOwnProperty('hasProperty')
+                    ) {
+                        if (browseSubLev.hasOwnProperty('hasComponent')) {
+                            for (i in browseSubLev.hasComponent) {
+                                //  console.log(browseSubLev.hasComponent[i].nodeId.toString() + " " + browseSubLev.hasComponent[i].browseName.toString());
+                                if (browseSubLev.hasOwnProperty('hasComponent')) {
+                                    recursiveNodeCrawling(
+                                        browseSubLev.hasComponent[i].nodeId,
+                                        name + '_' + browseSubLev.browseName
+                                    );
                                 }
                             }
-                            contextSubscription.mappings.push(mappingContextSub);
                         }
-                    }
 
-                    obj[data.organizes[i].browseName] = {
-                        service: properties.get('fiware-service'),
-                        subservice: properties.get('fiware-service-path'),
-                        active: active,
-                        lazy: lazy,
-                        commands: commands
-                    };
-                    configJson.types = obj;
-                    configJson.contexts.push(context);
-                    configJson.contextSubscriptions.push(contextSubscription);
+                        if (browseSubLev.hasOwnProperty('organizes')) {
+                            for (j in browseSubLev.organizes) {
+                                if (browseSubLev.hasOwnProperty('organizes')) {
+                                    recursiveNodeCrawling(
+                                        browseSubLev.organizes[j].nodeId,
+                                        name + '_' + browseSubLev.browseName
+                                    );
+                                }
+                            }
+                        }
+
+                        if (browseSubLev.hasOwnProperty('hasProperty')) {
+                            for (k in browseSubLev.hasProperty) {
+                                if (browseSubLev.hasOwnProperty('hasProperty')) {
+                                    browseSubLev.hasOwnProperty('hasProperty');
+                                    recursiveNodeCrawling(
+                                        browseSubLev.hasProperty[k].nodeId,
+                                        name + '_' + browseSubLev.browseName
+                                    );
+                                }
+                            }
+                        }
+                    } else {
+                        //console.log(browseSubLev.nodeId + " " + name + "_" + browseSubLev.browseName);
+
+                        activeAttr = {
+                            name: name + '_' + browseSubLev.browseName,
+                            type: browseSubLev.dataValue.value.dataType
+                        };
+
+                        contextMapping = {
+                            ocb_id: name + '_' + browseSubLev.browseName,
+                            opcua_id: browseSubLev.nodeId,
+                            object_id: null,
+                            inputArguments: []
+                        };
+
+                        context.mappings.push(contextMapping);
+                        active.push(activeAttr);
+                        return null;
+                    }
                 }
             }
         }
+
+        obj['Device'] = {
+            service: properties.get('fiware-service'),
+            subservice: properties.get('fiware-service-path'),
+            active: active,
+            lazy: lazy,
+            commands: commands
+        };
+
+        configJson.types = obj;
+
+        context['id'] = properties.get('entity-id');
+        context['type'] = 'Device';
+        context['service'] = properties.get('fiware-service');
+        context['subservice'] = properties.get('fiware-service-path');
+        context['polling'] = properties.get('polling');
+        context['mappings'] = [];
+        context.mappings = contexts;
+        configJson.contexts.push(context);
+        contextSubscriptions['id'] = properties.get('entity-id');
+        contextSubscriptions['type'] = 'Device';
+        contextSubscriptions['mappings'] = [];
+        contextSubscriptions.mappings = contextSubscriptionsMapping;
+        configJson.contextSubscriptions.push(contextSubscriptions);
+
         return configJson;
     }
 };

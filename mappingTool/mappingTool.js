@@ -1,10 +1,11 @@
+const { constructBrowsePathFromQualifiedName } = require('node-opcua');
 const { config } = require('yargs');
 
 module.exports = {
     mappingTool: function(userName, password, endpoint, properties) {
         var logger = require('logops');
         var opcua = require('node-opcua');
-        const fs = require('fs');
+        const fs = require('fs').promises;
         var path = require('path');
         var nodesCrawler = require('./nodesCrawler');
         var propertiesJson = require('./properties');
@@ -62,7 +63,17 @@ module.exports = {
                 // step 3 : browse
                 const browseResult = await mySession.browse('RootFolder');
 
-                console.log('references of RootFolder :');
+                /* console.log('references of RootFolder :');
+                
+                const nsArray = await mySession.readNamespaceArray();
+                console.log(nsArray);
+                const nsDI = mySession.getNamespaceIndex("http://DIH_Welding");
+
+                console.log(nsDI);
+               
+               // const browsePath = makeBrowsePath("RootFolder", `/Objects/${nsDI}:DeviceSet");
+               const browsePath = opcua.makeBrowsePath("RootFolder", "/Root/Objects/3:ServerInterfaces/4:DIH_Welding");
+               console.log(browsePath);*/
 
                 for (const reference of browseResult.references) {
                     console.log('crawling   -> ', reference.browseName.toString(), reference.nodeId.toString());
@@ -82,7 +93,7 @@ module.exports = {
 
                 //console.log('config.json --> \n', JSON.stringify(configJson));
 
-                fs.writeFile('./conf/config.json', JSON.stringify(configJson), function(err) {
+                await fs.writeFile('./conf/config.json', JSON.stringify(configJson), function(err) {
                     if (err) return console.log(err);
                 });
             } catch (err) {

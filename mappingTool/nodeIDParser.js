@@ -1,5 +1,5 @@
 module.exports = {
-    nodeIDParser: function(nodeId, ignoreNs) {
+    nodeIDParser: async function(nodeId, ignoreNs) {
         const ignoreNsList = ignoreNs.split(',');
         const node = nodeId.split(';');
 
