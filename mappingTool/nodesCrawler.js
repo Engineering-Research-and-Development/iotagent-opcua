@@ -9,14 +9,14 @@ module.exports = {
                 configJson = await objectFolder.objectFolder(data, configJson, crawler, properties);
                 break;
 
-            case 'types':
+            /*  case 'types':
                 console.log('Browsing Types Folder');
                 const dTypes = await dataTypes.dataTypes(data);
                 break;
 
             case 'views':
                 console.log('Browsing Views Folder');
-                break;
+                break;*/
 
             default:
                 console.log(`Nothing to be browsed`);

@@ -31,7 +31,7 @@ module.exports = {
 
         async function recursiveNodeCrawling(nodeId, name) {
             const browseSubLev = await crawler.read(nodeId);
-            const ignoreNodeId = await nodeIDParser.nodeIDParser(browseSubLev.nodeId, ignoreNs);
+            const ignoreNodeId = nodeIDParser.nodeIDParser(browseSubLev.nodeId, ignoreNs);
             var command = {};
             var activeAttr = {};
             var contextMapping = {};
@@ -41,12 +41,12 @@ module.exports = {
                 if (!browseSubLev.hasOwnProperty('dataValue') && !browseSubLev.hasOwnProperty('hasComponent')) {
                     //console.log("Method " + browseSubLev.browseName)
                     command = {
-                        name: name + '_' + browseSubLev.browseName,
+                        name: name + browseSubLev.browseName,
                         type: 'command'
                     };
 
                     contextSubscription = {
-                        ocb_id: name + '_' + browseSubLev.browseName,
+                        ocb_id: name + browseSubLev.browseName,
                         opcua_id: browseSubLev.nodeId,
                         object_id: 'ns=3;i=1000',
                         inputArguments: []
@@ -58,14 +58,16 @@ module.exports = {
                             var input = {};
                             if (browseSubLev.hasOwnProperty('hasProperty')) {
                                 //console.log("Method input " + browseSubLev.hasProperty[m].nodeId, "_" + browseSubLev.browseName);
-                                input = {
-                                    dataType: browseSubLev.hasProperty[m].dataValue.value.value[0].dataType
-                                        .split(';')[1]
-                                        .split('=')[1],
-                                    type: browseSubLev.hasProperty[m].dataValue.value.value[0].name
-                                };
+                                if (browseSubLev.hasProperty[m].hasOwnProperty('dataValue.value.value[0].dataType')) {
+                                    input = {
+                                        dataType: browseSubLev.hasProperty[m].dataValue.value.value[0].dataType
+                                            .split(';')[1]
+                                            .split('=')[1],
+                                        type: browseSubLev.hasProperty[m].dataValue.value.value[0].name
+                                    };
+                                    inputArguments.push(input);
+                                }
                             }
-                            inputArguments.push(input);
                         }
                         contextSubscription.inputArguments = inputArguments;
                     }
@@ -83,7 +85,7 @@ module.exports = {
                                 if (browseSubLev.hasOwnProperty('hasComponent')) {
                                     recursiveNodeCrawling(
                                         browseSubLev.hasComponent[i].nodeId,
-                                        name + '_' + browseSubLev.browseName
+                                        name + browseSubLev.browseName
                                     );
                                 }
                             }
@@ -94,7 +96,7 @@ module.exports = {
                                 if (browseSubLev.hasOwnProperty('organizes')) {
                                     recursiveNodeCrawling(
                                         browseSubLev.organizes[j].nodeId,
-                                        name + '_' + browseSubLev.browseName
+                                        name + browseSubLev.browseName
                                     );
                                 }
                             }
@@ -106,7 +108,7 @@ module.exports = {
                                     browseSubLev.hasOwnProperty('hasProperty');
                                     recursiveNodeCrawling(
                                         browseSubLev.hasProperty[k].nodeId,
-                                        name + '_' + browseSubLev.browseName
+                                        name + browseSubLev.browseName
                                     );
                                 }
                             }
@@ -115,12 +117,12 @@ module.exports = {
                         //console.log(browseSubLev.nodeId + " " + name + "_" + browseSubLev.browseName);
 
                         activeAttr = {
-                            name: name + '_' + browseSubLev.browseName,
+                            name: name + browseSubLev.browseName,
                             type: browseSubLev.dataValue.value.dataType
                         };
 
                         contextMapping = {
-                            ocb_id: name + '_' + browseSubLev.browseName,
+                            ocb_id: name + browseSubLev.browseName,
                             opcua_id: browseSubLev.nodeId,
                             object_id: null,
                             inputArguments: []

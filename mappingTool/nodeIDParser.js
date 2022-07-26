@@ -1,11 +1,21 @@
 module.exports = {
-    nodeIDParser: async function(nodeId, ignoreNs) {
-        const ignoreNsList = ignoreNs.split(',');
+    nodeIDParser: function(nodeId, ignoreNs) {
         const node = nodeId.split(';');
 
-        for (i in ignoreNsList) {
-            if ('ns=' + ignoreNsList[i] == node[0].toString().toLowerCase()) return true;
+        if (ignoreNs.toString().includes(',')) {
+            const ignoreNsList = ignoreNs.split(',');
+
+            for (i in ignoreNsList) {
+                if ('ns=' + ignoreNsList[i] == node[0].toString().toLowerCase()) return true;
+            }
+        } else {
+            if ('ns=' + ignoreNs == node[0].toString().toLowerCase()) {
+                return true;
+            } else {
+                return false;
+            }
         }
+
         return false;
     }
 };
