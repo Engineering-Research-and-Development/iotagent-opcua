@@ -58,13 +58,15 @@ module.exports = {
                             var input = {};
                             if (browseSubLev.hasOwnProperty('hasProperty')) {
                                 //console.log("Method input " + browseSubLev.hasProperty[m].nodeId, "_" + browseSubLev.browseName);
-                                if (browseSubLev.hasProperty[m].hasOwnProperty('dataValue.value.value[0].dataType')) {
-                                    input = {
-                                        dataType: browseSubLev.hasProperty[m].dataValue.value.value[0].dataType
-                                            .split(';')[1]
-                                            .split('=')[1],
-                                        type: browseSubLev.hasProperty[m].dataValue.value.value[0].name
-                                    };
+                                if (browseSubLev.hasProperty[m].hasOwnProperty('dataValue')) {
+                                    try {
+                                        input = {
+                                            dataType: browseSubLev.hasProperty[m].dataValue.value.value[0].dataType
+                                                .split(';')[1]
+                                                .split('=')[1],
+                                            type: browseSubLev.hasProperty[m].dataValue.value.value[0].name
+                                        };
+                                    } catch {}
                                     inputArguments.push(input);
                                 }
                             }

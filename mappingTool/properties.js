@@ -1,6 +1,8 @@
 module.exports = {
     properties: async function(properties, configJson) {
         configJson['logLevel'] = properties.get('log-level');
+        configJson['multiCore'] = false;
+        configJson['relaxTemplateValidation'] = true;
         configJson['contextBroker'] = {
             host: properties.get('context-broker-host'),
             port: properties.get('context-broker-port'),
