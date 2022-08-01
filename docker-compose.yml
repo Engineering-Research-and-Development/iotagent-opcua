@@ -40,7 +40,7 @@ services:
 
   iotmongo:
     hostname: iot_mongo
-    image: mongo:4.2
+    image: mongo:4.4
     networks:
       - iotnet
     volumes:
@@ -67,7 +67,7 @@ services:
 
   orion_mongo:
     hostname: orion_mongo
-    image: mongo:4.2
+    image: mongo:4.4
     networks:
       - ocbnet
     ports:

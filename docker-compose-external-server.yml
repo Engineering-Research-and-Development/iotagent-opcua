@@ -15,7 +15,6 @@ services:
       - "4081:8080"
     extra_hosts:
       - "iotcarsrv:192.168.40.42"
-      - "pietro-deb.pietro.local:192.168.40.42"
     depends_on:
       - iotmongo
       - orion
@@ -25,7 +24,7 @@ services:
 
   iotmongo:
     hostname: iotmongo
-    image: mongo:3.4
+    image: mongo:4.4
     networks:
       - iotnet
     volumes:
@@ -49,7 +48,7 @@ services:
 
   orion_mongo:
     hostname: orion_mongo
-    image: mongo:3.4
+    image: mongo:4.4
     networks:
       ocbnet:
         aliases:

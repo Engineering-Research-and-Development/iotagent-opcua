@@ -10,7 +10,7 @@ services:
       - "5001:5001"
 
   mongo-db:
-    image: mongo:4.2
+    image: mongo:4.4
     hostname: mongo-db
     ports:
       - "27017:27017"
