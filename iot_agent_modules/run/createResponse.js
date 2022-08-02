@@ -22,7 +22,6 @@ module.exports = {
             };
             Object.assign(returnObj, obj);
         }
-        console.log(returnObj);
 
         return returnObj;
     }

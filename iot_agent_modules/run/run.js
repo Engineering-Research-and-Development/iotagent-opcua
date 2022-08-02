@@ -732,8 +732,8 @@ module.exports = {
                             name: context.id,
                             type: context.type,
                             active: config.types[context.type] == null ? null : config.types[context.type].active,
-//                             lazy: context.lazy,
-//                             commands: context.commands,
+                            //                             lazy: context.lazy,
+                            //                             commands: context.commands,
                             lazy: config.types[context.type].lazy,
                             commands: config.types[context.type].commands,
                             service: context.service,
@@ -1086,9 +1086,9 @@ module.exports = {
         }
 
         /*
-		function updateContextHandler(id, type, service, subservice, attributes, callback) {
-		}
-		*/
+        function updateContextHandler(id, type, service, subservice, attributes, callback) {
+        }
+        */
 
         var result = {};
         function pollcommands() {
