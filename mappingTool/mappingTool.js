@@ -8,6 +8,7 @@ module.exports = {
         const fs = require('fs').promises;
         var path = require('path');
         var nodesCrawler = require('./nodesCrawler');
+        var companionRecognition = require('./companionRecognition');
         var propertiesJson = require('./properties');
 
         var configJson = {};
@@ -63,24 +64,48 @@ module.exports = {
                 // step 3 : browse
                 const browseResult = await mySession.browse('RootFolder');
 
-                /* console.log('references of RootFolder :');
-                
+                //step 4: OPCUA Companion Recognition
                 const nsArray = await mySession.readNamespaceArray();
-                console.log(nsArray);
-                const nsDI = mySession.getNamespaceIndex("http://DIH_Welding");
 
-                console.log(nsDI);
-               
-               // const browsePath = makeBrowsePath("RootFolder", `/Objects/${nsDI}:DeviceSet");
-               const browsePath = opcua.makeBrowsePath("RootFolder", "/Root/Objects/3:ServerInterfaces/4:DIH_Welding");
-               console.log(browsePath);*/
+                const templateList = await companionRecognition.companionRecognition(mySession);
+                var companionRecognized = false;
+                var smartDataModel = '';
+                for (const model of templateList) {
+                    if (
+                        nsArray
+                            .toString()
+                            .toLowerCase()
+                            .includes(
+                                model
+                                    .toString()
+                                    .split('.')[0]
+                                    .toLowerCase()
+                            )
+                    ) {
+                        console.log('Companion recognized ==> ' + model.toString().split('.')[0] + ' <==');
+                        companionRecognized = true;
+                        smartDataModel = model;
+                    }
+                }
 
-                for (const reference of browseResult.references) {
-                    console.log('crawling   -> ', reference.browseName.toString(), reference.nodeId.toString());
-                    if (reference.browseName.toString() == 'Objects') {
-                        const crawler = new opcua.NodeCrawler(mySession);
-                        const data = await crawler.read(reference.nodeId.toString());
-                        configJson = await nodesCrawler.nodesCrawler(mySession, data, crawler, properties, configJson);
+                // mappingTool "companion"
+                if (companionRecognized) {
+                    console.log('Reading Smart Data Model: ' + smartDataModel);
+                } else {
+                    // mappingTool "standard"
+                    for (const reference of browseResult.references) {
+                        console.log('crawling   -> ', reference.browseName.toString(), reference.nodeId.toString());
+                        if (reference.browseName.toString() == 'Objects') {
+                            const crawler = new opcua.NodeCrawler(mySession);
+                            const data = await crawler.read(reference.nodeId.toString());
+                            configJson = await nodesCrawler.nodesCrawler(
+                                mySession,
+                                data,
+                                crawler,
+                                properties,
+                                configJson
+                            );
+                        }
                     }
                 }
 
