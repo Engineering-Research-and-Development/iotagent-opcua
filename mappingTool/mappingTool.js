@@ -9,6 +9,7 @@ module.exports = {
         var path = require('path');
         var nodesCrawler = require('./nodesCrawler');
         var companionRecognition = require('./companionRecognition');
+        var smartDataModelCrawler = require('./smartDataModelCrawler');
         var propertiesJson = require('./properties');
 
         var configJson = {};
@@ -91,6 +92,8 @@ module.exports = {
                 // mappingTool "companion"
                 if (companionRecognized) {
                     console.log('Reading Smart Data Model: ' + smartDataModel);
+                    //configJson = await smartDataModelCrawler.smartDataModelCrawler(smartDataModel);
+                    await smartDataModelCrawler.smartDataModelCrawler(properties, smartDataModel, configJson);
                 } else {
                     // mappingTool "standard"
                     for (const reference of browseResult.references) {
