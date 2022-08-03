@@ -118,13 +118,13 @@
 					"CurrentState": {
 						"ocb_id": "CurrentState",
 						"ocb_type" : "Text",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Overview.CurrentState"
 					},
 					"CurrentMode": {
 						"ocb_id": "CurrentState",
 						"ocb_type" : "Text",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Overview.CurrentMode"
 					}
 				},
@@ -132,157 +132,157 @@
 					"MachineOn": {
 						"ocb_id": "MachineOn",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.MachineOn"
 					},
 					"MachineInitialized": {
 						"ocb_id": "MachineInitialized",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.MachineInitialized"
 					},
 					"PowerPresent": {
 						"ocb_id": "PowerPresent",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.PowerPresent"
 					},
 					"AirPresent": {
 						"ocb_id": "AirPresent",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.AirPresent"
 					},
 					"DustChipSuction": {
 						"ocb_id": "DustChipSuction",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.DustChipSuction"
 					},
 					"Emergency": {
 						"ocb_id": "Emergency",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Emergency"
 					},
 					"Safety": {
 						"ocb_id": "Safety",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Safety"
 					},
 					"Calibrated": {
 						"ocb_id": "Calibrated",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Calibrated"
 					},
 					"Remote": {
 						"ocb_id": "Remote",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Remote"
 					},
 					"WorkpiecePresent": {
 						"ocb_id": "WorkpiecePresent",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.WorkpiecePresent"
 					},
 					"Moving": {
 						"ocb_id": "Moving",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Moving"
 					},
 					"Error": {
 						"ocb_id": "Error",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Error"
 					},
 					"Alarm": {
 						"ocb_id": "Alarm",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Alarm"
 					},
 					"Warning": {
 						"ocb_id": "Warning",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Warning"
 					},
 					"Hold": {
 						"ocb_id": "Hold",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.Hold"
 					},
 					"RecipeInRun": {
 						"ocb_id": "RecipeInRun",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.RecipeInRun"
 					},
 					"RecipeInSetup": {
 						"ocb_id": "RecipeInSetup",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.RecipeInSetup"
 					},
 					"RecipeInHold": {
 						"ocb_id": "RecipeInHold",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.RecipeInHold"
 					},
 					"ManualActivityRequired": {
 						"ocb_id": "ManualActivityRequired",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.ManualActivityRequired"
 					},
 					"LoadingEnabled": {
 						"ocb_id": "LoadingEnabled",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.LoadingEnabled"
 					},
 					"WaitUnload": {
 						"ocb_id": "WaitUnload",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.WaitUnload"
 					},
 					"WaitLoad": {
 						"ocb_id": "WaitLoad",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.WaitLoad"
 					},
 					"EnergySaving": {
 						"ocb_id": "EnergySaving",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.EnergySaving"
 					},
 					"ExternalEmergency": {
 						"ocb_id": "ExternalEmergency",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.ExternalEmergency"
 					},
 					"MaintenanceRequired": {
 						"ocb_id": "MaintenanceRequired",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.MaintenanceRequired"
 					},
 					"FeedRuns": {
 						"ocb_id": "FeedRuns",
 						"ocb_type" : "Boolean",
-						"ocb_behaviour": "Active",
+						"ocb_behaviour": "Passive",
 						"opcua_id": "ns=5;s=Rover.State.Machine.Flags.FeedRuns"
 					}
 				},
