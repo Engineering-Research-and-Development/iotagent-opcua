@@ -1,85 +1,79 @@
 {
-  "name": "opcua-iotagent",
+  "name": "iotagent-opcua",
   "license": "AGPL-3.0-only",
-  "description": "OPC-UA IoT Agent to interface with NGSI Context Broker",
-  "version": "1.4.0",
-  "homepage": "https://github.com/Engineering-Research-and-Development/iotagent-opcua",
-  "keywords": [
-    "fiware",
-    "iotagent",
-    "ngsi",
-    "context broker",
-    "opc-ua",
-    "opc ua"
-  ],
+  "description": "IoT Agent for OPC UA protocol",
+  "version": "2.0.0-next",
+  "homepage": "https://github.com/telefonicaid/iotagent-opcua",
   "author": {
-    "name": "Gabriele De Luca",
-    "email": "gabriele.deluca@eng.it"
+    "name": "Manfredi Giuseppe Pistone",
+    "email": "manfredi.pistone@gmail.com"
   },
+  "contributors": [
+    {
+      "name": "Walter Domenico Vergara",
+      "email": "vergarawalterdomenica@gmail.com"
+    }
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Engineering-Research-and-Development/iotagent-opcua.git"
+    "url": "https://github.com/telefonicaid/iotagent-opcua.git"
   },
   "bugs": {
-    "url": "https://github.com/Engineering-Research-and-Development/iotagent-opcua/issues"
+    "url": "https://github.com/telefonicaid/iotagent-opcua/issues"
   },
+  "main": "lib/iotagent-jsopcuaon",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=12"
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
-    "test": "mocha tests/test.js --timeout=120000 --exit",
-    "test:watch": "npm run test -- -w ./lib",
-    "lint": "eslint . --cache --fix",
+    "healthcheck": "node ./bin/healthcheck",
+    "lint": "eslint lib/ bin/ test/ --cache --fix",
     "lint:md": "remark -f 'README.md' docs",
     "lint:text": "textlint 'README.md' 'docs/*.md' 'docs/**/*.md'",
     "prettier": "prettier --config .prettierrc.json --write '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
     "prettier:text": "prettier 'README.md' 'docs/*.md' 'docs/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
-    "coverage": "nyc --reporter=lcov npm test",
-    "coverage-local": "nyc npm test && nyc report --reporter=html --report-dir ./reportage | coveralls",
-    "watch": "watch 'npm test && npm run lint' ./lib ./test",
-    "start": "node ./index.js"
-  },
-  "dependencies": {
-    "async": "^1.5.2",
-    "express": "^4.16.3",
-    "iotagent-node-lib": "^2.17.0",
-    "logops": "^1.0.0",
-    "node-opcua": "^2.31.0",
-    "npm": "^7.21.0",
-    "properties-reader": "2.2.0",
-    "request": "^2.82.0",
-    "requirish": "^0.3.0",
-    "setinterval-plus": "^1.0.3",
-    "treeify": "^1.1.0",
-    "underscore": "^1.9.1",
-    "yargs": "^15.0.1"
+    "start": "node ./bin/iotagent-opcua",
+    "test": "nyc --reporter=text mocha --recursive 'test/**/*.js' --reporter spec --timeout 5000 --ui bdd --exit  --color true",
+    "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
+    "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "test:watch": "npm run test -- -w ./lib",
+    "watch": "watch 'npm test && npm run lint' ./lib ./test"
   },
   "devDependencies": {
-    "coveralls": "3.0.6",
-    "eslint": "^7.3.1",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-mocha": "^5.2.0",
-    "eslint-plugin-node": "^8.0.0",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "husky": "^1.3.1",
-    "lint-staged": "^7.3.0",
-    "mocha": "6.2.0",
-    "nyc": "14.1.1",
-    "prettier": "^1.14.2",
+    "coveralls": "~3.1.0",
+    "eslint": "~7.5.0",
+    "eslint-config-tamia": "~7.2.5",
+    "eslint-plugin-prettier": "~3.1.4",
+    "husky": "~4.2.5",
+    "lint-staged": "~10.2.11",
+    "mocha": "8.0.1",
+    "moment": "~2.29.2",
+    "nock": "13.0.3",
+    "nyc": "~15.1.0",
+    "prettier": "~2.0.5",
+    "proxyquire": "2.1.3",
     "remark-cli": "~8.0.1",
     "remark-preset-lint-recommended": "~4.0.1",
+    "should": "13.2.3",
     "textlint": "~11.7.6",
     "textlint-rule-common-misspellings": "~1.0.1",
     "textlint-rule-terminology": "~2.1.4",
-    "textlint-rule-write-good": "~1.6.2"
+    "textlint-rule-write-good": "~1.6.2",
+    "watch": "~1.0.2"
   },
-  "nyc": {
-    "exclude": [
-      "tests/*.js"
-    ]
+  "keywords": [],
+  "dependencies": {
+    "async": "2.6.4",
+    "body-parser": "1.20.0",
+    "dateformat": "3.0.3",
+    "express": "4.18.1",
+    "iotagent-node-lib": "https://github.com/telefonicaid/iotagent-node-lib.git#master",
+    "logops": "2.1.2",
+    "node-opcua": "^2.72.2",
+    "nodemon": "^2.0.19",
+    "sinon": "~6.1.0",
+    "underscore": "1.12.1"
   },
   "husky": {
     "hooks": {
@@ -88,16 +82,13 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --config .prettierrc.json --write",
-      "git add"
+      "prettier --config .prettierrc.json --write"
     ],
     "*.md": [
-      "prettier --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
-      "git add"
+      "prettier --no-config --tab-width 4 --print-width 120 --write --prose-wrap always"
     ],
     "*.yml": [
-      "prettier --no-config --write",
-      "git add"
+      "prettier --no-config --write"
     ]
   },
   "remarkConfig": {

@@ -70,6 +70,7 @@
         ["I-O", "I/O"],
         "JPEG",
         "MIME",
+        ["NGSIv2", "NGSI v2"],
         "OK",
         "PaaS",
         "PDF",
@@ -182,7 +183,8 @@
       "passive": false,
       "tooWordy": false,
       "weasel": false,
-      "so": false
+      "so": false,
+      "thereIs" :false
     }
   }
 }

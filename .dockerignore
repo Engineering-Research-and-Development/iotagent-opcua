@@ -1,12 +1,7 @@
-node_modules
-root/.npm/cache/* &&
-docs
-docker
-docker-compose
-AGECONF
-CARCONF
-
-docker-compose.yml
-Dockerfile
+coverage/
+docs/
+ghpages/
+node_modules/
+test/
+rpm/
 README.md
-.*
