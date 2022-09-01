@@ -32,9 +32,11 @@ services:
       - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
       - IOTA_MONGO_HOST=iot_mongo # The host name of MongoDB
       - IOTA_MONGO_DB=iotagent_opcua # The name of the database used in mongoDB
-      #comment if you mind using NGSI-ld
+      #################################################################################################################
+      # please comment out if you want to use NGSI-ld, the OPCUA Agent is provided with NGSIv2 as default configuration
       #- IOTA_CB_NGSI_VERSION=ld
-      - IOTA_JSON_LD_CONTEXT=https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld #comment if you mind using NGSIv2
+      #- IOTA_JSON_LD_CONTEXT=https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context-v1.3.jsonld
+      #################################################################################################################
       - IOTA_FALLBACK_TENANT=opcua_car
       - IOTA_RELAX_TEMPLATE_VALIDATION=true
 
@@ -51,7 +53,7 @@ services:
 
   orion:
     hostname: orion
-    #replace fiware/orion:latest with fiware/orion-ld:0.7.0 if you mind using NGSI-ld
+    #replace fiware/orion:latest with fiware/orion-ld:0.7.0 if you want to use NGSI-ld
     image: fiware/orion:latest
     #image: fiware/orion-ld:0.7.0
     networks:
@@ -61,7 +63,7 @@ services:
       - "1026:1026"
     depends_on:
       - orion_mongo
-    # add -forwarding if using NGSI-ld
+    # please replace "command" if you want to use NGSI-ld, the OPCUA Agent is provided with NGSIv2 as default configuration
     #command: -statCounters -dbhost orion_mongo -logLevel INFO -forwarding
     command: -statCounters -dbhost orion_mongo -logLevel INFO
 
