@@ -5,6 +5,8 @@
 	"contextBroker": {
 		"host": "orion",
 		"port": 1026,
+		"ngsiVersion": "ld",
+		"jsonLdContext": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
 		"service": "opcua_car",
 		"subservice": "/demo"
 	},
@@ -27,6 +29,9 @@
 			"service": "opcua_car",
 			"subservice": "/demo",
 			"active": [{
+				"name": "EngineBrake",
+				"type": "Number"
+			}, {
 				"name": "Acceleration",
 				"type": "Number"
 			}, {
@@ -64,8 +69,10 @@
 	"deviceRegistrationDuration": "P1M",
 	"defaultType": null,
 	"contexts": [{
-		"id": "age01_Car",
+		"id": "urn:ngsi-ld:Device:age01_Car",
 		"type": "Device",
+		"ngsiVersion": "ld",
+		"jsonLdContext": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
 		"service": "opcua_car",
 		"subservice": "/demo",
 		"polling": false,
@@ -97,8 +104,10 @@
 		}]
 	}],
 	"contextSubscriptions": [{
-		"id": "age01_Car",
+		"id": "urn:ngsi-ld:Device:age01_Car",
 		"type": "Device",
+		"ngsiVersion": "ld",
+		"jsonLdContext": "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
 		"mappings": [{
 			"ocb_id": "Error",
 			"opcua_id": "ns=3;s=Error",
