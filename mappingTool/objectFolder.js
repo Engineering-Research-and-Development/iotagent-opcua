@@ -61,13 +61,15 @@ module.exports = {
                                 if (browseSubLev.hasProperty[m].hasOwnProperty('dataValue')) {
                                     try {
                                         input = {
-                                            dataType: browseSubLev.hasProperty[m].dataValue.value.value[0].dataType
-                                                .split(';')[1]
-                                                .split('=')[1],
+                                            dataType: parseInt(
+                                                browseSubLev.hasProperty[m].dataValue.value.value[0].dataType
+                                                    .split(';')[1]
+                                                    .split('=')[1]
+                                            ),
                                             type: browseSubLev.hasProperty[m].dataValue.value.value[0].name
                                         };
                                     } catch {}
-                                    inputArguments.push(input);
+                                    if (m == 0) inputArguments.push(input);
                                 }
                             }
                         }

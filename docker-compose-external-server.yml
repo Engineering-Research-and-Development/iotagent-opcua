@@ -8,10 +8,10 @@ services:
       - hostnet
       - iotnet
     ports:
-      - "4001:4001"
-      - "4081:8080"
+      - "0.0.0.0:4001:4001"
+      - "0.0.0.0:4081:8080"
     extra_hosts:
-      - "iotcarsrv:192.168.1.237"
+      - "iotcarsrv:136.243.156.113"
     depends_on:
       - iotmongo
       - orion
@@ -51,7 +51,7 @@ services:
       - hostnet
       - ocbnet
     ports:
-      - "1026:1026"
+      - "0.0.0.0:1026:1026"
     depends_on:
       - orion_mongo
     # please replace "command" if you want to use NGSI-ld, the OPCUA Agent is provided with NGSIv2 as default configuration
@@ -64,7 +64,7 @@ services:
     networks:
       - ocbnet
     ports:
-      - "27017:27017"
+      - "0.0.0.0:27017:27017"
     volumes:
       - orion_mongo_data:/data/db
       - orion_mongo_conf:/data/configdb
