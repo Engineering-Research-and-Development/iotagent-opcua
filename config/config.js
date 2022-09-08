@@ -140,7 +140,149 @@ config.iota = {
      *
      *      https://github.com/telefonicaid/iotagent-opcua#type-configuration
      */
-    types: {},
+     types: {
+		Device: {
+			active: [
+				{
+					name: "EngineBrake",
+					type: "Number"
+				},
+				{
+					name: "Acceleration",
+					type: "Number"
+				},
+				{
+					name: "EngineStopped",
+					type: "Boolean"
+				},
+				{
+					name: "Engine_Temperature",
+					type: "Number"
+				},
+				{
+					name: "Engine_Oxigen",
+					type: "Number"
+				}
+			],
+			lazy: [
+				{
+					name: "Speed",
+					type: "Number"
+				}
+			],
+			commands: [
+				{
+					name: "Error",
+					type: "command"
+				},
+				{
+					name: "Stop",
+					type: "command"
+				},
+				{
+					name: "Accelerate",
+					type: "command"
+				}
+			]
+		}
+	},
+	contexts: [
+		{
+			id: "age01_Car",
+			type: "Device",
+			polling: false,
+			service: "opcua_car",
+			subservice: "/demo",
+			mappings: [
+				{
+					ocb_id: "Error",
+					opcua_id: "ns=3;s=Error",
+					object_id: null,
+					inputArguments: []
+				},
+				{
+					ocb_id: "EngineBrake",
+					opcua_id: "ns=3;s=EngineBrake",
+					object_id: null,
+					inputArguments: []
+				},
+				{
+					ocb_id: "Speed",
+					opcua_id: "ns=3;s=Speed",
+					object_id: null,
+					inputArguments: []
+				},
+				{
+					ocb_id: "Acceleration",
+					opcua_id: "ns=3;s=Acceleration",
+					object_id: null,
+					inputArguments: []
+				},
+				{
+					ocb_id: "EngineStopped",
+					opcua_id: "ns=3;s=EngineStopped",
+					object_id: null,
+					inputArguments: []
+				},
+				{
+					ocb_id: "Engine_Temperature",
+					opcua_id: "ns=3;s=Temperature",
+					object_id: null,
+					inputArguments: []
+				},
+				{
+					ocb_id: "Engine_Oxigen",
+					opcua_id: "ns=3;s=Oxigen",
+					object_id: null,
+					inputArguments: []
+				}
+			]
+		}
+	],
+	contextSubscriptions: [
+		{
+			id: "age01_Car",
+			type: "Device",
+			service: "opcua_car",
+			subservice: "/demo",
+			mappings: [
+				{
+					ocb_id: "Error",
+					opcua_id: "ns=3;s=Error",
+					object_id: "ns=3;i=1000",
+					inputArguments: [
+						{
+							"dataType": 12,
+							type: "Error Type"
+						}
+					]
+				},
+				{
+					ocb_id: "Speed",
+					opcua_id: "ns=3;s=Speed",
+					object_id: "ns=3;i=1000",
+					inputArguments: []
+				},
+				{
+					ocb_id: "Stop",
+					opcua_id: "ns=3;s=Stop",
+					object_id: "ns=3;i=1000",
+					inputArguments: []
+				},
+				{
+					ocb_id: "Accelerate",
+					opcua_id: "ns=3;s=Accelerate",
+					object_id: "ns=3;i=1000",
+					inputArguments: [
+						{
+							"dataType": 6,
+							type: "Intensity"
+						}
+					]
+				}
+			]
+		}
+	],
     /**
      * Default service, for IoT Agent installations that won't require preregistration.
      */
