@@ -140,149 +140,149 @@ config.iota = {
      *
      *      https://github.com/telefonicaid/iotagent-opcua#type-configuration
      */
-     types: {
-		Device: {
-			active: [
-				{
-					name: "EngineBrake",
-					type: "Number"
-				},
-				{
-					name: "Acceleration",
-					type: "Number"
-				},
-				{
-					name: "EngineStopped",
-					type: "Boolean"
-				},
-				{
-					name: "Engine_Temperature",
-					type: "Number"
-				},
-				{
-					name: "Engine_Oxigen",
-					type: "Number"
-				}
-			],
-			lazy: [
-				{
-					name: "Speed",
-					type: "Number"
-				}
-			],
-			commands: [
-				{
-					name: "Error",
-					type: "command"
-				},
-				{
-					name: "Stop",
-					type: "command"
-				},
-				{
-					name: "Accelerate",
-					type: "command"
-				}
-			]
-		}
-	},
-	contexts: [
-		{
-			id: "age01_Car",
-			type: "Device",
-			polling: false,
-			service: "opcua_car",
-			subservice: "/demo",
-			mappings: [
-				{
-					ocb_id: "Error",
-					opcua_id: "ns=3;s=Error",
-					object_id: null,
-					inputArguments: []
-				},
-				{
-					ocb_id: "EngineBrake",
-					opcua_id: "ns=3;s=EngineBrake",
-					object_id: null,
-					inputArguments: []
-				},
-				{
-					ocb_id: "Speed",
-					opcua_id: "ns=3;s=Speed",
-					object_id: null,
-					inputArguments: []
-				},
-				{
-					ocb_id: "Acceleration",
-					opcua_id: "ns=3;s=Acceleration",
-					object_id: null,
-					inputArguments: []
-				},
-				{
-					ocb_id: "EngineStopped",
-					opcua_id: "ns=3;s=EngineStopped",
-					object_id: null,
-					inputArguments: []
-				},
-				{
-					ocb_id: "Engine_Temperature",
-					opcua_id: "ns=3;s=Temperature",
-					object_id: null,
-					inputArguments: []
-				},
-				{
-					ocb_id: "Engine_Oxigen",
-					opcua_id: "ns=3;s=Oxigen",
-					object_id: null,
-					inputArguments: []
-				}
-			]
-		}
-	],
-	contextSubscriptions: [
-		{
-			id: "age01_Car",
-			type: "Device",
-			service: "opcua_car",
-			subservice: "/demo",
-			mappings: [
-				{
-					ocb_id: "Error",
-					opcua_id: "ns=3;s=Error",
-					object_id: "ns=3;i=1000",
-					inputArguments: [
-						{
-							"dataType": 12,
-							type: "Error Type"
-						}
-					]
-				},
-				{
-					ocb_id: "Speed",
-					opcua_id: "ns=3;s=Speed",
-					object_id: "ns=3;i=1000",
-					inputArguments: []
-				},
-				{
-					ocb_id: "Stop",
-					opcua_id: "ns=3;s=Stop",
-					object_id: "ns=3;i=1000",
-					inputArguments: []
-				},
-				{
-					ocb_id: "Accelerate",
-					opcua_id: "ns=3;s=Accelerate",
-					object_id: "ns=3;i=1000",
-					inputArguments: [
-						{
-							"dataType": 6,
-							type: "Intensity"
-						}
-					]
-				}
-			]
-		}
-	],
+    types: {
+        Device: {
+            active: [
+                {
+                    name: 'EngineBrake',
+                    type: 'Number'
+                },
+                {
+                    name: 'Acceleration',
+                    type: 'Number'
+                },
+                {
+                    name: 'EngineStopped',
+                    type: 'Boolean'
+                },
+                {
+                    name: 'Engine_Temperature',
+                    type: 'Number'
+                },
+                {
+                    name: 'Engine_Oxigen',
+                    type: 'Number'
+                }
+            ],
+            lazy: [
+                {
+                    name: 'Speed',
+                    type: 'Number'
+                }
+            ],
+            commands: [
+                {
+                    name: 'Error',
+                    type: 'command'
+                },
+                {
+                    name: 'Stop',
+                    type: 'command'
+                },
+                {
+                    name: 'Accelerate',
+                    type: 'command'
+                }
+            ]
+        }
+    },
+    contexts: [
+        {
+            id: 'age01_Car',
+            type: 'Device',
+            polling: false,
+            service: 'opcua_car',
+            subservice: '/demo',
+            mappings: [
+                {
+                    ocb_id: 'Error',
+                    opcua_id: 'ns=3;s=Error',
+                    object_id: null,
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'EngineBrake',
+                    opcua_id: 'ns=3;s=EngineBrake',
+                    object_id: null,
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Speed',
+                    opcua_id: 'ns=3;s=Speed',
+                    object_id: null,
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Acceleration',
+                    opcua_id: 'ns=3;s=Acceleration',
+                    object_id: null,
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'EngineStopped',
+                    opcua_id: 'ns=3;s=EngineStopped',
+                    object_id: null,
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Engine_Temperature',
+                    opcua_id: 'ns=3;s=Temperature',
+                    object_id: null,
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Engine_Oxigen',
+                    opcua_id: 'ns=3;s=Oxigen',
+                    object_id: null,
+                    inputArguments: []
+                }
+            ]
+        }
+    ],
+    contextSubscriptions: [
+        {
+            id: 'age01_Car',
+            type: 'Device',
+            service: 'opcua_car',
+            subservice: '/demo',
+            mappings: [
+                {
+                    ocb_id: 'Error',
+                    opcua_id: 'ns=3;s=Error',
+                    object_id: 'ns=3;i=1000',
+                    inputArguments: [
+                        {
+                            dataType: 12,
+                            type: 'Error Type'
+                        }
+                    ]
+                },
+                {
+                    ocb_id: 'Speed',
+                    opcua_id: 'ns=3;s=Speed',
+                    object_id: 'ns=3;i=1000',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Stop',
+                    opcua_id: 'ns=3;s=Stop',
+                    object_id: 'ns=3;i=1000',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Accelerate',
+                    opcua_id: 'ns=3;s=Accelerate',
+                    object_id: 'ns=3;i=1000',
+                    inputArguments: [
+                        {
+                            dataType: 6,
+                            type: 'Intensity'
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
     /**
      * Default service, for IoT Agent installations that won't require preregistration.
      */
@@ -303,7 +303,7 @@ config.iota = {
     /**
      * Default type, for IoT Agent installations that won't require preregistration.
      */
-    defaultType: 'Thing',
+    defaultType: 'Device',
     /**
      * Default resource of the IoT Agent. This value must be different for every IoT Agent connecting to the IoT
      * Manager.
@@ -357,7 +357,7 @@ config.configRetrieval = false;
 /**
  * Default API Key, to use with device that have been provisioned without a Configuration Group.
  */
-config.defaultKey = 'iot';
+config.defaultKey = '801230BJKL23Y9090DSFL123HJK09H324HV8732';
 /**
  * Default transport protocol when no transport is provisioned through the Device Provisioning API.
  */
