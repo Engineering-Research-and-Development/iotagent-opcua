@@ -357,7 +357,7 @@ config.configRetrieval = false;
 /**
  * Default API Key, to use with device that have been provisioned without a Configuration Group.
  */
-config.defaultKey = '801230BJKL23Y9090DSFL123HJK09H324HV8732';
+config.defaultKey = 'iot';
 /**
  * Default transport protocol when no transport is provisioned through the Device Provisioning API.
  */
