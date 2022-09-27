@@ -295,7 +295,7 @@ config.iota = {
      * URL Where the IoT Agent Will listen for incoming updateContext and queryContext requests (for commands and
      * passive attributes). This URL will be sent in the Context Registration requests.
      */
-    providerUrl: 'http://localhost:4041',
+    providerUrl: 'http://host.docker.internal:4041',
     /**
      * Default maximum expire date for device registrations.
      */
