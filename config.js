@@ -367,5 +367,9 @@ config.defaultTransport = 'OPCUA';
  * single-thread one (false).
  */
 //config.multiCore = false;
+/**
+ * flag indicating whether or not to provision the Group and Device automatically
+ */
+config.autoprovision = true;
 
 module.exports = config;
