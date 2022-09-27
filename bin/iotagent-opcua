@@ -38,7 +38,7 @@ function start() {
     if (process.argv.length === 3) {
         config = require('../' + process.argv[2]);
     } else {
-        config = require('../config/config.js');
+        config = require('../config.js');
     }
 
     config.iota.iotaVersion = info.version;
