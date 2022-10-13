@@ -236,12 +236,6 @@ config.iota = {
                     opcua_id: 'ns=3;s=Oxigen',
                     object_id: null,
                     inputArguments: []
-                },
-                {
-                    ocb_id: 'Speed',
-                    opcua_id: 'ns=3;s=Speed',
-                    object_id: null,
-                    inputArguments: []
                 }
             ]
         }

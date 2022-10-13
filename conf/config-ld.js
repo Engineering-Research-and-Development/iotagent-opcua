@@ -48,7 +48,7 @@ config.iota = {
         /**
          * Version of the Context Broker (v2 or ld)
          */
-        ngsiVersion: 'v2',
+        ngsiVersion: 'ld',
         /**
          * JSON LD Context
          */
@@ -204,7 +204,7 @@ config.iota = {
     },
     contexts: [
         {
-            id: 'age01_Car',
+            id: 'urn:ngsi-ld:Device:age01_Car',
             type: 'Device',
             mappings: [
                 {
@@ -236,19 +236,13 @@ config.iota = {
                     opcua_id: 'ns=3;s=Oxigen',
                     object_id: null,
                     inputArguments: []
-                },
-                {
-                    ocb_id: 'Speed',
-                    opcua_id: 'ns=3;s=Speed',
-                    object_id: null,
-                    inputArguments: []
                 }
             ]
         }
     ],
     contextSubscriptions: [
         {
-            id: 'age01_Car',
+            id: 'urn:ngsi-ld:Device:age01_Car',
             type: 'Device',
             mappings: [
                 {
@@ -364,7 +358,7 @@ config.opcua = {
      * Specific for mapping tool.
      * name assigned to the entity
      */
-    entityId: 'age01_Car'
+    entityId: 'urn:ngsi-ld:Device:age01_Car'
 };
 
 /**
