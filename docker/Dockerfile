@@ -131,7 +131,7 @@ USER node
 ENV NODE_ENV=production
 # Expose 4041 for NORTH PORT, 7896 for HTTP PORT
 EXPOSE ${IOTA_NORTH_PORT:-4041} ${IOTA_HTTP_PORT:-7896}
-CMD ["pm2-runtime", "/opt/iotagent-opcua/bin/iotagent-opcua", "-- ", "config.js"]
+CMD ["pm2-runtime", "/opt/iotagent-opcua/bin/iotagent-opcua", "-- ", "conf/config.js"]
 
 ########################################################################################
 #
@@ -178,7 +178,7 @@ USER nobody
 ENV NODE_ENV=production
 # Expose 4041 for NORTH PORT, 7896 for HTTP PORT
 EXPOSE ${IOTA_NORTH_PORT:-4041} ${IOTA_HTTP_PORT:-7896}
-CMD ["./bin/iotagent-opcua", "-- ", "config.js"]
+CMD ["./bin/iotagent-opcua", "-- ", "conf/config.js"]
 HEALTHCHECK  --interval=30s --timeout=3s --start-period=10s \
   CMD ["/nodejs/bin/node", "./bin/healthcheck"]
 
@@ -217,7 +217,7 @@ USER node
 ENV NODE_ENV=production
 # Expose 4041 for NORTH PORT, 7896 for HTTP PORT
 EXPOSE ${IOTA_NORTH_PORT:-4041} ${IOTA_HTTP_PORT:-7896}
-CMD ["node", "/opt/iotagent-opcua/bin/iotagent-opcua", "-- ", "config.js"]
+CMD ["node", "/opt/iotagent-opcua/bin/iotagent-opcua", "-- ", "conf/config.js"]
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
    CMD ["npm", "run", "healthcheck"]
 

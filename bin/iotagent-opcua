@@ -40,7 +40,7 @@ async function start() {
     if (process.argv.length === 3) {
         config = require('../' + process.argv[2]);
     } else {
-        config = require('../config.js');
+        config = require('../conf/config.js');
         if (Object.keys(config.iota.types).length === 0) {
             logger.info('----------------    MAPPING TOOL    ----------------');
             configJS = await mappingTool.mappingTool(config);

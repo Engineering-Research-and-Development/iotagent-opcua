@@ -41,7 +41,7 @@ echo "[INFO] Preparing installation"
 # Copy src files
 /bin/cp -R %{_srcdir}/lib \
       %{_srcdir}/bin \
-      %{_srcdir}/config.js \
+      %{_srcdir}/conf/config.js \
       %{_srcdir}/package.json \
       %{_srcdir}/LICENSE \
       %{_build_root_project}
@@ -77,7 +77,7 @@ if [ "$RET_VAL" != "0" ]; then
          exit $RET_VAL
       fi
 else
-      /bin/mv %{_install_dir}/config.js /tmp
+      /bin/mv %{_install_dir}/conf/config.js /tmp
 fi
 
 # -------------------------------------------------------------------------------------------- #
@@ -107,7 +107,7 @@ echo "[INFO] Configuring application"
     chkconfig --add %{_service_name}
 
     # restores old configuration if any
-    [ -f /tmp/config.js ] && /bin/mv /tmp/config.js %{_install_dir}/config.js
+    [ -f /tmp/conf/config.js ] && /bin/mv /tmp/conf/config.js %{_install_dir}/conf/config.js
    
     # Chmod iotagent-opcua binary
     chmod guo+x %{_install_dir}/bin/%{_iotajson_executable}

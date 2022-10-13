@@ -206,25 +206,10 @@ config.iota = {
         {
             id: 'age01_Car',
             type: 'Device',
-            polling: false,
-            service: 'opcua_car',
-            subservice: '/demo',
             mappings: [
-                {
-                    ocb_id: 'Error',
-                    opcua_id: 'ns=3;s=Error',
-                    object_id: null,
-                    inputArguments: []
-                },
                 {
                     ocb_id: 'EngineBrake',
                     opcua_id: 'ns=3;s=EngineBrake',
-                    object_id: null,
-                    inputArguments: []
-                },
-                {
-                    ocb_id: 'Speed',
-                    opcua_id: 'ns=3;s=Speed',
                     object_id: null,
                     inputArguments: []
                 },
@@ -251,6 +236,12 @@ config.iota = {
                     opcua_id: 'ns=3;s=Oxigen',
                     object_id: null,
                     inputArguments: []
+                },
+                {
+                    ocb_id: 'Speed',
+                    opcua_id: 'ns=3;s=Speed',
+                    object_id: null,
+                    inputArguments: []
                 }
             ]
         }
@@ -259,8 +250,6 @@ config.iota = {
         {
             id: 'age01_Car',
             type: 'Device',
-            service: 'opcua_car',
-            subservice: '/demo',
             mappings: [
                 {
                     ocb_id: 'Error',
