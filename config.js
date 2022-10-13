@@ -44,7 +44,23 @@ config.iota = {
         /**
          * Port where the Context Broker is listening.
          */
-        port: '1026'
+        port: '1026',
+        /**
+         * Version of the Context Broker (v2 or ld)
+         */
+        ngsiVersion: 'v2',
+        /**
+         * JSON LD Context
+         */
+        jsonLdContext: 'https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld',
+        /**
+         * Used as fallbackTenant
+         */
+        service: 'opcua_car',
+        /**
+         * Used as fallbackPath
+         */
+        subservice: '/demo'
     },
     /**
      * Configuration of the North Port of the IoT Agent.
@@ -295,7 +311,7 @@ config.iota = {
      * URL Where the IoT Agent Will listen for incoming updateContext and queryContext requests (for commands and
      * passive attributes). This URL will be sent in the Context Registration requests.
      */
-    providerUrl: 'http://host.docker.internal:4041',
+    providerUrl: 'http://localhost:4041',
     /**
      * Default maximum expire date for device registrations.
      */
