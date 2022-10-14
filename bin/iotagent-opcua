@@ -27,7 +27,6 @@
 const iotAgent = require('../lib/iotagent-opcua');
 const iotAgentLib = require('iotagent-node-lib');
 const info = require('../package.json');
-const mappingTool = require('../lib/mappingTool/mappingTool');
 const context = {
     op: 'IOTAOPCUA.Executable'
 };
@@ -35,21 +34,11 @@ const logger = require('logops');
 
 async function start() {
     let config;
-    let configJS;
 
     if (process.argv.length === 3) {
         config = require('../' + process.argv[2]);
     } else {
         config = require('../conf/config.js');
-        if (Object.keys(config.iota.types).length === 0) {
-            logger.info('----------------    MAPPING TOOL    ----------------');
-            configJS = await mappingTool.mappingTool(config);
-            //console.log("configJS "+ JSON.stringify(configJS))
-            //console.log(JSON.stringify(configJS.types));
-            config.iota.types = configJS.types;
-            config.iota.contexts = configJS.contexts;
-            config.iota.contextSubscriptions = configJS.contextSubscriptions;
-        }
     }
 
     config.iota.iotaVersion = info.version;

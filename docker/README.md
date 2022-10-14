@@ -41,10 +41,8 @@ services:
             - mongodb
         expose:
             - "4041"
-            - "7896"
         ports:
             - "4041:4041"
-            - "7896:7896"
         environment:
             - "IOTA_CB_HOST=orion"
             - "IOTA_CB_PORT=1026"
@@ -53,7 +51,6 @@ services:
             - "IOTA_MONGO_HOST=mongodb"
             - "IOTA_MONGO_PORT=27017"
             - "IOTA_MONGO_DB=iotagent-opcua"
-            - "IOTA_HTTP_PORT=7896"
             - "IOTA_PROVIDER_URL=http://iot-agent:4041"
 
     mongodb:
@@ -91,7 +88,6 @@ environment variables such as those shown below:
 -   `IOTA_MONGO_HOST` - The hostname of MongoDB - used for holding device and service information
 -   `IOTA_MONGO_PORT` - The port that MongoDB is listening on
 -   `IOTA_MONGO_DB` - The name of the database used in MongoDB
--   `IOTA_HTTP_PORT` - The port where the IoT Agent listens for IoT device traffic over HTTP
 -   `IOTA_PROVIDER_URL` - URL passed to the Context Broker when commands are registered, used as a forwarding URL
     location when the Context Broker issues a command to a device
 
@@ -107,8 +103,8 @@ in the IoT Agent for JSON
 
 ## How to build an image
 
-The [Dockerfile](https://github.com/telefonicaid/iotagent-opcua/blob/master/docker/Dockerfile) associated with this image
-can be used to build an image in several ways:
+The [Dockerfile](https://github.com/telefonicaid/iotagent-opcua/blob/master/docker/Dockerfile) associated with this
+image can be used to build an image in several ways:
 
 -   By default, the `Dockerfile` retrieves the **latest** version of the codebase direct from GitHub (the `build-arg` is
     optional):
@@ -163,13 +159,11 @@ Manager by using the associated `pm2` Image.
 docker run --name iotagent -d fiware/iotagent-opcua:<tag>-pm2
 ```
 
-The IoT Agent within the Docker image can be run from a distroless container
-by using the associated `distroless` Image.
+The IoT Agent within the Docker image can be run from a distroless container by using the associated `distroless` Image.
 
 ```console
 docker run --name iotagent -d fiware/iotagent-opcua:<tag>-distroless
 ```
-
 
 ### Docker Secrets
 

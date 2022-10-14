@@ -1,6 +1,6 @@
-# Copyright 2015 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2022 Engineering Ingegneria Informatica S.p.A.
 #
-# This file is part of the IoT Agent for the JSON protocol (iotagent-opcua) component
+# This file is part of the IoT Agent for the OPCUA protocol (iotagent-opcua) component
 #
 # iotagent-opcua is free software: you can redistribute it and/or
 # modify it under the terms of the GNU Affero General Public License as
@@ -17,17 +17,17 @@
 # If not, see http://www.gnu.org/licenses/.
 #
 # For those usages not covered by the GNU Affero General Public License
-# please contact with: [daniel.moranjimenez@telefonica.com]
+# please contact with: [contact@eng.it]
 
 ARG NODE_VERSION=16
-ARG GITHUB_ACCOUNT=telefonicaid
+ARG GITHUB_ACCOUNT=Engineering-Research-and-Development
 ARG GITHUB_REPOSITORY=iotagent-opcua
 ARG DOWNLOAD=latest
 ARG SOURCE_BRANCH=master
 
 ########################################################################################
 #
-# This build stage retrieves the source code from GitHub. The default download is the 
+# This build stage retrieves the source code from GitHub. The default download is the
 # latest tip of the master of the named repository on GitHub.
 #
 # To obtain the latest stable release run this Docker file with the parameters:
@@ -36,12 +36,12 @@ ARG SOURCE_BRANCH=master
 # To obtain any specific version of a release run this Docker file with the parameters:
 # --no-cache --build-arg DOWNLOAD=1.7.0
 #
-# For development purposes, to create a development image including a running Distro, 
+# For development purposes, to create a development image including a running Distro,
 # run this Docker file with the parameter:
 #
 # --target=builder
 #
-######################################################################################## 
+########################################################################################
 FROM node:${NODE_VERSION} AS builder
 ARG GITHUB_ACCOUNT
 ARG GITHUB_REPOSITORY
@@ -50,8 +50,8 @@ ARG SOURCE_BRANCH
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# As an Alternative for local development, just copy this Dockerfile into file the root of 
-# the repository and replace the whole RUN statement below by the following COPY statement 
+# As an Alternative for local development, just copy this Dockerfile into file the root of
+# the repository and replace the whole RUN statement below by the following COPY statement
 # in your local source using :
 #
 # COPY . /opt/iotagent-opcua/
@@ -85,25 +85,23 @@ RUN \
 	apt-get clean && \
 	apt-get remove -y unzip && \
 	apt-get -y autoremove && \
-	rm -rf /var/lib/apt/lists/* 
+	rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/iotagent-opcua
 
 # hadolint ignore=DL3008
 RUN \
 	# Ensure that Git is installed prior to running npm install
-	apt-get install -y --no-install-recommends git && \
 	echo "INFO: npm install --production..." && \
 	npm install --only=prod --no-package-lock --no-optional && \
 	# Remove Git and clean apt cache
 	apt-get clean && \
-	apt-get remove -y git && \
 	apt-get -y autoremove
 
 ########################################################################################
 #
 # This build stage installs PM2 if required.
-# 
+#
 # To create an image using PM2 run this Docker file with the parameter:
 #
 # --target=pm2-install
@@ -114,13 +112,13 @@ ARG GITHUB_ACCOUNT
 ARG GITHUB_REPOSITORY
 ARG NODE_VERSION
 
-LABEL "maintainer"="FIWARE IoTAgent Team. Telefónica I+D"
-LABEL "org.opencontainers.image.authors"="iot_support@tid.es"
-LABEL "org.opencontainers.image.documentation"="https://fiware-iotagent-opcua.rtfd.io/"
-LABEL "org.opencontainers.image.vendor"="Telefónica Investigación y Desarrollo, S.A.U"
+LABEL "maintainer"="FIWARE IoTAgent Team. Engineering Ingegneria Informatica S.p.A."
+LABEL "org.opencontainers.image.authors"="walterdomenico.vergara@eng.it,manfredigiuseppe.pistone@eng.it"
+LABEL "org.opencontainers.image.documentation"="https://iotagent-opcua.readthedocs.io/en/latest/"
+LABEL "org.opencontainers.image.vendor"="Engineering Ingegneria Informatica"
 LABEL "org.opencontainers.image.licenses"="AGPL-3.0-only"
-LABEL "org.opencontainers.image.title"="IoT Agent for the JSON protocol with PM2"
-LABEL "org.opencontainers.image.description"="An Internet of Things Agent for the JSON protocol (with AMQP, HTTP and MQTT transports). This IoT Agent is designed to be a bridge between Ultralight and the NGSI interface of a context broker."
+LABEL "org.opencontainers.image.title"="IoT Agent for the OPCUA protocol"
+LABEL "org.opencontainers.image.description"="An Internet of Things Agent intended to enable capturing data from OPC UA devices on the shopfloor and provide them to the upper levels of a FIWARE-based system."
 LABEL "org.opencontainers.image.source"="https://github.com/${GITHUB_ACCOUNT}/${GITHUB_REPOSITORY}"
 LABEL "org.nodejs.version"="${NODE_VERSION}"
 
@@ -129,8 +127,8 @@ RUN npm install pm2@4.4.0 -g --no-package-lock --no-optional
 
 USER node
 ENV NODE_ENV=production
-# Expose 4041 for NORTH PORT, 7896 for HTTP PORT
-EXPOSE ${IOTA_NORTH_PORT:-4041} ${IOTA_HTTP_PORT:-7896}
+# Expose 4041 for NORTH PORT
+EXPOSE ${IOTA_NORTH_PORT:-4041}
 CMD ["pm2-runtime", "/opt/iotagent-opcua/bin/iotagent-opcua", "-- ", "conf/config.js"]
 
 ########################################################################################
@@ -147,11 +145,11 @@ RUN sed -i -r "/^(root|nobody)/!d" /etc/passwd /etc/shadow /etc/group \
 #
 # This build stage creates a distroless image for production.
 #
-# IMPORTANT: For production environments use Docker Secrets to protect values of the 
-# sensitive ENV variables defined below, by adding _FILE to the name of the relevant 
+# IMPORTANT: For production environments use Docker Secrets to protect values of the
+# sensitive ENV variables defined below, by adding _FILE to the name of the relevant
 # variable.
 #
-# - IOTA_AUTH_USER, IOTA_AUTH_PASSWORD - when using Keystone Security 
+# - IOTA_AUTH_USER, IOTA_AUTH_PASSWORD - when using Keystone Security
 # - IOTA_AUTH_CLIENT_ID, IOTA_AUTH_CLIENT_SECRET - when using OAuth2 Security
 #
 ########################################################################################
@@ -160,13 +158,13 @@ ARG GITHUB_ACCOUNT
 ARG GITHUB_REPOSITORY
 ARG NODE_VERSION
 
-LABEL "maintainer"="FIWARE IoTAgent Team. Telefónica I+D"
-LABEL "org.opencontainers.image.authors"="iot_support@tid.es"
-LABEL "org.opencontainers.image.documentation"="https://fiware-iotagent-opcua.rtfd.io/"
-LABEL "org.opencontainers.image.vendor"="Telefónica Investigación y Desarrollo, S.A.U"
+LABEL "maintainer"="FIWARE IoTAgent Team. Engineering Ingegneria Informatica S.p.A."
+LABEL "org.opencontainers.image.authors"="walterdomenico.vergara@eng.it,manfredigiuseppe.pistone@eng.it"
+LABEL "org.opencontainers.image.documentation"="https://iotagent-opcua.readthedocs.io/en/latest/"
+LABEL "org.opencontainers.image.vendor"="Engineering Ingegneria Informatica"
 LABEL "org.opencontainers.image.licenses"="AGPL-3.0-only"
-LABEL "org.opencontainers.image.title"="IoT Agent for the JSON protocol (Distroless)"
-LABEL "org.opencontainers.image.description"="An Internet of Things Agent for the JSON protocol (with AMQP, HTTP and MQTT transports). This IoT Agent is designed to be a bridge between Ultralight and the NGSI interface of a context broker."
+LABEL "org.opencontainers.image.title"="IoT Agent for the OPCUA protocol"
+LABEL "org.opencontainers.image.description"="An Internet of Things Agent intended to enable capturing data from OPC UA devices on the shopfloor and provide them to the upper levels of a FIWARE-based system."
 LABEL "org.opencontainers.image.source"="https://github.com/${GITHUB_ACCOUNT}/${GITHUB_REPOSITORY}"
 LABEL "org.nodejs.version"="${NODE_VERSION}"
 
@@ -176,8 +174,8 @@ WORKDIR /opt/iotagent-opcua
 
 USER nobody
 ENV NODE_ENV=production
-# Expose 4041 for NORTH PORT, 7896 for HTTP PORT
-EXPOSE ${IOTA_NORTH_PORT:-4041} ${IOTA_HTTP_PORT:-7896}
+# Expose 4041 for NORTH PORT
+EXPOSE ${IOTA_NORTH_PORT:-4041}
 CMD ["./bin/iotagent-opcua", "-- ", "conf/config.js"]
 HEALTHCHECK  --interval=30s --timeout=3s --start-period=10s \
   CMD ["/nodejs/bin/node", "./bin/healthcheck"]
@@ -187,11 +185,11 @@ HEALTHCHECK  --interval=30s --timeout=3s --start-period=10s \
 #
 # This build stage creates a node-slim image for production.
 #
-# IMPORTANT: For production environments use Docker Secrets to protect values of the 
-# sensitive ENV variables defined below, by adding _FILE to the name of the relevant 
+# IMPORTANT: For production environments use Docker Secrets to protect values of the
+# sensitive ENV variables defined below, by adding _FILE to the name of the relevant
 # variable.
 #
-# - IOTA_AUTH_USER, IOTA_AUTH_PASSWORD - when using Keystone Security 
+# - IOTA_AUTH_USER, IOTA_AUTH_PASSWORD - when using Keystone Security
 # - IOTA_AUTH_CLIENT_ID, IOTA_AUTH_CLIENT_SECRET - when using OAuth2 Security
 #
 ########################################################################################
@@ -200,23 +198,36 @@ ARG GITHUB_ACCOUNT
 ARG GITHUB_REPOSITORY
 ARG NODE_VERSION
 
-LABEL "maintainer"="FIWARE IoTAgent Team. Telefónica I+D"
-LABEL "org.opencontainers.image.authors"="iot_support@tid.es"
-LABEL "org.opencontainers.image.documentation"="https://fiware-iotagent-opcua.rtfd.io/"
-LABEL "org.opencontainers.image.vendor"="Telefónica Investigación y Desarrollo, S.A.U"
+LABEL "maintainer"="FIWARE IoTAgent Team. Engineering Ingegneria Informatica S.p.A."
+LABEL "org.opencontainers.image.authors"="walterdomenico.vergara@eng.it,manfredigiuseppe.pistone@eng.it"
+LABEL "org.opencontainers.image.documentation"="https://iotagent-opcua.readthedocs.io/en/latest/"
+LABEL "org.opencontainers.image.vendor"="Engineering Ingegneria Informatica"
 LABEL "org.opencontainers.image.licenses"="AGPL-3.0-only"
-LABEL "org.opencontainers.image.title"="IoT Agent for the JSON protocol"
-LABEL "org.opencontainers.image.description"="An Internet of Things Agent for the JSON protocol (with AMQP, HTTP and MQTT transports). This IoT Agent is designed to be a bridge between Ultralight and the NGSI interface of a context broker."
+LABEL "org.opencontainers.image.title"="IoT Agent for the OPCUA protocol"
+LABEL "org.opencontainers.image.description"="An Internet of Things Agent intended to enable capturing data from OPC UA devices on the shopfloor and provide them to the upper levels of a FIWARE-based system."
 LABEL "org.opencontainers.image.source"="https://github.com/${GITHUB_ACCOUNT}/${GITHUB_REPOSITORY}"
 LABEL "org.nodejs.version"="${NODE_VERSION}"
 
 COPY --from=builder /opt/iotagent-opcua /opt/iotagent-opcua
 WORKDIR /opt/iotagent-opcua
 
+# hadolint ignore=DL3008
+RUN \
+	# Install security updates
+	apt-get update -y && \
+	apt-get upgrade -y && \
+	# Ensure that Openssl is installed prior to running the agent
+	apt-get install -y --no-install-recommends openssl && \
+	# clean apt cache
+	apt-get clean && \
+	apt-get -y autoremove
+
+RUN chown -R node:node /opt/iotagent-opcua
+
 USER node
 ENV NODE_ENV=production
-# Expose 4041 for NORTH PORT, 7896 for HTTP PORT
-EXPOSE ${IOTA_NORTH_PORT:-4041} ${IOTA_HTTP_PORT:-7896}
+# Expose 4041 for NORTH PORT
+EXPOSE ${IOTA_NORTH_PORT:-4041}
 CMD ["node", "/opt/iotagent-opcua/bin/iotagent-opcua", "-- ", "conf/config.js"]
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
    CMD ["npm", "run", "healthcheck"]
