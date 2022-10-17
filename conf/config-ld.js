@@ -210,31 +210,31 @@ config.iota = {
                 {
                     ocb_id: 'EngineBrake',
                     opcua_id: 'ns=3;s=EngineBrake',
-                    object_id: null,
+                    object_id: 'ns=3;s=EngineBrake',
                     inputArguments: []
                 },
                 {
                     ocb_id: 'Acceleration',
                     opcua_id: 'ns=3;s=Acceleration',
-                    object_id: null,
+                    object_id: 'ns=3;s=Acceleration',
                     inputArguments: []
                 },
                 {
                     ocb_id: 'EngineStopped',
                     opcua_id: 'ns=3;s=EngineStopped',
-                    object_id: null,
+                    object_id: 'ns=3;s=EngineStopped',
                     inputArguments: []
                 },
                 {
                     ocb_id: 'Engine_Temperature',
                     opcua_id: 'ns=3;s=Temperature',
-                    object_id: null,
+                    object_id: 'ns=3;s=Temperature',
                     inputArguments: []
                 },
                 {
                     ocb_id: 'Engine_Oxigen',
                     opcua_id: 'ns=3;s=Oxigen',
-                    object_id: null,
+                    object_id: 'ns=3;s=Oxigen',
                     inputArguments: []
                 }
             ]
@@ -248,7 +248,7 @@ config.iota = {
                 {
                     ocb_id: 'Error',
                     opcua_id: 'ns=3;s=Error',
-                    object_id: 'ns=3;i=1000',
+                    object_id: 'ns=3;s=Error',
                     inputArguments: [
                         {
                             dataType: 12,
@@ -259,19 +259,19 @@ config.iota = {
                 {
                     ocb_id: 'Speed',
                     opcua_id: 'ns=3;s=Speed',
-                    object_id: 'ns=3;i=1000',
+                    object_id: 'ns=3;s=Speed',
                     inputArguments: []
                 },
                 {
                     ocb_id: 'Stop',
                     opcua_id: 'ns=3;s=Stop',
-                    object_id: 'ns=3;i=1000',
+                    object_id: 'ns=3;s=Stop',
                     inputArguments: []
                 },
                 {
                     ocb_id: 'Accelerate',
                     opcua_id: 'ns=3;s=Accelerate',
-                    object_id: 'ns=3;i=1000',
+                    object_id: 'ns=3;s=Accelerate',
                     inputArguments: [
                         {
                             dataType: 6,
@@ -358,7 +358,12 @@ config.opcua = {
      * Specific for mapping tool.
      * name assigned to the entity
      */
-    entityId: 'urn:ngsi-ld:Device:age01_Car'
+    entityId: 'urn:ngsi-ld:Device:age01_Car',
+    /**
+     * Specific for mapping tool.
+     * type assigned to the entity
+    */
+    entityType: 'Device'
 };
 
 /**

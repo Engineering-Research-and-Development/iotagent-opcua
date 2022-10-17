@@ -32,6 +32,7 @@ services:
       - "IOTA_OPCUA_MT_POLLING=false"
       - "IOTA_OPCUA_MT_AGENT_ID=age01_"
       - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
+      - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
       - "IOTA_OPCUA_MT_NAMESPACE_IGNORE='0,7'"
 
   mongodb:
