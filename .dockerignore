@@ -5,3 +5,7 @@ node_modules/
 test/
 rpm/
 README.md
+
+certificates/
+conf/config-ld.js
+conf/config-v2.js

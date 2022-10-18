@@ -248,7 +248,7 @@ config.iota = {
                 {
                     ocb_id: 'Error',
                     opcua_id: 'ns=3;s=Error',
-                    object_id: 'ns=3;s=Error',
+                    object_id: 'ns=3;i=1000',
                     inputArguments: [
                         {
                             dataType: 12,
@@ -259,19 +259,19 @@ config.iota = {
                 {
                     ocb_id: 'Speed',
                     opcua_id: 'ns=3;s=Speed',
-                    object_id: 'ns=3;s=Speed',
+                    object_id: 'ns=3;i=1000',
                     inputArguments: []
                 },
                 {
                     ocb_id: 'Stop',
                     opcua_id: 'ns=3;s=Stop',
-                    object_id: 'ns=3;s=Stop',
+                    object_id: 'ns=3;i=1000',
                     inputArguments: []
                 },
                 {
                     ocb_id: 'Accelerate',
                     opcua_id: 'ns=3;s=Accelerate',
-                    object_id: 'ns=3;s=Accelerate',
+                    object_id: 'ns=3;i=1000',
                     inputArguments: [
                         {
                             dataType: 6,
@@ -362,7 +362,7 @@ config.opcua = {
     /**
      * Specific for mapping tool.
      * type assigned to the entity
-    */
+     */
     entityType: 'Device'
 };
 

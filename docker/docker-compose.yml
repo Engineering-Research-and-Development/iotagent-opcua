@@ -7,13 +7,18 @@ services:
   iot-agent:
     image: iotagent-opcua
     hostname: iotagent-opcua
-    container_name: fiware-iotagent-opcua
     depends_on:
       - mongodb
+      - iotcarsrv
+      - orion
+    networks:
+      - hostnet
     expose:
       - "4041"
+      - "9229"
     ports:
       - "4041:4041"
+      - "9229:9229"
     environment:
       - "IOTA_CB_HOST=orion"
       - "IOTA_CB_PORT=1026"
@@ -23,7 +28,7 @@ services:
       - "IOTA_MONGO_PORT=27017"
       - "IOTA_MONGO_DB=iotagent_opcua"
       - "IOTA_PROVIDER_URL=http://iotagent-opcua:4041"
-      - "IOTA_OPCUA_ENDPOINT=opc.tcp://host.docker.internal:5001/UA/CarServer"
+      - "IOTA_OPCUA_ENDPOINT=opc.tcp://iotcarsrv:5001/UA/CarServer"
       - "IOTA_OPCUA_SECURITY_MODE=None"
       - "IOTA_OPCUA_SECURITY_POLICY=None"
       #- "IOTA_OPCUA_SECURITY_USERNAME=null"
@@ -34,11 +39,14 @@ services:
       - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
       - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
       - "IOTA_OPCUA_MT_NAMESPACE_IGNORE='0,7'"
+    volumes:
+      - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
 
   mongodb:
     image: mongo:4.2
     hostname: mongodb
-    container_name: db-mongo
+    networks:
+      - hostnet
     ports:
       - "27017:27017"
     command: --bind_ip_all
@@ -48,11 +56,23 @@ services:
   orion:
     image: fiware/orion
     hostname: orion
-    container_name: fiware-orion
     depends_on:
       - mongodb
+    networks:
+      - hostnet
     expose:
       - "1026"
     ports:
       - "1026:1026"
     command: -dbhost mongodb
+
+  iotcarsrv:
+    hostname: iotcarsrv
+    image: iotagent4fiware/opcuacarsrv:latest
+    networks:
+      - hostnet
+    ports:
+      - "5001:5001"
+
+networks:
+  hostnet:
