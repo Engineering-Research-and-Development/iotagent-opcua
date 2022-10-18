@@ -7,5 +7,5 @@ rpm/
 README.md
 
 certificates/
-conf/config-ld.js
-conf/config-v2.js
+conf/config-ld.example.js
+conf/config-v2.example.js
