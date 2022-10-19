@@ -15,7 +15,6 @@ describe('Query handling', () => {
 
     describe('When lazy attribute is requested and device exists', () => {
         beforeEach(() => {
-            configService.setConfig(mockConfig);
             queryHandler.__set__('iotAgentLib.getDeviceByName', (id, service, subservice, callback) => {
                 callback(null, mockDevice);
             });
@@ -37,7 +36,6 @@ describe('Query handling', () => {
 
     describe('When lazy attribute is requested and device exists but not lazy attributes inside it', () => {
         beforeEach(() => {
-            configService.setConfig(mockConfig);
             mockDevice.lazy = null;
             queryHandler.__set__('config.getConfig', () => {
                 return mockConfig;
@@ -63,7 +61,6 @@ describe('Query handling', () => {
 
     describe('When lazy attribute is requested and device exists but not the apiKey', () => {
         beforeEach(() => {
-            configService.setConfig(mockConfig);
             queryHandler.__set__('iotAgentLib.getDeviceByName', (id, service, subservice, callback) => {
                 callback(null, mockDevice);
             });
@@ -82,7 +79,6 @@ describe('Query handling', () => {
 
     describe('When lazy attribute is requested and device does not exists', () => {
         beforeEach(() => {
-            configService.setConfig(mockConfig);
             queryHandler.__set__('iotAgentLib.getDeviceByName', (id, service, subservice, callback) => {
                 callback('Device not found', null);
             });
