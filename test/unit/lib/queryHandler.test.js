@@ -5,7 +5,7 @@ describe('Query handling', () => {
     // Rewire all mocks
     const queryHandler = rewire('../../../lib/queryHandler');
     const configService = rewire('../../../lib/configService');
-    const mockConfig = rewire('../../../conf/config-v2.example');
+    const mockConfig = require('../../../conf/config-v2.example');
     const id = 'age01_Car';
     const type = 'Device';
     const service = 'opcua_car';
