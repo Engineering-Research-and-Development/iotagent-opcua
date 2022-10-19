@@ -57,6 +57,6 @@
   "name": "age01_Car",
   "service": "opcua_car",
   "subservice": "/demo",
-  "apiKey": "iot",
+  "apikey": "iot",
   "endpoint": "opc.tcp://iotcarsrv:5001/UA/CarServer"
 }
