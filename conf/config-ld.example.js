@@ -375,7 +375,7 @@ config.jexlTransformations = {};
 
 /**
  * flag indicating whether the incoming notifications to the IoTAgent should be processed using the bidirectionality
- * plugin from the latest versions of the library or the JSON-specific configuration retrieval mechanism.
+ * plugin from the latest versions of the library or the OPCUA-specific configuration retrieval mechanism.
  */
 config.configRetrieval = false;
 /**
