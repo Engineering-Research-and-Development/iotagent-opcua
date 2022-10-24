@@ -64,7 +64,7 @@ services:
       - "1026"
     ports:
       - "1026:1026"
-    command: -dbhost mongodb
+    command: -dbhost mongodb -logLevel DEBUG
 
   iotcarsrv:
     hostname: iotcarsrv

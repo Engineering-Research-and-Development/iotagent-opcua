@@ -1,0 +1,52 @@
+{"devices": [{
+  "device_id": "age01_Car",
+  "entity_name": "age01_Car",
+  "entity_type": "Device",
+  "apikey": "iot",
+  "service": "opcua_car",
+  "subservice": "/demo",
+  "attributes": [
+    {
+      "name": "EngineBrake",
+      "type": "Number"
+    },
+    {
+      "name": "Acceleration",
+      "type": "Number"
+    },
+    {
+      "name": "EngineStopped",
+      "type": "Boolean"
+    },
+    {
+      "name": "Engine_Temperature",
+      "type": "Number"
+    },
+    {
+      "name": "Engine_Oxigen",
+      "type": "Number"
+    }
+  ],
+  "lazy": [
+    {
+      "name": "Speed",
+      "type": "Number"
+    }
+  ],
+  "commands": [
+    {
+      "name": "Error",
+      "type": "command"
+    },
+    {
+      "name": "Stop",
+      "type": "command"
+    },
+    {
+      "name": "Accelerate",
+      "type": "command"
+    }
+  ],
+  "endpoint": "opc.tcp://host.docker.internal:5001/UA/CarServer"
+}
+]}
