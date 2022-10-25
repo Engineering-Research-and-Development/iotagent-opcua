@@ -30,7 +30,7 @@ const MOCK_ENVIRONMENT = true;
  */
 function startAgent(testConfigFile) {
     console.log('>>>>> STARTING AGENT <<<<<');
-    agentProcess = child.spawn('node', ['./bin/iotagent-opcua', `./test/functional/mock/${testConfigFile}`]);
+    agentProcess = child.spawn('node', ['./bin/iotagent-opcua', `./test/integration/mock/${testConfigFile}`]);
     agentProcess.stdout.setEncoding('utf8');
     agentProcess.stdout.on('data', function (data) {
         console.log('AGENT_LOG: ' + data);
@@ -74,10 +74,10 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                     stopAgent(agentProcess);
                 }
             });
-            it('Should run the mapping tool and perform autoprovisioning of service group', async () => {
+            it('Should run the mapping tool and add entities to context broker', async () => {
                 await wait(20);
                 const mockConfig = require('./mock/config-v2-no-device.test');
-                const url = `http://localhost:${mockConfig.iota.server.port}/iot/services`;
+                const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/entities`;
                 try {
                     const res = await axios.get(url, {
                         headers: {
@@ -86,18 +86,18 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                         }
                     });
                     expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
-                    expect(res.data.services.length).is.greaterThanOrEqual(1);
-                    expect(res.data.services[0].service).to.equal(mockConfig.iota.service);
-                    expect(res.data.services[0].subservice).to.equal(mockConfig.iota.subservice);
+                    expect(res.data.length).is.greaterThanOrEqual(1);
+                    expect(res.data[0].id).to.equal(mockConfig.opcua.entityId);
+                    expect(res.data[0].type).to.equal(mockConfig.opcua.entityType);
                 } catch (err) {
-                    assert.fail('Request failed', 'Request success', `GET /iot/services failed ${err}`);
+                    assert.fail('Request failed', 'Request success', `GET /v2/entities failed ${err}`);
                 }
             });
-            it('Should run the mapping tool and perform autoprovisioning of devices', async () => {
+            it('Should run the mapping tool and register as context provider to the context broker', async () => {
                 await wait(5);
 
                 const mockConfig = require('./mock/config-v2-no-device.test');
-                const url = `http://localhost:${mockConfig.iota.server.port}/iot/devices`;
+                const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/registrations`;
                 try {
                     const res = await axios.get(url, {
                         headers: {
@@ -106,12 +106,12 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                         }
                     });
                     expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
-                    expect(res.data.count).is.greaterThanOrEqual(1);
-                    expect(res.data.devices.length).is.greaterThanOrEqual(1);
-                    expect(res.data.devices[0].entity_name).to.equal(mockConfig.opcua.entityId);
-                    expect(res.data.devices[0].entity_type).to.equal(mockConfig.opcua.entityType);
+                    expect(res.data.length).is.greaterThanOrEqual(1);
+                    expect(res.data[0].dataProvided.entities[0].id).to.equal(mockConfig.opcua.entityId);
+                    expect(res.data[0].dataProvided.entities[0].type).to.equal(mockConfig.opcua.entityType);
+                    expect(res.data[0].provider.http.url).to.equal(mockConfig.iota.providerUrl);
                 } catch (err) {
-                    assert.fail('Request failed', 'Request success', `GET /iot/devices failed ${err}`);
+                    assert.fail('Request failed', 'Request success', `GET /v2/entities failed ${err}`);
                 }
             });
         });
@@ -133,11 +133,10 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                     stopAgent(agentProcess);
                 }
             });
-            it('Should perform autoprovisioning of service group', async () => {
-                await wait(10);
-
+            it('Should run the mapping tool and add entities to context broker', async () => {
+                await wait(20);
                 const mockConfig = require('./mock/config-v2.test');
-                const url = `http://localhost:${mockConfig.iota.server.port}/iot/services`;
+                const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/entities`;
                 try {
                     const res = await axios.get(url, {
                         headers: {
@@ -146,18 +145,18 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                         }
                     });
                     expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
-                    expect(res.data.services.length).is.greaterThanOrEqual(1);
-                    expect(res.data.services[0].service).to.equal(mockConfig.iota.service);
-                    expect(res.data.services[0].subservice).to.equal(mockConfig.iota.subservice);
+                    expect(res.data.length).is.greaterThanOrEqual(1);
+                    expect(res.data[0].id).to.equal(mockConfig.opcua.entityId);
+                    expect(res.data[0].type).to.equal(mockConfig.opcua.entityType);
                 } catch (err) {
-                    assert.fail('Request failed', 'Request success', `GET /iot/services failed ${err}`);
+                    assert.fail('Request failed', 'Request success', `GET /v2/entities failed ${err}`);
                 }
             });
-            it('Should perform autoprovisioning of devices', async () => {
-                await wait(10);
+            it('Should run the mapping tool and register as context provider to the context broker', async () => {
+                await wait(5);
 
                 const mockConfig = require('./mock/config-v2.test');
-                const url = `http://localhost:${mockConfig.iota.server.port}/iot/devices`;
+                const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/registrations`;
                 try {
                     const res = await axios.get(url, {
                         headers: {
@@ -166,11 +165,12 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                         }
                     });
                     expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
-                    expect(res.data.count).is.greaterThanOrEqual(1);
-                    expect(res.data.devices.length).is.greaterThanOrEqual(1);
-                    expect(res.data.devices[0].device_id).to.equal(mockConfig.iota.contexts[0].id);
+                    expect(res.data.length).is.greaterThanOrEqual(1);
+                    expect(res.data[0].dataProvided.entities[0].id).to.equal(mockConfig.opcua.entityId);
+                    expect(res.data[0].dataProvided.entities[0].type).to.equal(mockConfig.opcua.entityType);
+                    expect(res.data[0].provider.http.url).to.equal(mockConfig.iota.providerUrl);
                 } catch (err) {
-                    assert.fail('Request failed', 'Request success', `GET /iot/devices failed ${err}`);
+                    assert.fail('Request failed', 'Request success', `GET /v2/entities failed ${err}`);
                 }
             });
         });
