@@ -1,8 +1,16 @@
-# FIWARE IoT Agent for a JSON-based Protocol
+# FIWARE IoT Agent for a OPCUA Protocol
+
+## Unit tests
+
+The [unit](./unit) folder contains all the unit tests to be run with nyc and mocha.
+
+```console
+$ npm run test:unit
+```
 
 ## Functional tests
 
-This folder contains all the functional tests to be run with nyc and mocha. They make use of a test environment composed
+The folder contains all the functional tests to be run with nyc and mocha. They make use of a test environment composed
 by [opc-ua-car-server](https://github.com/Engineering-Research-and-Development/opc-ua-car-server),
 [fiware-orion](https://github.com/telefonicaid/fiware-orion), [mongo](https://github.com/mongodb/mongo) and the OPCUA
 IoT Agent.
@@ -10,7 +18,11 @@ IoT Agent.
 The test environment is set up using this [docker-compose.yml](./docker-compose.yml), so before running functional
 tests, ensure TCP ports 27017, 1026, 5001, 4041 used by services mentioned above are free to use on the host machine.
 
-## Requirements
+```console
+$ npm run test:functional
+```
+
+### Requirements
 
 -   Docker Engine
 -   docker-compose

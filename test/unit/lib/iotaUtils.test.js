@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const rewire = require('rewire');
-const mockDevice = require('../../mock/device.mock.json');
+const mockDevice = require('../mock/device.mock.json');
 
 describe('IoT Agent util functions', () => {
     describe('When getEffectiveApiKey  ', () => {
@@ -8,8 +8,8 @@ describe('IoT Agent util functions', () => {
         const iotaUtils = rewire('../../../lib/iotaUtils');
         const configService = rewire('../../../lib/configService');
         const mockConfig = rewire('../../../conf/config-v2.example');
-        const mockDevice = require('../../mock/device.mock.json');
-        const mockGroup = require('../../mock/group.mock.json');
+        const mockDevice = require('../mock/device.mock.json');
+        const mockGroup = require('../mock/group.mock.json');
         const service = 'opcua_car';
         const subservice = '/demo';
 
@@ -88,7 +88,7 @@ describe('IoT Agent util functions', () => {
         // Rewire all mocks
         const iotaUtils = rewire('../../../lib/iotaUtils');
         const mockConfig = rewire('../../../conf/config-v2.example');
-        const mockDevice = require('../../mock/device.mock.json');
+        const mockDevice = require('../mock/device.mock.json');
         const deviceId = 'age01_Car';
         const apiKey = 'iot';
         const transport = 'OPCUA';

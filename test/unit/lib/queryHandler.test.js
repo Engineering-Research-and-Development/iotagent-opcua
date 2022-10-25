@@ -11,7 +11,7 @@ describe('Query handling', () => {
     const service = 'opcua_car';
     const subservice = '/demo';
     const attributes = ['Speed'];
-    const mockDevice = rewire('../../mock/device.mock.json');
+    const mockDevice = rewire('../mock/device.mock.json');
 
     describe('When lazy attribute is requested and device exists', () => {
         beforeEach(() => {

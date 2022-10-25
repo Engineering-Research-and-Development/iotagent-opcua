@@ -76,7 +76,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
             });
             it('Should run the mapping tool and perform autoprovisioning of service group', async () => {
                 await wait(20);
-                const mockConfig = require('../mock/config-v2-no-device.test');
+                const mockConfig = require('./mock/config-v2-no-device.test');
                 const url = `${mockConfig.iota.providerUrl}/iot/services`;
                 try {
                     const res = await axios.get(url, {
@@ -96,7 +96,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
             it('Should run the mapping tool and perform autoprovisioning of devices', async () => {
                 await wait(5);
 
-                const mockConfig = require('../mock/config-v2-no-device.test');
+                const mockConfig = require('./mock/config-v2-no-device.test');
                 const url = `${mockConfig.iota.providerUrl}/iot/devices`;
                 try {
                     const res = await axios.get(url, {
@@ -136,7 +136,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
             it('Should perform autoprovisioning of service group', async () => {
                 await wait(10);
 
-                const mockConfig = require('../mock/config-v2.test');
+                const mockConfig = require('./mock/config-v2.test');
                 const url = `${mockConfig.iota.providerUrl}/iot/services`;
                 try {
                     const res = await axios.get(url, {
@@ -156,7 +156,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
             it('Should perform autoprovisioning of devices', async () => {
                 await wait(10);
 
-                const mockConfig = require('../mock/config-v2.test');
+                const mockConfig = require('./mock/config-v2.test');
                 const url = `${mockConfig.iota.providerUrl}/iot/devices`;
                 try {
                     const res = await axios.get(url, {
