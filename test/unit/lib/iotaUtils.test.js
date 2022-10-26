@@ -142,5 +142,22 @@ describe('IoT Agent util functions', () => {
                 });
             });
         });
+
+        describe('When device apikey does not equal config default api key', () => {
+            it('Should find or create device and return it', (done) => {
+                mockConfig.defaultKey = null;
+                iotaUtils.__set__('iotAgentLib.getConfigurationSilently', (defaultResource, apiKey, cb) => {
+                    cb(null, mockConfig);
+                });
+                iotaUtils.__set__('iotAgentLib.getDeviceSilently', (deviceId, service, subservice, cb1) => {
+                    cb1(null, mockDevice);
+                });
+                iotaUtils.retrieveDevice(deviceId, apiKey, transport, (error, device) => {
+                    expect(error).to.equal(null);
+                    expect(device).to.equal(mockDevice);
+                    done();
+                });
+            });
+        });
     });
 });
