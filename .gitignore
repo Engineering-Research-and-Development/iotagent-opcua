@@ -16,4 +16,5 @@ npm-debug.log
 .eslintcache
 
 /certificates/
+.vscode
 

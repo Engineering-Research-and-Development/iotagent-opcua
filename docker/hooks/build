@@ -18,7 +18,7 @@
 # If not, see http://www.gnu.org/licenses/.
 #
 # For those usages not covered by the GNU Affero General Public License
-# please contact with: [contact@eng.it]
+# please contact with: [manfredi.pistone@eng.it, gabriele.deluca@eng.it, walterdomenico.vergara@eng.it, mattiagiuseppe.marzano@eng.it]
 
 # How this hook thing works? :) It a way of telling dockerhub autobuild how
 # to build the container. It is explained at https://docs.docker.com/docker-hub/builds/advanced,
