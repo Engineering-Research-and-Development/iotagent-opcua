@@ -1,8 +1,8 @@
 const rewire = require('rewire');
-const mockConfig = require('../../../conf/config-v2.example');
 
 describe('MetaBinding handling', () => {
     const metaBindings = rewire('../../../lib/metaBindings.js');
+    const mockConfig = require('../../../conf/config-v2.example');
 
     describe('Make auto-provisioning of Group and Device', () => {
         beforeEach(() => {
