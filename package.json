@@ -3,7 +3,7 @@
   "license": "AGPL-3.0-only",
   "description": "IoT Agent for OPC UA protocol",
   "version": "2.0.0-next",
-  "homepage": "https://github.com/telefonicaid/iotagent-opcua",
+  "homepage": "https://github.com/Engineering-Research-and-Development/iotagent-opcua",
   "author": {
     "name": "Manfredi Giuseppe Pistone",
     "email": "manfredi.pistone@gmail.com"
@@ -16,10 +16,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/telefonicaid/iotagent-opcua.git"
+    "url": "https://github.com/Engineering-Research-and-Development/iotagent-opcua"
   },
   "bugs": {
-    "url": "https://github.com/telefonicaid/iotagent-opcua/issues"
+    "url": "https://github.com/Engineering-Research-and-Development/iotagent-opcua/issues"
   },
   "main": "lib/iotagent-jsopcuaon",
   "engines": {

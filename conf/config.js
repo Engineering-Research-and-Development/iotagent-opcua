@@ -154,7 +154,7 @@ config.iota = {
      * Types array for static configuration of services. Check documentation in the IoT Agent Library for Node.js for
      *  further details:
      *
-     *      https://github.com/telefonicaid/iotagent-opcua#type-configuration
+     *      https://github.com/Engineering-Research-and-Development/iotagent-opcua#type-configuration
      */
     types: {},
     contexts: [],

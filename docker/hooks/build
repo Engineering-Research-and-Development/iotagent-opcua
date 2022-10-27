@@ -1,8 +1,7 @@
 #!/bin/bash
+# Copyright 2022 Engineering Ingegneria Informatica S.p.A.
 #
-# Copyright 2019 Telefonica Investigación y Desarrollo, S.A.U
-#
-# This file is part of iotagent-opcua
+# This file is part of the IoT Agent for the OPCUA protocol (iotagent-opcua) component
 #
 # iotagent-opcua is free software: you can redistribute it and/or
 # modify it under the terms of the GNU Affero General Public License as
@@ -15,10 +14,11 @@
 # See the GNU Affero General Public License for more details.
 #
 # You should have received a copy of the GNU Affero General Public
-# License along with iotagent-opcua. If not, see http://www.gnu.org/licenses/.
+# License along with iotagent-opcua.
+# If not, see http://www.gnu.org/licenses/.
 #
-# For those usages not covered by the GNU Affero General Public License please contact
-# with iot_support at tid dot es
+# For those usages not covered by the GNU Affero General Public License
+# please contact with: [contact@eng.it]
 
 # How this hook thing works? :) It a way of telling dockerhub autobuild how
 # to build the container. It is explained at https://docs.docker.com/docker-hub/builds/advanced,
