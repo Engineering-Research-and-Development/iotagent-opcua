@@ -79,7 +79,7 @@ configuration is complete you can execute these commands to run the Agent.
 
 ```console
 $ npm install
-$ node index.js
+$ node bin/iotagent-opcua
 ```
 
 Further Information about how to install the OPC UA IoT Agent can be found at the corresponding section of the
@@ -89,17 +89,6 @@ Further Information about how to install the OPC UA IoT Agent can be found at th
 
 Information about how to use the IoT Agent can be found in the
 [User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual).
-
-### Administration Services
-
-Administration services are reachable at port specified by api-port property (config.properties).
-
-|     |     Service     |                          Description                          |
-| --- | :-------------: | :-----------------------------------------------------------: |
-| GET |    `/status`    |                   Returns a status message                    |
-| GET |   `/version`    | Returns information about version, name and agent description |
-| GET | `/commandsList` |  Returns a list of pending commands (only with polling mode)  |
-| GET |    `/config`    |                Returns loaded config.json file                |
 
 ### Poll commands
 
