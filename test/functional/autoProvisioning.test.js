@@ -108,8 +108,8 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                     expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
                     expect(res.data.count).is.greaterThanOrEqual(1);
                     expect(res.data.devices.length).is.greaterThanOrEqual(1);
-                    expect(res.data.devices[0].entity_name).to.equal(mockConfig.opcua.entityId);
-                    expect(res.data.devices[0].entity_type).to.equal(mockConfig.opcua.entityType);
+                    expect(res.data.devices[0].entity_name).to.equal(mockConfig.mappingTool.entityId);
+                    expect(res.data.devices[0].entity_type).to.equal(mockConfig.mappingTool.entityType);
                 } catch (err) {
                     assert.fail('Request failed', 'Request success', `GET /iot/devices failed ${err}`);
                 }

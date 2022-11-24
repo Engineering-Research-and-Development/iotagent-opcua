@@ -34,9 +34,6 @@ services:
       - orion
     networks:
       - hostnet
-    expose:
-      - "4041"
-      - "9229"
     ports:
       - "4041:4041"
       - "9229:9229"
@@ -68,8 +65,8 @@ services:
     hostname: mongodb
     networks:
       - hostnet
-    ports:
-      - "27017:27017"
+    expose:
+      - "27017"
     command: --bind_ip_all
     volumes:
       - mongodb:/data
@@ -81,8 +78,6 @@ services:
       - mongodb
     networks:
       - hostnet
-    expose:
-      - "1026"
     ports:
       - "1026:1026"
     command: -dbhost mongodb -logLevel DEBUG

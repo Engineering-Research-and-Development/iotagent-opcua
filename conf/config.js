@@ -216,30 +216,28 @@ config.opcua = {
     /**
      * Flag indicating whether the OPC uA variables readings should be handled as single subscription.
      */
-    uniqueSubscription: false,
+    uniqueSubscription: false
+};
+
+config.mappingTool = {
     /**
-     * Specific for mapping tool.
-     * Flag to enable polling TBD.
+     *  Boolean property to assess whether enable polling in MappingTool or not
      */
     polling: false,
     /**
-     * Specific for mapping tool.
-     * agentId.
+     * agentId prefix to be assigned to the newly generated entity from MappingTool execution
      */
     agentId: 'age01_',
     /**
-     * Specific for mapping tool.
-     * namespaces must be ignored by mappingTool processing.
+     * Namespaces to ignore when crawling nodes from OPC UA Server
      */
     namespaceIgnore: '0,7',
     /**
-     * Specific for mapping tool.
-     * name assigned to the entity
+     * entityId to be assigned to the newly generated entity from MappingTool execution
      */
     entityId: 'age01_Car',
     /**
-     * Specific for mapping tool.
-     * type assigned to the entity
+     * entityType to be assigned to the newly generated entity from MappingTool execution
      */
     entityType: 'Device'
 };
