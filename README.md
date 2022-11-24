@@ -90,6 +90,14 @@ Further Information about how to install the OPC UA IoT Agent can be found at th
 Information about how to use the IoT Agent can be found in the
 [User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual).
 
+### Administration Services
+
+Administration services are reachable at port specified by api-port property (config.js).
+
+|     |     Service     |                          Description                          |
+| --- | :-------------: | :-----------------------------------------------------------: |
+| GET |   `/version`    | Returns information about version, name and agent description |
+
 ### Poll commands
 
 Poll commands can be enabled switching polling property to true (config.properties). Once enabled poll command, you can
