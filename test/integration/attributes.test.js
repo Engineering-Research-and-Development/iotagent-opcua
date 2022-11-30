@@ -4,6 +4,8 @@ const exec = util.promisify(require('child_process').exec);
 const child = require('child_process');
 const path = require('path');
 const axios = require('axios');
+const mockConfig = require('./mock/config-v2.test');
+const mockCommandWithArgumentOrion = require('./mock/command_with_argument.orion.request.json');
 /**
  * Contains the current child process of the agent
  * @type {null}
@@ -97,7 +99,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
             await wait(1);
 
             // Execute Accelerate command to trigger value change on Engine_Oxigen
-            const mockCommand = require('./mock/command.request.json');
+            const mockCommand = require('./mock/command_with_argument.request.json');
             url = `${mockConfig.iota.providerUrl}//op/update`;
             try {
                 const res = await axios.post(url, mockCommand, {
@@ -158,13 +160,14 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
         it('Should execute command on device', async () => {
             await wait(5);
             const mockConfig = require('./mock/config-v2.test');
-            const mockCommandOrion = require('./mock/command.orion.request.json');
+            const mockCommandWithArgumentOrion = require('./mock/command_with_argument.orion.request.json');
+            const mockCommandNoArgumentOrion = require('./mock/command_no_argument.orion.request.json');
 
-            // Execute command from context broker
+            // Execute command from context broker with single argument (Accelerate)
             const attrName = 'Accelerate';
             let url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/entities/${mockConfig.iota.contexts[0].id}/attrs/${attrName}?type=${mockConfig.iota.contexts[0].type}`;
             try {
-                const res = await axios.put(url, mockCommandOrion, {
+                const res = await axios.put(url, mockCommandWithArgumentOrion, {
                     headers: {
                         'fiware-service': mockConfig.iota.service,
                         'fiware-servicepath': mockConfig.iota.subservice
@@ -186,6 +189,41 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
                     });
                     expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
                     expect(res.data.value).is.lessThan(150);
+
+                    const speedValue = res.data.value;
+
+                    // Execute command from context broker with no argument (Stop)
+                    const attrName = 'Stop';
+                    url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/entities/${mockConfig.iota.contexts[0].id}/attrs/${attrName}?type=${mockConfig.iota.contexts[0].type}`;
+                    try {
+                        const res = await axios.put(url, mockCommandNoArgumentOrion, {
+                            headers: {
+                                'fiware-service': mockConfig.iota.service,
+                                'fiware-servicepath': mockConfig.iota.subservice
+                            }
+                        });
+                        expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
+
+                        await wait(5);
+
+                        // Query attribute to assert command execution
+                        const attrName = 'Speed';
+                        url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/entities/${mockConfig.iota.contexts[0].id}/attrs/${attrName}?type=${mockConfig.iota.contexts[0].type}`;
+                        try {
+                            const res = await axios.get(url, {
+                                headers: {
+                                    'fiware-service': mockConfig.iota.service,
+                                    'fiware-servicepath': mockConfig.iota.subservice
+                                }
+                            });
+                            expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
+                            expect(res.data.value).is.not.equal(speedValue);
+                        } catch (err) {
+                            assert.fail('Request failed', 'Request success', `GET /v2/entities/${mockConfig.iota.contexts[0].id}/attrs/${attrName}?type=${mockConfig.iota.contexts[0].type} failed ${err}`);
+                        }
+                    } catch (err) {
+                        assert.fail('Request failed', 'Request success', `GET /v2/entities/${mockConfig.iota.contexts[0].id}/attrs/${attrName}?type=${mockConfig.iota.contexts[0].type} failed ${err}`);
+                    }
                 } catch (err) {
                     assert.fail('Request failed', 'Request success', `GET /v2/entities/${mockConfig.iota.contexts[0].id}/attrs/${attrName}?type=${mockConfig.iota.contexts[0].type} failed ${err}`);
                 }

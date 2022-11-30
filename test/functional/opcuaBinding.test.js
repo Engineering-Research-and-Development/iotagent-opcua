@@ -4,6 +4,9 @@ const exec = util.promisify(require('child_process').exec);
 const child = require('child_process');
 const path = require('path');
 const axios = require('axios');
+const mockConfig = require('./mock/config-v2.test');
+const mockCommand = require('./mock/command_with_argument.request.json');
+const mockLazyQuery = require('./mock/lazy.query.request.json');
 
 /**
  * Contains the current child process of the agent
@@ -95,16 +98,17 @@ describe('IoT Agent OPCUA OPCUA binding', () => {
                 }
             });
         });
-        describe('When executing command using API', () => {
-            it('Should execute command on device', async () => {
+        describe('When executing commands using API', () => {
+            it('Should execute commands on device', async () => {
                 await wait(5);
                 const mockConfig = require('./mock/config-v2.test');
-                const mockCommand = require('./mock/command.request.json');
+                const mockCommandWithArgument = require('./mock/command_with_argument.request.json');
+                const mockCommandNoArgument = require('./mock/command_no_argument.request.json');
 
-                // Execute command
+                // Execute command with a single argument (Accelerate)
                 let url = `http://localhost:${mockConfig.iota.server.port}//op/update`;
                 try {
-                    const res = await axios.post(url, mockCommand, {
+                    const res = await axios.post(url, mockCommandWithArgument, {
                         headers: {
                             'fiware-service': mockConfig.iota.service,
                             'fiware-servicepath': mockConfig.iota.subservice
@@ -127,6 +131,41 @@ describe('IoT Agent OPCUA OPCUA binding', () => {
                         expect(res.data[0]).to.not.equal(undefined);
                         expect(res.data[0].Speed).to.not.equal(undefined);
                         expect(res.data[0].Speed.value).to.not.equal(0);
+
+                        const speedValue = res.data[0].Speed.value;
+
+                        // Execute command with no arguments (Stop)
+                        url = `http://localhost:${mockConfig.iota.server.port}//op/update`;
+                        try {
+                            const res = await axios.post(url, mockCommandNoArgument, {
+                                headers: {
+                                    'fiware-service': mockConfig.iota.service,
+                                    'fiware-servicepath': mockConfig.iota.subservice
+                                }
+                            });
+                            expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
+
+                            await wait(2);
+                            // Check Speed has changed
+                            const mockLazyQuery = require('./mock/lazy.query.request.json');
+                            url = `http://localhost:${mockConfig.iota.server.port}//op/query`;
+                            try {
+                                const res = await axios.post(url, mockLazyQuery, {
+                                    headers: {
+                                        'fiware-service': mockConfig.iota.service,
+                                        'fiware-servicepath': mockConfig.iota.subservice
+                                    }
+                                });
+                                expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
+                                expect(res.data[0]).to.not.equal(undefined);
+                                expect(res.data[0].Speed).to.not.equal(undefined);
+                                expect(res.data[0].Speed.value).to.not.equal(speedValue);
+                            } catch (err) {
+                                assert.fail('Request failed', 'Request success', `POST //op/query failed ${err}`);
+                            }
+                        } catch (err) {
+                            assert.fail('Request failed', 'Request success', `POST //op/query failed ${err}`);
+                        }
                     } catch (err) {
                         assert.fail('Request failed', 'Request success', `POST //op/query failed ${err}`);
                     }

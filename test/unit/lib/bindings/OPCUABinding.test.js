@@ -1,6 +1,8 @@
 const rewire = require('rewire');
-const { expect, assert} = require('chai');
+const { expect, assert } = require('chai');
 const opcua = require('node-opcua');
+const mockConfig = require('../../../../conf/config-v2.example');
+const mockDevice = require('../../mock/device.mock.json');
 
 describe('OPCUABinding handling', () => {
     const opcuaBinding = rewire('../../../../lib/bindings/OPCUABinding.js');
@@ -116,11 +118,42 @@ describe('OPCUABinding handling', () => {
                 });
             });
 
-            it('Should execute a command', (done) => {
+            it('Should execute a command without input arguments', (done) => {
                 const apiKey = mockConfig.defaultKey;
                 const device = mockDevice;
                 const attribute = {
                     name: 'Accelerate'
+                };
+                opcuaBinding.executeCommand(apiKey, device, attribute);
+                done();
+            });
+
+            it('Should execute a command with single argument', (done) => {
+                const apiKey = mockConfig.defaultKey;
+                const device = mockDevice;
+                const attribute = {
+                    name: 'Accelerate',
+                    value: '10'
+                };
+                opcuaBinding.executeCommand(apiKey, device, attribute);
+                done();
+            });
+            it('Should execute a command with multiple arguments', (done) => {
+                const apiKey = mockConfig.defaultKey;
+                const device = mockDevice;
+                const attribute = {
+                    name: 'Accelerate',
+                    value: '[10,10]'
+                };
+                opcuaBinding.executeCommand(apiKey, device, attribute);
+                done();
+            });
+            it('Should execute a command with invalid input argument', (done) => {
+                const apiKey = mockConfig.defaultKey;
+                const device = mockDevice;
+                const attribute = {
+                    name: 'Accelerate',
+                    value: { attr: 0 }
                 };
                 opcuaBinding.executeCommand(apiKey, device, attribute);
                 done();
@@ -179,7 +212,7 @@ describe('OPCUABinding handling', () => {
                                                         }
                                                     });
                                                 }
-                                            }
+                                            };
                                         }
                                     };
                                     return subscription;
@@ -189,17 +222,16 @@ describe('OPCUABinding handling', () => {
                                         {
                                             statusCode: opcua.StatusCodes.Good
                                         }
-                                    ]
+                                    ];
                                 }
                             };
                         }
                     };
                     return client;
                 });
-                opcuaBinding.__set__('metaBindings.performAutoProvisioning', () => {
-                });
+                opcuaBinding.__set__('metaBindings.performAutoProvisioning', () => {});
                 opcuaBinding.__set__('opcua.resolveNodeId', (opcua_id) => {
-                    return opcuaNodeId
+                    return opcuaNodeId;
                 });
                 opcuaBinding.__set__(' commonBindings.opcuaMessageHandler', (id, mapping, value, sourceTimestamp) => {});
             });
