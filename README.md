@@ -94,9 +94,9 @@ Information about how to use the IoT Agent can be found in the
 
 Administration services are reachable at port specified by api-port property (config.js).
 
-|     |     Service     |                          Description                          |
-| --- | :-------------: | :-----------------------------------------------------------: |
-| GET |   `/version`    | Returns information about version, name and agent description |
+|     |  Service   |                          Description                          |
+| --- | :--------: | :-----------------------------------------------------------: |
+| GET | `/version` | Returns information about version, name and agent description |
 
 ### Poll commands
 
@@ -125,9 +125,10 @@ Further information about configuration properties can be found [here](docs/howt
 For checking current status of the Agent, send a request to /status service
 (`http://{agent-ip-address}:api-port/status`)
 
-### Configure Secure connection with an OPC UA Server
+### Secure connection with an OPC UA Server
 
-Documentation about OPC UA Client Secure connection can be found [here](docs/opc_ua_secure_connection_configuration.md)
+OPC UA Agent will automatically generate key pairs and certificates (persisted in `iotagent-opcua/certificates`) to
+establish a secure connection to the OPC UA Server.
 
 ### How to get access to the advanced API and Documentation topics
 
