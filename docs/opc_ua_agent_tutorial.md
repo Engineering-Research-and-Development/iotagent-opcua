@@ -156,7 +156,7 @@ By Device we mean the set of variables (attributes) and methods available on OPC
 To provision the Device corresponding to what the CarServer offers, use the following REST call:
 
 ```bash
-curl http://localhost:4001/iot/devices \
+curl http://localhost:4041/iot/devices \
      -H "fiware-service: opcua_car" \
      -H "fiware-servicepath: /demo" \
      -H "Content-Type: application/json" \
@@ -223,7 +223,7 @@ curl http://localhost:4001/iot/devices \
 Check if the operation went well, by sending the following REST call:
 
 ```bash
-curl http://localhost:4001/iot/devices \
+curl http://localhost:4041/iot/devices \
      -H "fiware-service: opcua_car" \
      -H "fiware-servicepath: /demo"
 ```
@@ -355,9 +355,6 @@ services:
       - orion
     networks:
       - hostnet
-    expose:
-      - "4041"
-      - "9229"
     ports:
       - "4041:4041"
       - "9229:9229"
@@ -389,8 +386,8 @@ services:
     hostname: mongodb
     networks:
       - hostnet
-    ports:
-      - "27017:27017"
+    expose:
+      - "27017"
     command: --bind_ip_all
     volumes:
       - mongodb:/data
@@ -402,8 +399,6 @@ services:
       - mongodb
     networks:
       - hostnet
-    expose:
-      - "1026"
     ports:
       - "1026:1026"
     command: -dbhost mongodb -logLevel DEBUG
