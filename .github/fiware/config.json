@@ -1,0 +1,19 @@
+{
+    "enabler": "OPC UA IoTAgent",
+    "chapter": "iotagents",
+    "academy": "iot-agents/idas",
+    "readthedocs": "iotagent-opcua",
+    "helpdesk": "",
+    "coveralls": "https://coveralls.io/github/Engineering-Research-and-Development/iotagent-opcua",
+    "github": ["Engineering-Research-and-Development/iotagent-opcua"],
+    "dockerregistry": ["hub.docker.com"],
+    "docker": ["iotagent4fiware/iotagent-opcua"],
+    "email": "",
+    "status": "full",
+    "compose": "https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docker/docker-compose.yml",
+    "exclude": [""],
+    "stackexchange": ["fiware+iot"],
+    "unit-test": "",
+    "smoke-test": "",
+    "dockerfile": "https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docker/Dockerfile"
+}

@@ -129,7 +129,7 @@ docker ps
 to check if all the required components are running
 
 Running the docker environment (using configuration files as is) creates the following situation:
-![Docker Containers Schema](https://raw.githubusercontent.com/Engineering-Research-and-Development/iotagent-opcua/master/docs/images/OPC%20UA%20Agent%20tutorial%20Containers.png)
+![Docker Containers Schema](./images/OPC%20UA%20Agent%20tutorial%20Containers.png)
 
 Appendix A quickly describes what you can do with the docker-compose.yml
 
@@ -156,7 +156,7 @@ By Device we mean the set of variables (attributes) and methods available on OPC
 To provision the Device corresponding to what the CarServer offers, use the following REST call:
 
 ```bash
-curl http://localhost:4001/iot/devices \
+curl http://localhost:4041/iot/devices \
      -H "fiware-service: opcua_car" \
      -H "fiware-servicepath: /demo" \
      -H "Content-Type: application/json" \
@@ -223,7 +223,7 @@ curl http://localhost:4001/iot/devices \
 Check if the operation went well, by sending the following REST call:
 
 ```bash
-curl http://localhost:4001/iot/devices \
+curl http://localhost:4041/iot/devices \
      -H "fiware-service: opcua_car" \
      -H "fiware-servicepath: /demo"
 ```
@@ -324,13 +324,15 @@ section
 If you have changes to the Agent codebase that you want to integrate, or you want to modify the current Docker
 deployment package:
 
-[Here](./docker_readme.md) you find the instructions on how to build a Docker Image for the Agent
+[Here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/docker_readme.md) you
+find the instructions on how to build a Docker Image for the Agent
 
 ## Appendices
 
 #### Appendix A - Customize the environment
 
-Docker Compose can be downloaded here: [docker-compose.yml](../docker/docker-compose.yml)
+Docker Compose can be downloaded here
+[docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/iotagent/docker/docker-compose.yml):
 
 Modifying this file you can:
 

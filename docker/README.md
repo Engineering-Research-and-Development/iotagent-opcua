@@ -34,81 +34,76 @@ amend the attached volume to suit your own configuration.
 version: "3.1"
 
 volumes:
-  mongodb: ~
+    mongodb: ~
 
 services:
-  iot-agent:
-    image: iotagent4fiware/iotagent-opcua:2.0.0
-    hostname: iotagent-opcua
-    depends_on:
-      - mongodb
-      - iotcarsrv
-      - orion
-    networks:
-      - hostnet
-    expose:
-      - "4041"
-      - "9229"
-    ports:
-      - "4041:4041"
-      - "9229:9229"
-    environment:
-      - "IOTA_CB_HOST=orion"
-      - "IOTA_CB_PORT=1026"
-      - "IOTA_NORTH_PORT=4041"
-      - "IOTA_REGISTRY_TYPE=mongodb"
-      - "IOTA_MONGO_HOST=mongodb"
-      - "IOTA_MONGO_PORT=27017"
-      - "IOTA_MONGO_DB=iotagent_opcua"
-      - "IOTA_PROVIDER_URL=http://iotagent-opcua:4041"
-      - "IOTA_OPCUA_ENDPOINT=opc.tcp://iotcarsrv:5001/UA/CarServer"
-      - "IOTA_OPCUA_SECURITY_MODE=None"
-      - "IOTA_OPCUA_SECURITY_POLICY=None"
-      #- "IOTA_OPCUA_SECURITY_USERNAME=null"
-      #- "IOTA_OPCUA_SECURITY_PASSWORD=null"
-      - "IOTA_OPCUA_UNIQUE_SUBSCRIPTION=false"
-      - "IOTA_OPCUA_MT_POLLING=false"
-      - "IOTA_OPCUA_MT_AGENT_ID=age01_"
-      - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
-      - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
-      - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
-    volumes:
-      - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
+    iot-agent:
+        image: iotagent4fiware/iotagent-opcua:2.0.0
+        hostname: iotagent-opcua
+        depends_on:
+            - mongodb
+            - iotcarsrv
+            - orion
+        networks:
+            - hostnet
+        ports:
+            - "4041:4041"
+            - "9229:9229"
+        environment:
+            - "IOTA_CB_HOST=orion"
+            - "IOTA_CB_PORT=1026"
+            - "IOTA_NORTH_PORT=4041"
+            - "IOTA_REGISTRY_TYPE=mongodb"
+            - "IOTA_MONGO_HOST=mongodb"
+            - "IOTA_MONGO_PORT=27017"
+            - "IOTA_MONGO_DB=iotagent_opcua"
+            - "IOTA_PROVIDER_URL=http://iotagent-opcua:4041"
+            - "IOTA_OPCUA_ENDPOINT=opc.tcp://iotcarsrv:5001/UA/CarServer"
+            - "IOTA_OPCUA_SECURITY_MODE=None"
+            - "IOTA_OPCUA_SECURITY_POLICY=None"
+            #- "IOTA_OPCUA_SECURITY_USERNAME=null"
+            #- "IOTA_OPCUA_SECURITY_PASSWORD=null"
+            - "IOTA_OPCUA_UNIQUE_SUBSCRIPTION=false"
+            - "IOTA_OPCUA_MT_POLLING=false"
+            - "IOTA_OPCUA_MT_AGENT_ID=age01_"
+            - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
+            - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
+            - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
+        volumes:
+            - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
 
-  mongodb:
-    image: mongo:4.2
-    hostname: mongodb
-    networks:
-      - hostnet
-    ports:
-      - "27017:27017"
-    command: --bind_ip_all
-    volumes:
-      - mongodb:/data
+    mongodb:
+        image: mongo:4.2
+        hostname: mongodb
+        networks:
+            - hostnet
+        expose:
+            - "27017"
+        command: --bind_ip_all
+        volumes:
+            - mongodb:/data
 
-  orion:
-    image: fiware/orion
-    hostname: orion
-    depends_on:
-      - mongodb
-    networks:
-      - hostnet
-    expose:
-      - "1026"
-    ports:
-      - "1026:1026"
-    command: -dbhost mongodb -logLevel DEBUG
+    orion:
+        image: fiware/orion
+        hostname: orion
+        depends_on:
+            - mongodb
+        networks:
+            - hostnet
+        ports:
+            - "1026:1026"
+        command: -dbhost mongodb -logLevel DEBUG
 
-  iotcarsrv:
-    hostname: iotcarsrv
-    image: iotagent4fiware/opcuacarsrv:latest
-    networks:
-      - hostnet
-    ports:
-      - "5001:5001"
+    iotcarsrv:
+        hostname: iotcarsrv
+        image: iotagent4fiware/opcuacarsrv:latest
+        networks:
+            - hostnet
+        ports:
+            - "5001:5001"
 
 networks:
-  hostnet:
+    hostnet:
 ```
 
 ## Configuration with environment variables
@@ -123,19 +118,20 @@ environment variables such as those shown below:
 -   `IOTA_MONGO_HOST` - The hostname of MongoDB - used for holding device and service information
 -   `IOTA_MONGO_PORT` - The port that MongoDB is listening on
 -   `IOTA_MONGO_DB` - The name of the database used in MongoDB
--   `IOTA_PROVIDER_URL` - URL passed to the Context Broker when commands are registered, used as a forwarding URL location when the Context Broker issues a command to a device
+-   `IOTA_PROVIDER_URL` - URL passed to the Context Broker when commands are registered, used as a forwarding URL
+    location when the Context Broker issues a command to a device
 -   `IOTA_OPCUA_ENDPOINT` - Endpoint of OPC UA Server
 -   `IOTA_OPCUA_SECURITY_MODE` - Security mode for OPC UA connection
 -   `IOTA_OPCUA_SECURITY_POLICY` - Security policy for OPC UA connection
 -   `IOTA_OPCUA_SECURITY_USERNAME` - Username for OPC UA connection
 -   `IOTA_OPCUA_SECURITY_PASSWORD` - Password for OPC UA connection
--   `IOTA_OPCUA_UNIQUE_SUBSCRIPTION` - Boolean property to assess whether subscribe once for multiple OPC UA nodes or not
+-   `IOTA_OPCUA_UNIQUE_SUBSCRIPTION` - Boolean property to assess whether subscribe once for multiple OPC UA nodes or
+    not
 -   `IOTA_OPCUA_MT_POLLING` - Boolean property to assess whether enable polling in MappingTool or not
 -   `IOTA_OPCUA_MT_AGENT_ID` - agentId prefix to be assigned to the newly generated entity from MappingTool execution
 -   `IOTA_OPCUA_MT_ENTITY_ID` - entityId to be assigned to the newly generated entity from MappingTool execution
 -   `IOTA_OPCUA_MT_ENTITY_TYPE` - entityType to be assigned to the newly generated entity from MappingTool execution
 -   `IOTA_OPCUA_MT_NAMESPACE_IGNORE` - Namespaces to ignore when crawling nodes from OPC UA Server
-    
 
 ### Further Information
 
@@ -219,7 +215,6 @@ Currently, this `_FILE` suffix is supported for:
 -   `IOTA_AUTH_CLIENT_SECRET`
 -   `IOTA_MONGO_USER`
 -   `IOTA_MONGO_PASSWORD`
-
 
 ## Best Practices
 

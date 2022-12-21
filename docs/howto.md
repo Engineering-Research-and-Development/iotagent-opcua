@@ -12,7 +12,7 @@ IotAgent-opcua comes with MappingTool, an automated tool that goes in discovery 
 Server. You can chose configure the config.js file yourself ( in particular the three objects: _types_, _contexts_,
 _contextSubscriptions_) or let MappingTool configure the config.js file itself.
 
-```
+```js
 /*
  * Copyright 2022 Engineering Ingegneria Informatica S.p.A.
  *
@@ -42,7 +42,7 @@ config.iota = {
     /**
      * Configures the log level. Appropriate values are: FATAL, ERROR, INFO, WARN and DEBUG.
      */
-    logLevel: 'DEBUG',
+    logLevel: "DEBUG",
     /**
      * When this flag is active, the IoTAgent will add the TimeInstant attribute to every entity created, as well
      * as a TimeInstant metadata to each attribute, with the current timestamp.
@@ -56,27 +56,27 @@ config.iota = {
         /**
          * Host where the Context Broker is located.
          */
-        host: 'localhost',
+        host: "localhost",
         /**
          * Port where the Context Broker is listening.
          */
-        port: '1026',
+        port: "1026",
         /**
          * Version of the Context Broker (v2 or ld)
          */
-        ngsiVersion: 'v2',
+        ngsiVersion: "v2",
         /**
          * JSON LD Context
          */
-        jsonLdContext: 'https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld',
+        jsonLdContext: "https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld",
         /**
          * Used as fallbackTenant
          */
-        service: 'opcua_car',
+        service: "opcua_car",
         /**
          * Used as fallbackPath
          */
-        subservice: '/demo'
+        subservice: "/demo",
     },
     /**
      * Configuration of the North Port of the IoT Agent.
@@ -85,7 +85,7 @@ config.iota = {
         /**
          * Port where the IoT Agent will be listening for NGSI and Provisioning requests.
          */
-        port: 4041
+        port: 4041,
     },
 
     /**
@@ -144,7 +144,7 @@ config.iota = {
      *             from the 'mongodb' configuration property.
      */
     deviceRegistry: {
-        type: 'mongodb'
+        type: "mongodb",
     },
     /**
      * Mongo DB configuration section. This section will only be used if the deviceRegistry property has the type
@@ -155,16 +155,16 @@ config.iota = {
          * Host where MongoDB is located. If the MongoDB used is a replicaSet, this property will contain a
          * comma-separated list of the instance names or IPs.
          */
-        host: 'localhost',
+        host: "localhost",
         /**
          * Port where MongoDB is listening. In the case of a replicaSet, all the instances are supposed to be listening
          * in the same port.
          */
-        port: '27017',
+        port: "27017",
         /**
          * Name of the Mongo database that will be created to store IoT Agent data.
          */
-        db: 'iotagent_opcua'
+        db: "iotagent_opcua",
     },
     /**
      * Types array for static configuration of services. Check documentation in the IoT Agent Library for Node.js for
@@ -178,48 +178,48 @@ config.iota = {
     /**
      * Default service, for IoT Agent installations that won't require preregistration.
      */
-    service: 'opcua_car',
+    service: "opcua_car",
     /**
      * Default subservice, for IoT Agent installations that won't require preregistration.
      */
-    subservice: '/demo',
+    subservice: "/demo",
     /**
      * URL Where the IoT Agent Will listen for incoming updateContext and queryContext requests (for commands and
      * passive attributes). This URL will be sent in the Context Registration requests.
      */
-    providerUrl: 'http://localhost:4041',
+    providerUrl: "http://localhost:4041",
     /**
      * Default maximum expire date for device registrations.
      */
-    deviceRegistrationDuration: 'P20Y',
+    deviceRegistrationDuration: "P20Y",
     /**
      * Default type, for IoT Agent installations that won't require preregistration.
      */
-    defaultType: 'Device',
+    defaultType: "Device",
     /**
      * Default resource of the IoT Agent. This value must be different for every IoT Agent connecting to the IoT
      * Manager.
      */
-    defaultResource: '/iot/opcua',
+    defaultResource: "/iot/opcua",
     /**
      * flag indicating whether the incoming measures to the IoTAgent should be processed as per the "attributes" field.
      */
-    explicitAttrs: false
+    explicitAttrs: false,
 };
 
 config.opcua = {
     /**
      * Endpoint where the IoT Agent will listen for an active OPC UA Server.
      */
-    endpoint: 'opc.tcp://localhost:5001/UA/CarServer',
+    endpoint: "opc.tcp://localhost:5001/UA/CarServer",
     /**
      * Security Mode to access OPC UA Server.
      */
-    securityMode: 'None',
+    securityMode: "None",
     /**
      * Security Policy to access OPC UA Server.
      */
-    securityPolicy: 'None',
+    securityPolicy: "None",
     /**
      * Username to access OPC UA Server.
      */
@@ -231,7 +231,7 @@ config.opcua = {
     /**
      * Flag indicating whether the OPC uA variables readings should be handled as single subscription.
      */
-    uniqueSubscription: false
+    uniqueSubscription: false,
 };
 
 config.mappingTool = {
@@ -242,19 +242,19 @@ config.mappingTool = {
     /**
      * agentId prefix to be assigned to the newly generated entity from MappingTool execution
      */
-    agentId: 'age01_',
+    agentId: "age01_",
     /**
      * Namespaces to ignore when crawling nodes from OPC UA Server
      */
-    namespaceIgnore: '0,7',
+    namespaceIgnore: "0,7",
     /**
      * entityId to be assigned to the newly generated entity from MappingTool execution
      */
-    entityId: 'age01_Car',
+    entityId: "age01_Car",
     /**
      * entityType to be assigned to the newly generated entity from MappingTool execution
      */
-    entityType: 'Device'
+    entityType: "Device",
 };
 
 /**
@@ -272,11 +272,11 @@ config.configRetrieval = false;
 /**
  * Default API Key, to use with device that have been provisioned without a Configuration Group.
  */
-config.defaultKey = 'iot';
+config.defaultKey = "iot";
 /**
  * Default transport protocol when no transport is provisioned through the Device Provisioning API.
  */
-config.defaultTransport = 'OPCUA';
+config.defaultTransport = "OPCUA";
 /**
  * flag indicating whether the node server will be executed in multi-core option (true) or it will be a
  * single-thread one (false).
