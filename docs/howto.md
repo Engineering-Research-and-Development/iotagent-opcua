@@ -8,7 +8,9 @@ npm install
 
 ### Configure
 
-IotAgent-opcua comes with MappingTool, an automated tool that goes in discovery for all the nodes belonging to an OPC UA Server. You can chose configure the config.js file yourself ( in particular the three objects: *types*, *contexts*, *contextSubscriptions*) or let MappingTool configure the config.js file itself.
+IotAgent-opcua comes with MappingTool, an automated tool that goes in discovery for all the nodes belonging to an OPC UA
+Server. You can chose configure the config.js file yourself ( in particular the three objects: _types_, _contexts_,
+_contextSubscriptions_) or let MappingTool configure the config.js file itself.
 
 ```
 /*

@@ -324,15 +324,13 @@ section
 If you have changes to the Agent codebase that you want to integrate, or you want to modify the current Docker
 deployment package:
 
-[Here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/docker_readme.md) you
-find the instructions on how to build a Docker Image for the Agent
+[Here](./docker_readme.md) you find the instructions on how to build a Docker Image for the Agent
 
 ## Appendices
 
 #### Appendix A - Customize the environment
 
-Docker Compose can be downloaded here
-[docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/iotagent/docker/docker-compose.yml):
+Docker Compose can be downloaded here: [docker-compose.yml](../docker/docker-compose.yml)
 
 Modifying this file you can:
 
@@ -343,79 +341,79 @@ Modifying this file you can:
 version: "3.1"
 
 volumes:
-  mongodb: ~
+    mongodb: ~
 
 services:
-  iot-agent:
-    image: iotagent4fiware/iotagent-opcua:2.0.0
-    hostname: iotagent-opcua
-    depends_on:
-      - mongodb
-      - iotcarsrv
-      - orion
-    networks:
-      - hostnet
-    expose:
-      - "4041"
-      - "9229"
-    ports:
-      - "4041:4041"
-      - "9229:9229"
-    environment:
-      - "IOTA_CB_HOST=orion"
-      - "IOTA_CB_PORT=1026"
-      - "IOTA_NORTH_PORT=4041"
-      - "IOTA_REGISTRY_TYPE=mongodb"
-      - "IOTA_MONGO_HOST=mongodb"
-      - "IOTA_MONGO_PORT=27017"
-      - "IOTA_MONGO_DB=iotagent_opcua"
-      - "IOTA_PROVIDER_URL=http://iotagent-opcua:4041"
-      - "IOTA_OPCUA_ENDPOINT=opc.tcp://iotcarsrv:5001/UA/CarServer"
-      - "IOTA_OPCUA_SECURITY_MODE=None"
-      - "IOTA_OPCUA_SECURITY_POLICY=None"
-      #- "IOTA_OPCUA_SECURITY_USERNAME=null"
-      #- "IOTA_OPCUA_SECURITY_PASSWORD=null"
-      - "IOTA_OPCUA_UNIQUE_SUBSCRIPTION=false"
-      - "IOTA_OPCUA_MT_POLLING=false"
-      - "IOTA_OPCUA_MT_AGENT_ID=age01_"
-      - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
-      - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
-      - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
-    volumes:
-      - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
+    iot-agent:
+        image: iotagent4fiware/iotagent-opcua:2.0.0
+        hostname: iotagent-opcua
+        depends_on:
+            - mongodb
+            - iotcarsrv
+            - orion
+        networks:
+            - hostnet
+        expose:
+            - "4041"
+            - "9229"
+        ports:
+            - "4041:4041"
+            - "9229:9229"
+        environment:
+            - "IOTA_CB_HOST=orion"
+            - "IOTA_CB_PORT=1026"
+            - "IOTA_NORTH_PORT=4041"
+            - "IOTA_REGISTRY_TYPE=mongodb"
+            - "IOTA_MONGO_HOST=mongodb"
+            - "IOTA_MONGO_PORT=27017"
+            - "IOTA_MONGO_DB=iotagent_opcua"
+            - "IOTA_PROVIDER_URL=http://iotagent-opcua:4041"
+            - "IOTA_OPCUA_ENDPOINT=opc.tcp://iotcarsrv:5001/UA/CarServer"
+            - "IOTA_OPCUA_SECURITY_MODE=None"
+            - "IOTA_OPCUA_SECURITY_POLICY=None"
+            #- "IOTA_OPCUA_SECURITY_USERNAME=null"
+            #- "IOTA_OPCUA_SECURITY_PASSWORD=null"
+            - "IOTA_OPCUA_UNIQUE_SUBSCRIPTION=false"
+            - "IOTA_OPCUA_MT_POLLING=false"
+            - "IOTA_OPCUA_MT_AGENT_ID=age01_"
+            - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
+            - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
+            - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
+        volumes:
+            - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
 
-  mongodb:
-    image: mongo:4.2
-    hostname: mongodb
-    networks:
-      - hostnet
-    ports:
-      - "27017:27017"
-    command: --bind_ip_all
-    volumes:
-      - mongodb:/data
+    mongodb:
+        image: mongo:4.2
+        hostname: mongodb
+        networks:
+            - hostnet
+        ports:
+            - "27017:27017"
+        command: --bind_ip_all
+        volumes:
+            - mongodb:/data
 
-  orion:
-    image: fiware/orion
-    hostname: orion
-    depends_on:
-      - mongodb
-    networks:
-      - hostnet
-    expose:
-      - "1026"
-    ports:
-      - "1026:1026"
-    command: -dbhost mongodb -logLevel DEBUG
+    orion:
+        image: fiware/orion
+        hostname: orion
+        depends_on:
+            - mongodb
+        networks:
+            - hostnet
+        expose:
+            - "1026"
+        ports:
+            - "1026:1026"
+        command: -dbhost mongodb -logLevel DEBUG
 
-  iotcarsrv:
-    hostname: iotcarsrv
-    image: iotagent4fiware/opcuacarsrv:latest
-    networks:
-      - hostnet
-    ports:
-      - "5001:5001"
+    iotcarsrv:
+        hostname: iotcarsrv
+        image: iotagent4fiware/opcuacarsrv:latest
+        networks:
+            - hostnet
+        ports:
+            - "5001:5001"
 
 networks:
-  hostnet:
+    hostnet:
 ```
