@@ -215,7 +215,7 @@ WORKDIR /opt/iotagent-opcua
 RUN \
 	# Install security updates
 	apt-get update -y && \
-	apt-get upgrade -y && \
+	#apt-get upgrade -y && \
 	# Ensure that Openssl is installed prior to running the agent
 	apt-get install -y --no-install-recommends openssl && \
 	# clean apt cache
