@@ -38,7 +38,7 @@
     "test:unit": "nyc --reporter=text mocha --recursive 'test/unit/**/*.test.js' --reporter spec --timeout 30000 --ui bdd --exit  --color true",
     "test:functional": "nyc --reporter=text mocha --recursive 'test/functional/**/*.test.js' --reporter spec --timeout 30000 --ui bdd --exit  --color true",
     "test:integration": "nyc --reporter=text mocha --recursive 'test/integration/**/*.test.js' --reporter spec --timeout 30000 --ui bdd --exit  --color true",
-    "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/**/*.test.js' --reporter spec --exit",
+    "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/unit/**/*.test.js' --reporter spec --exit",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "test:watch": "npm run test -- -w ./lib",
     "watch": "watch 'npm test && npm run lint' ./lib ./test"
