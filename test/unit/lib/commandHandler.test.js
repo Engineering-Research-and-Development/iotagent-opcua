@@ -56,7 +56,7 @@ describe('Command handling', () => {
                         return [];
                     });
                     commandHandler.handler(id, type, service, subservice, attributes, (err) => {
-                        expect(err).to.equal(null);
+                        expect(err).to.equal(undefined);
                         done();
                     });
                 });
@@ -89,7 +89,7 @@ describe('Command handling', () => {
                         }
                     });
                     commandHandler.handler(id, type, service, subservice, attributes, (err) => {
-                        expect(err).to.equal(null);
+                        expect(err).to.equal(undefined);
                         done();
                     });
                 });

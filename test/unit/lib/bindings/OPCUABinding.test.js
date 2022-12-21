@@ -114,7 +114,20 @@ describe('OPCUABinding handling', () => {
                             }
                         };
                     },
-                    call: () => {}
+                    call: () => {
+                        return [
+                            {
+                                statusCode: {
+                                    value: 0
+                                },
+                                outputArguments: [
+                                    {
+                                        value: 0
+                                    }
+                                ]
+                            }
+                        ];
+                    }
                 });
             });
 
