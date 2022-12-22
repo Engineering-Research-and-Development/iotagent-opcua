@@ -24,7 +24,7 @@ OPC UA Agent provides an autoprovisioning feature that allow the agent to automa
 Device at startup.
 
 Setting property `autoprovision` in the config.js to `false`, a manual provisioning can be performed using
-iotagent-node-lib [api](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/api.md) interfaces.
+iotagent-node-lib [API](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/api.md) interfaces.
 
 Setting property `autoprovision` in the config.js to `true`, the OPC UA Agent will perform autoprovisioning in two ways:
 

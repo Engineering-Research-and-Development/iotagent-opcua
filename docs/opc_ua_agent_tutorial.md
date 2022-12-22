@@ -82,7 +82,7 @@ available in AGECONF folder.
 
 Orion Context Broker can be external, however to have a black box for testing, it will be included in docker compose in
 order to have a self-supporting environment. Be aware to choose the correct version, please use _orion_ if it's needed
-to test the Agent with NGSIv2 otherwise use _orion-ld_ in case of NGSI-ld test.
+to test the Agent with NGSI v2 otherwise use _orion-ld_ in case of NGSI-ld test.
 
 ## Step-by-step Tutorial
 
