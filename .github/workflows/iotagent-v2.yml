@@ -1,4 +1,4 @@
-name: CI
+name: CI-V2
 "on":
   push:
     branches:
@@ -69,7 +69,7 @@ jobs:
       - name: "Unit Tests with Node.js ${{ matrix.node-version }}"
         run: |
           npm install
-          npm test:unit
+          npm run test:unit
   code-coverage:
     name: Coveralls Code Coverage
     runs-on: ubuntu-latest
