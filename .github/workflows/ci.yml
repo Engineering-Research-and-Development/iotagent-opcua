@@ -1,11 +1,11 @@
-name: CI-V2
+name: CI
 "on":
   push:
     branches:
-      - iotagent-v2
+      - master
   pull_request:
     branches:
-      - iotagent-v2
+      - master
 jobs:
   lint-dockerfile:
     name: Lint Dockerfile

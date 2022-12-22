@@ -38,7 +38,7 @@ volumes:
 
 services:
     iot-agent:
-        image: iotagent4fiware/iotagent-opcua:2.0.0
+        image: iotagent4fiware/iotagent-opcua:latest
         hostname: iotagent-opcua
         depends_on:
             - mongodb
@@ -151,7 +151,7 @@ associated with this image can be used to build an image in several ways:
     optional):
 
 ```console
-docker build -t iot-agent . --no-cache --build-arg DOWNLOAD=iotagent-v2
+docker build -t iot-agent . --no-cache --build-arg DOWNLOAD=lastest
 ```
 
 -   You can also download a specific release by running this `Dockerfile` with the build argument `DOWNLOAD=<version>`

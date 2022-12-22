@@ -347,7 +347,7 @@ volumes:
 
 services:
     iot-agent:
-        image: iotagent4fiware/iotagent-opcua:2.0.0
+        image: iotagent4fiware/iotagent-opcua:latest
         hostname: iotagent-opcua
         depends_on:
             - mongodb
