@@ -21,7 +21,7 @@ Server. You have to map the OPC UA Server address against two hostnames.
 
 ```yaml
 services:
-  iotage:
+  iot-agent:
     ...
     extra_hosts:
       - "iotcarsrv:<opc-ua-car-server-IP-ADDRESS>"
