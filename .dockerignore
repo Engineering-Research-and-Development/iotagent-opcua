@@ -1,0 +1,11 @@
+coverage/
+docs/
+ghpages/
+node_modules/
+test/
+rpm/
+README.md
+
+certificates/
+conf/config-ld.example.js
+conf/config-v2.example.js

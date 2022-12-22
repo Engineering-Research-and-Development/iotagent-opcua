@@ -1,0 +1,7 @@
+{
+  "resource": "/iot/opcua",
+  "apikey": "iot",
+  "type": "Device",
+  "service": "opcua_car",
+  "subservice": "/demo"
+}

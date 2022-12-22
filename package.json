@@ -1,0 +1,114 @@
+{
+  "name": "iotagent-opcua",
+  "license": "AGPL-3.0-only",
+  "description": "IoT Agent for OPC UA protocol",
+  "version": "2.0.4",
+  "homepage": "https://github.com/Engineering-Research-and-Development/iotagent-opcua",
+  "author": {
+    "name": "Manfredi Giuseppe Pistone",
+    "email": "manfredi.pistone@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Walter Domenico Vergara",
+      "email": "vergarawalterdomenica@gmail.com"
+    },
+    {
+      "name": "Mattia Giuseppe Marzano",
+      "email": "mattiagiuseppe.marzano@eng.it"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Engineering-Research-and-Development/iotagent-opcua"
+  },
+  "bugs": {
+    "url": "https://github.com/Engineering-Research-and-Development/iotagent-opcua/issues"
+  },
+  "main": "lib/iotagent-jsopcuaon",
+  "engines": {
+    "node": ">=12"
+  },
+  "scripts": {
+    "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
+    "healthcheck": "node ./bin/healthcheck",
+    "lint": "eslint lib/ bin/ test/ --cache --fix",
+    "lint:md": "remark -f README.md docs",
+    "lint:text": "textlint 'README.md' 'docs/*.md' 'docs/**/*.md'",
+    "prettier": "prettier --config .prettierrc.json --write '**/**/**/*.js' '**/**/*.js' '**/*.js' '*.js'",
+    "prettier:text": "prettier 'README.md' 'docs/*.md' 'docs/**/*.md' --no-config --tab-width 4 --print-width 120 --write --prose-wrap always",
+    "start": "node ./bin/iotagent-opcua",
+    "test": "nyc --reporter=text mocha --recursive 'test/**/*.test.js' --reporter spec --timeout 30000 --ui bdd --exit  --color true",
+    "test:unit": "nyc --reporter=text mocha --recursive 'test/unit/**/*.test.js' --reporter spec --timeout 30000 --ui bdd --exit  --color true",
+    "test:functional": "nyc --reporter=text mocha --recursive 'test/functional/**/*.test.js' --reporter spec --timeout 30000 --ui bdd --exit  --color true",
+    "test:integration": "nyc --reporter=text mocha --recursive 'test/integration/**/*.test.js' --reporter spec --timeout 30000 --ui bdd --exit  --color true",
+    "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/unit/**/*.test.js' --reporter spec --exit",
+    "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "test:watch": "npm run test -- -w ./lib",
+    "watch": "watch 'npm test && npm run lint' ./lib ./test"
+  },
+  "devDependencies": {
+    "chai": "4.3.6",
+    "coveralls": "~3.1.0",
+    "eslint": "~7.5.0",
+    "eslint-config-tamia": "~7.2.5",
+    "eslint-plugin-prettier": "~3.1.4",
+    "husky": "^4.3.8",
+    "lint-staged": "~10.2.11",
+    "mocha": "^10.1.0",
+    "moment": "~2.29.2",
+    "nock": "13.0.3",
+    "nyc": "~15.1.0",
+    "prettier": "~2.0.5",
+    "proxyquire": "2.1.3",
+    "remark-cli": "^11.0.0",
+    "remark-preset-lint-recommended": "~4.0.1",
+    "should": "13.2.3",
+    "textlint": "~11.7.6",
+    "textlint-rule-common-misspellings": "~1.0.1",
+    "textlint-rule-terminology": "~2.1.4",
+    "textlint-rule-write-good": "~1.6.2",
+    "watch": "^0.13.0"
+  },
+  "keywords": [],
+  "dependencies": {
+    "async": "2.6.4",
+    "axios": "^0.27.2",
+    "body-parser": "1.20.0",
+    "dateformat": "3.0.3",
+    "express": "4.18.1",
+    "iotagent-node-lib": "github:telefonicaid/iotagent-node-lib#master",
+    "logops": "2.1.2",
+    "node-opcua": "^2.72.2",
+    "node-opcua-client-crawler": "^2.72.2",
+    "nodemon": "^2.0.19",
+    "rewire": "^6.0.0",
+    "sinon": "~6.1.0",
+    "underscore": "1.12.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --config .prettierrc.json --write"
+    ],
+    "*.md": [
+      "prettier --no-config --tab-width 4 --print-width 120 --write --prose-wrap always"
+    ],
+    "*.yml": [
+      "prettier --no-config --write"
+    ]
+  },
+  "remarkConfig": {
+    "settings": {
+      "bullet": "-",
+      "paddedTable": true
+    },
+    "plugins": [
+      "remark-preset-lint-recommended"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "entities":[
+    {
+      "id": "age01_Car",
+      "type": "Device"}
+  ],
+  "attrs": ["Speed"]
+}

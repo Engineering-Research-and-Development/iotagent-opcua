@@ -1,0 +1,13 @@
+{
+  "entities": [
+    {
+      "id": "age01_Car",
+      "type": "Device",
+      "Accelerate": {
+        "type": "command",
+        "value": 20
+      }
+    }
+  ],
+  "actionType": "update"
+}
