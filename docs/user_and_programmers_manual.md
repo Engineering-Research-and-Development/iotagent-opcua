@@ -56,7 +56,7 @@ To enable auto configuration, simply set as empty the following properties in th
 -   `contexts: []`
 -   `contextSubscriptions: []`
 
-This schema depicts what happens after executing the above command
+This schema depicts what happens after starting the OPC UA Agent.
 
 ![OPC UA Agent flow](./images/OPC%20UA%20agent%20flow%20chart_2.png)
 
