@@ -3,7 +3,7 @@ const rewire = require('rewire');
 
 describe('Command handling', () => {
     // Rewire all mocks
-    const commandHandler = rewire('../../../lib/commandHandler');
+    const commandHandler = rewire('../../../lib/handlers/commandHandler');
     const id = 'age01_Car';
     const type = 'Device';
     const service = 'opcua_car';

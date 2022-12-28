@@ -3,7 +3,7 @@ const rewire = require('rewire');
 
 describe('Query handling', () => {
     // Rewire all mocks
-    const queryHandler = rewire('../../../lib/queryHandler');
+    const queryHandler = rewire('../../../lib/handlers/queryHandler');
     const configService = rewire('../../../lib/configService');
     const mockConfig = require('../../../conf/config-v2.example');
     const id = 'age01_Car';
