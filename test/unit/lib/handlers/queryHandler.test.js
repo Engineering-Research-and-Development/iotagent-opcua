@@ -3,15 +3,15 @@ const rewire = require('rewire');
 
 describe('Query handling', () => {
     // Rewire all mocks
-    const queryHandler = rewire('../../../lib/handlers/queryHandler');
-    const configService = rewire('../../../lib/configService');
-    const mockConfig = require('../../../conf/config-v2.example');
+    const queryHandler = rewire('../../../../lib/handlers/queryHandler');
+    const configService = rewire('../../../../lib/configService');
+    const mockConfig = require('../../../../conf/config-v2.example');
     const id = 'age01_Car';
     const type = 'Device';
     const service = 'opcua_car';
     const subservice = '/demo';
     const attributes = ['Speed'];
-    const mockDevice = rewire('../mock/device.mock.json');
+    const mockDevice = rewire('../../mock/device.mock.json');
 
     describe('When lazy attribute is requested and device exists', () => {
         beforeEach(() => {

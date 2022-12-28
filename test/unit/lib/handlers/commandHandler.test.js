@@ -3,7 +3,7 @@ const rewire = require('rewire');
 
 describe('Command handling', () => {
     // Rewire all mocks
-    const commandHandler = rewire('../../../lib/handlers/commandHandler');
+    const commandHandler = rewire('../../../../lib/handlers/commandHandler');
     const id = 'age01_Car';
     const type = 'Device';
     const service = 'opcua_car';
@@ -15,7 +15,7 @@ describe('Command handling', () => {
         }
     ];
     const apiKey = 'iot';
-    const mockDevice = rewire('../mock/device.mock.json');
+    const mockDevice = rewire('../../mock/device.mock.json');
 
     describe('When command handler is triggered', () => {
         describe('When device does not exist', () => {
@@ -94,13 +94,6 @@ describe('Command handling', () => {
                     });
                 });
             });
-        });
-    });
-
-    describe('When update command is triggered', () => {
-        it('Should continue the iotagent-node-lib flow', (done) => {
-            commandHandler.updateCommand(apiKey, mockDevice.id, mockDevice, {});
-            done();
         });
     });
 });

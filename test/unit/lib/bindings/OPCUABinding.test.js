@@ -69,6 +69,67 @@ describe('OPCUABinding handling', () => {
         });
     });
 
+    describe('readValueTypeFromOPCUANode', () => {
+        describe('When the_session is not null', () => {
+            beforeEach(() => {
+                opcuaBinding.__set__('config.getConfig', () => {
+                    return mockConfig;
+                });
+                opcuaBinding.__set__('the_session', {
+                    readVariableValue: () => {
+                        return {
+                            value: {
+                                dataType: 1
+                            }
+                        };
+                    }
+                });
+            });
+
+            it('Should read value type from OPCUANode', async () => {
+                const opcuaNodeId = 'ns=3;s=Speed';
+                const result = await opcuaBinding.readValueTypeFromOPCUANode(opcuaNodeId);
+                expect(result).not.to.equal(null);
+            });
+        });
+
+        describe('When dataValue is null', () => {
+            beforeEach(() => {
+                opcuaBinding.__set__('config.getConfig', () => {
+                    return mockConfig;
+                });
+                opcuaBinding.__set__('the_session', {
+                    readVariableValue: () => {
+                        return {
+                            value: null
+                        };
+                    }
+                });
+            });
+
+            it('Should read value from OPCUANode', async () => {
+                const opcuaNodeId = 'ns=3;s=Acceleration';
+                const result = await opcuaBinding.readValueTypeFromOPCUANode(opcuaNodeId);
+                expect(result).to.equal(null);
+            });
+        });
+
+        describe('When the_session is null', () => {
+            beforeEach(() => {
+                opcuaBinding.__set__('config.getConfig', () => {
+                    return mockConfig;
+                });
+                opcuaBinding.__set__('the_session', null);
+            });
+
+            it('Should read value from OPCUANode', async () => {
+                const opcuaNodeId = 'ns=3;s=Speed';
+                const result = await opcuaBinding.readValueTypeFromOPCUANode(opcuaNodeId);
+                expect(result).to.equal(null);
+            });
+        });
+    });
+
     describe('executeQuery', () => {
         const mockDevice = require('../../mock/device.mock.json');
 
@@ -107,13 +168,6 @@ describe('OPCUABinding handling', () => {
                     return mockConfig;
                 });
                 opcuaBinding.__set__('the_session', {
-                    readVariableValue: () => {
-                        return {
-                            value: {
-                                value: 0
-                            }
-                        };
-                    },
                     call: () => {
                         return [
                             {
@@ -169,6 +223,42 @@ describe('OPCUABinding handling', () => {
                     value: { attr: 0 }
                 };
                 opcuaBinding.executeCommand(apiKey, device, attribute);
+                done();
+            });
+        });
+    });
+
+    describe('executeUpdate', () => {
+        const mockDevice = require('../../mock/device.mock.json');
+
+        describe('When the_session is not null', () => {
+            beforeEach(() => {
+                opcuaBinding.__set__('config.getConfig', () => {
+                    return mockConfig;
+                });
+                opcuaBinding.__set__('the_session', {
+                    write: () => {
+                        return [
+                            {
+                                _name: "Good",
+                                _description: "Sucessfully updated"
+                            }
+                        ];
+                    }
+                });
+                opcuaBinding.__set__('readValueTypeFromOPCUANode', () => {
+                    return 1
+                })
+            });
+
+            it('Should execute an update with single argument', (done) => {
+                const apiKey = mockConfig.defaultKey;
+                const device = mockDevice;
+                const attribute = {
+                    name: 'Speed',
+                    value: '10'
+                };
+                opcuaBinding.executeUpdate(apiKey, device, attribute);
                 done();
             });
         });
