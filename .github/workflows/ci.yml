@@ -14,10 +14,10 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v2
       - name: Run Hadolint Dockerfile Linter
-        uses: burdzwastaken/hadolint-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HADOLINT_ACTION_DOCKERFILE_FOLDER: docker
+        uses: hadolint/hadolint-action@v2.0.0
+        with:
+          dockerfile: ./docker/Dockerfile
+          verbose: true
 
   lint-markdown:
     name: Lint Markdown
