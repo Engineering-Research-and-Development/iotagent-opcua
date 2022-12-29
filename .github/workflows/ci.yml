@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@master
       - name: Run Hadolint Dockerfile Linter
         uses: burdzwastaken/hadolint-action@master
         env:
