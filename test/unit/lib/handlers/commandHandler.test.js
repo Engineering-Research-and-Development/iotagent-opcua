@@ -96,4 +96,26 @@ describe('Command handling', () => {
             });
         });
     });
+
+    describe('When updating command status', () => {
+        // Rewire all mocks
+        const id = 'age01_Car';
+        const apiKey = 'iot';
+        const messageObj = {
+            Accelerate: {
+                type: 'command',
+                value: 10
+            }
+        };
+
+        describe('When command status update is triggered', () => {
+            it('Should set command status and continue the flow', (done) => {
+                commandHandler.__set__('iotAgentLib.setCommandResult', (entityName, resource, apikey, commandName, commandResult, status, deviceInformation, callback) => {
+                    callback(null, {});
+                });
+                commandHandler.updateCommand(apiKey, id, mockDevice, messageObj);
+                done();
+            });
+        });
+    });
 });

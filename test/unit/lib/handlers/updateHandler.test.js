@@ -44,7 +44,7 @@ describe('Update handling', () => {
             });
         });
         describe('When device and api key exist', (done) => {
-            describe('When update does not have an expression', (done) => {
+            describe('When update an attribute', (done) => {
                 it('Should set the payload and continue the iotagent-node-lib flow update handling', (done) => {
                     updateHandler.__set__('iotAgentLib.getDeviceByNameAndType', (id, type, service, subservice, callback) => {
                         callback(null, mockDevice);

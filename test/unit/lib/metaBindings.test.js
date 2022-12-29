@@ -1,4 +1,5 @@
 const rewire = require('rewire');
+const { assert } = require('chai');
 
 describe('MetaBinding handling', () => {
     const metaBindings = rewire('../../../lib/metaBindings.js');
@@ -11,22 +12,22 @@ describe('MetaBinding handling', () => {
             });
             metaBindings.__set__('http.request', (options, res_callback) => {
                 return {
-                    on: function(type, on_callback){},
-                    write: function(string){},
-                    end: function(){
+                    on: function (type, on_callback) {},
+                    write: function (string) {},
+                    end: function () {
                         res_callback({
                             statusCode: 204,
-                            on: function(type, chunk_callback){
-                                if(type==="data"){
-                                    chunk_callback(new Buffer.from("{}"));
+                            on: function (type, chunk_callback) {
+                                if (type === 'data') {
+                                    chunk_callback(new Buffer.from('{}'));
                                 }
-                                if(type==="end"){
+                                if (type === 'end') {
                                     chunk_callback();
                                 }
                             }
                         });
                     }
-                }
+                };
             });
         });
 
@@ -47,22 +48,22 @@ describe('MetaBinding handling', () => {
             beforeEach(() => {
                 metaBindings.__set__('http.request', (options, res_callback) => {
                     return {
-                        on: function(type, on_callback){},
-                        write: function(string){},
-                        end: function(){
+                        on: function (type, on_callback) {},
+                        write: function (string) {},
+                        end: function () {
                             res_callback({
                                 statusCode: 409,
-                                on: function(type, chunk_callback){
-                                    if(type==="data"){
-                                        chunk_callback(new Buffer.from("{}"));
+                                on: function (type, chunk_callback) {
+                                    if (type === 'data') {
+                                        chunk_callback(new Buffer.from('{}'));
                                     }
-                                    if(type==="end"){
+                                    if (type === 'end') {
                                         chunk_callback();
                                     }
                                 }
                             });
                         }
-                    }
+                    };
                 });
             });
 
@@ -82,22 +83,22 @@ describe('MetaBinding handling', () => {
             beforeEach(() => {
                 metaBindings.__set__('http.request', (options, res_callback) => {
                     return {
-                        on: function(type, on_callback){},
-                        write: function(string){},
-                        end: function(){
+                        on: function (type, on_callback) {},
+                        write: function (string) {},
+                        end: function () {
                             res_callback({
                                 statusCode: 400,
-                                on: function(type, chunk_callback){
-                                    if(type==="data"){
-                                        chunk_callback(new Buffer.from("{}"));
+                                on: function (type, chunk_callback) {
+                                    if (type === 'data') {
+                                        chunk_callback(new Buffer.from('{}'));
                                     }
-                                    if(type==="end"){
+                                    if (type === 'end') {
                                         chunk_callback();
                                     }
                                 }
                             });
                         }
-                    }
+                    };
                 });
             });
 
@@ -127,7 +128,7 @@ describe('MetaBinding handling', () => {
                 metaBindings
                     .performAutoProvisioning()
                     .then(function () {
-                        done();
+                        assert.fail('No exception thrown', 'Throw exception', 'It should throw an exception');
                     })
                     .catch(function () {
                         done();
@@ -149,13 +150,12 @@ describe('MetaBinding handling', () => {
                 metaBindings
                     .performAutoProvisioning()
                     .then(function () {
-                        done();
+                        assert.fail('No exception thrown', 'Throw exception', 'It should throw an exception');
                     })
                     .catch(function () {
                         done();
                     });
             });
         });
-
     });
 });

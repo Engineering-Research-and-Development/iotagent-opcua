@@ -240,26 +240,64 @@ describe('OPCUABinding handling', () => {
                     write: () => {
                         return [
                             {
-                                _name: "Good",
-                                _description: "Sucessfully updated"
+                                _name: 'Good',
+                                _description: 'Sucessfully updated'
                             }
                         ];
                     }
                 });
                 opcuaBinding.__set__('readValueTypeFromOPCUANode', () => {
-                    return 1
-                })
+                    return 1;
+                });
             });
 
-            it('Should execute an update with single argument', (done) => {
-                const apiKey = mockConfig.defaultKey;
-                const device = mockDevice;
-                const attribute = {
-                    name: 'Speed',
-                    value: '10'
-                };
-                opcuaBinding.executeUpdate(apiKey, device, attribute);
-                done();
+            describe('When writing on opcua server success', () => {
+                it('Should execute an update on lazy attribute', (done) => {
+                    const apiKey = mockConfig.defaultKey;
+                    const device = mockDevice;
+                    const attribute = {
+                        name: 'Speed',
+                        value: '10'
+                    };
+                    opcuaBinding.executeUpdate(apiKey, device, attribute);
+                    done();
+                });
+                it('Should execute an update on active attribute', (done) => {
+                    const apiKey = mockConfig.defaultKey;
+                    const device = mockDevice;
+                    const attribute = {
+                        name: 'Engine_Oxigen',
+                        value: '10'
+                    };
+                    opcuaBinding.executeUpdate(apiKey, device, attribute);
+                    done();
+                });
+            });
+
+            describe('When writing on opcua server fail', () => {
+                beforeEach(() => {
+                    opcuaBinding.__set__('the_session', {
+                        write: () => {
+                            return [];
+                        }
+                    });
+                });
+                it('Should throw new Error', (done) => {
+                    const apiKey = mockConfig.defaultKey;
+                    const device = mockDevice;
+                    const attribute = {
+                        name: 'Speed',
+                        value: '10'
+                    };
+                    opcuaBinding
+                        .executeUpdate(apiKey, device, attribute)
+                        .then(function () {
+                            assert.fail('No exception thrown', 'Throw exception', 'It should throw an exception');
+                        })
+                        .catch(function () {
+                            done();
+                        });
+                });
             });
         });
     });
