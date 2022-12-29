@@ -220,7 +220,7 @@ RUN \
 	apt-get install -y --no-install-recommends openssl && \
 	# clean apt cache
 	apt-get clean && \
-	apt-get -y autoremove \
+	apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/*
 
 RUN chown -R node:node /opt/iotagent-opcua
