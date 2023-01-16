@@ -21,7 +21,7 @@
  * please contact with::[manfredi.pistone@eng.it, gabriele.deluca@eng.it, walterdomenico.vergara@eng.it, mattiagiuseppe.marzano@eng.it]
  */
 
-var config = {};
+const config = {};
 
 config.iota = {
     /**
@@ -193,6 +193,17 @@ config.iota = {
 };
 
 config.opcua = {
+    /**
+     * Subscription options for OPC UA connection.
+     */
+    subscription: {
+        maxNotificationsPerPublish: 1000,
+        publishingEnabled: true,
+        requestedLifetimeCount: 100,
+        requestedMaxKeepAliveCount: 10,
+        requestedPublishingInterval: 1000,
+        priority: 128
+    },
     /**
      * Endpoint where the IoT Agent will listen for an active OPC UA Server.
      */

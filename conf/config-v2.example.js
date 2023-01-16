@@ -317,6 +317,17 @@ config.iota = {
 
 config.opcua = {
     /**
+     * Subscription options for OPC UA connection.
+     */
+    subscription: {
+        maxNotificationsPerPublish: 1000,
+        publishingEnabled: true,
+        requestedLifetimeCount: 100,
+        requestedMaxKeepAliveCount: 10,
+        requestedPublishingInterval: 1000,
+        priority: 128
+    },
+    /**
      * Endpoint where the IoT Agent will listen for an active OPC UA Server.
      */
     endpoint: 'opc.tcp://localhost:5001/UA/CarServer',
