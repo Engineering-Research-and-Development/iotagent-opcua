@@ -161,6 +161,10 @@ config.iota = {
         Device: {
             active: [
                 {
+                    name: 'Events',
+                    type: 'Text'
+                },
+                {
                     name: 'EngineBrake',
                     type: 'Number'
                 },
@@ -208,6 +212,12 @@ config.iota = {
             id: 'urn:ngsi-ld:Device:age01_Car',
             type: 'Device',
             mappings: [
+                {
+                    ocb_id: 'Events',
+                    opcua_id: 'ns=3;s=Events',
+                    object_id: 'ns=3;s=Events',
+                    inputArguments: []
+                },
                 {
                     ocb_id: 'EngineBrake',
                     opcua_id: 'ns=3;s=EngineBrake',
@@ -279,6 +289,47 @@ config.iota = {
                             type: 'Intensity'
                         }
                     ]
+                }
+            ]
+        }
+    ],
+    events: [
+        {
+            ocb_id: "Events",
+            opcua_id: "ns=3;s=Events",
+            object_id: "ns=3;s=Events",
+            fields: [
+                {
+                    name: "EventId",
+                    type: "ByteString"
+                },
+                {
+                    name: "EventType",
+                    type: "NodeId"
+                },
+                {
+                    name: "SourceNode",
+                    type: "NodeId"
+                },
+                {
+                    name: "SourceName",
+                    type: "String"
+                },
+                {
+                    name: "Time",
+                    type: "DateTime"
+                },
+                {
+                    name: "ReceiveTime",
+                    type: "DateTime"
+                },
+                {
+                    name: "Message",
+                    type: "LocalizedText"
+                },
+                {
+                    name: "Severity",
+                    type: "UInt16"
                 }
             ]
         }

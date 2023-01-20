@@ -160,6 +160,7 @@ config.iota = {
     types: {},
     contexts: [],
     contextSubscriptions: [],
+    events: [],
     /**
      * Default service, for IoT Agent installations that won't require preregistration.
      */

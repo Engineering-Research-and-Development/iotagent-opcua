@@ -2,7 +2,7 @@
   "name": "iotagent-opcua",
   "license": "AGPL-3.0-only",
   "description": "IoT Agent for OPC UA protocol",
-  "version": "2.0.4",
+  "version": "2.0.6",
   "homepage": "https://github.com/Engineering-Research-and-Development/iotagent-opcua",
   "author": {
     "name": "Manfredi Giuseppe Pistone",
