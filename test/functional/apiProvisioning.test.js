@@ -77,7 +77,7 @@ describe('IoT Agent OPCUA API provisioning', () => {
             it('Should perform provisioning of service group', async () => {
                 await wait(20);
                 const mockConfig = require('./mock/config-v2-no-autoprovisioning.test');
-                const mockGroup = require('./mock/group.request.test.json');
+                const mockGroup = require('./mock/performGroupProvisioning.request.json');
 
                 const url = `http://localhost:${mockConfig.iota.server.port}/iot/services`;
                 try {
@@ -96,7 +96,7 @@ describe('IoT Agent OPCUA API provisioning', () => {
                 await wait(5);
 
                 const mockConfig = require('./mock/config-v2-no-autoprovisioning.test');
-                const mockDevice = require('./mock/device.request.test.json');
+                const mockDevice = require('./mock/performDeviceProvisioning.request.json');
                 const url = `http://localhost:${mockConfig.iota.server.port}/iot/devices`;
                 try {
                     const res = await axios.post(url, mockDevice, {

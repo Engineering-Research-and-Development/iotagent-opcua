@@ -5,7 +5,7 @@ const child = require('child_process');
 const path = require('path');
 const axios = require('axios');
 const mockConfig = require('./mock/config-v2.test');
-const mockCommandWithArgumentOrion = require('./mock/command_with_argument.orion.request.json');
+const mockCommandWithArgumentOrion = require('./mock/executeCommandWithArguments.orion.request.json');
 /**
  * Contains the current child process of the agent
  * @type {null}
@@ -99,7 +99,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
             await wait(1);
 
             // Execute Accelerate command to trigger value change on Engine_Oxigen
-            const mockCommand = require('./mock/command_with_argument.request.json');
+            const mockCommand = require('./mock/executeCommandWithArguments.request.json');
             url = `${mockConfig.iota.providerUrl}//op/update`;
             try {
                 const res = await axios.post(url, mockCommand, {
@@ -160,8 +160,8 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
         it('Should execute command on device', async () => {
             await wait(5);
             const mockConfig = require('./mock/config-v2.test');
-            const mockCommandWithArgumentOrion = require('./mock/command_with_argument.orion.request.json');
-            const mockCommandNoArgumentOrion = require('./mock/command_no_argument.orion.request.json');
+            const mockCommandWithArgumentOrion = require('./mock/executeCommandWithArguments.orion.request.json');
+            const mockCommandNoArgumentOrion = require('./mock/executeCommandWithNoArguments.orion.request.json');
 
             // Execute command from context broker with single argument (Accelerate)
             const attrName = 'Accelerate';

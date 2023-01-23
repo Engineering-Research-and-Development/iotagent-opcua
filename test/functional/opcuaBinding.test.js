@@ -5,8 +5,8 @@ const child = require('child_process');
 const path = require('path');
 const axios = require('axios');
 const mockConfig = require('./mock/config-v2.test');
-const mockCommand = require('./mock/command_with_argument.request.json');
-const mockLazyQuery = require('./mock/lazy.query.request.json');
+const mockCommand = require('./mock/executeCommandWithArguments.request.json');
+const mockLazyQuery = require('./mock/queryLazyAttribute.request.json');
 
 /**
  * Contains the current child process of the agent
@@ -80,7 +80,7 @@ describe('IoT Agent OPCUA OPCUA binding', () => {
             it('Should return value retrieved from device', async () => {
                 await wait(10);
                 const mockConfig = require('./mock/config-v2.test');
-                const mockLazyQuery = require('./mock/lazy.query.request.json');
+                const mockLazyQuery = require('./mock/queryLazyAttribute.request.json');
                 const url = `http://localhost:${mockConfig.iota.server.port}//op/query`;
                 try {
                     const res = await axios.post(url, mockLazyQuery, {
@@ -102,8 +102,8 @@ describe('IoT Agent OPCUA OPCUA binding', () => {
             it('Should execute commands on device', async () => {
                 await wait(5);
                 const mockConfig = require('./mock/config-v2.test');
-                const mockCommandWithArgument = require('./mock/command_with_argument.request.json');
-                const mockCommandNoArgument = require('./mock/command_no_argument.request.json');
+                const mockCommandWithArgument = require('./mock/executeCommandWithArguments.request.json');
+                const mockCommandNoArgument = require('./mock/executeCommandWithNoArguments.request.json');
 
                 // Execute command with a single argument (Accelerate)
                 let url = `http://localhost:${mockConfig.iota.server.port}//op/update`;
@@ -118,7 +118,7 @@ describe('IoT Agent OPCUA OPCUA binding', () => {
 
                     await wait(2);
                     // Check Speed has changed
-                    const mockLazyQuery = require('./mock/lazy.query.request.json');
+                    const mockLazyQuery = require('./mock/queryLazyAttribute.request.json');
                     url = `http://localhost:${mockConfig.iota.server.port}//op/query`;
                     try {
                         const res = await axios.post(url, mockLazyQuery, {
@@ -147,7 +147,7 @@ describe('IoT Agent OPCUA OPCUA binding', () => {
 
                             await wait(2);
                             // Check Speed has changed
-                            const mockLazyQuery = require('./mock/lazy.query.request.json');
+                            const mockLazyQuery = require('./mock/queryLazyAttribute.request.json');
                             url = `http://localhost:${mockConfig.iota.server.port}//op/query`;
                             try {
                                 const res = await axios.post(url, mockLazyQuery, {
