@@ -1,4 +1,4 @@
-# OPC UA IoTAgent
+# ![IoT-Agent-OPCUA](docs/images/iotagent-logo.png) OPC UA IoTAgent
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: AGPL](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://opensource.org/licenses/AGPL-3.0)

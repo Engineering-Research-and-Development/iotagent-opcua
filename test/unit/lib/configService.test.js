@@ -37,6 +37,12 @@ describe('Configuration startup tests', () => {
             process.env.IOTA_OPCUA_MT_ENTITY_ID = 'test';
             process.env.IOTA_OPCUA_MT_ENTITY_TYPE = 'test';
             process.env.IOTA_OPCUA_MT_NAMESPACE_IGNORE = 'test';
+            process.env.IOTA_OPCUA_SUBSCRIPTION_NOTIFICATIONS_PER_PUBLISH = 'test';
+            process.env.IOTA_OPCUA_SUBSCRIPTION_PUBLISHING_ENABLED = 'test';
+            process.env.IOTA_OPCUA_SUBSCRIPTION_REQ_LIFETIME_COUNT = 'test';
+            process.env.IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT = 'test';
+            process.env.IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL = 'test';
+            process.env.IOTA_OPCUA_SUBSCRIPTION_PRIORITY = 'test';
         });
 
         it('Should hide USERNAME and PASSWORD env variables', (done) => {

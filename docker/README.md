@@ -64,6 +64,12 @@ services:
             #- "IOTA_OPCUA_SECURITY_USERNAME=null"
             #- "IOTA_OPCUA_SECURITY_PASSWORD=null"
             - "IOTA_OPCUA_UNIQUE_SUBSCRIPTION=false"
+            - "IOTA_OPCUA_SUBSCRIPTION_NOTIFICATIONS_PER_PUBLISH=1000"
+            - "IOTA_OPCUA_SUBSCRIPTION_PUBLISHING_ENABLED=true"
+            - "IOTA_OPCUA_SUBSCRIPTION_REQ_LIFETIME_COUNT=100"
+            - "IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT=10"
+            - "IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL=1000"
+            - "IOTA_OPCUA_SUBSCRIPTION_PRIORITY=128"
             - "IOTA_OPCUA_MT_POLLING=false"
             - "IOTA_OPCUA_MT_AGENT_ID=age01_"
             - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
@@ -127,6 +133,12 @@ environment variables such as those shown below:
 -   `IOTA_OPCUA_SECURITY_PASSWORD` - Password for OPC UA connection
 -   `IOTA_OPCUA_UNIQUE_SUBSCRIPTION` - Boolean property to assess whether subscribe once for multiple OPC UA nodes or
     not
+-   `IOTA_OPCUA_SUBSCRIPTION_NOTIFICATIONS_PER_PUBLISH` - OPCUA subscription number of notifications per publish
+-   `IOTA_OPCUA_SUBSCRIPTION_PUBLISHING_ENABLED` - Boolean property to assess whether enable OPCUA publishing or not
+-   `IOTA_OPCUA_SUBSCRIPTION_REQ_LIFETIME_COUNT` - OPCUA subscription lifetime count
+-   `IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT` - OPCUA subscription request maximum keep alive count
+-   `IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL` - OPCUA subscription request publishing interval
+-   `IOTA_OPCUA_SUBSCRIPTION_PRIORITY` - OPCUA subscription priority
 -   `IOTA_OPCUA_MT_POLLING` - Boolean property to assess whether enable polling in MappingTool or not
 -   `IOTA_OPCUA_MT_AGENT_ID` - agentId prefix to be assigned to the newly generated entity from MappingTool execution
 -   `IOTA_OPCUA_MT_ENTITY_ID` - entityId to be assigned to the newly generated entity from MappingTool execution
