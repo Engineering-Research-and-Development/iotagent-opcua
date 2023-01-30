@@ -1,4 +1,4 @@
-# ![IoT-Agent-OPCUA](docs/images/iotagent-logo.png) OPC UA IoTAgent
+# OPC UA Agent: the FIWARE IoT Agent for OPC UA 
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: AGPL](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
@@ -10,6 +10,9 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4612/badge)](https://bestpractices.coreinfrastructure.org/projects/4612)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/full.svg)
 [![Join the chat at https://gitter.im/iotagent-opcua/community](https://badges.gitter.im/iotagent-opcua/community.svg)](https://gitter.im/iotagent-opcua/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+<br/>
+<img align="right" width="200" src="/docs/images/iotagent-logo.png" /> 
+
 
 An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between the
 OPC Unified Architecture protocol and the
