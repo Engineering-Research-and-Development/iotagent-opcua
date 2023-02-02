@@ -37,6 +37,7 @@ describe('Configuration startup tests', () => {
             process.env.IOTA_OPCUA_MT_ENTITY_ID = 'test';
             process.env.IOTA_OPCUA_MT_ENTITY_TYPE = 'test';
             process.env.IOTA_OPCUA_MT_NAMESPACE_IGNORE = 'test';
+            process.env.IOTA_OPCUA_MT_STORE_OUTPUT = 'test';
             process.env.IOTA_OPCUA_SUBSCRIPTION_NOTIFICATIONS_PER_PUBLISH = 'test';
             process.env.IOTA_OPCUA_SUBSCRIPTION_PUBLISHING_ENABLED = 'test';
             process.env.IOTA_OPCUA_SUBSCRIPTION_REQ_LIFETIME_COUNT = 'test';

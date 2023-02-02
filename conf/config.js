@@ -251,7 +251,11 @@ config.mappingTool = {
     /**
      * entityType to be assigned to the newly generated entity from MappingTool execution
      */
-    entityType: 'Device'
+    entityType: 'Device',
+    /**
+     * boolean flag to determine whether to store the output of the mapping tool execution or not
+     */
+    storeOutput: true
 };
 
 /**

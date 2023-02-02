@@ -75,6 +75,7 @@ services:
             - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
             - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
             - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
+            - "IOTA_OPCUA_MT_STORE_OUTPUT=true"
         volumes:
             - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
 
@@ -144,6 +145,8 @@ environment variables such as those shown below:
 -   `IOTA_OPCUA_MT_ENTITY_ID` - entityId to be assigned to the newly generated entity from MappingTool execution
 -   `IOTA_OPCUA_MT_ENTITY_TYPE` - entityType to be assigned to the newly generated entity from MappingTool execution
 -   `IOTA_OPCUA_MT_NAMESPACE_IGNORE` - Namespaces to ignore when crawling nodes from OPC UA Server
+-   `IOTA_OPCUA_MT_STORE_OUTPUT` - boolean flag to determine whether to store the output of the mapping tool execution
+    or not
 
 ### Further Information
 

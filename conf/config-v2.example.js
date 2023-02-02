@@ -295,41 +295,41 @@ config.iota = {
     ],
     events: [
         {
-            ocb_id: "Events",
-            opcua_id: "ns=3;s=Events",
-            object_id: "ns=3;s=Events",
+            ocb_id: 'Events',
+            opcua_id: 'ns=3;s=Events',
+            object_id: 'ns=3;s=Events',
             fields: [
                 {
-                    name: "EventId",
-                    type: "ByteString"
+                    name: 'EventId',
+                    type: 'ByteString'
                 },
                 {
-                    name: "EventType",
-                    type: "NodeId"
+                    name: 'EventType',
+                    type: 'NodeId'
                 },
                 {
-                    name: "SourceNode",
-                    type: "NodeId"
+                    name: 'SourceNode',
+                    type: 'NodeId'
                 },
                 {
-                    name: "SourceName",
-                    type: "String"
+                    name: 'SourceName',
+                    type: 'String'
                 },
                 {
-                    name: "Time",
-                    type: "DateTime"
+                    name: 'Time',
+                    type: 'DateTime'
                 },
                 {
-                    name: "ReceiveTime",
-                    type: "DateTime"
+                    name: 'ReceiveTime',
+                    type: 'DateTime'
                 },
                 {
-                    name: "Message",
-                    type: "LocalizedText"
+                    name: 'Message',
+                    type: 'LocalizedText'
                 },
                 {
-                    name: "Severity",
-                    type: "UInt16"
+                    name: 'Severity',
+                    type: 'UInt16'
                 }
             ]
         }
@@ -424,7 +424,11 @@ config.mappingTool = {
     /**
      * entityType to be assigned to the newly generated entity from MappingTool execution
      */
-    entityType: 'Device'
+    entityType: 'Device',
+    /**
+     * boolean flag to determine whether to store the output of the mapping tool execution or not
+     */
+    storeOutput: true
 };
 
 /**

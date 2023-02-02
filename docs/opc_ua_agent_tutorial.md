@@ -387,6 +387,7 @@ services:
             - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
             - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
             - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
+            - "IOTA_OPCUA_MT_STORE_OUTPUT=0,7"
         volumes:
             - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
 
