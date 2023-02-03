@@ -188,7 +188,12 @@ config.iota = {
     /**
      * flag indicating whether the incoming measures to the IoTAgent should be processed as per the "attributes" field.
      */
-    explicitAttrs: false
+    explicitAttrs: false,
+    /**
+     * List of characters to be filtered before forwarding any request to Orion.
+     * Default Orion forbidden characters are filtered by default, see (https://github.com/telefonicaid/fiware-orion/blob/74aaae0c98fb24f082e3b258aa642461eb285e39/doc/manuals/orion-api.md#general-syntax-restrictions)
+     */
+    extendedForbiddenCharacters: []
 };
 
 config.opcua = {

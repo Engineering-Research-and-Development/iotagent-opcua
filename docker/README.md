@@ -70,6 +70,7 @@ services:
             - "IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT=10"
             - "IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL=1000"
             - "IOTA_OPCUA_SUBSCRIPTION_PRIORITY=128"
+            - "IOTA_EXTENDED_FORBIDDEN_CHARACTERS=[]"
             - "IOTA_OPCUA_MT_POLLING=false"
             - "IOTA_OPCUA_MT_AGENT_ID=age01_"
             - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
@@ -77,7 +78,7 @@ services:
             - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
             - "IOTA_OPCUA_MT_STORE_OUTPUT=true"
         volumes:
-            - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
+            - ../conf:/opt/iotagent-opcua/conf
 
     mongodb:
         image: mongo:4.2
@@ -140,6 +141,9 @@ environment variables such as those shown below:
 -   `IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT` - OPCUA subscription request maximum keep alive count
 -   `IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL` - OPCUA subscription request publishing interval
 -   `IOTA_OPCUA_SUBSCRIPTION_PRIORITY` - OPCUA subscription priority
+-   `IOTA_EXTENDED_FORBIDDEN_CHARACTERS` - List of characters to be filtered before forwarding any request to Orion.
+    Default Orion forbidden characters are filtered by default, see
+    [here](https://github.com/telefonicaid/fiware-orion/blob/74aaae0c98fb24f082e3b258aa642461eb285e39/doc/manuals/orion-api.md#general-syntax-restrictions)
 -   `IOTA_OPCUA_MT_POLLING` - Boolean property to assess whether enable polling in MappingTool or not
 -   `IOTA_OPCUA_MT_AGENT_ID` - agentId prefix to be assigned to the newly generated entity from MappingTool execution
 -   `IOTA_OPCUA_MT_ENTITY_ID` - entityId to be assigned to the newly generated entity from MappingTool execution

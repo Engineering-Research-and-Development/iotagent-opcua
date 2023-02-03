@@ -382,6 +382,7 @@ services:
             - "IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT=10"
             - "IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL=1000"
             - "IOTA_OPCUA_SUBSCRIPTION_PRIORITY=128"
+            - "IOTA_EXTENDED_FORBIDDEN_CHARACTERS=[]"
             - "IOTA_OPCUA_MT_POLLING=false"
             - "IOTA_OPCUA_MT_AGENT_ID=age01_"
             - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
@@ -389,7 +390,7 @@ services:
             - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
             - "IOTA_OPCUA_MT_STORE_OUTPUT=0,7"
         volumes:
-            - ../conf/config.js:/opt/iotagent-opcua/conf/config.js
+            - ../conf:/opt/iotagent-opcua/conf
 
     mongodb:
         image: mongo:4.2
