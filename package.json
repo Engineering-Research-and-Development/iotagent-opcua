@@ -80,7 +80,7 @@
     "iotagent-node-lib": "github:telefonicaid/iotagent-node-lib#master",
     "logops": "2.1.2",
     "node-opcua": "^2.85.0",
-    "node-opcua-client-crawler": "^2.85.0",
+    "node-opcua-client-crawler": "^2.90.0",
     "nodemon": "^2.0.19",
     "rewire": "^6.0.0",
     "sinon": "~6.1.0",
