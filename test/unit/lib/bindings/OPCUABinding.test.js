@@ -200,7 +200,7 @@ describe('OPCUABinding handling', () => {
                 const device = mockDevice;
                 const attribute = {
                     name: 'Accelerate',
-                    value: '10'
+                    value: 10
                 };
                 opcuaBinding.executeCommand(apiKey, device, attribute);
                 done();
@@ -210,7 +210,7 @@ describe('OPCUABinding handling', () => {
                 const device = mockDevice;
                 const attribute = {
                     name: 'Accelerate',
-                    value: '[10,10]'
+                    value: [10, 10]
                 };
                 opcuaBinding.executeCommand(apiKey, device, attribute);
                 done();
