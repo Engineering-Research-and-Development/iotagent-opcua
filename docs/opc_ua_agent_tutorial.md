@@ -76,7 +76,7 @@ It represents a car with the following structure:
 IoT Agent can be configured as described in the
 [user guide](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md).
 In order to start playing with the above mentioned OPC UA server, configuration files have been already edited and
-available in AGECONF folder.
+available in *conf* folder.
 
 #### Orion Context Broker
 
@@ -137,7 +137,7 @@ Appendix A quickly describes what you can do with the docker-compose.yml
 
 For the Agent to work an **initialization** phase is required. During this phase the Agent becomes aware of what
 variables and methods are available on OPC UA server-side. These information can be provided to the agent by means of a
-configuration file (config.json) or through the REST API
+configuration file (config.js) or through the REST API
 
 Three different initialization modalities are available:
 
@@ -146,8 +146,8 @@ Three different initialization modalities are available:
     MappingTool, erase the three objects: *types*, *contexts*, *contextSubscriptions* within the existing config.js_**)
 -   Use the REST API
 
-Since in the following parts of this tutorial we are going to use the REST API you do not have to worry about the
-initialization. The default empty config.json is preloaded
+Since in the following parts of this tutorial we are going to use the REST API you have not to worry about the
+initialization. 
 
 #### Step 4 - Provision a new Device
 
@@ -212,7 +212,7 @@ curl http://localhost:4041/iot/devices \
                     "type": "command"
                 }
             ],
-            "endpoint": "opc.tcp://host.docker.internal:5001/UA/CarServer"
+            "endpoint": "opc.tcp://iotcarsrv:5001/UA/CarServer"
         }
     ]
 }'
@@ -355,9 +355,6 @@ services:
             - orion
         networks:
             - hostnet
-        expose:
-            - "4041"
-            - "9229"
         ports:
             - "4041:4041"
             - "9229:9229"
@@ -389,6 +386,7 @@ services:
             - "IOTA_OPCUA_MT_ENTITY_TYPE=Device"
             - "IOTA_OPCUA_MT_NAMESPACE_IGNORE=0,7"
             - "IOTA_OPCUA_MT_STORE_OUTPUT=0,7"
+            - "IOTA_OPCUA_MT_STORE_OUTPUT=true"
         volumes:
             - ../conf:/opt/iotagent-opcua/conf
 
@@ -410,8 +408,6 @@ services:
             - mongodb
         networks:
             - hostnet
-        expose:
-            - "1026"
         ports:
             - "1026:1026"
         command: -dbhost mongodb -logLevel DEBUG
