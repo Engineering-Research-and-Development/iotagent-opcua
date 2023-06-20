@@ -69,7 +69,7 @@ It represents a car with the following structure:
 
     -   Any number of user-defined Boolean sensor simulating a square-wave
 
-        For each sensor it is possible to define the semi-period
+    -   For each sensor it is possible to define the semi-period
 
 #### OPC UA Agent
 
