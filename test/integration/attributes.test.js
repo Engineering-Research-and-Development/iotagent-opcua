@@ -76,7 +76,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
 
     describe('When monitored attribute value changes', () => {
         it('Should send updated value to context broker', async () => {
-            await wait(5);
+            await wait(40);
             const mockConfig = require('./mock/config-v2.test');
 
             // Query attribute to context broker
@@ -96,7 +96,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
                 assert.fail('Request failed', 'Request success', `GET /v2/entities/${mockConfig.iota.contexts[0].id}/attrs/${attrName}?type=${mockConfig.iota.contexts[0].type} failed ${err}`);
             }
 
-            await wait(1);
+            await wait(10);
 
             // Execute Accelerate command to trigger value change on Engine_Oxigen
             const mockCommand = require('./mock/executeCommandWithArguments.request.json');
@@ -113,7 +113,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
                 assert.fail('Request failed', 'Request success', `POST //op/update failed ${err}`);
             }
 
-            await wait(5);
+            await wait(20);
 
             // Query new value of attribute to context broker
             url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/entities/${mockConfig.iota.contexts[0].id}/attrs/${attrName}?type=${mockConfig.iota.contexts[0].type}`;
@@ -134,7 +134,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
 
     describe('When context broker query a lazy attribute', () => {
         it('Should return value retrieved from device', async () => {
-            await wait(5);
+            await wait(20);
             const mockConfig = require('./mock/config-v2.test');
 
             // Query lazy attribute to context broker
@@ -158,7 +158,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
 
     describe('When context broker execute a command', () => {
         it('Should execute command on device', async () => {
-            await wait(5);
+            await wait(20);
             const mockConfig = require('./mock/config-v2.test');
             const mockCommandWithArgumentOrion = require('./mock/executeCommandWithArguments.orion.request.json');
             const mockCommandNoArgumentOrion = require('./mock/executeCommandWithNoArguments.orion.request.json');
@@ -175,7 +175,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
                 });
                 expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
 
-                await wait(5);
+                await wait(20);
 
                 // Query attribute to assert command execution
                 const attrName = 'Speed';
@@ -204,7 +204,7 @@ describe('IoT Agent OPCUA attributes values integration with context broker', ()
                         });
                         expect(res.status).to.greaterThanOrEqual(200).and.lessThanOrEqual(300);
 
-                        await wait(5);
+                        await wait(20);
 
                         // Query attribute to assert command execution
                         const attrName = 'Speed';

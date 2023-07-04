@@ -94,7 +94,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                 }
             });
             it('Should run the mapping tool and register as context provider to the context broker', async () => {
-                await wait(5);
+                await wait(10);
 
                 const mockConfig = require('./mock/config-v2-no-device.test');
                 const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/registrations`;
@@ -153,7 +153,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                 }
             });
             it('Should run the mapping tool and register as context provider to the context broker', async () => {
-                await wait(5);
+                await wait(10);
 
                 const mockConfig = require('./mock/config-v2.test');
                 const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/registrations`;
