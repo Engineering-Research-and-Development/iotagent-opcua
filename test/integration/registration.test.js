@@ -75,7 +75,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                 }
             });
             it('Should run the mapping tool and add entities to context broker', async () => {
-                await wait(20);
+                await wait(40);
                 const mockConfig = require('./mock/config-v2-no-device.test');
                 const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/entities`;
                 try {
@@ -94,7 +94,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                 }
             });
             it('Should run the mapping tool and register as context provider to the context broker', async () => {
-                await wait(10);
+                await wait(20);
 
                 const mockConfig = require('./mock/config-v2-no-device.test');
                 const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/registrations`;
@@ -134,7 +134,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                 }
             });
             it('Should run the mapping tool and add entities to context broker', async () => {
-                await wait(20);
+                await wait(40);
                 const mockConfig = require('./mock/config-v2.test');
                 const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/entities`;
                 try {
@@ -153,7 +153,7 @@ describe('IoT Agent OPCUA autoprovisioning', () => {
                 }
             });
             it('Should run the mapping tool and register as context provider to the context broker', async () => {
-                await wait(10);
+                await wait(20);
 
                 const mockConfig = require('./mock/config-v2.test');
                 const url = `http://${mockConfig.iota.contextBroker.host}:${mockConfig.iota.contextBroker.port}/v2/registrations`;
