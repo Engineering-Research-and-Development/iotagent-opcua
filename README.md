@@ -1,8 +1,8 @@
-# OPC UA Agent: the FIWARE IoT Agent for OPC UA 
+# OPC UA Agent: the FIWARE IoT Agent for OPC UA
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: AGPL](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Docker badge](https://img.shields.io/docker/pulls/iotagent4fiware/iotagent-opcua.svg)](https://hub.docker.com/r/iotagent4fiware/iotagent-opcua/)
+[![Docker badge](https://img.shields.io/badge/quay.io-fiware%iotagent--opcua-grey?logo=red%20hat&labelColor=EE0000)](https://quay.io/repository/fiware/iotagent-opcua)
 [![Support badge](https://img.shields.io/badge/support-stackoverflow-orange)](https://stackoverflow.com/questions/tagged/fiware+iot)<br/>
 [![Documentation badge](https://img.shields.io/readthedocs/iotagent-opcua.svg)](https://iotagent-opcua.rtfd.io/)
 [![CI](https://github.com/Engineering-Research-and-Development/iotagent-opcua/workflows/CI/badge.svg)](https://github.com/Engineering-Research-and-Development/iotagent-opcua/actions?query=workflow%3ACI)
@@ -31,7 +31,7 @@ library's GitHub repository.
 This project is part of [FIWARE](https://www.fiware.org/). For more information check the
 [FIWARE Catalogue entry for the IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
-| :books: [Documentation](https://iotagent-opcua.rtfd.io) | :whale: [Docker Hub](https://hub.docker.com/r/iotagent4fiware/iotagent-opcua) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
+| :books: [Documentation](https://iotagent-opcua.rtfd.io) |  <img style="height:1em" src="https://quay.io/static/img/quay_favicon.png"/> [quay.io](https://quay.io/repository/fiware/iotagent-opcua) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 
 
