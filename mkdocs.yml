@@ -1,0 +1,21 @@
+site_name: FIWARE OPC-UA IoT Agent
+site_url: https://iotagent-opcua.readthedocs.io/
+repo_url: https://github.com/Engineering-Research-and-Development/iotagent-opcua
+site_description: IoT Agent OPC-UA Documentation
+docs_dir: docs
+site_dir: html
+edit_uri: edit/master/docs/
+markdown_extensions: [toc,fenced_code]
+use_directory_urls: false
+theme: readthedocs
+extra_css: ["https://www.fiware.org/style/fiware_readthedocs.css", "https://www.fiware.org/style/fiware_readthedocs_iot.css"]
+theme:
+  name: readthedocs
+nav:
+  - Home: index.md
+  - 'How To': howto.md
+  - 'Installation & Administration Guide': installation_and_administration_guide.md
+  - 'OPC UA Agent Tutorial': opc_ua_agent_tutorial.md
+  - 'User Guide': user_and_programmers_manual.md
+  - 'Quick Start': quick_start_guide.md
+
