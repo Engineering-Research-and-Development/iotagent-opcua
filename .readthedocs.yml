@@ -6,4 +6,4 @@ mkdocs:
 python:
   version: 3.8
   install:
-    - requirements: requirements.txt
+    - requirements: docs/requirements.txt
