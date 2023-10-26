@@ -16,7 +16,8 @@ services:
       - mongodb:/data
 
   orion:
-    image: fiware/orion
+    image: fiware/orion:3.10.1
+    #image: fiware/orion-ld:1.4.0
     hostname: orion
     depends_on:
       - mongodb
@@ -25,6 +26,7 @@ services:
     ports:
       - "1026:1026"
     command: -dbhost mongodb -logLevel DEBUG
+    #command: -dbhost mongodb -logLevel DEBUG -forwarding -experimental
 
   iotcarsrv:
     hostname: iotcarsrv
