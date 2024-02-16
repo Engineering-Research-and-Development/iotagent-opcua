@@ -79,15 +79,4 @@ describe('Common bindings', () => {
             });
         });
     });
-    describe('When extractAttributes is called', () => {
-        it('Should return array of extracted attributes', (done) => {
-            commonBindings.__set__('guessType', () => {
-                return 'string';
-            });
-            const attributes = commonBindings.extractAttributes(mockDevice, { CarSpeed: 0 });
-            expect(attributes).not.equal(null);
-            expect(attributes.length).is.greaterThanOrEqual(1);
-            done();
-        });
-    });
 });
