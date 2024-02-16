@@ -183,6 +183,10 @@ config.iota = {
                 {
                     name: 'Engine_Oxigen',
                     type: 'Number'
+                },
+                {
+                    name: 'Engine_Pressures',
+                    type: 'Text'
                 }
             ],
             lazy: [
@@ -246,6 +250,12 @@ config.iota = {
                     ocb_id: 'Engine_Oxigen',
                     opcua_id: 'ns=3;s=Oxigen',
                     object_id: 'ns=3;s=Oxigen',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Engine_Pressures',
+                    opcua_id: 'ns=3;s=Pressures',
+                    object_id: 'ns=3;s=Pressures',
                     inputArguments: []
                 }
             ]
