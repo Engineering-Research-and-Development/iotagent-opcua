@@ -370,7 +370,6 @@ describe('OPCUABinding handling', () => {
                     };
                     return client;
                 });
-                opcuaBinding.__set__('metaBindings.performAutoProvisioning', () => {});
                 opcuaBinding.__set__('opcua.resolveNodeId', (opcua_id) => {
                     return opcuaNodeId;
                 });
