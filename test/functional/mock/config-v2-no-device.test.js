@@ -193,7 +193,11 @@ config.iota = {
      * List of characters to be filtered before forwarding any request to Orion.
      * Default Orion forbidden characters are filtered by default, see (https://github.com/telefonicaid/fiware-orion/blob/74aaae0c98fb24f082e3b258aa642461eb285e39/doc/manuals/orion-api.md#general-syntax-restrictions)
      */
-    extendedForbiddenCharacters: []
+    extendedForbiddenCharacters: [],
+    /**
+     * Flag indicating whether to provision the Group and Device automatically
+     */
+    autoprovision: true
 };
 
 config.opcua = {
@@ -286,9 +290,5 @@ config.defaultTransport = 'OPCUA';
  * single-thread one (false).
  */
 //config.multiCore = false;
-/**
- * flag indicating whether or not to provision the Group and Device automatically
- */
-config.autoprovision = true;
 
 module.exports = config;

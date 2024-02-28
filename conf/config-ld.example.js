@@ -373,7 +373,11 @@ config.iota = {
     /**
      * flag indicating whether the incoming measures to the IoTAgent should be processed as per the "attributes" field.
      */
-    explicitAttrs: false
+    explicitAttrs: false,
+    /**
+     * Flag indicating whether to provision the Group and Device automatically
+     */
+    autoprovision: true
 };
 
 config.opcua = {
@@ -471,9 +475,5 @@ config.defaultTransport = 'OPCUA';
  * single-thread one (false).
  */
 //config.multiCore = false;
-/**
- * flag indicating whether or not to provision the Group and Device automatically
- */
-config.autoprovision = true;
 
 module.exports = config;
