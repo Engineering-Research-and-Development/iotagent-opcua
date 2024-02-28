@@ -50,14 +50,28 @@ services:
             - "4041:4041"
             - "9229:9229"
         environment:
+            - "IOTA_LOGLEVEL=DEBUG"
+            - "IOTA_TIMESTAMP=true"
             - "IOTA_CB_HOST=orion"
             - "IOTA_CB_PORT=1026"
+            - "IOTA_CB_NGSIVERSION=v2"
+            - "IOTA_CB_NGSILDCONTEXT=https://uri.etsi.org/ngsi-ld/v1/ngsi-ld-core-context.jsonld"
+            - "IOTA_CB_SERVICE=opcua_car"
+            - "IOTA_CB_SUBSERVICE=/demo"
             - "IOTA_NORTH_PORT=4041"
             - "IOTA_REGISTRY_TYPE=mongodb"
             - "IOTA_MONGO_HOST=mongodb"
             - "IOTA_MONGO_PORT=27017"
             - "IOTA_MONGO_DB=iotagent_opcua"
+            - "IOTA_SERVICE=opcua_car"
+            - "IOTA_SUBSERVICE=/demo"
             - "IOTA_PROVIDER_URL=http://iotagent-opcua:4041"
+            - "IOTA_DEVICEREGDURATION=P20Y"
+            - "IOTA_DEFAULTTYPE=Device"
+            - "IOTA_DEFAULTRESOURCE=/iot/opcu"
+            - "IOTA_EXPLICITATTRS=true"
+            - "IOTA_EXTENDED_FORBIDDEN_CHARACTERS=[]"
+            - "IOTA_AUTOPROVISION=true"
             - "IOTA_OPCUA_ENDPOINT=opc.tcp://iotcarsrv:5001/UA/CarServer"
             - "IOTA_OPCUA_SECURITY_MODE=None"
             - "IOTA_OPCUA_SECURITY_POLICY=None"
@@ -70,7 +84,6 @@ services:
             - "IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT=10"
             - "IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL=1000"
             - "IOTA_OPCUA_SUBSCRIPTION_PRIORITY=128"
-            - "IOTA_EXTENDED_FORBIDDEN_CHARACTERS=[]"
             - "IOTA_OPCUA_MT_POLLING=false"
             - "IOTA_OPCUA_MT_AGENT_ID=age01_"
             - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
@@ -119,15 +132,28 @@ networks:
 Many settings can be configured using Docker environment variables. A typical IoT Agent Docker container is driven by
 environment variables such as those shown below:
 
+-   `IOTA_LOGLEVEL` - Log level for iotagentnode lib
+-   `IOTA_TIMESTAMP` - Whether the IoTAgent will add the TimeInstant attribute to every entity created, as well as a TimeInstant metadata to each attribute, with the current timestamp
 -   `IOTA_CB_HOST` - Hostname of the context broker to update context
 -   `IOTA_CB_PORT` - Port that context broker listens on to update context
+-   `IOTA_CB_NGSIVERSION` - Version of the Context Broker
+-   `IOTA_CB_NGSILDCONTEXT` - JSON LD Context
+-   `IOTA_CB_SERVICE` - Fallback Tenant for the Context Broker
+-   `IOTA_CB_SUBSERVICE` - Fallback Path for the Context Broker
 -   `IOTA_NORTH_PORT` - Port used for configuring the IoT Agent and receiving context updates from the context broker
 -   `IOTA_REGISTRY_TYPE` - Whether to hold IoT device info in memory or in a database
 -   `IOTA_MONGO_HOST` - The hostname of MongoDB - used for holding device and service information
 -   `IOTA_MONGO_PORT` - The port that MongoDB is listening on
 -   `IOTA_MONGO_DB` - The name of the database used in MongoDB
--   `IOTA_PROVIDER_URL` - URL passed to the Context Broker when commands are registered, used as a forwarding URL
-    location when the Context Broker issues a command to a device
+-   `IOTA_SERVICE` - Default service, for IoT Agent installations that won't require preregistration
+-   `IOTA_SUBSERVICE` - Default subservice, for IoT Agent installations that won't require preregistration
+-   `IOTA_PROVIDER_URL` - URL passed to the Context Broker when commands are registered, used as a forwarding URL location when the Context Broker issues a command to a device
+-   `IOTA_DEVICEREGDURATION` - Default maximum expire date for device registrations
+-   `IOTA_DEFAULTTYPE` - Default type, for IoT Agent installations that won't require preregistration
+-   `IOTA_DEFAULTRESOURCE` -  Default resource of the IoT Agent. This value must be different for every IoT Agent connecting to the IoT Manager
+-   `IOTA_EXPLICITATTRS` - Flag indicating whether the incoming measures to the IoTAgent should be processed as per the "attributes" field
+-   `IOTA_EXTENDED_FORBIDDEN_CHARACTERS` - List of characters to be filtered before forwarding any request to the Context Broker
+-   `IOTA_AUTOPROVISION` - Flag indicating whether to provision the Group and Device automatically
 -   `IOTA_OPCUA_ENDPOINT` - Endpoint of OPC UA Server
 -   `IOTA_OPCUA_SECURITY_MODE` - Security mode for OPC UA connection
 -   `IOTA_OPCUA_SECURITY_POLICY` - Security policy for OPC UA connection
