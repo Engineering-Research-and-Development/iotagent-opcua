@@ -140,7 +140,7 @@ config.iota = {
          * Host where MongoDB is located. If the MongoDB used is a replicaSet, this property will contain a
          * comma-separated list of the instance names or IPs.
          */
-        host: 'mongodb',
+        host: 'localhost',
         /**
          * Port where MongoDB is listening. In the case of a replicaSet, all the instances are supposed to be listening
          * in the same port.
@@ -173,7 +173,7 @@ config.iota = {
      * URL Where the IoT Agent Will listen for incoming updateContext and queryContext requests (for commands and
      * passive attributes). This URL will be sent in the Context Registration requests.
      */
-    providerUrl: 'http://iotagent-opcua:4041',
+    providerUrl: 'http://localhost:4041',
     /**
      * Default maximum expire date for device registrations.
      */
@@ -217,7 +217,7 @@ config.opcua = {
     /**
      * Endpoint where the IoT Agent will listen for an active OPC UA Server.
      */
-    endpoint: 'opc.tcp://iotcarsrv:5001/UA/CarServer',
+    endpoint: 'opc.tcp://localhost:5001/UA/CarServer',
     /**
      * Security Mode to access OPC UA Server.
      */
