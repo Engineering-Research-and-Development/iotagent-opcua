@@ -107,7 +107,7 @@ services:
 
   iotcarsrv:
     hostname: iotcarsrv
-    image: iotagent4fiware/opcuacarsrv:latest
+    image: iotagent4fiware/opcuacarsrv:1.3.9
     networks:
       - hostnet
     ports:
