@@ -69,6 +69,15 @@ describe('IoT Agent util functions', () => {
             describe('When device does not exist in mongodb neither in config', () => {
                 beforeEach(() => {
                     mockConfig.defaultKey = null;
+                    iotaUtils.__set__('config.getLogger', () => {
+                        return {
+                            error: (context, text) => {},
+                            warn: (context, text) => {},
+                            info: (context, text) => {},
+                            fatal: (context, text) => {},
+                            debug: (context, text) => {}
+                        };
+                    });
                     iotaUtils.__set__('iotAgentLib.findConfiguration', (service, subservice, type, callback) => {
                         callback('Group not found', null);
                     });

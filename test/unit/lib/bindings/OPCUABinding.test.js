@@ -8,9 +8,115 @@ describe('OPCUABinding handling', () => {
     const opcuaBinding = rewire('../../../../lib/bindings/OPCUABinding.js');
     const mockConfig = require('../../../../conf/config-v2.example');
 
+    describe('createSubscription', () => {
+        describe('When the_session is not null', () => {
+            beforeEach(() => {
+                opcuaBinding.__set__('config.getConfig', () => {
+                    return mockConfig;
+                });
+                opcuaBinding.__set__('the_session', {
+                    createSubscription2: () => {
+                        var subscription = {
+                            on: (type, on_callback) => {
+                                on_callback();
+                                return subscription;
+                            },
+                            monitor: (itemToMonitor, monitoringParamaters, timestampToReturn) => {
+                                return {
+                                    on: (type, on_callback) => {
+                                        on_callback({
+                                            statusCode: 0,
+                                            value: {
+                                                value: 0
+                                            }
+                                        });
+                                    }
+                                };
+                            }
+                        };
+                        return subscription;
+                    }
+                });
+            });
+
+            it('Should create the subscription', async () => {
+                const result = await opcuaBinding.createSubscription();
+                expect(result).not.to.equal(null);
+            });
+        });
+
+        describe('When the_session is null', () => {
+            beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {}
+                    };
+                });
+                opcuaBinding.__set__('the_session', null);
+            });
+
+            it('Should return null', async () => {
+                const opcuaNodeId = 'ns=3;s=Speed';
+                const result = await opcuaBinding.doesOPCUANodeExist(opcuaNodeId);
+                expect(result).to.equal(null);
+            });
+        });
+    });
+
+    describe('doesOPCUANodeExist', () => {
+        describe('When the_session is not null', () => {
+            beforeEach(() => {
+                opcuaBinding.__set__('the_session', {
+                    readVariableValue: () => {
+                        return {
+                            value: {
+                                dataType: 1
+                            }
+                        };
+                    },
+                    browse: (b) => {
+                        return [];
+                    }
+                });
+            });
+
+            it('Should check if OPCUA node exist and return results array', async () => {
+                const opcuaNodeId = 'ns=3;s=Speed';
+                const result = await opcuaBinding.doesOPCUANodeExist(opcuaNodeId);
+                expect(result).not.to.equal(null);
+            });
+        });
+
+        describe('When the_session is null', () => {
+            beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {}
+                    };
+                });
+                opcuaBinding.__set__('the_session', null);
+            });
+
+            it('Should return null', async () => {
+                const opcuaNodeId = 'ns=3;s=Speed';
+                const result = await opcuaBinding.doesOPCUANodeExist(opcuaNodeId);
+                expect(result).to.equal(null);
+            });
+        });
+    });
+
     describe('readValueFromOPCUANode', () => {
         describe('When the_session is not null', () => {
             beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 opcuaBinding.__set__('config.getConfig', () => {
                     return mockConfig;
                 });
@@ -72,6 +178,15 @@ describe('OPCUABinding handling', () => {
     describe('readValueTypeFromOPCUANode', () => {
         describe('When the_session is not null', () => {
             beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 opcuaBinding.__set__('config.getConfig', () => {
                     return mockConfig;
                 });
@@ -95,6 +210,15 @@ describe('OPCUABinding handling', () => {
 
         describe('When dataValue is null', () => {
             beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 opcuaBinding.__set__('config.getConfig', () => {
                     return mockConfig;
                 });
@@ -116,6 +240,15 @@ describe('OPCUABinding handling', () => {
 
         describe('When the_session is null', () => {
             beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 opcuaBinding.__set__('config.getConfig', () => {
                     return mockConfig;
                 });
@@ -135,6 +268,15 @@ describe('OPCUABinding handling', () => {
 
         describe('When the_session is not null', () => {
             beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 opcuaBinding.__set__('config.getConfig', () => {
                     return mockConfig;
                 });
@@ -164,8 +306,25 @@ describe('OPCUABinding handling', () => {
 
         describe('When the_session is not null', () => {
             beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 opcuaBinding.__set__('config.getConfig', () => {
                     return mockConfig;
+                });
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {}
+                    };
                 });
                 opcuaBinding.__set__('the_session', {
                     call: () => {
@@ -233,6 +392,15 @@ describe('OPCUABinding handling', () => {
 
         describe('When the_session is not null', () => {
             beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 opcuaBinding.__set__('config.getConfig', () => {
                     return mockConfig;
                 });
@@ -306,6 +474,15 @@ describe('OPCUABinding handling', () => {
         describe('When the_session is not null', () => {
             const opcuaNodeId = 'ns=3;s=Acceleration';
             beforeEach(() => {
+                opcuaBinding.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 opcuaBinding.__set__('config.getConfig', () => {
                     return mockConfig;
                 });

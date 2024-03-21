@@ -23,6 +23,15 @@ describe('Update handling', () => {
                 updateHandler.__set__('iotAgentLib.getDeviceByNameAndType', (id, type, service, subservice, callback) => {
                     callback('UPDATE-001: Update execution could not be handled');
                 });
+                updateHandler.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 updateHandler.handler(id, type, service, subservice, attributes, (err) => {
                     expect(err).to.equal('UPDATE-001: Update execution could not be handled');
                     done();
@@ -31,6 +40,15 @@ describe('Update handling', () => {
         });
         describe('When device exists and api key does not exist', () => {
             it('Should return an error', (done) => {
+                updateHandler.__set__('config.getLogger', () => {
+                    return {
+                        error: (context, text) => {},
+                        warn: (context, text) => {},
+                        info: (context, text) => {},
+                        fatal: (context, text) => {},
+                        debug: (context, text) => {}
+                    };
+                });
                 updateHandler.__set__('iotAgentLib.getDeviceByNameAndType', (id, type, service, subservice, callback) => {
                     callback(null, mockDevice);
                 });
@@ -46,6 +64,15 @@ describe('Update handling', () => {
         describe('When device and api key exist', (done) => {
             describe('When update an attribute', (done) => {
                 it('Should set the payload and continue the iotagent-node-lib flow update handling', (done) => {
+                    updateHandler.__set__('config.getLogger', () => {
+                        return {
+                            error: (context, text) => {},
+                            warn: (context, text) => {},
+                            info: (context, text) => {},
+                            fatal: (context, text) => {},
+                            debug: (context, text) => {}
+                        };
+                    });
                     updateHandler.__set__('iotAgentLib.getDeviceByNameAndType', (id, type, service, subservice, callback) => {
                         callback(null, mockDevice);
                     });
