@@ -24,32 +24,32 @@ cd iotagent-opcua
 
 ##### Step 2 - Configure the environment
 
-Open the `conf/config.js` and make your changes (see how to do this
-[here](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual/index.html)).
+Open the `conf/config.js` and make your changes (see how to do this [here](howto.md)).
 
 ##### Step 3 - Configure device
 
 The downloaded repository comes with a `config.js` (conf/config.js) in which an empty Device is preloaded.
 
-At this point, you have two options:
+At this point, you have three options:
 
 -   Use the mapping tool to automatically generate a `config.js`
--   Define your own context mappings in properties `types`, `contexts`, `contextSubscriptions` in `config.js`
--   Provision the new Device (mapping between OPC UA Server and OPC UA Agent) via REST interface
+-   Define your own context mappings in fields `types`, `contexts`, `contextSubscriptions`, `events` in `config.js`
+-   Dynamically provision the new Device (mapping between OPC UA Server and OPC UA Agent) via REST interface
 
 If you want to use the mapping tool simply set as empty the following properties in the config.js:
 
 -   `types: {}`
 -   `contexts: []`
 -   `contextSubscriptions: []`
+-   `events: []`
 
 When you launch the Agent, the mapping tool will automatically be triggered and will extract the above properties of the
 `config.js` you need using the information contained on the rest of the file. Be sure the addresses contained inside the
 `config.js` are the correct ones.
 
 If you want to use the REST interface have a look at Step 4
-[here](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial/index.html#step-by-step-tutorial) to see
-how to provision a new device.
+[here](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial.html#step-by-step-tutorial) to see how to
+provision a new device.
 
 ##### Step 4 - Install the npm packages
 

@@ -76,7 +76,7 @@ It represents a car with the following structure:
 IoT Agent can be configured as described in the
 [user guide](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/user_and_programmers_manual.md).
 In order to start playing with the above mentioned OPC UA server, configuration files have been already edited and
-available in *conf* folder.
+available in _conf_ folder.
 
 #### Orion Context Broker
 
@@ -142,12 +142,13 @@ configuration file (config.js) or through the REST API
 Three different initialization modalities are available:
 
 -   Use a preloaded config.js
--   Invoke a mapping tool responsible of automatically building the config.js (**NOTE:** **_Before using the
-    MappingTool, erase the three objects: *types*, *contexts*, *contextSubscriptions* within the existing config.js_**)
+-   Invoke a mapping tool responsible of automatically building the mapping between OPC UA and NGSI (**NOTE:** **_Before
+    using the MappingTool, erase the three objects: *types*, *contexts*, *contextSubscriptions* within the existing
+    config.js_**)
 -   Use the REST API
 
 Since in the following parts of this tutorial we are going to use the REST API you have not to worry about the
-initialization. 
+initialization.
 
 #### Step 4 - Provision a new Device
 

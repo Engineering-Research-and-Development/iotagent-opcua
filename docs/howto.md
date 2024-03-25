@@ -8,9 +8,9 @@ npm install
 
 ### Configure
 
-IotAgent-opcua comes with MappingTool, an automated tool that goes in discovery for all the nodes belonging to an OPC UA
-Server. You can chose configure the config.js file yourself ( in particular the three objects: _types_, _contexts_,
-_contextSubscriptions_) or let MappingTool configure the config.js file itself.
+IotAgent OPC UA comes with MappingTool, an automated tool that goes in discovery for all the nodes belonging to an OPC
+UA Server. You can chose configure the config.js file yourself (in particular the three objects: _types_, _contexts_,
+_contextSubscriptions_, _events_) or let MappingTool configure the config.js file itself.
 
 ```js
 /*
@@ -36,7 +36,7 @@ _contextSubscriptions_) or let MappingTool configure the config.js file itself.
  * please contact with::[manfredi.pistone@eng.it, gabriele.deluca@eng.it, walterdomenico.vergara@eng.it, mattiagiuseppe.marzano@eng.it]
  */
 
-var config = {};
+const config = {};
 
 config.iota = {
     /**
@@ -175,6 +175,7 @@ config.iota = {
     types: {},
     contexts: [],
     contextSubscriptions: [],
+    events: [],
     /**
      * Default service, for IoT Agent installations that won't require preregistration.
      */
@@ -205,9 +206,29 @@ config.iota = {
      * flag indicating whether the incoming measures to the IoTAgent should be processed as per the "attributes" field.
      */
     explicitAttrs: false,
+    /**
+     * List of characters to be filtered before forwarding any request to Orion.
+     * Default Orion forbidden characters are filtered by default, see (https://github.com/telefonicaid/fiware-orion/blob/74aaae0c98fb24f082e3b258aa642461eb285e39/doc/manuals/orion-api.md#general-syntax-restrictions)
+     */
+    extendedForbiddenCharacters: [],
+    /**
+     * Flag indicating whether to provision the Group and Device automatically
+     */
+    autoprovision: true,
 };
 
 config.opcua = {
+    /**
+     * Subscription options for OPC UA connection.
+     */
+    subscription: {
+        maxNotificationsPerPublish: 1000,
+        publishingEnabled: true,
+        requestedLifetimeCount: 100,
+        requestedMaxKeepAliveCount: 10,
+        requestedPublishingInterval: 1000,
+        priority: 128,
+    },
     /**
      * Endpoint where the IoT Agent will listen for an active OPC UA Server.
      */
@@ -236,7 +257,11 @@ config.opcua = {
 
 config.mappingTool = {
     /**
-     *  Boolean property to assess whether enable polling in MappingTool or not
+     *  Boolean property to assess whether enabling MappingTool or not
+     */
+    enabled: false,
+    /**
+     *  Boolean property to assess whether enabling polling in MappingTool or not
      */
     polling: false,
     /**
@@ -255,6 +280,10 @@ config.mappingTool = {
      * entityType to be assigned to the newly generated entity from MappingTool execution
      */
     entityType: "Device",
+    /**
+     * boolean flag to determine whether to store the output of the mapping tool execution or not
+     */
+    storeOutput: true,
 };
 
 /**
@@ -282,10 +311,6 @@ config.defaultTransport = "OPCUA";
  * single-thread one (false).
  */
 //config.multiCore = false;
-/**
- * flag indicating whether or not to provision the Group and Device automatically
- */
-config.autoprovision = true;
 
 module.exports = config;
 ```

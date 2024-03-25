@@ -10,9 +10,7 @@
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4612/badge)](https://bestpractices.coreinfrastructure.org/projects/4612)
 ![Status](https://nexus.lab.fiware.org/static/badges/statuses/full.svg)
 [![Join the chat at https://gitter.im/iotagent-opcua/community](https://badges.gitter.im/iotagent-opcua/community.svg)](https://gitter.im/iotagent-opcua/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-<br/>
-<img align="right" width="200" src="/docs/images/iotagent-logo.png" /> 
-
+<br/> <img align="right" width="200" src="/docs/images/iotagent-logo.png" />
 
 An Internet of Things Agent accepting data from OPC UA devices. This IoT Agent is designed to be a bridge between the
 OPC Unified Architecture protocol and the
@@ -31,8 +29,8 @@ library's GitHub repository.
 This project is part of [FIWARE](https://www.fiware.org/). For more information check the
 [FIWARE Catalogue entry for the IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
-| :books: [Documentation](https://iotagent-opcua.rtfd.io) |  <img style="height:1em" src="https://quay.io/static/img/quay_favicon.png"/> [quay.io](https://quay.io/repository/fiware/iotagent-opcua) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
-| ------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| :books: [Documentation](https://iotagent-opcua.rtfd.io) | <img style="height:1em" src="https://quay.io/static/img/quay_favicon.png"/> [quay.io](https://quay.io/repository/fiware/iotagent-opcua) | :mortar_board: [Academy](https://fiware-academy.readthedocs.io/en/latest/iot-agents/idas) | :dart: [Roadmap](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/roadmap.md) |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 
 
 ## Contents
@@ -77,7 +75,7 @@ A step-by-step tutorial is available
 
 Before launching the Agent you must install Orion Context Broker (Be aware to choose the correct version, please use
 _orion_ if it's needed to test the Agent with NGSI v2 otherwise use _orion-ld_ in case of NGSI-ld test.) and a OPC UA
-Server. After that you must tell the Agent how to interact with these components by using config.properties file. Once
+Server. After that you must tell the Agent how to interact with these components by using config.js file. Once
 configuration is complete you can execute these commands to run the Agent.
 
 ```console
@@ -103,10 +101,10 @@ Administration services are reachable at port specified by api-port property (co
 
 ### Poll commands
 
-Poll commands can be enabled switching polling property to true (config.properties). Once enabled poll command, you can
-customize the polling Daemon Frequency and Expiration time still in the (config.properties). The polling-commands-timer
-is referred to the feature developed, that consist in the execution of the older polling command periodically (if
-exists) ed delete it in case of success.
+Poll commands can be enabled switching polling property to true (config.js). Once enabled poll command, you can
+customize the polling Daemon Frequency and Expiration time still in the (config.js). The polling-commands-timer is
+referred to the feature developed, that consist in the execution of the older polling command periodically (if exists)
+ed delete it in case of success.
 
 ## API
 
@@ -119,14 +117,12 @@ their APIs can be found in the IoT Agent Library [documentation](https://iotagen
 For test purpose can create an OPC UA server using the code in the following
 [GitHub repository](https://github.com/Engineering-Research-and-Development/opc-ua-car-server/)
 
-Firstly edit the
-[properties](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/conf/config.properties)
-in order to set Northbound (NGSI) and Southbound (OPC UA) settings.
+Firstly edit the [config.js](conf/config.js) in order to set Northbound (NGSI) and Southbound (OPC UA) settings.
 
 Further information about configuration properties can be found [here](docs/howto.md)
 
-For checking current status of the Agent, send a request to /status service
-(`http://{agent-ip-address}:api-port/status`)
+For checking current status of the Agent, send a request to /version service
+(`http://{agent-ip-address}:api-port/version`)
 
 ### Secure connection with an OPC UA Server
 
@@ -135,7 +131,7 @@ establish a secure connection to the OPC UA Server.
 
 ### How to get access to the advanced API and Documentation topics
 
-Documentation about the OPC UA Administration API can be found [here](https://opcuaiotagent.docs.apiary.io)
+Documentation about the OPC UA Administration API can be found [here](https://iotagentopcua.docs.apiary.io/)
 
 ## Quality Assurance
 
