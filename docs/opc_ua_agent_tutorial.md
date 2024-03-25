@@ -157,15 +157,14 @@ By Device we mean the set of variables (attributes) and methods available on OPC
 To provision the Device corresponding to what the CarServer offers, use the following REST call:
 
 ```bash
-curl http://localhost:4041/iot/devices \
-     -H "fiware-service: opcua_car" \
-     -H "fiware-servicepath: /demo" \
-     -H "Content-Type: application/json" \
-     -d '
-     {
+curl --location 'http://localhost:4041/iot/devices' \
+--header 'fiware-service: opcua_car' \
+--header 'fiware-servicepath: /demo' \
+--header 'Content-Type: application/json' \
+--data '{
     "devices": [
         {
-            "device_id": "",
+            "device_id": "age01_Car",
             "entity_name": "age01_Car",
             "entity_type": "Device",
             "apikey": "iot",
@@ -213,6 +212,135 @@ curl http://localhost:4041/iot/devices \
                     "type": "command"
                 }
             ],
+            "internal_attributes": {
+                "contexts": [
+                    {
+                        "id": "age01_Car",
+                        "type": "Device",
+                        "mappings": [
+                            {
+                                "ocb_id": "Events",
+                                "opcua_id": "ns=3;s=Events",
+                                "object_id": "ns=3;s=Events",
+                                "inputArguments": []
+                            },
+                            {
+                                "ocb_id": "EngineBrake",
+                                "opcua_id": "ns=3;s=EngineBrake",
+                                "object_id": "ns=3;s=EngineBrake",
+                                "inputArguments": []
+                            },
+                            {
+                                "ocb_id": "Acceleration",
+                                "opcua_id": "ns=3;s=Acceleration",
+                                "object_id": "ns=3;s=Acceleration",
+                                "inputArguments": []
+                            },
+                            {
+                                "ocb_id": "EngineStopped",
+                                "opcua_id": "ns=3;s=EngineStopped",
+                                "object_id": "ns=3;s=EngineStopped",
+                                "inputArguments": []
+                            },
+                            {
+                                "ocb_id": "Engine_Temperature",
+                                "opcua_id": "ns=3;s=Temperature",
+                                "object_id": "ns=3;s=Temperature",
+                                "inputArguments": []
+                            },
+                            {
+                                "ocb_id": "Engine_Oxigen",
+                                "opcua_id": "ns=3;s=Oxigen",
+                                "object_id": "ns=3;s=Oxigen",
+                                "inputArguments": []
+                            }
+                        ]
+                    }
+                ],
+                "contextSubscriptions": [
+                    {
+                        "id": "age01_Car",
+                        "type": "Device",
+                        "mappings": [
+                            {
+                                "ocb_id": "Error",
+                                "opcua_id": "ns=3;s=Error",
+                                "object_id": "ns=3;i=1000",
+                                "inputArguments": [
+                                    {
+                                        "dataType": 12,
+                                        "type": "Error Type"
+                                    }
+                                ]
+                            },
+                            {
+                                "ocb_id": "Speed",
+                                "opcua_id": "ns=3;s=Speed",
+                                "object_id": "ns=3;i=1000",
+                                "inputArguments": []
+                            },
+                            {
+                                "ocb_id": "Stop",
+                                "opcua_id": "ns=3;s=Stop",
+                                "object_id": "ns=3;i=1000",
+                                "inputArguments": []
+                            },
+                            {
+                                "ocb_id": "Accelerate",
+                                "opcua_id": "ns=3;s=Accelerate",
+                                "object_id": "ns=3;i=1000",
+                                "inputArguments": [
+                                    {
+                                        "dataType": 6,
+                                        "type": "Intensity"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "events": [
+                    {
+                        "ocb_id": "Events",
+                        "opcua_id": "ns=3;s=Events",
+                        "object_id": "ns=3;s=Events",
+                        "fields": [
+                            {
+                                "name": "EventId",
+                                "type": "ByteString"
+                            },
+                            {
+                                "name": "EventType",
+                                "type": "NodeId"
+                            },
+                            {
+                                "name": "SourceNode",
+                                "type": "NodeId"
+                            },
+                            {
+                                "name": "SourceName",
+                                "type": "String"
+                            },
+                            {
+                                "name": "Time",
+                                "type": "DateTime"
+                            },
+                            {
+                                "name": "ReceiveTime",
+                                "type": "DateTime"
+                            },
+                            {
+                                "name": "Message",
+                                "type": "LocalizedText"
+                            },
+                            {
+                                "name": "Severity",
+                                "type": "UInt16"
+                            }
+                        ]
+                    }
+                ]
+            },
             "endpoint": "opc.tcp://iotcarsrv:5001/UA/CarServer"
         }
     ]
@@ -229,21 +357,21 @@ curl http://localhost:4041/iot/devices \
      -H "fiware-servicepath: /demo"
 ```
 
-You should obtain a JSON indicating that there is one device
+You should obtain a JSON indicating that there is one device.
 
 #### Interlude
 
 You can interact with the CarServer through the Agent in three different ways:
 
--   **Active attributes** For attributes mapped as **active** the Agent receives in real-time the updated values
+-   **Active attributes** For attributes mapped as **active** the Agent receives in real-time the updated values.
 
 -   **Lazy attributes** For this kind of attribute the OPC UA Server is not willing to send the value to the Agent,
     therefore this can be obtained only upon request. The agent registers itself as lazy attribute provider being
-    responsible for retrieving it
+    responsible for retrieving it.
 
 -   **Commands**
 
-    Through the requests described below it is possible to execute methods on the OPC UA server
+    Through the requests described below it is possible to execute methods on the OPC UA server.
 
 #### Step 6 - Monitor Agent behaviour
 
@@ -254,24 +382,21 @@ cd iotagent-opcua/docker
 docker-compose logs -f
 ```
 
-Looking at these logs is useful to spot possible errors
-
 #### Step 7 - Accelerate
 
-In order to send the Accelerate command (method in OPC UA jargon), the request has to be sent to Orion that forwards the
-request to the OPC UA Agent:
+In order to send the Accelerate command, the request has to be sent to Orion that forwards the request to the OPC UA
+Agent:
 
 For NGSIv2:
 
 ```bash
-curl -X PUT \
-  'http://localhost:1026/v2/entities/age01_Car/attrs/Accelerate?type=Device' \
-  -H 'content-type: application/json' \
-  -H 'fiware-service: opcua_car' \
-  -H 'fiware-servicepath: /demo' \
-  -d '{
-  "value": [2],
-  "type": "command"
+curl --location --request PUT 'http://localhost:1026/v2/entities/age01_Car/attrs/Accelerate?type=Device' \
+--header 'fiware-service: opcua_car' \
+--header 'fiware-servicepath: /demo' \
+--header 'Content-Type: application/json' \
+--data '{
+    "type" : "command",
+    "value" : 5
 }'
 ```
 
@@ -297,8 +422,8 @@ curl -X GET \
   -H 'fiware-servicepath: /demo'
 ```
 
-The OPC UA Agent monitors all attributes defined as active into `config.js` file, after creation of NGSI entity as
-proof:
+The OPC UA Agent monitors all attributes defined as "attributes" into provisioning body request (or as "active" in the
+`config.js`), after creation of NGSI entity as proof:
 
 ```bash
 curl -X GET \
@@ -317,23 +442,20 @@ In order to fully understand how the OPC UA IotAgent can be used in a **_real en
 where the link between the Agent and the machinery is established.
 
 These information are available in the
-[User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual/index.html)
-section
+[User & Programmers Manual](https://iotagent-opcua.readthedocs.io/en/latest/user_and_programmers_manual.html) section
 
 #### How to build the Docker Image
 
 If you have changes to the Agent codebase that you want to integrate, or you want to modify the current Docker
 deployment package:
 
-[Here](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/docker_readme.md) you
-find the instructions on how to build a Docker Image for the Agent
+[Here](docker_readme.md) you find the instructions on how to build a Docker Image for the Agent
 
 ## Appendices
 
 #### Appendix A - Customize the environment
 
-Docker Compose can be downloaded here
-[docker-compose.yml](https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/iotagent/docker/docker-compose.yml):
+Docker Compose can be downloaded here [docker-compose.yml](../docker/docker-compose.yml):
 
 Modifying this file you can:
 
@@ -378,7 +500,7 @@ services:
             - "IOTA_PROVIDER_URL=http://iotagent-opcua:4041"
             - "IOTA_DEVICEREGDURATION=P20Y"
             - "IOTA_DEFAULTTYPE=Device"
-            - "IOTA_DEFAULTRESOURCE=/iot/opcu"
+            - "IOTA_DEFAULTRESOURCE=/iot/opcua"
             - "IOTA_EXPLICITATTRS=true"
             - "IOTA_EXTENDED_FORBIDDEN_CHARACTERS=[]"
             - "IOTA_AUTOPROVISION=true"
@@ -394,6 +516,7 @@ services:
             - "IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT=10"
             - "IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL=1000"
             - "IOTA_OPCUA_SUBSCRIPTION_PRIORITY=128"
+            - "IOTA_OPCUA_MT_ENABLED=false"
             - "IOTA_OPCUA_MT_POLLING=false"
             - "IOTA_OPCUA_MT_AGENT_ID=age01_"
             - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
@@ -415,7 +538,8 @@ services:
             - mongodb:/data
 
     orion:
-        image: fiware/orion
+        image: fiware/orion:3.10.1
+        #image: fiware/orion-ld:1.5.1
         hostname: orion
         depends_on:
             - mongodb
@@ -424,10 +548,11 @@ services:
         ports:
             - "1026:1026"
         command: -dbhost mongodb -logLevel DEBUG
+        #command: -dbhost mongodb -logLevel DEBUG -forwarding -experimental
 
     iotcarsrv:
         hostname: iotcarsrv
-        image: iotagent4fiware/opcuacarsrv:latest
+        image: iotagent4fiware/opcuacarsrv:1.3.9
         networks:
             - hostnet
         ports:

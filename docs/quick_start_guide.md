@@ -16,26 +16,22 @@ Main sections are:
 -   `config.iota`: configure northbound (Context Broker), agent server, persistence (MongoDB), log level, etc.
 -   `config.opcua`: configure southbound (OPC UA endpoint)
 -   `config.mappingTool`: configure mapping tool properties to set auto configuration
--   `config.autoprovision`: flag indicating whether or not to provision the Service Group and Device automatically
+-   `config.autoprovision`: flag indicating whether or not to provision the Service Group and Device automatically when
+    measures arrive
 
 ##### Auto provisioning
-
-OPC UA Agent provides an autoprovisioning feature that allow the agent to automatically register Service Group and
-Device at startup.
 
 Setting property `autoprovision` in the config.js to `false`, a manual provisioning can be performed using
 iotagent-node-lib [API](https://github.com/telefonicaid/iotagent-node-lib/blob/master/doc/api.md) interfaces.
 
-Setting property `autoprovision` in the config.js to `true`, the OPC UA Agent will perform autoprovisioning in two ways:
-
--   Auto Configuration (usage of Mapping Tool)
--   Manual Configuration (editing config.js file)
+Setting property `autoprovision` in the config.js to `true`, the OPC UA Agent will perform autoprovisioning when
+measures arrive.
 
 #### Auto Configuration (usage of Mapping Tool)
 
-When autoprovisioning is enabled, using of Auto Configuration create a mapping for all OPC UA objects (except those with
-namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods
-will be configured as commands.
+When `config.mappingTool.enabled` is `true` and `config.iota.types` is empty, the Mapping Tool creates a mapping for all
+OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active
+attributes whereas all OPC UA methods will be configured as commands.
 
 To enable auto configuration, simply set as empty the following properties in the config.js:
 
@@ -43,11 +39,15 @@ To enable auto configuration, simply set as empty the following properties in th
 -   `contexts: []`
 -   `contextSubscriptions: []`
 
+and enable the mapping tool:
+
+-   `mappingTool: { enabled: true, ... }`
+
 #### Manual Configuration (editing config.js file)
 
-When autoprovisioning is enabled, using Manual Configuration it is possible to specify the mapping between OPC UA
-objects and NGSI attributes and commands. The mapping can be specified in the config.js, editing the properties `types`,
-`contexts` and `contextSubscriptions`.
+Using Manual Configuration it is possible to specify the mapping between OPC UA objects and NGSI attributes and
+commands. The mapping can be specified in the config.js, editing the properties `types`, `contexts` and
+`contextSubscriptions`.
 
 To define active attributes:
 
@@ -72,6 +72,12 @@ To define poll commands:
 -   set polling-commands-timer in ms to execute che poll commands automatically
 
 An example can be found [here](../conf/config-v2.example.js).
+
+#### Dynamic configuration (REST API)
+
+If you want to use the REST interface have a look at Step 4
+[here](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial.html#step-by-step-tutorial) to see how to
+provision a new device.
 
 ### Run
 

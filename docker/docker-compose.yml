@@ -56,7 +56,7 @@ services:
       - "IOTA_PROVIDER_URL=http://iotagent-opcua:4041"
       - "IOTA_DEVICEREGDURATION=P20Y"
       - "IOTA_DEFAULTTYPE=Device"
-      - "IOTA_DEFAULTRESOURCE=/iot/opcu"
+      - "IOTA_DEFAULTRESOURCE=/iot/opcua"
       - "IOTA_EXPLICITATTRS=true"
       - "IOTA_EXTENDED_FORBIDDEN_CHARACTERS=[]"
       - "IOTA_AUTOPROVISION=true"

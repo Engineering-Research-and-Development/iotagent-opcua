@@ -46,9 +46,9 @@ Main sections are:
 
 #### Auto Configuration (usage of Mapping Tool)
 
-When autoprovisioning is enabled, using of Auto Configuration create a mapping for all OPC UA objects (except those with
-namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods
-will be configured as commands.
+When `config.mappingTool.enabled` is `true` and `config.iota.types` is empty, the Mapping Tool creates a mapping for all
+OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active
+attributes whereas all OPC UA methods will be configured as commands.
 
 To enable auto configuration, simply set as empty the following properties in the config.js:
 
@@ -56,15 +56,15 @@ To enable auto configuration, simply set as empty the following properties in th
 -   `contexts: []`
 -   `contextSubscriptions: []`
 
-This schema depicts what happens after starting the OPC UA Agent.
+and enable the mapping tool:
 
-![OPC UA Agent flow](./images/OPC%20UA%20agent%20flow%20chart_2.png)
+-   `mappingTool: { enabled: true, ... }`
 
-#### Manual Configuration (editing config.json file)
+#### Manual Configuration (editing config.js file)
 
-When autoprovisioning is enabled, using Manual Configuration it is possible to specify the mapping between OPC UA
-objects and NGSI attributes and commands. The mapping can be specified in the config.js, editing the properties `types`,
-`contexts` and `contextSubscriptions`.
+Using Manual Configuration it is possible to specify the mapping between OPC UA objects and NGSI attributes and
+commands. The mapping can be specified in the config.js, editing the properties `types`, `contexts` and
+`contextSubscriptions`.
 
 To define active attributes:
 
@@ -89,6 +89,12 @@ To define poll commands:
 -   set polling-commands-timer in ms to execute che poll commands automatically
 
 An example can be found [here](../conf/config-v2.example.js).
+
+#### Dynamic configuration (REST API)
+
+If you want to use the REST interface have a look at Step 4
+[here](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial.html#step-by-step-tutorial) to see how to
+provision a new device.
 
 ## Step 4 - Run the Agent
 
