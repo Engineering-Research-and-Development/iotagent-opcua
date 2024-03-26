@@ -54,7 +54,6 @@ describe('Configuration startup tests', () => {
             process.env.IOTA_OPCUA_SECURITY_USERNAME = 'test';
             process.env.IOTA_OPCUA_SECURITY_PASSWORD = 'test';
             process.env.IOTA_OPCUA_UNIQUE_SUBSCRIPTION = 'test';
-            process.env.IOTA_OPCUA_MT_ENABLED = 'test';
             process.env.IOTA_OPCUA_MT_POLLING = 'test';
             process.env.IOTA_OPCUA_MT_AGENT_ID = 'test';
             process.env.IOTA_OPCUA_MT_ENTITY_ID = 'test';

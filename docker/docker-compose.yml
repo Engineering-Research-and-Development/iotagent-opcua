@@ -38,6 +38,10 @@ services:
       - "4041:4041"
       - "9229:9229"
     environment:
+      - "CONFIGURATION_TYPE=auto"
+      - "CONFIG_RETRIEVAL=false"
+      - "DEFAULT_KEY=iot"
+      - "DEFAULT_TRANSPORT=OPCUA"
       - "IOTA_LOGLEVEL=DEBUG"
       - "IOTA_TIMESTAMP=true"
       - "IOTA_CB_HOST=orion"
@@ -72,7 +76,6 @@ services:
       - "IOTA_OPCUA_SUBSCRIPTION_REQ_MAX_KEEP_ALIVE_COUNT=10"
       - "IOTA_OPCUA_SUBSCRIPTION_REQ_PUBLISHING_INTERVAL=1000"
       - "IOTA_OPCUA_SUBSCRIPTION_PRIORITY=128"
-      - "IOTA_OPCUA_MT_ENABLED=false"
       - "IOTA_OPCUA_MT_POLLING=false"
       - "IOTA_OPCUA_MT_AGENT_ID=age01_"
       - "IOTA_OPCUA_MT_ENTITY_ID=age01_Car"
@@ -95,7 +98,7 @@ services:
 
   orion:
     image: fiware/orion:3.10.1
-    #image: fiware/orion-ld:1.4.0
+    #image: fiware/orion-ld:1.5.1
     hostname: orion
     depends_on:
       - mongodb
@@ -108,7 +111,7 @@ services:
 
   iotcarsrv:
     hostname: iotcarsrv
-    image: iotagent4fiware/opcuacarsrv:1.3.9
+    image: iotagent4fiware/opcuacarsrv:1.4.3
     networks:
       - hostnet
     ports:

@@ -15,13 +15,12 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with iotagent-opcua.
- * If not, see http://www.gnu.org/licenses/.
+ * If not, seehttp://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
- * please contact with::[manfredi.pistone@eng.it, gabriele.deluca@eng.it, walterdomenico.vergara@eng.it, mattiagiuseppe.marzano@eng.it]
+ * please contact with::[contact@eng.it]
  */
-
-const config = {};
+var config = {};
 
 config.iota = {
     /**
@@ -155,12 +154,11 @@ config.iota = {
      * Types array for static configuration of services. Check documentation in the IoT Agent Library for Node.js for
      *  further details:
      *
-     *      https://github.com/Engineering-Research-and-Development/iotagent-opcua#type-configuration
+     *      https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/quick_start_guide.md
      */
     types: {},
     contexts: [],
     contextSubscriptions: [],
-    events: [],
     /**
      * Default service, for IoT Agent installations that won't require preregistration.
      */
@@ -173,7 +171,7 @@ config.iota = {
      * URL Where the IoT Agent Will listen for incoming updateContext and queryContext requests (for commands and
      * passive attributes). This URL will be sent in the Context Registration requests.
      */
-    providerUrl: 'http://localhost:4041',
+    providerUrl: 'http://host.docker.internal:4041',
     /**
      * Default maximum expire date for device registrations.
      */
@@ -242,7 +240,7 @@ config.opcua = {
 
 config.mappingTool = {
     /**
-     *  Boolean property to assess whether enabling polling in MappingTool or not
+     *  Boolean property to assess whether enable polling in MappingTool or not
      */
     polling: false,
     /**
@@ -275,6 +273,7 @@ config.mappingTool = {
  */
 
 config.configurationType = 'auto';
+
 /**
  * map {name: function} of extra transformations avaliable at JEXL plugin
  *  see https://github.com/telefonicaid/iotagent-node-lib/tree/master/doc/expressionLanguage.md#available-functions

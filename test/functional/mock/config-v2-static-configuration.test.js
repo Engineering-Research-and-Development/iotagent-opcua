@@ -15,13 +15,12 @@
  *
  * You should have received a copy of the GNU Affero General Public
  * License along with iotagent-opcua.
- * If not, see http://www.gnu.org/licenses/.
+ * If not, seehttp://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
- * please contact with::[manfredi.pistone@eng.it, gabriele.deluca@eng.it, walterdomenico.vergara@eng.it, mattiagiuseppe.marzano@eng.it]
+ * please contact with::[contact@eng.it]
  */
-
-const config = {};
+var config = {};
 
 config.iota = {
     /**
@@ -155,12 +154,134 @@ config.iota = {
      * Types array for static configuration of services. Check documentation in the IoT Agent Library for Node.js for
      *  further details:
      *
-     *      https://github.com/Engineering-Research-and-Development/iotagent-opcua#type-configuration
+     *      https://github.com/Engineering-Research-and-Development/iotagent-opcua/blob/master/docs/quick_start_guide.md
      */
-    types: {},
-    contexts: [],
-    contextSubscriptions: [],
-    events: [],
+    types: {
+        Device: {
+            active: [
+                {
+                    name: 'EngineBrake',
+                    type: 'Number'
+                },
+                {
+                    name: 'Acceleration',
+                    type: 'Number'
+                },
+                {
+                    name: 'EngineStopped',
+                    type: 'Boolean'
+                },
+                {
+                    name: 'Engine_Temperature',
+                    type: 'Number'
+                },
+                {
+                    name: 'Engine_Oxigen',
+                    type: 'Number'
+                }
+            ],
+            lazy: [
+                {
+                    name: 'Speed',
+                    type: 'Number'
+                }
+            ],
+            commands: [
+                {
+                    name: 'Error',
+                    type: 'command'
+                },
+                {
+                    name: 'Stop',
+                    type: 'command'
+                },
+                {
+                    name: 'Accelerate',
+                    type: 'command'
+                }
+            ]
+        }
+    },
+    contexts: [
+        {
+            id: 'age01_Car',
+            type: 'Device',
+            mappings: [
+                {
+                    ocb_id: 'EngineBrake',
+                    opcua_id: 'ns=3;s=EngineBrake',
+                    object_id: 'ns=3;s=EngineBrake',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Acceleration',
+                    opcua_id: 'ns=3;s=Acceleration',
+                    object_id: 'ns=3;s=Acceleration',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'EngineStopped',
+                    opcua_id: 'ns=3;s=EngineStopped',
+                    object_id: 'ns=3;s=EngineStopped',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Engine_Temperature',
+                    opcua_id: 'ns=3;s=Temperature',
+                    object_id: 'ns=3;s=Temperature',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Engine_Oxigen',
+                    opcua_id: 'ns=3;s=Oxigen',
+                    object_id: 'ns=3;s=Oxigen',
+                    inputArguments: []
+                }
+            ]
+        }
+    ],
+    contextSubscriptions: [
+        {
+            id: 'age01_Car',
+            type: 'Device',
+            mappings: [
+                {
+                    ocb_id: 'Error',
+                    opcua_id: 'ns=3;s=Error',
+                    object_id: 'ns=3;i=1000',
+                    inputArguments: [
+                        {
+                            dataType: 12,
+                            type: 'Error Type'
+                        }
+                    ]
+                },
+                {
+                    ocb_id: 'Speed',
+                    opcua_id: 'ns=3;s=Speed',
+                    object_id: 'ns=3;i=1000',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Stop',
+                    opcua_id: 'ns=3;s=Stop',
+                    object_id: 'ns=3;i=1000',
+                    inputArguments: []
+                },
+                {
+                    ocb_id: 'Accelerate',
+                    opcua_id: 'ns=3;s=Accelerate',
+                    object_id: 'ns=3;i=1000',
+                    inputArguments: [
+                        {
+                            dataType: 6,
+                            type: 'Intensity'
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
     /**
      * Default service, for IoT Agent installations that won't require preregistration.
      */
@@ -173,7 +294,7 @@ config.iota = {
      * URL Where the IoT Agent Will listen for incoming updateContext and queryContext requests (for commands and
      * passive attributes). This URL will be sent in the Context Registration requests.
      */
-    providerUrl: 'http://localhost:4041',
+    providerUrl: 'http://host.docker.internal:4041',
     /**
      * Default maximum expire date for device registrations.
      */
@@ -242,7 +363,7 @@ config.opcua = {
 
 config.mappingTool = {
     /**
-     *  Boolean property to assess whether enabling polling in MappingTool or not
+     *  Boolean property to assess whether enable polling in MappingTool or not
      */
     polling: false,
     /**
@@ -274,7 +395,8 @@ config.mappingTool = {
  *  - static : device mappings from config.js will be loaded
  */
 
-config.configurationType = 'auto';
+config.configurationType = 'static';
+
 /**
  * map {name: function} of extra transformations avaliable at JEXL plugin
  *  see https://github.com/telefonicaid/iotagent-node-lib/tree/master/doc/expressionLanguage.md#available-functions
