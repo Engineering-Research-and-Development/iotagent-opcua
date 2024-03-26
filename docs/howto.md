@@ -257,10 +257,6 @@ config.opcua = {
 
 config.mappingTool = {
     /**
-     *  Boolean property to assess whether enabling MappingTool or not
-     */
-    enabled: false,
-    /**
      *  Boolean property to assess whether enabling polling in MappingTool or not
      */
     polling: false,

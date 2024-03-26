@@ -141,11 +141,9 @@ configuration file (config.js) or through the REST API
 
 Three different initialization modalities are available:
 
--   Use a preloaded config.js
--   Invoke a mapping tool responsible of automatically building the mapping between OPC UA and NGSI (**NOTE:** **_Before
-    using the MappingTool, erase the three objects: *types*, *contexts*, *contextSubscriptions* within the existing
-    config.js_**)
--   Use the REST API
+-   `auto`: invoke a mapping tool responsible of automatically building the mapping between OPC UA and NGSI
+-   `static`: use a preloaded config.js
+-   `dynamic`: use the REST API
 
 Since in the following parts of this tutorial we are going to use the REST API you have not to worry about the
 initialization.

@@ -35,35 +35,29 @@ one is needed when the OPC UA Server answers to the mapping tool returning its h
 ## Step 3 - Preparing the Agent for start up
 
 OPC UA Agent is configurable through a single configuration file. All properties are explained in the
-[config.js](../conf/config.js) template.
+[config.js](../conf/config.js) template. If you are running the Agent using Docker, please use the environment variables
+defined in the docker-compose example provided.
 
 Main sections are:
 
 -   `config.iota`: configure northbound (Context Broker), agent server, persistence (MongoDB), log level, etc.
 -   `config.opcua`: configure southbound (OPC UA endpoint)
 -   `config.mappingTool`: configure mapping tool properties to set auto configuration
--   `config.autoprovision`: flag indicating whether or not to provision the Service Group and Device automatically
 
-#### Auto Configuration (usage of Mapping Tool)
+Three options are available to configure the Agent, described below.
 
-When `config.mappingTool.enabled` is `true` and `config.iota.types` is empty, the Mapping Tool creates a mapping for all
-OPC UA objects (except those with namespace to ignore matching): all OPC UA variables will be configured as active
-attributes whereas all OPC UA methods will be configured as commands.
+![edit config.js](./images/OPC%20UA%20agent%20flow%20chart_2.png)
 
-To enable auto configuration, simply set as empty the following properties in the config.js:
+#### Option 1: Auto configuration (usage of Mapping Tool)
 
--   `types: {}`
--   `contexts: []`
--   `contextSubscriptions: []`
+When `config.configurationType` is `auto`, the Mapping Tool creates a mapping for all OPC UA objects (except those with
+namespace to ignore matching): all OPC UA variables will be configured as active attributes whereas all OPC UA methods
+will be configured as commands.
 
-and enable the mapping tool:
+#### Option 2: Static configuration (editing config.js file)
 
--   `mappingTool: { enabled: true, ... }`
-
-#### Manual Configuration (editing config.js file)
-
-Using Manual Configuration it is possible to specify the mapping between OPC UA objects and NGSI attributes and
-commands. The mapping can be specified in the config.js, editing the properties `types`, `contexts` and
+When `config.configurationType` is `static`, it is possible to specify the mapping between OPC UA objects and NGSI
+attributes and commands. The mapping can be specified in the config.js, editing the properties `types`, `contexts` and
 `contextSubscriptions`.
 
 To define active attributes:
@@ -90,11 +84,11 @@ To define poll commands:
 
 An example can be found [here](../conf/config-v2.example.js).
 
-#### Dynamic configuration (REST API)
+#### Option 3: Dynamic configuration (REST API)
 
-If you want to use the REST interface have a look at Step 4
-[here](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial.html#step-by-step-tutorial) to see how to
-provision a new device.
+When `config.configurationType` is `dynamic`, you can use the REST interface to setup the Agent once it has started. To
+provision a new device have a look at Step 4
+[here](https://iotagent-opcua.readthedocs.io/en/latest/opc_ua_agent_tutorial.html#step-by-step-tutorial).
 
 ## Step 4 - Run the Agent
 

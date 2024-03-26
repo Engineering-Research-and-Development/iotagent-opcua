@@ -30,11 +30,12 @@ Open the `conf/config.js` and make your changes (see how to do this [here](howto
 
 The downloaded repository comes with a `config.js` (conf/config.js) in which an empty Device is preloaded.
 
-At this point, you have three options:
+At this point, you have three options for the configuration:
 
--   Use the mapping tool to automatically generate a `config.js`
--   Define your own context mappings in fields `types`, `contexts`, `contextSubscriptions`, `events` in `config.js`
--   Dynamically provision the new Device (mapping between OPC UA Server and OPC UA Agent) via REST interface
+-   `auto`: use the mapping tool to automatically generate a `config.js`
+-   `static`: define your own context mappings in fields `types`, `contexts`, `contextSubscriptions`, `events` in
+    `config.js`
+-   `dynamic`: dynamically provision the new Device (mapping between OPC UA Server and OPC UA Agent) via REST interface
 
 If you want to use the mapping tool simply set as empty the following properties in the config.js:
 
