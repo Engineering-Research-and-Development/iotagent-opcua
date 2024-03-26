@@ -287,6 +287,15 @@ config.mappingTool = {
 };
 
 /**
+ * flag indicating which configuration type to perform. Possible choices are:
+ *  - auto : mappingTool will be run and runtime device mappings will be loaded
+ *  - dynamic : device mappings from config.js will be ignored, REST API Provisioning is mandatory
+ *  - static : device mappings from config.js will be loaded
+ */
+
+config.configurationType = "auto";
+
+/**
  * map {name: function} of extra transformations avaliable at JEXL plugin
  *  see https://github.com/telefonicaid/iotagent-node-lib/tree/master/doc/expressionLanguage.md#available-functions
  */

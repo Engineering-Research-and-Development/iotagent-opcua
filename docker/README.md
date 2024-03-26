@@ -132,8 +132,17 @@ networks:
 Many settings can be configured using Docker environment variables. A typical IoT Agent Docker container is driven by
 environment variables such as those shown below:
 
+-   `CONFIGURATION_TYPE` - flag indicating which configuration type to perform. Possible choices are: auto, dynamic and
+    static
+-   `CONFIG_RETRIEVAL` - flag indicating whether the incoming notifications to the IoTAgent should be processed using
+    the bidirectionality plugin from the latest versions of the library or the OPCUA-specific configuration retrieval
+    mechanism.
+-   `DEFAULT_KEY` - Default API Key, to use with device that have been provisioned without a Configuration Group.
+-   `DEFAULT_TRANSPORT` - Default transport protocol when no transport is provisioned through the Device Provisioning
+    API.
 -   `IOTA_LOGLEVEL` - Log level for iotagentnode lib
--   `IOTA_TIMESTAMP` - Whether the IoTAgent will add the TimeInstant attribute to every entity created, as well as a TimeInstant metadata to each attribute, with the current timestamp
+-   `IOTA_TIMESTAMP` - Whether the IoTAgent will add the TimeInstant attribute to every entity created, as well as a
+    TimeInstant metadata to each attribute, with the current timestamp
 -   `IOTA_CB_HOST` - Hostname of the context broker to update context
 -   `IOTA_CB_PORT` - Port that context broker listens on to update context
 -   `IOTA_CB_NGSIVERSION` - Version of the Context Broker
@@ -147,12 +156,16 @@ environment variables such as those shown below:
 -   `IOTA_MONGO_DB` - The name of the database used in MongoDB
 -   `IOTA_SERVICE` - Default service, for IoT Agent installations that won't require preregistration
 -   `IOTA_SUBSERVICE` - Default subservice, for IoT Agent installations that won't require preregistration
--   `IOTA_PROVIDER_URL` - URL passed to the Context Broker when commands are registered, used as a forwarding URL location when the Context Broker issues a command to a device
+-   `IOTA_PROVIDER_URL` - URL passed to the Context Broker when commands are registered, used as a forwarding URL
+    location when the Context Broker issues a command to a device
 -   `IOTA_DEVICEREGDURATION` - Default maximum expire date for device registrations
 -   `IOTA_DEFAULTTYPE` - Default type, for IoT Agent installations that won't require preregistration
--   `IOTA_DEFAULTRESOURCE` -  Default resource of the IoT Agent. This value must be different for every IoT Agent connecting to the IoT Manager
--   `IOTA_EXPLICITATTRS` - Flag indicating whether the incoming measures to the IoTAgent should be processed as per the "attributes" field
--   `IOTA_EXTENDED_FORBIDDEN_CHARACTERS` - List of characters to be filtered before forwarding any request to the Context Broker
+-   `IOTA_DEFAULTRESOURCE` - Default resource of the IoT Agent. This value must be different for every IoT Agent
+    connecting to the IoT Manager
+-   `IOTA_EXPLICITATTRS` - Flag indicating whether the incoming measures to the IoTAgent should be processed as per the
+    "attributes" field
+-   `IOTA_EXTENDED_FORBIDDEN_CHARACTERS` - List of characters to be filtered before forwarding any request to the
+    Context Broker
 -   `IOTA_AUTOPROVISION` - Flag indicating whether to provision the Group and Device automatically
 -   `IOTA_OPCUA_ENDPOINT` - Endpoint of OPC UA Server
 -   `IOTA_OPCUA_SECURITY_MODE` - Security mode for OPC UA connection

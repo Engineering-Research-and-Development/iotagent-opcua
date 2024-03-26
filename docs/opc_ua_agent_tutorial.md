@@ -482,6 +482,10 @@ services:
             - "4041:4041"
             - "9229:9229"
         environment:
+            - "CONFIGURATION_TYPE=auto"
+            - "CONFIG_RETRIEVAL=false"
+            - "DEFAULT_KEY=iot"
+            - "DEFAULT_TRANSPORT=OPCUA"
             - "IOTA_LOGLEVEL=DEBUG"
             - "IOTA_TIMESTAMP=true"
             - "IOTA_CB_HOST=orion"
