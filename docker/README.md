@@ -72,6 +72,7 @@ services:
             - "IOTA_EXPLICITATTRS=true"
             - "IOTA_EXTENDED_FORBIDDEN_CHARACTERS=[]"
             - "IOTA_AUTOPROVISION=true"
+            - "IOTA_EXPRESS_LIMIT=1M"
             - "IOTA_OPCUA_ENDPOINT=opc.tcp://iotcarsrv:5001/UA/CarServer"
             - "IOTA_OPCUA_SECURITY_MODE=None"
             - "IOTA_OPCUA_SECURITY_POLICY=None"
@@ -167,6 +168,7 @@ environment variables such as those shown below:
 -   `IOTA_EXTENDED_FORBIDDEN_CHARACTERS` - List of characters to be filtered before forwarding any request to the
     Context Broker
 -   `IOTA_AUTOPROVISION` - Flag indicating whether to provision the Group and Device automatically
+-   `IOTA_EXPRESS_LIMIT` - Default limit for express router built into iotagent-node-lib module
 -   `IOTA_OPCUA_ENDPOINT` - Endpoint of OPC UA Server
 -   `IOTA_OPCUA_SECURITY_MODE` - Security mode for OPC UA connection
 -   `IOTA_OPCUA_SECURITY_POLICY` - Security policy for OPC UA connection

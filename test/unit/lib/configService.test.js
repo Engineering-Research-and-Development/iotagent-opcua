@@ -45,6 +45,7 @@ describe('Configuration startup tests', () => {
             process.env.IOTA_EXPLICITATTRS = 'test';
             process.env.IOTA_EXTENDED_FORBIDDEN_CHARACTERS = 'test';
             process.env.IOTA_AUTOPROVISION = 'test';
+            process.env.IOTA_EXPRESS_LIMIT = 'test';
             process.env.IOTA_CONFIG_RETRIEVAL = 'test';
             process.env.IOTA_DEFAULT_KEY = 'test';
             process.env.IOTA_DEFAULT_TRANSPORT = 'test';

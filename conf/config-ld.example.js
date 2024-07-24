@@ -371,13 +371,17 @@ config.iota = {
      */
     defaultResource: '/iot/opcua',
     /**
-     * flag indicating whether the incoming measures to the IoTAgent should be processed as per the "attributes" field.
+     * Flag indicating whether the incoming measures to the IoTAgent should be processed as per the "attributes" field.
      */
     explicitAttrs: false,
     /**
      * Flag indicating whether to provision the Group and Device automatically
      */
-    autoprovision: true
+    autoprovision: true,
+    /**
+     * Default limit for express router built into iotagent-node-lib module
+     */
+    expressLimit: '1M'
 };
 
 config.opcua = {
@@ -440,7 +444,7 @@ config.mappingTool = {
      */
     entityType: 'Device',
     /**
-     * boolean flag to determine whether to store the output of the mapping tool execution or not
+     * Boolean flag to determine whether to store the output of the mapping tool execution or not
      */
     storeOutput: true,
     /**
@@ -458,7 +462,7 @@ config.mappingTool = {
 config.jexlTransformations = {};
 
 /**
- * flag indicating whether the incoming notifications to the IoTAgent should be processed using the bidirectionality
+ * Flag indicating whether the incoming notifications to the IoTAgent should be processed using the bidirectionality
  * plugin from the latest versions of the library or the OPCUA-specific configuration retrieval mechanism.
  */
 config.configRetrieval = false;
@@ -471,7 +475,7 @@ config.defaultKey = 'iot';
  */
 config.defaultTransport = 'OPCUA';
 /**
- * flag indicating whether the node server will be executed in multi-core option (true) or it will be a
+ * Flag indicating whether the node server will be executed in multi-core option (true) or it will be a
  * single-thread one (false).
  */
 //config.multiCore = false;
