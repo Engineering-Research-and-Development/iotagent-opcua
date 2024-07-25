@@ -203,7 +203,7 @@ config.iota = {
     /**
      * Default limit for express router built into iotagent-node-lib module
      */
-    expressLimit: '1M'
+    expressLimit: '50mb'
 };
 
 config.opcua = {

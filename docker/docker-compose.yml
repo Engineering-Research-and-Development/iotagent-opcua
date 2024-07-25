@@ -64,7 +64,7 @@ services:
       - "IOTA_EXPLICITATTRS=true"
       - "IOTA_EXTENDED_FORBIDDEN_CHARACTERS=[]"
       - "IOTA_AUTOPROVISION=true"
-      - "IOTA_EXPRESS_LIMIT=1M"
+      - "IOTA_EXPRESS_LIMIT=50mb"
       - "IOTA_OPCUA_ENDPOINT=opc.tcp://iotcarsrv:5001/UA/CarServer"
       - "IOTA_OPCUA_SECURITY_MODE=None"
       - "IOTA_OPCUA_SECURITY_POLICY=None"
