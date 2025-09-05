@@ -77,7 +77,7 @@
     "body-parser": "1.20.3",
     "dateformat": "3.0.3",
     "express": "4.20.0",
-    "iotagent-node-lib": "4.6.0",
+    "iotagent-node-lib": "4.9.0",
     "logops": "2.1.2",
     "node-opcua": "^2.120.0",
     "node-opcua-client-crawler": "^2.120.0",
