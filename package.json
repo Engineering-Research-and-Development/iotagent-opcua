@@ -79,7 +79,7 @@
     "express": "4.21.2",
     "iotagent-node-lib": "4.9.0",
     "logops": "2.1.2",
-    "node-opcua": "^2.120.0",
+    "node-opcua": "^2.163.1",
     "node-opcua-client-crawler": "^2.120.0",
     "nodemon": "^2.0.19",
     "rewire": "^9.0.1",
